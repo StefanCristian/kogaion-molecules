@@ -29,7 +29,7 @@ src_unpack() {
 	cp "${FILESDIR}"/${PV}/x-setup-configuration . -p
 	cp "${FILESDIR}"/${PV}/bashlogin . -p
 	cp "${FILESDIR}"/${PV}/opengl-activator . -p
-	cp "${FILESDIR}"/${PV}/sabayonlive . -p
+	cp "${FILESDIR}"/${PV}/rogentoslive . -p
 	cp "${FILESDIR}"/${PV}/vga-cmd-parser . -p
 	cp "${FILESDIR}"/${PV}/logscript.sh . -p
 	cp "${FILESDIR}"/${PV}/sabutil . -p
@@ -57,7 +57,6 @@ src_install() {
 
 	dodir /etc/rogentos
 	insinto /etc/rogentos
-	#doins sabayon-welcome-loader.desktop
 
 	#insinto /etc/X11
 	#doins xorg.conf.sabayon
