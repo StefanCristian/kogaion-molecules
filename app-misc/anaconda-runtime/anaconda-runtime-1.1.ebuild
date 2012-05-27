@@ -15,7 +15,6 @@ DEPEND=""
 RDEPEND="app-admin/system-config-date
 	app-admin/system-config-users
 	>=app-misc/rogentoslive-tools-2.3
-	>=app-misc/sabayon-version-5-r1
 	app-text/xmlto
 	dev-libs/elfutils
 	dev-libs/libnl
