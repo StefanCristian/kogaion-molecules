@@ -1,0 +1,6 @@
+[autorun]
+label=Rogentos
+open=sabayon.bat
+action=Launch Virtual Rogentos
+icon=sabayon.ico
+
