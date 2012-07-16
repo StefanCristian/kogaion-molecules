@@ -223,24 +223,47 @@ setup_misc_stuff() {
 
 rogentos_install() {
 
-cd /home/
-echo "entering /home"
+#Rogentos ISO Remaking from the Beginnings
+
+localz=$(pwd)
+echo "Entering folde r$localz"
 equo remove sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux --nodeps
-echo "removing sabayon artwork"
+echo "Removing sabayon artwork"
 wget http://dl.dropbox.com/u/1338709/amd64/5/x11-themes%3Arogentos-artwork-core-1.tbz2
-echo "getting rogentos-artwork-core"
+echo "Getting rogentos-artwork-core"
 if [ -d "/etc/splash/sabayon" ]; then
 	rm -r /etc/splash/sabayon
-	echoo "so etc/splash/sabayon exists"
+	ln -s /etc/splash/rogentos /etc/splash/sabayon
+	echo "So etc/splash/sabayon exists"
+	ln -s /etc/splash/rogentos /etc/splash/sabayon
+	splash_manager -c set -t rogentos
 fi
-echo "downloading the other files"
+
+echo "Downloading the other files"
 wget http://dl.dropbox.com/u/1338709/amd64/5/app-admin%3Arogentoslive-tools-1.0.tbz2
 wget http://dl.dropbox.com/u/1338709/amd64/5/x11-themes%3Arogentos-artwork-grub-1.tbz2
 wget http://dl.dropbox.com/u/1338709/amd64/5/x11-themes%3Arogentos-artwork-isolinux-1.tbz2
-equo install x11-themes\:rogentos-artwork-core-1.tbz2 x11-themes\:rogentos-artwork-grub-1.tbz2 x11-themes\:rogentos-artwork-isolinux-1.tbz2 app-admin\:rogentoslive-tools-1.0.tbz2  --nodeps
+wget http://dl.dropbox.com/u/1338709/amd64/5/app-admin%3Aanaconda-9999.tbz2
+wget http://dl.dropbox.com/u/1338709/amd64/5/app-admin%3Aanaconda-runtime-1.1.tbz2
+
+equo install x11-themes\:rogentos-artwork-core-1.tbz2 x11-themes\:rogentos-artwork-grub-1.tbz2 x11-themes\:rogentos-artwork-isolinux-1.tbz2 app-admin\:rogentoslive-tools-1.0.tbz2  app-admin\:anaconda-9999.tbz2 app-admin\:anaconda-runtime-1.1.tbz2 --nodeps
+
 echo "installed rogentos artwork"
-ln -s /etc/splash/rogentos /etc/splash/sabayon
+
 rm x11-themes\:rogentos-artwork*
+
+if [ -d "/home/sabayonuser/" ]; then
+	echo "/home/abayonuser folder exists"
+	rm -r /home/sabayonuser/
+	mkdir -p /home/rogentosuser
+	else
+	echo "sabayonuser folder does not exist"
+fi
+
+echo "
+x11-themes/sabayon-artwork-core
+x11-themes/sabayon-artwork-grub
+x11-themes/sabayon-artwork-isolinux" >> /etc/entropy/repositories.conf
 
 }
 
@@ -298,25 +321,6 @@ prepare_lxde() {
 	setup_displaymanager
 	# properly tweak lxde autostart tweak, adding --desktop option
 	sed -i 's/pcmanfm -d/pcmanfm -d --desktop/g' /etc/xdg/lxsession/LXDE/autostart
-	remove_mozilla_skel_cruft
-	setup_cpufrequtils
-	has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
-}
-
-prepare_e17() {
-	setup_networkmanager
-	# Fix ~/.dmrc to have it load E17
-	echo "[Desktop]" > /etc/skel/.dmrc
-	echo "Session=enlightenment" >> /etc/skel/.dmrc
-	remove_desktop_files
-	# E17 spin has chromium installed
-	setup_displaymanager
-	# Not using lxdm for now
-	# TODO: improve the lines below
-	# Make sure enlightenment is selected in lxdm
-	# sed -i '/lxdm-greeter-gtk/ a\\nlast_session=enlightenment.desktop\nlast_lang=' /etc/lxdm/lxdm.conf
-	# Fix ~/.gtkrc-2.0 for some nice icons in gtk
-	echo 'gtk-icon-theme-name="Tango" gtk-theme-name="Xfce"' | tr " " "\n" > /etc/skel/.gtkrc-2.0
 	remove_mozilla_skel_cruft
 	setup_cpufrequtils
 	has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
