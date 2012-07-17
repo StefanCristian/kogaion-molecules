@@ -226,31 +226,55 @@ rogentos_install() {
 #Rogentos ISO Remaking from the Beginnings
 
 localz=$(pwd)
-echo "Entering folde r$localz"
+ARCH=$(uname -m)
+echo "Entering folder $localz"
 equo remove sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux --nodeps
 echo "Removing sabayon artwork"
-wget http://dl.dropbox.com/u/1338709/amd64/5/x11-themes%3Arogentos-artwork-core-1.tbz2
-echo "Getting rogentos-artwork-core"
+
+if [ "$ARCH" = "x86_64" ]; then
+
+	wget http://dl.dropbox.com/u/1338709/amd64/5/x11-themes%3Arogentos-artwork-core-1.tbz2
+	echo "Getting rogentos-artwork-core amd64"
+	else
+	wget http://dl.dropbox.com/u/1338709/x86/5/x11-themes%3Arogentos-artwork-core-1.tbz2
+	echo "Downloading rogentos-artwork-core x86"
+fi
+
+rogentos_splash() {
 if [ -d "/etc/splash/sabayon" ]; then
 	rm -r /etc/splash/sabayon
 	ln -s /etc/splash/rogentos /etc/splash/sabayon
 	echo "So etc/splash/sabayon exists"
 	ln -s /etc/splash/rogentos /etc/splash/sabayon
-	splash_manager -c set -t rogentos
+	
+	for i in `seq 1 6`; do
+	splash_manager -c set -t rogentos --tty=$i
+	done
+fi
+}
+
+if [ "$ARCH" = "x86_64" ]; then
+		echo "Downloading the other files"
+		wget http://dl.dropbox.com/u/1338709/amd64/5/app-admin%3Arogentoslive-tools-1.0.tbz2
+		wget http://dl.dropbox.com/u/1338709/amd64/5/x11-themes%3Arogentos-artwork-grub-1.tbz2
+		wget http://dl.dropbox.com/u/1338709/amd64/5/x11-themes%3Arogentos-artwork-isolinux-1.tbz2
+		wget http://dl.dropbox.com/u/1338709/amd64/5/app-admin%3Aanaconda-9999.tbz2
+		wget http://dl.dropbox.com/u/1338709/amd64/5/app-admin%3Aanaconda-runtime-1.1.tbz2
+		equo install x11-themes\:rogentos-artwork-core-1.tbz2 x11-themes\:rogentos-artwork-grub-1.tbz2 x11-themes\:rogentos-artwork-isolinux-1.tbz2 app-admin\:rogentoslive-tools-1.0.tbz2  app-admin\:anaconda-9999.tbz2 app-admin\:anaconda-runtime-1.1.tbz2 --nodeps
+		echo "installed rogentos artwork amd64"
+		rogentos_splash
+	else
+		wget http://dl.dropbox.com/u/1338709/x86/5/x11-themes%3Arogentos-artwork-grub-1.tbz2
+		wget http://dl.dropbox.com/u/1338709/x86/5/x11-themes%3Arogentos-artwork-isolinux-1.tbz2
+		wget http://dl.dropbox.com/u/1338709/x86/5/app-admin%3Aanaconda-runtime-1.1.tbz2
+		wgwt http://dl.dropbox.com/u/1338709/x86/5/app-admin%3Aanaconda-9999.tbz2
+		equo install x11-themes\:rogentos-artwork-core-1.tbz2 x11-themes\:rogentos-artwork-grub-1.tbz2 x11-themes\:rogentos-artwork-isolinux-1.tbz2 app-admin\:rogentoslive-tools-1.0.tbz2  app-admin\:anaconda-9999.tbz2 app-admin\:anaconda-runtime-1.1.tbz2 --nodeps
+		echo "Installed rogentos artwork x86"
+		rogentos_splash
 fi
 
-echo "Downloading the other files"
-wget http://dl.dropbox.com/u/1338709/amd64/5/app-admin%3Arogentoslive-tools-1.0.tbz2
-wget http://dl.dropbox.com/u/1338709/amd64/5/x11-themes%3Arogentos-artwork-grub-1.tbz2
-wget http://dl.dropbox.com/u/1338709/amd64/5/x11-themes%3Arogentos-artwork-isolinux-1.tbz2
-wget http://dl.dropbox.com/u/1338709/amd64/5/app-admin%3Aanaconda-9999.tbz2
-wget http://dl.dropbox.com/u/1338709/amd64/5/app-admin%3Aanaconda-runtime-1.1.tbz2
-
-equo install x11-themes\:rogentos-artwork-core-1.tbz2 x11-themes\:rogentos-artwork-grub-1.tbz2 x11-themes\:rogentos-artwork-isolinux-1.tbz2 app-admin\:rogentoslive-tools-1.0.tbz2  app-admin\:anaconda-9999.tbz2 app-admin\:anaconda-runtime-1.1.tbz2 --nodeps
-
-echo "installed rogentos artwork"
-
 rm x11-themes\:rogentos-artwork*
+rm app-admin\:rogentos*
 
 if [ -d "/home/sabayonuser/" ]; then
 	echo "/home/abayonuser folder exists"
@@ -260,10 +284,7 @@ if [ -d "/home/sabayonuser/" ]; then
 	echo "sabayonuser folder does not exist"
 fi
 
-echo "
-x11-themes/sabayon-artwork-core
-x11-themes/sabayon-artwork-grub
-x11-themes/sabayon-artwork-isolinux" >> /etc/entropy/repositories.conf
+equo mask sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux
 
 }
 
