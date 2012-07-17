@@ -5,7 +5,7 @@ CHROOT_PKGS_DIR="${CHROOT_DIR}/var/lib/entropy/client/packages"
 # load common stuff
 . /sabayon/scripts/remaster_post_common.sh
 
-cp /sabayon/remaster/xfce-configs/xfce4-desktop.xml ${CHROOT_DIR}/home/rogentosuser/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml
+cp /sabayon/remaster/rogentos/xfce-configs/xfce4-desktop.xml ${CHROOT_DIR}/home/rogentosuser/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml
 
 # make sure to not leak /proc
 umount "${CHROOT_DIR}/proc" &> /dev/null
