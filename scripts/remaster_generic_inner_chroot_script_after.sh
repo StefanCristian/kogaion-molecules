@@ -267,14 +267,15 @@ if [ "$ARCH" = "x86_64" ]; then
 		wget http://dl.dropbox.com/u/1338709/x86/5/x11-themes%3Arogentos-artwork-grub-1.tbz2
 		wget http://dl.dropbox.com/u/1338709/x86/5/x11-themes%3Arogentos-artwork-isolinux-1.tbz2
 		wget http://dl.dropbox.com/u/1338709/x86/5/app-admin%3Aanaconda-runtime-1.1.tbz2
-		wgwt http://dl.dropbox.com/u/1338709/x86/5/app-admin%3Aanaconda-9999.tbz2
+		wget http://dl.dropbox.com/u/1338709/x86/5/app-admin%3Aanaconda-9999.tbz2
+		wget http://dl.dropbox.com/u/1338709/x86/5/app-admin%3Arogentoslive-tools-1.0.tbz2
 		equo install x11-themes\:rogentos-artwork-core-1.tbz2 x11-themes\:rogentos-artwork-grub-1.tbz2 x11-themes\:rogentos-artwork-isolinux-1.tbz2 app-admin\:rogentoslive-tools-1.0.tbz2  app-admin\:anaconda-9999.tbz2 app-admin\:anaconda-runtime-1.1.tbz2 --nodeps
 		echo "Installed rogentos artwork x86"
 		rogentos_splash
 fi
 
 rm x11-themes\:rogentos-artwork*
-rm app-admin\:rogentos*
+rm app-admin\*
 
 if [ -d "/home/sabayonuser/" ]; then
 	echo "/home/abayonuser folder exists"
