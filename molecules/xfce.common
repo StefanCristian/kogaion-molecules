@@ -61,6 +61,7 @@ packages_to_add:
 	app-misc/anaconda-runtime-gui,
 	app-misc/gnote,
 	app-text/pastebunz,
+	app-emulation/virtualbox-guest-additions
 	dev-java/icedtea-bin,
 	games-misc/cowsay,
 	gnome-extra/nm-applet-gtk2,
