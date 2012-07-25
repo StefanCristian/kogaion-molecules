@@ -5,7 +5,7 @@ execution_strategy: livecd
 release_string: Sabayon Linux
 
 # File to write release string
-release_file: /etc/sabayon-edition
+release_file: /etc/rogentos-edition
 
 # Destination chroot directory, where files are pushed to before creating the squashfs image
 # NOTE: data will be stored inside an auto-generated subdir
@@ -109,6 +109,8 @@ paths_to_empty:
     /var/tmp/ccache,
     /var/tmp/portage-pkg,
     /var/tmp/binpkgs,
-    /var/lib/entropy/portage,
+    /var/lib/entropy/glsa,
     /var/lib/entropy/logs,
+    /var/lib/entropy/portage,
+    /var/cache/fontconfig,
     /var/cache/genkernel
