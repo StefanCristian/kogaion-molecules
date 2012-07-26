@@ -228,7 +228,7 @@ rogentos_install() {
 localz=$(pwd)
 ARCH=$(uname -m)
 echo "Entering folder $localz"
-equo remove sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux sabayon-artwork-lxde --nodeps
+equo remove sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux sabayon-artwork-lxde sabayon-skel --nodeps
 echo "Removing sabayon artwork"
 
 if [ "$ARCH" = "x86_64" ]; then
