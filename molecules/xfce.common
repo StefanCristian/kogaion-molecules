@@ -132,6 +132,8 @@ packages_to_add:
 # Custom shell call to packages add (default is: equo install)
 # custom_packages_add_cmd: 
 
+equo install gnome-base/orbit --nodeps
+
 # Custom command for updating repositories (default is: equo update)
 # repositories_update_cmd:
 
