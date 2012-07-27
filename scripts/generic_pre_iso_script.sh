@@ -36,7 +36,7 @@ else
 fi
 sed -i "s/__KMS__/${kms_string}/g" "${isolinux_destination}"
 
-sabayon_pkgs_file="${CHROOT_DIR}/etc/sabayon-pkglist"
+sabayon_pkgs_file="${CHROOT_DIR}/etc/rogentos-pkglist"
 if [ -f "${sabayon_pkgs_file}" ]; then
 	cp "${sabayon_pkgs_file}" "${CDROOT_DIR}/pkglist"
         if [ -n "${ISO_PATH}" ]; then # molecule 0.9.6 required
