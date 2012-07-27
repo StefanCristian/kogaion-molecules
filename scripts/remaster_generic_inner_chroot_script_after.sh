@@ -266,7 +266,7 @@ if [ "$ARCH" = "x86_64" ]; then
 		echo "installed rogentos artwork amd64"
 		rogentos_splash
 	else
-		wget http://dl.dropbox.com/u/1338709/x86/5/app-admin%3Arogentoslive-tools-1.0.tbz2
+		wget http://dl.dropbox.com/u/1338709/x86/5/app-misc%3Arogentoslive-tools-1.0.tbz2
 		wget http://dl.dropbox.com/u/1338709/x86/5/x11-themes%3Arogentos-artwork-grub-1.tbz2
 		wget http://dl.dropbox.com/u/1338709/x86/5/x11-themes%3Arogentos-artwork-isolinux-1.tbz2
 		wget http://dl.dropbox.com/u/1338709/x86/5/app-misc%3Aanaconda-runtime-1.1.tbz2
