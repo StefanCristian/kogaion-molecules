@@ -51,6 +51,7 @@ packages_to_add:
 	@X,
 	@gst-plugins,
 	@xfce,
+	@fluxbox,
 	app-admin/rigo,
 	app-arch/file-roller,
 	app-arch/unrar,
