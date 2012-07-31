@@ -68,6 +68,7 @@ packages_to_add:
 	games-misc/fortune-mod
 	gnome-extra/nm-applet-gtk2,
 	gnome-extra/polkit-gnome,
+	gnome-base/orbit,
 	media-fonts/corefonts,
 	media-fonts/dejavu,
 	media-fonts/ttf-bitstream-vera,
@@ -132,8 +133,6 @@ packages_to_add:
 
 # Custom shell call to packages add (default is: equo install)
 # custom_packages_add_cmd: 
-
-equo install gnome-base/orbit
 
 # Custom command for updating repositories (default is: equo update)
 # repositories_update_cmd:
