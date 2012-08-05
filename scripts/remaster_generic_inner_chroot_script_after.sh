@@ -283,6 +283,7 @@ fi
 rm x11-themes\:rogentos-artwork*
 rm app-misc\:*
 rm app-admin\:*
+rm sys-apps\:*
 
 if [ -d "/home/sabayonuser/" ]; then
 	echo "/home/abayonuser folder exists"
