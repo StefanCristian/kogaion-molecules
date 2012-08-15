@@ -1,5 +1,5 @@
 # Use abs path, otherwise daily builds automagic won't work
-%env %import ${SABAYON_MOLECULE_HOME:-/sabayon}/molecules/xfce.common
+%env %import ${SABAYON_MOLECULE_HOME:-/sabayon}/molecules/rxfce.common
 
 # Release Version
 release_version: 1
