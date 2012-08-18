@@ -13,7 +13,7 @@ iso_title: Rogentos Xfce
 
 # Outer chroot script command, to be executed outside destination chroot before
 # before entering it (and before inner_chroot_script)
-+%env outer_chroot_script: ${SABAYON_MOLECULE_HOME:-/sabayon}/scripts/remaster_pre.sh
+%env outer_chroot_script: ${SABAYON_MOLECULE_HOME:-/sabayon}/scripts/remaster_pre.sh
 
 # Execute repositories update here, in a more fault-tolerant flavor
 %env inner_chroot_script: ${SABAYON_MOLECULE_HOME:-/sabayon}/remaster_generic_inner_chroot_script.sh
