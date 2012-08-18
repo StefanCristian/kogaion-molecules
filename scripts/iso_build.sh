@@ -65,6 +65,8 @@ if [ "${ACTION}" = "weekly" ]; then
 	REMASTER_SPECS=(
                 "sabayon-amd64-xfceforensic.spec"
                 "sabayon-x86-xfceforensic.spec"
+		"rogentos-amd64-xfce.spec"
+		"rogentos-x86-xfce.spec"
 	)
 	REMASTER_SPECS_ISO=(
                 "Sabayon_Linux_DAILY_amd64_ForensicsXfce.iso"
