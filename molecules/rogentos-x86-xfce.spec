@@ -8,7 +8,7 @@ release_version: 1
 release_desc: x86 Xfce
 
 # 32bit chroot
-prechroot: linux32
+#prechroot: linux32
 
 # Path to source ISO file (MANDATORY)
 %env source_iso: ${SABAYON_MOLECULE_HOME:-/sabayon}/iso/Sabayon_Linux_SpinBase_DAILY_x86.iso
