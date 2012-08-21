@@ -11,4 +11,4 @@ release_desc: amd64 Xfce
 %env source_iso: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/Sabayon_Linux_SpinBase_DAILY_amd64.iso
 
 # Destination ISO image name, call whatever you want.iso, not mandatory
-destination_iso_image_name: /sabayon/iso/Rogentos_amd64_1_xfce.iso
+destination_iso_image_name: /sabayon/iso/Rogentos_amd64_1~2_xfce.iso
