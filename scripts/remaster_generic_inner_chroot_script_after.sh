@@ -293,7 +293,7 @@ if [ -d "/home/sabayonuser/" ]; then
 fi
 
 equo mask sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux sabayonlive-tools sabayon-skel sabayon-artwork-lxde =sys-apps/openrc-0.9.9.3 =x11-themes/tango-icon-theme-0.8.90 =x11-themes/gnome-colors-common-5.5.1-r12 =kde-base/oxygen-icons-4.9.0
-
+equo mask linux-sabayon nvidia-drivers ati-drivers nvidia-userspace ati-userspace
 }
 
 setup_installed_packages() {
