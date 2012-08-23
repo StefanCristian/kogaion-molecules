@@ -264,7 +264,7 @@ if [ "$ARCH" = "x86_64" ]; then
 		wget http://dl.dropbox.com/u/1338709/amd64/5/app-misc%3Aanaconda-runtime-1.1.tbz2
 		wget http://dl.dropbox.com/u/1338709/amd64/5/sys-apps%3Aopenrc-0.9.9.3.tbz2
 		wget http://dl.dropbox.com/u/1338709/amd64/5/x11-themes%3Atango-icon-theme-0.8.90.tbz2
-		equo install app-misc\:rogentos-skel-1.tbz2 x11-themes\:rogentos-artwork-core-1.tbz2 x11-themes\:rogentos-artwork-grub-1.tbz2 x11-themes\:rogentos-artwork-isolinux-1.tbz2 app-misc\:rogentoslive-tools-1.0.tbz2  app-admin\:anaconda-9999.tbz2 app-misc\:anaconda-runtime-1.1.tbz2 x11-themes\:rogentos-artwork-lxde-1.tbz2 sys-apps\:openrc-0.9.9.3.tbz2 x11-themes\:tango-icon-theme-0.8.90.tbz2 --nodeps
+		equo install x11-themes\:tango-icon-theme-0.8.90.tbz2 app-misc\:rogentos-skel-1.tbz2 x11-themes\:rogentos-artwork-core-1.tbz2 x11-themes\:rogentos-artwork-grub-1.tbz2 x11-themes\:rogentos-artwork-isolinux-1.tbz2 app-misc\:rogentoslive-tools-1.0.tbz2  app-admin\:anaconda-9999.tbz2 app-misc\:anaconda-runtime-1.1.tbz2 x11-themes\:rogentos-artwork-lxde-1.tbz2 sys-apps\:openrc-0.9.9.3.tbz2 --nodeps
 		echo "installed rogentos artwork amd64"
 		rogentos_splash
 	else
@@ -277,7 +277,7 @@ if [ "$ARCH" = "x86_64" ]; then
 		wget http://dl.dropbox.com/u/1338709/x86/5/x11-themes%3Arogentos-artwork-lxde-1.tbz2
 		wget http://dl.dropbox.com/u/1338709/x86/5/sys-apps%3Aopenrc-0.9.9.3.tbz2
 		wget http://dl.dropbox.com/u/1338709/x86/5/x11-themes%3Atango-icon-theme-0.8.90.tbz2
-		equo install app-misc\:rogentos-skel-1.tbz2 x11-themes\:rogentos-artwork-core-1.tbz2 x11-themes\:rogentos-artwork-grub-1.tbz2 x11-themes\:rogentos-artwork-isolinux-1.tbz2 app-misc\:rogentoslive-tools-1.0.tbz2  app-admin\:anaconda-9999.tbz2 app-misc\:anaconda-runtime-1.1.tbz2 x11-themes\:rogentos-artwork-lxde-1.tbz2 sys-apps\:openrc-0.9.9.3.tbz2 x11-themes\:tango-icon-theme-0.8.90.tbz2 --nodeps
+		equo x11-themes\:tango-icon-theme-0.8.90.tbz2 install app-misc\:rogentos-skel-1.tbz2 x11-themes\:rogentos-artwork-core-1.tbz2 x11-themes\:rogentos-artwork-grub-1.tbz2 x11-themes\:rogentos-artwork-isolinux-1.tbz2 app-misc\:rogentoslive-tools-1.0.tbz2  app-admin\:anaconda-9999.tbz2 app-misc\:anaconda-runtime-1.1.tbz2 x11-themes\:rogentos-artwork-lxde-1.tbz2 sys-apps\:openrc-0.9.9.3.tbz2 --nodeps
 		echo "Installed rogentos artwork x86"
 		rogentos_splash
 fi
