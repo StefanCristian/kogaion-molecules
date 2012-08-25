@@ -228,6 +228,9 @@ rogentos_install() {
 localz=$(pwd)
 ARCH=$(uname -m)
 echo "Entering folder $localz"
+equo remove linux-sabayon sabayon-sources nvidia-drivers nvidia-userspace ati-drivers ati-userspace nvidia-settings --nodeps
+equo install =sys-kernel/linux-sabayon-3.1-r3 =x11-drivers/ati-userspace-11.12 =x11-drivers/ati-drivers-11.12#3.2.0-sabayon
+
 equo remove sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux sabayon-artwork-lxde sabayon-skel tango-icon-theme gnome-colors-common oxygen-icons --nodeps
 echo "Removing sabayon artwork"
 
@@ -293,8 +296,6 @@ if [ -d "/home/sabayonuser/" ]; then
 fi
 
 equo mask sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux sabayonlive-tools sabayon-skel sabayon-artwork-lxde =sys-apps/openrc-0.9.9.3 =x11-themes/tango-icon-theme-0.8.90 =x11-themes/gnome-colors-common-5.5.1-r12 =kde-base/oxygen-icons-4.9.0
-equo remove linux-sabayon sabayon-sources nvidia-drivers nvidia-userspace ati-drivers ati-userspace nvidia-settings --nodeps
-equo install x11-drivers/ati-drivers-12.6#3.1.0-sabayon x11-drivers/nvidia-drivers-304.37#3.1.0-sabayon amdcccle nvidia-settings
 equo mask linux-sabayon
 equo mask sabayon-sources
 equo mask ati-drivers
