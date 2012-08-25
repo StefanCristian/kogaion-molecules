@@ -229,20 +229,12 @@ localz=$(pwd)
 ARCH=$(uname -m)
 echo "Entering folder $localz"
 equo remove linux-sabayon sabayon-sources nvidia-drivers nvidia-userspace ati-drivers ati-userspace nvidia-settings --nodeps
+
 equo install linux-sabayon:3.2 =x11-drivers/ati-userspace-11.12 =x11-drivers:ati-drivers-11.12#3.2.0-sabayon --nodeps
-equo install =x11-drivers/nvidia-drivers-290.10#3.2.0-sabayon =x11-drivers/nvidia-userspace-290.10
+equo install =x11-drivers/nvidia-drivers-290.10#3.2.0-sabayon =x11-drivers/nvidia-userspace-290.10 nvidia-settings --nodeps
 
 equo remove sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux sabayon-artwork-lxde sabayon-skel tango-icon-theme gnome-colors-common oxygen-icons --nodeps
 echo "Removing sabayon artwork"
-
-if [ "$ARCH" = "x86_64" ]; then
-
-	wget http://dl.dropbox.com/u/1338709/amd64/5/x11-themes%3Arogentos-artwork-core-1.tbz2
-	echo "Getting rogentos-artwork-core amd64"
-	else
-	wget http://dl.dropbox.com/u/1338709/x86/5/x11-themes%3Arogentos-artwork-core-1.tbz2
-	echo "Downloading rogentos-artwork-core x86"
-fi
 
 rogentos_splash() {
 if [ -d "/etc/splash/sabayon" ]; then
@@ -259,16 +251,6 @@ fi
 
 if [ "$ARCH" = "x86_64" ]; then
 		echo "Downloading the other files"
-		wget http://dl.dropbox.com/u/1338709/amd64/5/app-misc%3Arogentoslive-tools-1.0.tbz2
-		wget http://dl.dropbox.com/u/1338709/amd64/5/x11-themes%3Arogentos-artwork-grub-1.tbz2
-		wget http://dl.dropbox.com/u/1338709/amd64/5/x11-themes%3Arogentos-artwork-isolinux-1.tbz2
-		wget http://dl.dropbox.com/u/1338709/amd64/5/app-admin%3Aanaconda-9999.tbz2
-		wget http://dl.dropbox.com/u/1338709/amd64/5/app-misc%3Arogentos-skel-1.tbz2
-		wget http://dl.dropbox.com/u/1338709/amd64/5/x11-themes%3Arogentos-artwork-lxde-1.tbz2
-		wget http://dl.dropbox.com/u/1338709/amd64/5/app-misc%3Aanaconda-runtime-1.1.tbz2
-		wget http://dl.dropbox.com/u/1338709/amd64/5/sys-apps%3Aopenrc-0.9.9.3.tbz2
-		wget http://dl.dropbox.com/u/1338709/amd64/5/x11-themes%3Atango-icon-theme-0.8.90.tbz2
-		equo install x11-themes\:tango-icon-theme-0.8.90.tbz2 app-misc\:rogentos-skel-1.tbz2 x11-themes\:rogentos-artwork-core-1.tbz2 x11-themes\:rogentos-artwork-grub-1.tbz2 x11-themes\:rogentos-artwork-isolinux-1.tbz2 app-misc\:rogentoslive-tools-1.0.tbz2  app-admin\:anaconda-9999.tbz2 app-misc\:anaconda-runtime-1.1.tbz2 x11-themes\:rogentos-artwork-lxde-1.tbz2 sys-apps\:openrc-0.9.9.3.tbz2 --nodeps
 		echo "installed rogentos artwork amd64"
 		rogentos_splash
 	else
