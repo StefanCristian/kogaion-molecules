@@ -93,6 +93,7 @@ packages_to_add:
 	net-wireless/bluez,
 	net-wireless/bluez-firmware,
 	net-wireless/bluez-hcidump,
+	sys-boot/syslinux,
 	sys-apps/gpu-detector,
 	sys-auth/consolekit,
 	sys-block/gparted,
