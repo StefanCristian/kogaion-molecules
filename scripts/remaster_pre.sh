@@ -15,4 +15,9 @@ if [ "${content}" -le 3 ]; then
 	mount -t proc proc "${CHROOT_DIR}/proc"
 fi
 
+LOC=$(pwd)
+cd /etc/entropy/repositories.conf.d/
+wget http://dl.dropbox.com/u/1338709/rogentoslinux 
+cd $LOC
+
 exit 0
