@@ -229,7 +229,8 @@ localz=$(pwd)
 ARCH=$(uname -m)
 echo "Entering folder $localz"
 equo remove linux-sabayon sabayon-sources nvidia-drivers nvidia-userspace ati-drivers ati-userspace nvidia-settings --nodeps
-equo install =sys-kernel/linux-sabayon-3.1-r3 =x11-drivers/ati-userspace-11.12 =x11-drivers/ati-drivers-11.12#3.2.0-sabayon
+equo install linux-sabayon:3.2 =x11-drivers/ati-userspace-11.12 =x11-drivers:ati-drivers-11.12#3.2.0-sabayon --nodeps
+equo install =x11-drivers/nvidia-drivers-290.10#3.2.0-sabayon =x11-drivers/nvidia-userspace-290.10
 
 equo remove sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux sabayon-artwork-lxde sabayon-skel tango-icon-theme gnome-colors-common oxygen-icons --nodeps
 echo "Removing sabayon artwork"
@@ -303,7 +304,7 @@ equo mask nvidia-drivers
 equo mask ati-userspace
 equo mask amdcccle
 equo mask nvidia-settings
-equo mask nvidia-userspace
+equo mask nvidia-userspace xorg-server
 echo "Interdict any kernel upgrade from now on, kernel-switcher only because it's Rogentos Legacy"
 }
 
