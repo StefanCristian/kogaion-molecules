@@ -15,4 +15,13 @@ if [ "${content}" -le 3 ]; then
 	mount -t proc proc "${CHROOT_DIR}/proc"
 fi
 
+rm "${CHROOT_DIR}/autorun.inf"
+rm "${CHROOT_DIR}/sabayon.ico"
+rm "${CHROOT_DIR}/sabayon.bat"
+cp /sabayon/boot/core/autorun.inf "${CHROOT_DIR}/" || exit 1
+cp /sabayon/boot/core/rogentos.ico "${CHROOT_DIR}/" || exit 1
+cp /sabayon/boot/core/rogentos.bat "${CHROOT_DIR}/" || exit 1
+mkdir "${CHROOT_DIR}/syslinux/"
+cp -r /sabayon/boot/core/isolinux/* "${CHROOT_DIR}/syslinux/" || exit 1
+
 exit 0

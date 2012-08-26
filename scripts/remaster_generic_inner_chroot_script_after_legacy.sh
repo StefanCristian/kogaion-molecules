@@ -240,6 +240,7 @@ equo remove linux-sabayon sabayon-sources nvidia-drivers nvidia-userspace ati-dr
 
 
 if [ "$ARCH" = "x86_64" ]; then
+		equo unmask anaconda
 		equo install linux-sabayon:3.2 =x11-drivers/ati-userspace-11.12 =x11-drivers/ati-drivers-11.12#3.2.0-sabayon --nodeps
 		equo install =x11-drivers/nvidia-drivers-290.10#3.2.0-sabayon =x11-drivers/nvidia-userspace-290.10 =media-video/nvidia-settings-290.10 x11-base/xorg-server-1.11.4-r1 --nodeps
 		equo remove anaconda --nodeps
@@ -248,6 +249,7 @@ if [ "$ARCH" = "x86_64" ]; then
 		equo install tango-icon-theme rogentos-skel rogentos-artwork-core rogentos-artwork-grub rogentos-artwork-isolinux rogentoslive-tools rogentos-artwork-lxde --nodeps
 		rogentos_splash
 	else
+		equo unmask anaconda
 		equo install linux-sabayon:3.2 =x11-drivers/ati-userspace-11.12 =x11-drivers/ati-drivers-11.12#3.2.0-sabayon --nodeps
 		equo install x11-base/xorg-server-1.11.4-r1 =x11-drivers/nvidia-drivers-290.10#3.2.0-sabayon =x11-drivers/nvidia-userspace-290.10 =media-video/nvidia-settings-290.10 --nodeps
 		equo remove anaconda --nodeps
@@ -291,7 +293,7 @@ if [ -d "/home/sabayonuser/" ]; then
 	echo "sabayonuser folder does not exist"
 fi
 
-equo mask sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux sabayonlive-tools sabayon-skel sabayon-artwork-lxde =sys-apps/openrc-0.9.9.3 =x11-themes/tango-icon-theme-0.8.90 =x11-themes/gnome-colors-common-5.5.1-r12 =kde-base/oxygen-icons-4.9.0
+equo mask sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux sabayonlive-tools sabayon-skel sabayon-artwork-lxde
 equo mask linux-sabayon
 equo mask sabayon-sources
 equo mask ati-drivers
