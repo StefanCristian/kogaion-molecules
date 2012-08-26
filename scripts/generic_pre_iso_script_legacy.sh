@@ -6,6 +6,22 @@ remaster_type="${1}"
 isolinux_source="/sabayon/remaster/legacy_minimal_isolinux.cfg"
 isolinux_destination="${CDROOT_DIR}/isolinux/txt.cfg"
 
+rm "${CHROOT_DIR}/"autorun.inf
+rm "${CHROOT_DIR}/"sabayon.ico
+rm "${CHROOT_DIR}/"sabayon.bat
+echo "Moving the right files where they rightfully belong"
+cp /sabayon/boot/core/autorun.inf "${CHROOT_DIR}/" 
+cp /sabayon/boot/core/rogentos.ico "${CHROOT_DIR}/"               
+cp /sabayon/boot/core/rogentos.bat "${CHROOT_DIR}/"
+echo "Copying them into the ISO image"
+mkdir "${CHROOT_DIR}/syslinux/"
+cp -r /sabayon/boot/core/isolinux/* "${CHROOT_DIR}/syslinux/"
+echo "Creating folder syslinux and copying everything that's in isolinux to it"
+if [ -f "${CHROOT_DIR}/syslinux/isolinux.cfg" ]; then
+        mv "${CHROOT_DIR}/syslinux/isolinux.cfg" "${CHROOT_DIR}/syslinux/syslinux.cfg"
+fi
+echo "If we copied correctly, then do what we must"
+
 if [ "${remaster_type}" = "KDE" ] || [ "${remaster_type}" = "GNOME" ]; then
 	isolinux_source="/sabayon/remaster/legacy_standard_isolinux.cfg"
 elif [ "${remaster_type}" = "ServerBase" ]; then
@@ -17,17 +33,6 @@ elif [ "${remaster_type}" = "ServerBase" ]; then
 	isolinux_source="/sabayon/remaster/serverbase_isolinux.cfg"
 fi
 cp "${isolinux_source}" "${isolinux_destination}" || exit 1
-rm "${CHROOT_DIR}/autorun.inf"
-rm "${CHROOT_DIR}/sabayon.ico"
-rm "${CHROOT_DIR}/sabayon.bat"
-cp /sabayon/boot/core/autorun.inf "${CHROOT_DIR}/" || exit 1
-cp /sabayon/boot/core/rogentos.ico "${CHROOT_DIR}/" || exit 1
-cp /sabayon/boot/core/rogentos.bat "${CHROOT_DIR}/" || exit 1
-mkdir "${CHROOT_DIR}/syslinux/"
-cp -r /sabayon/boot/core/isolinux/* "${CHROOT_DIR}/syslinux/" || exit 1
-if [ -f "${CHROOT_DIR}/syslinux/isolinux.cfg" ]; then
-	mv "${CHROOT_DIR}/syslinux/isolinux.cfg" "${CHROOT_DIR}/syslinux/syslinux.cfg"
-fi
 
 ver=${RELEASE_VERSION}
 [[ -z "${ver}" ]] && ver=${CUR_DATE}
