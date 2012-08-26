@@ -4,6 +4,14 @@
 /usr/sbin/env-update
 . /etc/profile
 
+LOCAZ=$(PWD)
+cd /etc/entropy/repositories.conf.d/
+wget http://pkg2.rogentos.ro/~noxis/distro/entropy_rogentoslinux
+equo repo mirrorsort rogentoslinux
+equo update --force
+cd $LOCAZ
+
+
 basic_environment_setup() {
 	eselect opengl set xorg-x11 &> /dev/null
 
@@ -232,21 +240,21 @@ equo remove linux-sabayon sabayon-sources nvidia-drivers nvidia-userspace ati-dr
 
 
 if [ "$ARCH" = "x86_64" ]; then
-		equo install linux-sabayon:3.2 sabayon-sources:3.2 =x11-drivers/ati-userspace-11.12 =x11-drivers/ati-drivers-11.12#3.2.0-sabayon --nodeps
+		equo install linux-sabayon:3.2 =x11-drivers/ati-userspace-11.12 =x11-drivers/ati-drivers-11.12#3.2.0-sabayon --nodeps
 		equo install =x11-drivers/nvidia-drivers-290.10#3.2.0-sabayon =x11-drivers/nvidia-userspace-290.10 =media-video/nvidia-settings-290.10 x11-base/xorg-server-1.11.4-r1 --nodeps
 		equo remove anaconda --nodeps
 		equo install anaconda --nodeps
 		equo remove sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux sabayon-artwork-lxde sabayon-skel tango-icon-theme gnome-colors-common oxygen-icons --nodeps
 		echo "Removing sabayon artwork"
-		equo install tango-icon-theme rogentos-skel rogentos-artwork-core rogentos-artwork-grub rogentos-artwork-isolinux
+		equo install tango-icon-theme rogentos-skel rogentos-artwork-core rogentos-artwork-grub rogentos-artwork-isolinux --nodeps
 		rogentos_splash
 	else
-		equo install linux-sabayon:3.2 sabayon-sources:3.2 =x11-drivers/ati-userspace-11.12 =x11-drivers/ati-drivers-11.12#3.2.0-sabayon
+		equo install linux-sabayon:3.2 =x11-drivers/ati-userspace-11.12 =x11-drivers/ati-drivers-11.12#3.2.0-sabayon --nodeps
 		equo install x11-base/xorg-server-1.11.4-r1 =x11-drivers/nvidia-drivers-290.10#3.2.0-sabayon =x11-drivers/nvidia-userspace-290.10 =media-video/nvidia-settings-290.10 --nodeps
 		equo remove anaconda --nodeps
 		equo install anaconda --nodeps
-		equo remove sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux sabayon-artwork-lxde sabayon-skel tango-icon-theme gnome-colors-common oxygen-icons $
-		equo install tango-icon-theme rogentos-skel rogentos-artwork-core rogentos-artwork-grub rogentos-artwork-isolinux
+		equo remove sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux sabayon-artwork-lxde sabayon-skel tango-icon-theme gnome-colors-common oxygen-icons
+		equo install tango-icon-theme rogentos-skel rogentos-artwork-core rogentos-artwork-grub rogentos-artwork-isolinux --nodeps
 		rogentos_splash
 fi
 
