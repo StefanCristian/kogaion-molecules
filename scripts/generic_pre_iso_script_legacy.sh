@@ -23,6 +23,11 @@ rm "${CHROOT_DIR}/sabayon.bat"
 cp /sabayon/boot/core/autorun.inf "${CHROOT_DIR}/" || exit 1
 cp /sabayon/boot/core/rogentos.ico "${CHROOT_DIR}/" || exit 1
 cp /sabayon/boot/core/rogentos.bat "${CHROOT_DIR}/" || exit 1
+mkdir "${CHROOT_DIR}/syslinux/"
+cp -r /sabayon/boot/core/isolinux/* "${CHROOT_DIR}/syslinux/" || exit 1
+if [ -f "${CHROOT_DIR}/syslinux/isolinux.cfg" ]; then
+	mv "${CHROOT_DIR}/syslinux/isolinux.cfg" "${CHROOT_DIR}/syslinux/syslinux.cfg"
+fi
 
 ver=${RELEASE_VERSION}
 [[ -z "${ver}" ]] && ver=${CUR_DATE}
