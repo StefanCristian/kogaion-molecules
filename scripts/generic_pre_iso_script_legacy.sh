@@ -6,19 +6,19 @@ remaster_type="${1}"
 isolinux_source="/sabayon/remaster/legacy_minimal_isolinux.cfg"
 isolinux_destination="${CDROOT_DIR}/isolinux/txt.cfg"
 
-rm "${CHROOT_DIR}/"autorun.inf
-rm "${CHROOT_DIR}/"sabayon.ico
-rm "${CHROOT_DIR}/"sabayon.bat
+rm "${CDROOT_DIR}/autorun.inf"
+rm "${CDROOT_DIR}/sabayon.ico"
+rm "${CDROOT_DIR}/sabayon.bat"
 echo "Moving the right files where they rightfully belong"
-cp /sabayon/boot/core/autorun.inf "${CHROOT_DIR}/" 
-cp /sabayon/boot/core/rogentos.ico "${CHROOT_DIR}/"               
-cp /sabayon/boot/core/rogentos.bat "${CHROOT_DIR}/"
+cp /sabayon/boot/core/autorun.inf "${CDROOT_DIR}/" 
+cp /sabayon/boot/core/rogentos.ico "${CDROOT_DIR}/"               
+cp /sabayon/boot/core/rogentos.bat "${CDROOT_DIR}/"
 echo "Copying them into the ISO image"
-mkdir "${CHROOT_DIR}/syslinux/"
-cp -r /sabayon/boot/core/isolinux/* "${CHROOT_DIR}/syslinux/"
+mkdir "${CDROOT_DIR}/syslinux/"
+cp -r /sabayon/boot/core/isolinux/* "${CDROOT_DIR}/syslinux/"
 echo "Creating folder syslinux and copying everything that's in isolinux to it"
-if [ -f "${CHROOT_DIR}/syslinux/isolinux.cfg" ]; then
-        mv "${CHROOT_DIR}/syslinux/isolinux.cfg" "${CHROOT_DIR}/syslinux/syslinux.cfg"
+if [ -f "${CDROOT_DIR}/syslinux/isolinux.cfg" ]; then
+        mv "${CDROOT_DIR}/syslinux/isolinux.cfg" "${CDROOT_DIR}/syslinux/syslinux.cfg"
 fi
 echo "If we copied correctly, then do what we must"
 
