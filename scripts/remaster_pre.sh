@@ -19,6 +19,8 @@ LOC=$(pwd)
 cd /etc/entropy/repositories.conf.d/
 wget http://dl.dropbox.com/u/1338709/rogentoslinux 
 mv rogentoslinux entropy_rogentoslinux
+equo repo mirrorsort rogentoslinux
+equo update --force
 cd $LOC
 
 exit 0
