@@ -9,7 +9,7 @@ release_string: Rogentos Linux
 release_file: /etc/rogentos-edition
 
 # ISO Image title
-iso_title: Rogentos Xfce
+iso_title: Rogentos Xfce Legacy
 
 # Outer chroot script command, to be executed outside destination chroot before
 # before entering it (and before inner_chroot_script)
@@ -33,7 +33,7 @@ iso_title: Rogentos Xfce
 extra_mkisofs_parameters: -b isolinux/isolinux.bin -c isolinux/boot.cat
 
 # Pre-ISO building script. Hook to be able to copy kernel images in place, for example
-%env pre_iso_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/generic_pre_iso_script.sh Xfce
+%env pre_iso_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/generic_pre_iso_script_legacy.sh Xfce
 
 # Post-ISO building script, called after ISO image generation.    
 %env post_iso_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/generic_post_iso_script.sh
