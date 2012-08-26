@@ -232,7 +232,7 @@ equo remove linux-sabayon sabayon-sources nvidia-drivers nvidia-userspace ati-dr
 
 
 if [ "$ARCH" = "x86_64" ]; then
-		equo install linux-sabayon:3.2 =x11-drivers/ati-userspace-11.12 =x11-drivers/ati-drivers-11.12#3.2.0-sabayon --nodeps
+		equo install linux-sabayon:3.2 sabayon-sources:3.2 =x11-drivers/ati-userspace-11.12 =x11-drivers/ati-drivers-11.12#3.2.0-sabayon --nodeps
 		equo install =x11-drivers/nvidia-drivers-290.10#3.2.0-sabayon =x11-drivers/nvidia-userspace-290.10 =media-video/nvidia-settings-290.10 x11-base/xorg-server-1.11.4-r1 --nodeps
 		equo remove anaconda --nodeps
 		equo install anaconda --nodeps
@@ -267,7 +267,7 @@ fi
 
 #if [ "$ARCH" = "x86_64" ]; then
 		#echo "Downloading the other files"
-		#equo install tango-icon-theme rogentos-artwork-core rogentos-artwork-grub rogentos-artwok-isolinux
+		#equo install tango-icon-theme rogentos-artwork-core rogentos-artwork-grub rogentos-artwork-isolinux
 		#echo "installed rogentos artwork amd64"
 		#rogentos_splash
 	#else
