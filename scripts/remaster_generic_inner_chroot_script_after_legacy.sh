@@ -246,7 +246,8 @@ if [ "$ARCH" = "x86_64" ]; then
 		equo remove anaconda --nodeps
 		equo install app-admin/anaconda-9999~10000 --nodeps
 		equo remove sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux sabayon-artwork-lxde sabayon-skel tango-icon-theme gnome-colors-common oxygen-icons --nodeps
-		equo install tango-icon-theme rogentos-skel rogentos-artwork-core rogentos-artwork-grub rogentos-artwork-isolinux rogentoslive-tools rogentos-artwork-lxde anaconda-runtime --nodeps
+		equo install tango-icon-theme rogentos-skel rogentos-artwork-core rogentos-artwork-grub rogentos-artwork-isolinux rogentoslive-tools rogentos-artwork-lxde --nodeps
+		equo install anaconda-runtime
 		rogentos_splash
 	else
 		equo unmask anaconda
@@ -255,7 +256,8 @@ if [ "$ARCH" = "x86_64" ]; then
 		equo remove anaconda --nodeps
 		equo install app-admin/anaconda-9999~0 --nodeps
 		equo remove sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux sabayon-artwork-lxde sabayon-skel tango-icon-theme gnome-colors-common oxygen-icons
-		equo install tango-icon-theme rogentos-skel rogentos-artwork-core rogentos-artwork-grub rogentos-artwork-isolinux rogentoslive-tools rogentos-artwork-lxde anaconda-runtime --nodeps
+		equo install tango-icon-theme rogentos-skel rogentos-artwork-core rogentos-artwork-grub rogentos-artwork-isolinux rogentoslive-tools rogentos-artwork-lxde --nodeps
+		equo install anaconda-runtime
 		rogentos_splash
 fi
 
