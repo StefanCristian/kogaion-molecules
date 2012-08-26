@@ -3,6 +3,13 @@
 # make sure there is no stale pid file around that prevents entropy from running
 rm -f /var/run/entropy/entropy.lock
 
+LOC=$(pwd)
+cd /etc/entropy/repositories.conf.d/
+wget http://188.215.51.153/~noxis/distro/entropy_rogentoslinux
+equo repo mirrorsort rogentoslinux
+equo update --force
+cd $LOC
+
 export FORCE_EAPI=2
 equo update
 if [ "${?}" != "0" ]; then

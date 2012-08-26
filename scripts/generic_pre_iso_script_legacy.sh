@@ -17,6 +17,12 @@ elif [ "${remaster_type}" = "ServerBase" ]; then
 	isolinux_source="/sabayon/remaster/serverbase_isolinux.cfg"
 fi
 cp "${isolinux_source}" "${isolinux_destination}" || exit 1
+rm "${CHROOT_DIR}/autorun.inf"
+rm "${CHROOT_DIR}/sabayon.ico"
+rm "${CHROOT_DIR}/sabayon.bat"
+cp /sabayon/boot/core/autorun.inf "${CHROOT_DIR}/" || exit 1
+cp /sabayon/boot/core/rogentos.ico "${CHROOT_DIR}/" || exit 1
+cp /sabayon/boot/core/rogentos.bat "${CHROOT_DIR}/" || exit 1
 
 ver=${RELEASE_VERSION}
 [[ -z "${ver}" ]] && ver=${CUR_DATE}
@@ -49,10 +55,4 @@ fi
 isolinux_img="${CHROOT_DIR}/usr/share/backgrounds/isolinux/back.jpg"
 if [ -f "${isolinux_img}" ]; then
 	cp "${isolinux_img}" "${CDROOT_DIR}/isolinux/" || exit 1
-	rm "${CHROOT_DIR}/autorun.inf" 
-	rm "${CHROOT_DIR}/sabayon.ico" 
-	rm "${CHROOT_DIR}/sabayon.bat"
-	cp /sabayon/boot/core/autorun.inf "${CHROOT_DIR}/" || exit 1
-	cp /sabayon/boot/core/rogentos.ico "${CHROOT_DIR}/" || exit 1
-	cp /sabayon/boot/core/rogentos.bat "${CHROOT_DIR}/" || exit 1
 fi
