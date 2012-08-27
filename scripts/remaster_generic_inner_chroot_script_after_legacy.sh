@@ -244,7 +244,7 @@ if [ "$ARCH" = "x86_64" ]; then
 		equo install linux-sabayon:3.3 ati-drivers-12.6:1,3.3.0-sabayon
 		equo install nvidia-drivers nvidia-userspace --nodeps
 		equo remove anaconda --nodeps
-		equo install app-admin/anaconda-9999~10000 --nodeps
+		equo install app-admin/anaconda-9999~0 --nodeps
 		equo remove sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux sabayon-artwork-lxde sabayon-skel tango-icon-theme gnome-colors-common oxygen-icons --nodeps
 		equo install tango-icon-theme rogentos-skel rogentos-artwork-core rogentos-artwork-grub rogentos-artwork-isolinux rogentoslive-tools rogentos-artwork-lxde --nodeps
 		equo install anaconda-runtime gpu-detector
