@@ -241,23 +241,25 @@ equo remove linux-sabayon sabayon-sources nvidia-drivers nvidia-userspace ati-dr
 
 if [ "$ARCH" = "x86_64" ]; then
 		equo unmask anaconda
-		equo install linux-sabayon:3.2 =x11-drivers/ati-userspace-11.12 =x11-drivers/ati-drivers-11.12#3.2.0-sabayon --nodeps
-		equo install =x11-drivers/nvidia-drivers-290.10#3.2.0-sabayon =x11-drivers/nvidia-userspace-290.10 =media-video/nvidia-settings-290.10 x11-base/xorg-server-1.11.4-r1 --nodeps
+		equo install linux-sabayon:3.3 ati-drivers-12.6:1,3.3.0-sabayon
+		equo install nvidia-drivers nvidia-userspace --nodeps
 		equo remove anaconda --nodeps
 		equo install app-admin/anaconda-9999~10000 --nodeps
 		equo remove sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux sabayon-artwork-lxde sabayon-skel tango-icon-theme gnome-colors-common oxygen-icons --nodeps
 		equo install tango-icon-theme rogentos-skel rogentos-artwork-core rogentos-artwork-grub rogentos-artwork-isolinux rogentoslive-tools rogentos-artwork-lxde --nodeps
 		equo install anaconda-runtime
+		eselect kernel set 1
 		rogentos_splash
 	else
 		equo unmask anaconda
 		equo install linux-sabayon:3.2 =x11-drivers/ati-userspace-11.12 =x11-drivers/ati-drivers-11.12#3.2.0-sabayon --nodeps
-		equo install x11-base/xorg-server-1.11.4-r1 =x11-drivers/nvidia-drivers-290.10#3.2.0-sabayon =x11-drivers/nvidia-userspace-290.10 =media-video/nvidia-settings-290.10 --nodeps
+		equo install =x11-drivers/nvidia-drivers-290.10#3.2.0-sabayon =x11-drivers/nvidia-userspace-290.10 =media-video/nvidia-settings-290.10 --nodeps
 		equo remove anaconda --nodeps
 		equo install app-admin/anaconda-9999~0 --nodeps
 		equo remove sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux sabayon-artwork-lxde sabayon-skel tango-icon-theme gnome-colors-common oxygen-icons
 		equo install tango-icon-theme rogentos-skel rogentos-artwork-core rogentos-artwork-grub rogentos-artwork-isolinux rogentoslive-tools rogentos-artwork-lxde --nodeps
 		equo install anaconda-runtime
+		eselect kernel set 1
 		rogentos_splash
 fi
 
