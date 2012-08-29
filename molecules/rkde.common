@@ -1,0 +1,340 @@
+# Define an alternative execution strategy, in this case, the value must be
+# "iso_remaster"
+execution_strategy: iso_remaster
+
+# Release string
+release_string: Rogentos Linux
+
+# File to write release string
+release_file: /etc/Rogentos-edition
+
+# ISO Image title
+iso_title: Rogentos KDE
+
+# Outer chroot script command, to be executed outside destination chroot before
+# before entering it (and before inner_chroot_script)
+%env outer_chroot_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/remaster_pre.sh
+
+# Execute repositories update here, in a more fault-tolerant flavor
+%env inner_chroot_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/remaster_generic_inner_chroot_script.sh
+
+# Inner chroot script command, to be executed inside destination chroot after
+# packages installation and removal
+%env inner_chroot_script_after: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/remaster_generic_inner_chroot_script_after_kde.sh kde
+
+# Outer chroot script command, to be executed outside destination chroot before
+# before entering it (and AFTER inner_chroot_script)
+%env outer_chroot_script_after: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/remaster_post.sh
+
+# Used to umount /proc and unbind packages dir
+%env error_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/remaster_error_script.sh
+
+# Extra mkisofs parameters, perhaps something to include/use your bootloader
+extra_mkisofs_parameters: -b isolinux/isolinux.bin -c isolinux/boot.cat
+
+# Pre-ISO building script. Hook to be able to copy kernel images in place, for example
+%env pre_iso_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/generic_pre_iso_script_kde.sh KDE
+
+# Post-ISO building script, called after ISO image generation.    
+%env post_iso_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/generic_post_iso_script.sh
+
+# Destination directory for the ISO image path (MANDATORY)
+%env destination_iso_directory: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/iso
+
+# List of packages that would be removed from chrooted system (comma separated)
+# packages_to_remove:
+
+# List of packages that would be added from chrooted system (comma separated)
+packages_to_add:
+	@fluxbox,
+	@gst-plugins,
+	@X,
+	@wireless,
+	app-admin/packagekit-base,
+	app-admin/packagekit-qt4,
+	app-admin/rigo,
+	app-cdr/k3b,
+	app-crypt/gnupg,
+	app-crypt/pinentry-qt4,
+	app-dicts/aspell-en,
+	app-dicts/myspell-de,
+	app-dicts/myspell-en,
+	app-emulation/virtualbox-guest-additions,
+	app-emulation/wine,
+	app-laptop/nvidiabl,
+	app-misc/rogentos-version,
+	app-misc/sabayon-music,
+	app-misc/sabayon-mce,
+	app-text/pastebunz,
+	app-office/libreoffice,
+	dev-java/icedtea-bin,
+	kde-base/kde-l10n-bg,
+	kde-base/kde-l10n-ca,
+	kde-base/kde-l10n-cs,
+	kde-base/kde-l10n-csb,
+	kde-base/kde-l10n-da,
+	kde-base/kde-l10n-de,
+	kde-base/kde-l10n-el,
+	kde-base/kde-l10n-en_GB,
+	kde-base/kde-l10n-es,
+	kde-base/kde-l10n-et,
+	kde-base/kde-l10n-fi,
+	kde-base/kde-l10n-fr,
+	kde-base/kde-l10n-ga,
+	kde-base/kde-l10n-gl,
+	kde-base/kde-l10n-hi,
+	kde-base/kde-l10n-hu,
+	kde-base/kde-l10n-it,
+	kde-base/kde-l10n-ja,
+	kde-base/kde-l10n-kk,
+	kde-base/kde-l10n-km,
+	kde-base/kde-l10n-ko,
+	kde-base/kde-l10n-lv,
+	kde-base/kde-l10n-mk,
+	kde-base/kde-l10n-nb,
+	kde-base/kde-l10n-nds,
+	kde-base/kde-l10n-nl,
+	kde-base/kde-l10n-nn,
+	kde-base/kde-l10n-pa,
+	kde-base/kde-l10n-pl,
+	kde-base/kde-l10n-pt,
+	kde-base/kde-l10n-pt_BR,
+	kde-base/kde-l10n-ru,
+	kde-base/kde-l10n-sl,
+	kde-base/kde-l10n-sv,
+	kde-base/kde-l10n-tr,
+	kde-base/kde-l10n-uk,
+	kde-base/kde-l10n-wa,
+	kde-base/kde-l10n-zh_CN,
+	kde-base/kde-l10n-zh_TW,
+	kde-base/akregator,
+	kde-base/ark,
+	kde-base/bomber,
+	kde-base/bovo,
+	kde-base/dolphin,
+	kde-base/kabcclient,
+	kde-base/kalarm,
+	kde-base/kamera,
+	kde-base/kapman,
+	kde-base/kappfinder,
+	kde-base/kcalc,
+	kde-base/kcharselect,
+	kde-base/kcheckpass,
+	kde-base/kcminit,
+	kde-base/kde-env,
+	kde-base/kdeaccessibility-colorschemes,
+	kde-base/kdeadmin-meta,
+	kde-base/kdeartwork-colorschemes,
+	kde-base/kdeartwork-desktopthemes,
+	kde-base/kdeartwork-emoticons,
+	kde-base/kdeartwork-iconthemes,
+	kde-base/kdeartwork-kscreensaver,
+	kde-base/kdeartwork-sounds,
+	kde-base/kdeartwork-styles,
+	kde-base/kdebase-cursors,
+	kde-base/kdebase-runtime-meta,
+	kde-base/kdebase-startkde,
+	kde-base/kdebase-wallpapers,
+	kde-base/kdegraphics-strigi-analyzer,
+	kde-base/kdelibs,
+	kde-base/kdemultimedia-kioslaves,
+	kde-base/kdenetwork-filesharing,
+	kde-base/kdepasswd,
+	kde-base/kdepimlibs,
+	kde-base/kdeplasma-addons,
+	kde-base/kdf,
+	kde-base/kdialog,
+	kde-base/kdm,
+	kde-base/kdnssd,
+	kde-base/keditbookmarks,
+	kde-base/kephal,
+	kde-base/kfind,
+	kde-base/kfmclient,
+	kde-base/kfourinline,
+	kde-base/kgpg,
+	kde-base/khotkeys,
+	kde-base/killbots,
+	kde-base/kinfocenter,
+	kde-base/kiriki,
+	kde-base/kjots,
+	kde-base/klines,
+	kde-base/klipper,
+	kde-base/kmag,
+	kde-base/kmahjongg,
+	kde-base/kmenuedit,
+	kde-base/kmines,
+	kde-base/kmix,
+	kde-base/kmousetool,
+	kde-base/kmouth,
+	kde-base/knetwalk,
+	kde-base/knotes,
+	kde-base/knotify,
+	kde-base/kolf,
+	kde-base/kollision,
+	kde-base/konqueror,
+	kde-base/konquest,
+	kde-base/konsole,
+	kde-base/konsolekalendar,
+	kde-base/kontact,
+	kde-base/kopete,
+	kde-base/korganizer,
+	kde-base/kpat,
+	kde-base/kppp,
+	kde-base/kreadconfig,
+	kde-base/kreversi,
+	kde-base/krosspython,
+	kde-base/krunner,
+	kde-base/ksame,
+	kde-base/ksaneplugin,
+	kde-base/kscreensaver,
+	kde-base/kshisen,
+	kde-base/ksmserver,
+	kde-base/ksnapshot,
+	kde-base/kspaceduel,
+	kde-base/ksplash,
+	kde-base/ksquares,
+	kde-base/kstartupconfig,
+	kde-base/kstyles,
+	kde-base/ksudoku,
+	kde-base/ksysguard,
+	kde-base/ksystraycmd,
+	kde-base/ktron,
+	kde-base/kubrick,
+	kde-base/kwallet,
+	kde-base/kwin,
+	kde-base/kwrite,
+	kde-base/kwrited,
+	kde-base/libkcddb,
+	kde-base/libkcompactdisc,
+	kde-base/libkdcraw,
+	kde-base/libkdeedu,
+	kde-base/libkdegames,
+	kde-base/libkdepim,
+	kde-base/libkexiv2,
+	kde-base/libkipi,
+	kde-base/libkleo,
+	kde-base/libkmahjongg,
+	kde-base/libkonq,
+	kde-base/libkpgp,
+	kde-base/libksane,
+	kde-base/libkworkspace,
+	kde-base/libplasmaclock,
+	kde-base/libplasmagenericshell,
+	kde-base/libtaskmanager,
+	kde-base/mplayerthumbs,
+	kde-base/gwenview,
+	kde-base/okular,
+	kde-base/oxygen-icons,
+	kde-base/phonon-kde,
+	kde-base/plasma-apps,
+	kde-base/plasma-workspace,
+	kde-base/policykit-kde,
+	kde-base/powerdevil,
+	kde-base/pykde4,
+	kde-base/qguiplatformplugin_kde,
+	kde-base/solid,
+	kde-base/svgpart,
+	kde-base/systemsettings,
+	kde-base/thumbnailers,
+	kde-misc/kcm-gtk-config,
+	kde-misc/kcm-grub2,
+	kde-misc/kcm_touchpad,
+	kde-misc/kcm-ufw,
+	kde-misc/kio-sysinfo,
+	kde-misc/networkmanagement,
+	kde-misc/magneto-kde,
+	kde-misc/synaptiks,
+	kde-misc/yakuake,
+	media-fonts/ttf-bitstream-vera,
+	media-fonts/dejavu,
+	media-fonts/corefonts,
+	media-libs/libdvdread,
+	media-libs/libdvdcss,
+	media-libs/libdvdplay,
+	media-libs/libdvdnav,
+	media-plugins/alsa-plugins,
+	media-plugins/kipi-plugins,
+	media-sound/clementine,
+	media-tv/xbmc,
+	media-video/vlc,
+	net-dialup/globespan-adsl,
+	net-dialup/ppp,
+	net-dialup/rp-pppoe,
+	net-fs/samba,
+	net-irc/konversation,
+	net-misc/networkmanager,
+	net-misc/networkmanager-openvpn,
+	net-misc/networkmanager-pptp,
+	net-misc/networkmanager-vpnc,
+	net-misc/ntp,
+	net-print/cups,
+	net-print/foomatic-db,
+	net-print/foomatic-db-ppds,
+	net-print/foomatic-filters,
+	net-print/foomatic-filters-ppds,
+	net-print/gutenprint,
+	net-wireless/bluez,
+	net-wireless/bluez-firmware,
+	net-wireless/bluez-hcidump,
+	sys-auth/policykit,
+	sys-auth/policykit-qt,
+	sys-auth/polkit,
+	sys-auth/polkit-kde,
+	sys-auth/polkit-qt,
+	sys-apps/gpu-detector,
+	sys-apps/hdparm,
+	sys-apps/sdparm,
+	sys-apps/tuxonice-userui,
+	sys-block/parted,
+	sys-block/partitionmanager,
+	sys-fs/dmraid,
+	sys-fs/ntfs3g,
+	sys-fs/zfs,
+	sys-power/acpid,
+	sys-power/cpufrequtils,
+	www-client/chromium,
+	www-plugins/adobe-flash,
+	x11-apps/xdm,
+	x11-terms/xterm,
+	x11-drivers/xf86-video-virtualbox,
+	games-misc/cowsay,
+	x11-drivers/ati-drivers,
+	x11-drivers/nvidia-drivers,
+	x11-libs/vdpau-video,
+	x11-libs/xvba-video,
+	x11-misc/desktop-acceleration-helpers,
+	x11-misc/xvkbd,
+	x11-themes/gtk-engines:2,
+	x11-themes/gtk-engines-qtcurve,
+	x11-themes/gnome-themes-standard,
+	x11-themes/iottinka-artwork,
+	x11-themes/oxygen-gtk:2,
+	x11-themes/oxygen-gtk:3,
+	x11-themes/sabayon-artwork-extra,
+	x11-themes/sabayon-artwork-kde,
+	x11-themes/sabayon-artwork-loo,
+	x11-themes/sound-theme-freedesktop,
+	x11-themes/xcursor-themes,
+	x11-wm/twm
+
+# x11-themes/gnome-themes-standard:
+# oxygen-gtk contains a bug that screws Rigo's GTK3 nice
+# InfoBar backgrounds. So currently, GTK3 default theme
+# is set to Adwaita, which is contained inside
+# x11-themes/gnome-themes-standard
+
+# Custom shell call to packages add (default is: equo install)
+custom_packages_add_cmd: equo install oxygen-icons rogentos-version
+
+# Custom command for updating repositories (default is: equo update)
+repositories_update_cmd: equo update
+
+# Determine whether repositories update should be run (if packages_to_add is set)
+# (default is: no), values are: yes, no.
+execute_repositories_update: no
+
+# Directories to remove completely (comma separated)
+# paths_to_remove:
+
+# Directories to empty (comma separated)
+# paths_to_empty:
