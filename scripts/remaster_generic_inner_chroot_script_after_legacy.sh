@@ -229,6 +229,19 @@ setup_misc_stuff() {
 	fi
 }
 
+rogentos_splash() {
+if [ -d "/etc/splash/sabayon" ]; then
+        rm -r /etc/splash/sabayon
+        ln -s /etc/splash/rogentos /etc/splash/sabayon
+        echo "So etc/splash/sabayon exists"
+        ln -s /etc/splash/rogentos /etc/splash/sabayon
+
+        for i in `seq 1 6`; do
+        splash_manager -c set -t rogentos --tty=$i
+        done
+fi
+}
+
 rogentos_install() {
 
 #Rogentos ISO Remaking from the Beginnings
@@ -236,50 +249,42 @@ rogentos_install() {
 localz=$(pwd)
 ARCH=$(uname -m)
 echo "Entering folder $localz"
-equo remove linux-sabayon sabayon-sources nvidia-drivers nvidia-userspace ati-drivers ati-userspace nvidia-settings --nodeps
 
 if [ "$ARCH" = "x86_64" ]; then
+		equo remove nvidia-drivers nvidia-userspace ati-drivers ati-userspace --nodeps
+		equo install linux-sabayon:3.3 ati-drivers-12.6:1,3.3.0-sabayon nvidia-drivers:0,3.3.0-sabayon =x11-drivers/nvidia-userspace-304.37
+		equo install nvidia-drivers:0,3.3.0-sabayon =x11-drivers/nvidia-userspace-304.37 --nodeps
+		env-update && source /etc/profile
+		equo remove linux-sabayon:3.4 linux-sabayon:3.5 linux-sabayon:3.6 sabayon-sources:3.4 sabayon-sources:3.5 sabayon-sources:3.6 --nodeps
+		eselect kernel set 1
 		equo unmask anaconda
-		equo install linux-sabayon:3.3 ati-drivers-12.6:1,3.3.0-sabayon
 		equo install nvidia-drivers nvidia-userspace --nodeps
 		equo install grub
 		equo remove anaconda --nodeps
-		equo install app-admin/anaconda-9999~0 --nodeps
+		equo install app-admin/anaconda-9999 --deep
 		equo remove sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux sabayon-artwork-lxde sabayon-skel tango-icon-theme gnome-colors-common oxygen-icons --nodeps
 		equo install tango-icon-theme rogentos-skel rogentos-artwork-core rogentos-artwork-grub rogentos-artwork-isolinux rogentoslive-tools rogentos-artwork-lxde openrc --nodeps
 		equo install anaconda-runtime gpu-detector lxdm
 		env-update && source /etc/profile
-		eselect kernel set 1
 		rogentos_splash
 	else
+		equo remove nvidia-drivers nvidia-userspace ati-drivers ati-userspace --nodeps
+		equo install linux-sabayon:3.2 sabayon-sources:3.2 =x11-drivers/ati-userspace-11.12 =x11-drivers/ati-drivers-11.12#3.2.0-sabayon
+		env-update && source /etc/profile
+		equo remove linux-sabayon:3.3 linux-sabayon:3.4 linux-sabayon:3.5 linux-sabayon:3.6 sabayon-sources:3.4 sabayon-sources:3.5 sabayon-sources:3.6 --nodeps
+		eselect kernel set 1
 		equo unmask anaconda
 		equo install linux-sabayon:3.2 sabayon-sources:3.2 =x11-drivers/ati-userspace-11.12 =x11-drivers/ati-drivers-11.12#3.2.0-sabayon --nodeps
 		equo install =x11-drivers/nvidia-drivers-290.10#3.2.0-sabayon =x11-drivers/nvidia-userspace-290.10 =media-video/nvidia-settings-290.10 --nodeps
 		equo install grub
 		equo remove anaconda --nodeps
-		equo install app-admin/anaconda-9999~0 --nodeps
+		equo install app-admin/anaconda-9999 --deep
 		equo remove sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux sabayon-artwork-lxde sabayon-skel tango-icon-theme gnome-colors-common oxygen-icons
 		equo install tango-icon-theme rogentos-skel rogentos-artwork-core rogentos-artwork-grub rogentos-artwork-isolinux rogentoslive-tools rogentos-artwork-lxde openrc --nodeps
 		equo install anaconda-runtime gpu-detector lxdm
 		env-update && source /etc/profile
-		eselect kernel set 1
 		rogentos_splash
 fi
-
-
-
-rogentos_splash() {
-if [ -d "/etc/splash/sabayon" ]; then
-	rm -r /etc/splash/sabayon
-	ln -s /etc/splash/rogentos /etc/splash/sabayon
-	echo "So etc/splash/sabayon exists"
-	ln -s /etc/splash/rogentos /etc/splash/sabayon
-	
-	for i in `seq 1 6`; do
-	splash_manager -c set -t rogentos --tty=$i
-	done
-fi
-}
 
 #if [ "$ARCH" = "x86_64" ]; then
 		#echo "Downloading the other files"
@@ -307,7 +312,7 @@ equo mask ati-drivers
 equo mask nvidia-drivers
 equo mask ati-userspace
 equo mask nvidia-settings
-equo mask nvidia-userspace xorg-server openrc
+equo mask nvidia-userspace xorg-server openrc lxdm
 echo "Interdict any kernel upgrade from now on, kernel-switcher only because it's Rogentos Legacy"
 }
 
