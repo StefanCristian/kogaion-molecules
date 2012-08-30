@@ -291,7 +291,7 @@ if [ -d "/home/sabayonuser/" ]; then
 	echo "sabayonuser folder does not exist"
 fi
 
-equo mask sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux sabayonlive-tools sabayon-skel sabayon-artwork-lxde
+equo mask sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux sabayonlive-tools sabayon-skel sabayon-artwork-lxde sabayon-artwork-extra
 equo mask linux-sabayon
 equo mask sabayon-sources
 equo mask broadcom-sta ndiswrapper

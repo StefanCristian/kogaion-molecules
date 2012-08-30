@@ -88,6 +88,7 @@ packages_to_add:
 	games-misc/cowsay,
 	gnome-extra/nm-applet-gtk2,
 	gnome-extra/polkit-gnome,
+	lxde-base/lxdm,	
 	media-fonts/corefonts,
 	media-fonts/dejavu,
 	media-fonts/ttf-bitstream-vera,
