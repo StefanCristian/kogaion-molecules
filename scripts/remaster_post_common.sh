@@ -14,13 +14,12 @@ if [ -z "${BUILDING_DAILY}" ]; then
 		mv "${src_conf}" "${dst_conf}" || exit 1
 		sed -i "/^repository =/ s/= sabayonlinux.org/= sabayon-weekly/" "${dst_conf}" || exit 1
 	fi
-	LOC=$(pwd)
-	cd /etc/entropy/repositories.conf.d/
-	wget http://188.215.51.153/~noxis/distro/entropy_rogentoslinux
-	equo repo mirrorsort rogentoslinux
-	equo update --force
-	cd $LOC
-
+	#LOC=$(pwd)
+	#cd /etc/entropy/repositories.conf.d/
+	#wget http://188.215.51.153/~noxis/distro/entropy_rogentoslinux
+	#equo repo mirrorsort rogentoslinux
+	#equo update --force
+	#cd $LOC
 fi
 
 # remove entropy hwash

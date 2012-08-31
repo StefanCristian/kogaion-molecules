@@ -251,10 +251,10 @@ ARCH=$(uname -m)
 
 if [ "$ARCH" = "x86_64" ]; then
 		equo remove nvidia-drivers nvidia-userspace ati-drivers ati-userspace --nodeps
-		equo install linux-sabayon:3.3 sabayon-sources:3.2 ati-drivers-12.6:1,3.3.0-sabayon nvidia-drivers:0,3.3.0-sabayon =x11-drivers/nvidia-userspace-304.37
+		equo install linux-sabayon:3.3 sabayon-sources:3.3 ati-drivers-12.6:1,3.3.0-sabayon nvidia-drivers:0,3.3.0-sabayon =x11-drivers/nvidia-userspace-304.37
 		equo install nvidia-drivers:0,3.3.0-sabayon =x11-drivers/nvidia-userspace-304.37 --nodeps
 		env-update && source /etc/profile
-		equo remove linux-sabayon:3.4 linux-sabayon:3.5 linux-sabayon:3.6 sabayon-sources:3.4 sabayon-sources:3.5 sabayon-sources:3.6 --nodeps
+		equo remove linux-sabayon:3.2 linux-sabayon:3.4 linux-sabayon:3.5 linux-sabayon:3.6 sabayon-sources:3.4 sabayon-sources:3.5 sabayon-sources:3.6 --nodeps
 		eselect kernel set 1
 		equo unmask anaconda
 		equo install nvidia-drivers nvidia-userspace virtualbox-guest-additions:0,3.3.0-sabayon app-emulation/virtualbox-modules:0,3.3.0-sabayon net-wireless/ndiswrapper:0,3.3.0-sabayon net-wireless/broadcom-sta:0,3.3.0-sabayon net-wireless/madwifi-ng:0,3.3.0-sabayon --nodeps
