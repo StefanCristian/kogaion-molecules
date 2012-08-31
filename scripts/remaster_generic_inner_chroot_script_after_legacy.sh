@@ -248,11 +248,10 @@ rogentos_install() {
 
 localz=$(pwd)
 ARCH=$(uname -m)
-echo "Entering folder $localz"
 
 if [ "$ARCH" = "x86_64" ]; then
 		equo remove nvidia-drivers nvidia-userspace ati-drivers ati-userspace --nodeps
-		equo install linux-sabayon:3.3 ati-drivers-12.6:1,3.3.0-sabayon nvidia-drivers:0,3.3.0-sabayon =x11-drivers/nvidia-userspace-304.37
+		equo install linux-sabayon:3.3 sabayon-sources:3.2 ati-drivers-12.6:1,3.3.0-sabayon nvidia-drivers:0,3.3.0-sabayon =x11-drivers/nvidia-userspace-304.37
 		equo install nvidia-drivers:0,3.3.0-sabayon =x11-drivers/nvidia-userspace-304.37 --nodeps
 		env-update && source /etc/profile
 		equo remove linux-sabayon:3.4 linux-sabayon:3.5 linux-sabayon:3.6 sabayon-sources:3.4 sabayon-sources:3.5 sabayon-sources:3.6 --nodeps
@@ -263,7 +262,7 @@ if [ "$ARCH" = "x86_64" ]; then
 		equo remove anaconda --nodeps
 		equo install app-admin/anaconda-9999 --deep
 		equo remove sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux sabayon-artwork-lxde sabayon-skel tango-icon-theme gnome-colors-common oxygen-icons --nodeps
-		equo install tango-icon-theme rogentos-skel rogentos-artwork-core rogentos-artwork-grub rogentos-artwork-isolinux rogentoslive-tools rogentos-artwork-lxde openrc --nodeps
+		equo install tango-icon-theme rogentos-skel rogentos-artwork-core rogentos-artwork-grub rogentos-artwork-isolinux rogentoslive-tools rogentos-artwork-lxde openrc
 		equo install anaconda-runtime gpu-detector lxdm
 		env-update && source /etc/profile
 		rogentos_splash
@@ -276,7 +275,7 @@ if [ "$ARCH" = "x86_64" ]; then
 		equo unmask anaconda
 		equo install linux-sabayon:3.2 sabayon-sources:3.2 =x11-drivers/ati-userspace-11.12 =x11-drivers/ati-drivers-11.12#3.2.0-sabayon --nodeps
 		equo install =x11-drivers/nvidia-drivers-290.10#3.2.0-sabayon =x11-drivers/nvidia-userspace-290.10 =media-video/nvidia-settings-290.10 --nodeps
-		equo install grub
+		equo install grub =x11-base/xorg-server-1.11.4
 		equo remove anaconda --nodeps
 		equo install app-admin/anaconda-9999 --deep
 		equo remove sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux sabayon-artwork-lxde sabayon-skel tango-icon-theme gnome-colors-common oxygen-icons
@@ -285,17 +284,6 @@ if [ "$ARCH" = "x86_64" ]; then
 		env-update && source /etc/profile
 		rogentos_splash
 fi
-
-#if [ "$ARCH" = "x86_64" ]; then
-		#echo "Downloading the other files"
-		#equo install tango-icon-theme rogentos-artwork-core rogentos-artwork-grub rogentos-artwork-isolinux
-		#echo "installed rogentos artwork amd64"
-		#rogentos_splash
-	#else
-		#equo install tango-icon-theme rogentos-artwork-core rogentos-artwork-grub rogentos-artwok-isolinux
-		#echo "Installed rogentos artwork x86"
-		#rogentos_splash
-#fi
 
 if [ -d "/home/sabayonuser/" ]; then
 	echo "/home/abayonuser folder exists"
