@@ -19,6 +19,7 @@ cp -r /sabayon/boot/core/isolinux/* "${CDROOT_DIR}/syslinux/"
 echo "Creating folder syslinux and copying everything that's in isolinux to it"
 if [ -f "${CDROOT_DIR}/syslinux/isolinux.cfg" ]; then
         mv "${CDROOT_DIR}/syslinux/isolinux.cfg" "${CDROOT_DIR}/syslinux/syslinux.cfg"
+	cp "${CDROOT_DIR}/syslinux/back.jpg" "${CDROOT_DIR}/isolinux/"
 fi
 echo "If we copied correctly, then do what we must"
 
