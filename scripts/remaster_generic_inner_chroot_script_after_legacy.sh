@@ -261,9 +261,10 @@ if [ "$ARCH" = "x86_64" ]; then
 		equo install grub
 		equo remove anaconda --nodeps
 		equo install app-admin/anaconda-9999 --deep
-		equo remove sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux sabayon-artwork-lxde sabayon-skel tango-icon-theme gnome-colors-common oxygen-icons --nodeps
-		equo install tango-icon-theme rogentos-skel rogentos-artwork-core rogentos-artwork-grub rogentos-artwork-isolinux rogentoslive-tools rogentos-artwork-lxde openrc
-		equo install anaconda-runtime gpu-detector lxdm
+		equo remove sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux sabayon-artwork-lxde sabayon-skel sabayonlive-tools tango-icon-theme gnome-colors-common oxygen-icons --nodeps
+		equo install tango-icon-theme rogentos-skel rogentos-artwork-core rogentos-artwork-grub rogentoslive-tools rogentos-artwork-lxde rogentos-artwork-isolinux openrc --nodeps
+		equo install anaconda-runtime gpu-detector lxdm app-misc/rogentos-skel x11-themes/rogentos-artwork-isolinux --nodeps
+		equo remove linux-sabayon:3.2 linux-sabayon:3.4 linux-sabayon:3.5 linux-sabayon:3.6 sabayonlive-tools --nodeps
 		env-update && source /etc/profile
 		rogentos_splash
 	else
@@ -278,9 +279,10 @@ if [ "$ARCH" = "x86_64" ]; then
 		equo install grub =x11-base/xorg-server-1.11.4
 		equo remove anaconda virtualbox-guest-additions:0,3.2.0-sabayon app-emulation/virtualbox-modules:0,3.2.0-sabayon net-wireless/broadcom-sta:0,3.2.0-sabayon net-wireless/madwifi-ng:0,3.2.0-sabayon net-wireless/ndiswrapper:0,3.2.0-sabayon xf86-video-virtualbox:0,3.2.0-sabayon nvidiabl:0,3.2.0-sabayon --nodeps
 		equo install app-admin/anaconda-9999 --deep
-		equo remove sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux sabayon-artwork-lxde sabayon-skel tango-icon-theme gnome-colors-common oxygen-icons
-		equo install tango-icon-theme rogentos-skel rogentos-artwork-core rogentos-artwork-grub rogentos-artwork-isolinux rogentoslive-tools rogentos-artwork-lxde openrc --nodeps
+		equo remove sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux sabayon-artwork-lxde sabayon-skel tango-icon-theme gnome-colors-common oxygen-icons sabayonlive-tools
+		equo install tango-icon-theme rogentos-skel rogentos-artwork-core rogentos-artwork-grub rogentos-artwork-isolinux rogentoslive-tools rogentos-artwork-lxde openrc rogentos-artwork-isolinux --nodeps
 		equo install anaconda-runtime gpu-detector lxdm
+		equo remove linux-sabayon:3.3 linux-sabayon:3.5 sabayonlive-tools --nodeps
 		env-update && source /etc/profile
 		rogentos_splash
 fi
