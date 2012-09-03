@@ -139,13 +139,10 @@ packages_to_add:
 # instead of gnome-panel)
 
 # Custom shell call to packages add (default is: equo install)
-custom_packages_add_cmd: app-misc/rogentos-version,
-			x11-themes/rogentos-artwork-core,
-			x11-themes/rogentos-artwork-lxde,
-			x11-themes/rogentos-artwork-extra
+#custom_packages_add_cmd: app-misc/rogentos-version,
 
 # Custom command for updating repositories (default is: equo update)
-repositories_update_cmd: equo update
+#repositories_update_cmd: yes
 
 # Determine whether repositories update should be run (if packages_to_add is set)
 # (default is: no), values are: yes, no.
