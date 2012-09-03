@@ -294,7 +294,7 @@ equo mask ati-drivers
 equo mask nvidia-drivers
 equo mask ati-userspace
 equo mask nvidia-settings
-equo mask nvidia-userspace xorg-server openrc lxdm
+equo mask nvidia-userspace xorg-server nvidia-drivers nvidia-userspace virtualbox-guest-additions app-emulation/virtualbox-modules ndiswrapper net-wireless/broadcom-sta net-wireless/madwifi-ng nvidiabl xf86-video-virtualbox
 echo "Interdict any kernel upgrade from now on, kernel-switcher only because it's Rogentos Legacy"
 }
 
