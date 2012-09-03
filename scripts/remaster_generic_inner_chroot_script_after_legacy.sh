@@ -262,9 +262,9 @@ if [ "$ARCH" = "x86_64" ]; then
 		equo remove anaconda --nodeps
 		equo install app-admin/anaconda-9999 --deep
 		equo remove sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux sabayon-artwork-lxde sabayon-skel sabayonlive-tools tango-icon-theme gnome-colors-common oxygen-icons --nodeps
-		equo install tango-icon-theme rogentos-skel rogentos-artwork-core rogentos-artwork-grub rogentoslive-tools rogentos-artwork-lxde rogentos-artwork-isolinux openrc --nodeps
+		equo install tango-icon-theme rogentos-skel rogentos-version rogentos-artwork-core rogentos-artwork-grub rogentoslive-tools rogentos-artwork-lxde rogentos-artwork-isolinux openrc --nodeps
 		equo install anaconda-runtime gpu-detector lxdm app-misc/rogentos-skel x11-themes/rogentos-artwork-isolinux --nodeps
-		equo remove linux-sabayon:3.2 linux-sabayon:3.4 linux-sabayon:3.5 linux-sabayon:3.6 sabayonlive-tools --nodeps
+		equo remove linux-sabayon:3.2 linux-sabayon:3.4 linux-sabayon:3.5 linux-sabayon:3.6 sabayonlive-tools sabayon-version --nodeps
 		env-update && source /etc/profile
 		rogentos_splash
 	else

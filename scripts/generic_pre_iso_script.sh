@@ -6,6 +6,22 @@ remaster_type="${1}"
 isolinux_source="/sabayon/remaster/minimal_isolinux.cfg"
 isolinux_destination="${CDROOT_DIR}/isolinux/txt.cfg"
 
+rm "${CDROOT_DIR}/autorun.inf"
+rm "${CDROOT_DIR}/sabayon.ico"
+rm "${CDROOT_DIR}/sabayon.bat"
+echo "Moving the right files where they rightfully belong"
+cp /sabayon/boot/core/autorun.inf "${CDROOT_DIR}/"
+cp /sabayon/boot/core/rogentos.ico "${CDROOT_DIR}/"
+cp /sabayon/boot/core/rogentos.bat "${CDROOT_DIR}/"
+echo "Copying them into the ISO image"
+mkdir "${CDROOT_DIR}/syslinux/"
+cp -r /sabayon/boot/core/isolinux/* "${CDROOT_DIR}/syslinux/"
+echo "Creating folder syslinux and copying everything that's in isolinux to it"
+if [ -f "${CDROOT_DIR}/syslinux/isolinux.cfg" ]; then
+        mv "${CDROOT_DIR}/syslinux/isolinux.cfg" "${CDROOT_DIR}/syslinux/syslinux.cfg"
+fi
+echo "If we copied correctly, then do what we must"
+
 if [ "${remaster_type}" = "KDE" ] || [ "${remaster_type}" = "GNOME" ]; then
 	isolinux_source="/sabayon/remaster/standard_isolinux.cfg"
 elif [ "${remaster_type}" = "ServerBase" ]; then
@@ -36,23 +52,17 @@ else
 fi
 sed -i "s/__KMS__/${kms_string}/g" "${isolinux_destination}"
 
-sabayon_pkgs_file="${CHROOT_DIR}/etc/rogentos-pkglist"
-if [ -f "${sabayon_pkgs_file}" ]; then
-	cp "${sabayon_pkgs_file}" "${CDROOT_DIR}/pkglist"
+rogentos_pkgs_file="${CHROOT_DIR}/etc/rogentos-pkglist"
+if [ -f "${rogentos_pkgs_file}" ]; then
+	cp "${rogentos_pkgs_file}" "${CDROOT_DIR}/pkglist"
         if [ -n "${ISO_PATH}" ]; then # molecule 0.9.6 required
                 # copy pkglist over to ISO path + pkglist
-                cp "${sabayon_pkgs_file}" "${ISO_PATH}".pkglist
+                cp "${rogentos_pkgs_file}" "${ISO_PATH}".pkglist
         fi
 fi
 
 # copy back.jpg to proper location
-isolinux_img="${CHROOT_DIR}/usr/share/backgrounds/isolinux/back.jpg"
+isolinux_img="/sabayon/boot/core/isolinux/back.jpg"
 if [ -f "${isolinux_img}" ]; then
 	cp "${isolinux_img}" "${CDROOT_DIR}/isolinux/" || exit 1
-        rm "${CHROOT_DIR}/autorun.inf"  
-        rm "${CHROOT_DIR}/sabayon.ico"                    
-        rm "${CHROOT_DIR}/sabayon.bat"
-        cp /sabayon/boot/core/autorun.inf "${CHROOT_DIR}/" || exit 1
-        cp /sabayon/boot/core/rogentos.ico "${CHROOT_DIR}/" || exit 1
-        cp /sabayon/boot/core/rogentos.bat "${CHROOT_DIR}/" || exit 1
 fi

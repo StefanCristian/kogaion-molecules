@@ -53,17 +53,17 @@ else
 fi
 sed -i "s/__KMS__/${kms_string}/g" "${isolinux_destination}"
 
-sabayon_pkgs_file="${CHROOT_DIR}/etc/rogentos-pkglist"
-if [ -f "${sabayon_pkgs_file}" ]; then
-	cp "${sabayon_pkgs_file}" "${CDROOT_DIR}/pkglist"
+rogentos_pkgs_file="${CHROOT_DIR}/etc/rogentos-pkglist"
+if [ -f "${rogentos_pkgs_file}" ]; then
+	cp "${rogentos_pkgs_file}" "${CDROOT_DIR}/pkglist"
         if [ -n "${ISO_PATH}" ]; then # molecule 0.9.6 required
                 # copy pkglist over to ISO path + pkglist
-                cp "${sabayon_pkgs_file}" "${ISO_PATH}".pkglist
+                cp "${rogentos_pkgs_file}" "${ISO_PATH}".pkglist
         fi
 fi
 
 # copy back.jpg to proper location
-isolinux_img="${CHROOT_DIR}/usr/share/backgrounds/isolinux/back.jpg"
+isolinux_img="/sabayon/boot/core/isolinux/back.jpg"
 if [ -f "${isolinux_img}" ]; then
 	cp "${isolinux_img}" "${CDROOT_DIR}/isolinux/" || exit 1
 fi
