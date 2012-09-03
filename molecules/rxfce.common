@@ -147,13 +147,14 @@ packages_to_add:
 
 # Custom shell call to packages add (default is: equo install)
 # custom_packages_add_cmd: 
+custom_packages_add_cmd: app-misc/rogentos-version
 
 # Custom command for updating repositories (default is: equo update)
 # repositories_update_cmd:
 
 # Determine whether repositories update should be run (if packages_to_add is set)
 # (default is: no), values are: yes, no.
-execute_repositories_update: no
+execute_repositories_update: yes
 
 # Directories to remove completely (comma separated)
 # paths_to_remove:
