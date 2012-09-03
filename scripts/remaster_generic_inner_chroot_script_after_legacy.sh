@@ -251,13 +251,13 @@ ARCH=$(uname -m)
 
 if [ "$ARCH" = "x86_64" ]; then
 		equo remove nvidia-drivers nvidia-userspace ati-drivers ati-userspace virtualbox-guest-additions nvidiabl net-wireless/broadcom-sta net-wireless/ndiswrapper xf86-video-virtualbox --nodeps
-		equo install linux-sabayon:3.3 sabayon-sources:3.3 ati-drivers-12.6:1,3.3.0-sabayon nvidia-drivers:0,3.3.0-sabayon =x11-drivers/nvidia-userspace-304.37
-		equo install nvidia-drivers:0,3.3.0-sabayon =x11-drivers/nvidia-userspace-304.37 --nodeps
+		equo install linux-sabayon:3.2 sabayon-sources:3.2 ati-drivers-12.6:1,3.2.0-sabayon nvidia-drivers:0,3.2.0-sabayon =x11-drivers/nvidia-userspace-304.37
+		equo install nvidia-drivers:0,3.2.0-sabayon =x11-drivers/nvidia-userspace-304.37 --nodeps
 		env-update && source /etc/profile
 		equo remove linux-sabayon:3.2 linux-sabayon:3.4 linux-sabayon:3.5 linux-sabayon:3.6 sabayon-sources:3.4 sabayon-sources:3.5 sabayon-sources:3.6 --nodeps
 		eselect kernel set 1
 		equo unmask anaconda
-		equo install nvidia-drivers nvidia-userspace virtualbox-guest-additions:0,3.3.0-sabayon app-emulation/virtualbox-modules:0,3.3.0-sabayon net-wireless/ndiswrapper:0,3.3.0-sabayon net-wireless/broadcom-sta:0,3.3.0-sabayon net-wireless/madwifi-ng:0,3.3.0-sabayon nvidiabl:0,3.3.0-sabayon xf86-video-virtualbox:0,3.3.0-sabayon --nodeps
+		equo install nvidia-drivers nvidia-userspace virtualbox-guest-additions:0,3.2.0-sabayon app-emulation/virtualbox-modules:0,3.2.0-sabayon net-wireless/ndiswrapper:0,3.2.0-sabayon net-wireless/broadcom-sta:0,3.2.0-sabayon net-wireless/madwifi-ng:0,3.2.0-sabayon nvidiabl:0,3.2.0-sabayon xf86-video-virtualbox:0,3.2.0-sabayon --nodeps
 		equo install grub
 		equo remove anaconda --nodeps
 		equo install app-admin/anaconda-9999 --deep
@@ -271,7 +271,7 @@ if [ "$ARCH" = "x86_64" ]; then
 		equo remove nvidia-drivers nvidia-userspace ati-drivers ati-userspace --nodeps
 		equo install linux-sabayon:3.2 sabayon-sources:3.2 =x11-drivers/ati-userspace-11.12 =x11-drivers/ati-drivers-11.12#3.2.0-sabayon
 		env-update && source /etc/profile
-		equo remove linux-sabayon:3.3 linux-sabayon:3.4 linux-sabayon:3.5 linux-sabayon:3.6 sabayon-sources:3.4 sabayon-sources:3.5 sabayon-sources:3.6 --nodeps
+		equo remove linux-sabayon:3.2 linux-sabayon:3.4 linux-sabayon:3.5 linux-sabayon:3.6 sabayon-sources:3.4 sabayon-sources:3.5 sabayon-sources:3.6 --nodeps
 		eselect kernel set 1
 		equo unmask anaconda
 		equo install linux-sabayon:3.2 sabayon-sources:3.2 =x11-drivers/ati-userspace-11.12 =x11-drivers/ati-drivers-11.12#3.2.0-sabayon --nodeps
@@ -282,7 +282,7 @@ if [ "$ARCH" = "x86_64" ]; then
 		equo remove sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux sabayon-artwork-lxde sabayon-skel tango-icon-theme gnome-colors-common oxygen-icons sabayonlive-tools
 		equo install tango-icon-theme rogentos-skel rogentos-artwork-core rogentos-artwork-grub rogentos-artwork-isolinux rogentoslive-tools rogentos-artwork-lxde openrc rogentos-artwork-isolinux --nodeps
 		equo install anaconda-runtime gpu-detector lxdm
-		equo remove linux-sabayon:3.3 linux-sabayon:3.5 sabayonlive-tools --nodeps
+		equo remove linux-sabayon:3.2 linux-sabayon:3.5 sabayonlive-tools --nodeps
 		env-update && source /etc/profile
 		rogentos_splash
 fi
