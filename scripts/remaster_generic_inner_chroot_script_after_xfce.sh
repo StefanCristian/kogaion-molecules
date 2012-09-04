@@ -24,7 +24,7 @@ basic_environment_setup() {
 
 	rc-update del music boot
 	rc-update add music default
-	rc-update del sabayon-mce default
+	rc-update del rogentos-mce default
 	rc-update add nfsmount default
 
 	# Always startup this
@@ -40,7 +40,7 @@ setup_cpufrequtils() {
 }
 
 setup_sabayon_mce() {
-	rc-update add sabayon-mce boot
+	rc-update add rogentos-mce boot
 	# not needed, done by app-misc/sabayon-mce pkg
 	# Sabayon Media Center user setup
 	# source /sbin/sabayon-functions.sh
@@ -252,16 +252,20 @@ echo "Removing sabayon artwork"
 
 if [ "$ARCH" = "x86_64" ]; then
 		equo unmask anaconda
-		equo install anaconda anaconda-runtime ${rog}-isolinux ${rog}-grub ${rog}-core ${rog}-lxde rogentos-skel rogentoslive-tools openrc tango-icon-theme rogentos-version lxdm gpu-detector --nodeps
+		equo install anaconda anaconda-runtime ${rog}-isolinux ${rog}-grub ${rog}-core ${rog}-lxde rogentos-skel rogentoslive-tools openrc tango-icon-theme rogentos-version lxdm gpu-detector openrc kernel-schimbare --nodeps
 		echo "installed rogentos artwork amd64"
+		env-update && source /etc/profile
 		rogentos_splash
 	else
 		equo unmask anaconda
-		equo install anaconda anaconda-runtime ${rog}-isolinux ${rog}-grub ${rog}-core ${rog}-lxde rogentos-skel rogentoslive-tools openrc tango-icon-theme rogentos-version lxdm gpu-detector --nodeps
+		equo install anaconda anaconda-runtime ${rog}-isolinux ${rog}-grub ${rog}-core ${rog}-lxde rogentos-skel rogentoslive-tools openrc tango-icon-theme rogentos-version lxdm gpu-detector openrc kernel-schimbare --nodeps
 		echo "Installed rogentos artwork x86"
+		env-update && source /etc/profile
 		rogentos_splash
 fi
 
+equo mask linux-sabayon sabayon-sources
+echo "Se va folosi kernel-schimbare pentru schimbarea nucleului"
 }
 
 setup_installed_packages() {
