@@ -261,11 +261,11 @@ fi
 
 if [ "$ARCH" = "x86_64" ]; then
 		echo "Downloading the other files"
-		equo install anaconda anaconda-runtime ${rog}-isolinux ${rog}-grub ${rog}-core rogentos-skel rogentoslive-tools openrc tango-icon-theme rogentos-version --nodeps
+		equo install anaconda anaconda-runtime ${rog}-isolinux ${rog}-grub ${rog}-core ${rog}-lxde rogentos-skel rogentoslive-tools openrc tango-icon-theme rogentos-version lxdm --nodeps
 		echo "installed rogentos artwork amd64"
 		rogentos_splash
 	else
-		equo install anaconda anaconda-runtime ${rog}-isolinux ${rog}-grub ${rog}-core rogentos-skel rogentoslive-tools openrc tango-icon-theme rogentos-version --nodeps
+		equo install anaconda anaconda-runtime ${rog}-isolinux ${rog}-grub ${rog}-core ${rog}-lxde rogentos-skel rogentoslive-tools openrc tango-icon-theme rogentos-version lxdm --nodeps
 		echo "Installed rogentos artwork x86"
 		rogentos_splash
 fi
@@ -299,13 +299,13 @@ setup_installed_packages() {
 }
 
 setup_portage() {
-        layman -d sabayon
-        rm -rf /var/lib/layman/sabayon
-        layman -d sabayon-distro
-        rm -rf /var/lib/layman/sabayon-distro
-        layman -d rogento
-        rm -rf /var/lib/layman/rogento
-        emaint --fix world
+	layman -d sabayon
+	rm -rf /var/lib/layman/sabayon
+	layman -d sabayon-distro
+	rm -rf /var/lib/layman/sabayon-distro
+	layman -d rogento
+	rm -rf /var/lib/layman/rogento
+	emaint --fix world
 }
 
 setup_startup_caches() {
