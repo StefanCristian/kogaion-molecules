@@ -66,3 +66,6 @@ isolinux_img="/sabayon/boot/core/isolinux/back.jpg"
 if [ -f "${isolinux_img}" ]; then
 	cp "${isolinux_img}" "${CDROOT_DIR}/isolinux/" || exit 1
 fi
+
+# Generate livecd.squashfs.md5
+"${ROGENTOS_MOLECULE_HOME}"/scripts/pre_iso_script_livecd_hash.sh
