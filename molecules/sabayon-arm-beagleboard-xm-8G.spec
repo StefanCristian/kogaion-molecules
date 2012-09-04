@@ -1,5 +1,5 @@
-%env %import ${SABAYON_MOLECULE_HOME:-/sabayon}/molecules/arm-base.common
-%env %import ${SABAYON_MOLECULE_HOME:-/sabayon}/molecules/beagleboard-xm.common
+%env %import ${ROGENTOS_MOLECULE_HOME:-/sabayon}/molecules/arm-base.common
+%env %import ${ROGENTOS_MOLECULE_HOME:-/sabayon}/molecules/beagleboard-xm.common
 
 # Release desc (the actual release description)
 release_desc: armv7a BeagleBoard xM
@@ -17,8 +17,8 @@ image_name: Sabayon_Linux_9_armv7a_BeagleBoard_xM_8GB.img
 image_mb: 7400
 
 # Path to boot partition data (MLO, u-boot.img etc)
-%env source_boot_directory: ${SABAYON_MOLECULE_HOME:-/sabayon}/boot/arm/beagleboard-xm
+%env source_boot_directory: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/boot/arm/beagleboard-xm
 
 # External script that will generate the image file.
 # The same can be copied onto a MMC by using dd
-%env image_generator_script: ${SABAYON_MOLECULE_HOME:-/sabayon}/scripts/beagleboard_xm_image_generator_script.sh
+%env image_generator_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/beagleboard_xm_image_generator_script.sh

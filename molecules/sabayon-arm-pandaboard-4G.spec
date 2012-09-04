@@ -1,5 +1,5 @@
-%env %import ${SABAYON_MOLECULE_HOME:-/sabayon}/molecules/arm-base.common
-%env %import ${SABAYON_MOLECULE_HOME:-/sabayon}/molecules/pandaboard.common
+%env %import ${ROGENTOS_MOLECULE_HOME:-/sabayon}/molecules/arm-base.common
+%env %import ${ROGENTOS_MOLECULE_HOME:-/sabayon}/molecules/pandaboard.common
 
 # Release desc (the actual release description)
 release_desc: armv7a PandaBoard
@@ -17,8 +17,8 @@ image_name: Sabayon_Linux_9_armv7a_PandaBoard_4GB.img
 image_mb: 3800
 
 # Path to boot partition data (MLO, u-boot.img etc)
-%env source_boot_directory: ${SABAYON_MOLECULE_HOME:-/sabayon}/boot/arm/pandaboard
+%env source_boot_directory: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/boot/arm/pandaboard
 
 # External script that will generate the image file.
 # The same can be copied onto a MMC by using dd
-%env image_generator_script: ${SABAYON_MOLECULE_HOME:-/sabayon}/scripts/beagleboard_xm_image_generator_script.sh
+%env image_generator_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/beagleboard_xm_image_generator_script.sh
