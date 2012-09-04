@@ -252,27 +252,27 @@ rogentos_install() {
 
 localz=$(pwd)
 ARCH=$(uname -m)
-roge=rogentos-artwork
+rog=rogentos-artwork
 echo "Entering folder $localz"
-equo remove linux-sabayon sabayon-sources nvidia-drivers nvidia-userspace ati-drivers ati-userspace nvidia-settings --nodeps
-
+equo remove anaconda anaconda-runtime sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux sabayon-artwork-lxde sabayon-skel tango-icon-theme gnome-colors-common
 
 if [ "$ARCH" = "x86_64" ]; then
 		equo unmask anaconda
 		equo remove anaconda --nodeps
 		equo install app-admin/anaconda-9999~0 --nodeps
-		equo remove sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux sabayon-artwork-lxde sabayon-skel tango-icon-theme gnome-colors-common oxygen-icons --nodeps
 		equo install tango-icon-theme oxygen-icons rogentos-skel rogentos-artwork-core rogentos-artwork-grub rogentos-artwork-isolinux rogentoslive-tools --nodeps
 		equo install anaconda-runtime gpu-detector kernel-schimbare
+		eselect kernel set 1
+		env-update && source /etc/profile
 		rogentos_splash
 	else
 		equo unmask anaconda
 		equo remove anaconda --nodeps
 		equo install app-admin/anaconda-9999~0 --nodeps
-		equo remove sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux sabayon-artwork-lxde sabayon-skel tango-icon-theme gnome-colors-common oxygen-icons
 		equo install tango-icon-theme oxygen-icons rogentos-skel rogentos-artwork-core rogentos-artwork-grub rogentos-artwork-isolinux rogentoslive-tools rogentos-artwork-kde --nodeps
 		equo install anaconda-runtime gpu-detector kernel-schimbare
 		eselect kernel set 1
+		env-update && source /etc/profile
 		rogentos_splash
 fi
 

@@ -247,7 +247,7 @@ ARCH=$(uname -m)
 rog=rogentos-artwork
 
 echo "Entering folder $localz"
-equo remove sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux sabayon-artwork-lxde sabayon-skel tango-icon-theme gnome-colors-common oxygen-icons --nodeps
+equo remove anaconda anaconda-runtime sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux sabayon-artwork-lxde sabayon-skel tango-icon-theme gnome-colors-common oxygen-icons --nodeps
 echo "Removing sabayon artwork"
 
 if [ "$ARCH" = "x86_64" ]; then
