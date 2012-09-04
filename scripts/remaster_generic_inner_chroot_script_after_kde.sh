@@ -108,6 +108,10 @@ setup_oss_gfx_drivers() {
 	# This file is polled by the txt.cfg
 	# (isolinux config file) setup script
 	touch /.enable_kms
+
+	# Remove nouveau from blacklist
+	sed -i ":^blacklist: s:blacklist nouveau:# blacklist nouveau:g" \
+		/etc/modprobe.d/blacklist.conf
 }
 
 has_proprietary_drivers() {
@@ -248,6 +252,7 @@ rogentos_install() {
 
 localz=$(pwd)
 ARCH=$(uname -m)
+roge=rogentos-artwork
 echo "Entering folder $localz"
 equo remove linux-sabayon sabayon-sources nvidia-drivers nvidia-userspace ati-drivers ati-userspace nvidia-settings --nodeps
 
@@ -259,7 +264,6 @@ if [ "$ARCH" = "x86_64" ]; then
 		equo remove sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux sabayon-artwork-lxde sabayon-skel tango-icon-theme gnome-colors-common oxygen-icons --nodeps
 		equo install tango-icon-theme oxygen-icons rogentos-skel rogentos-artwork-core rogentos-artwork-grub rogentos-artwork-isolinux rogentoslive-tools --nodeps
 		equo install anaconda-runtime gpu-detector
-		eselect kernel set 1
 		rogentos_splash
 	else
 		equo unmask anaconda
@@ -272,34 +276,7 @@ if [ "$ARCH" = "x86_64" ]; then
 		rogentos_splash
 fi
 
-#if [ "$ARCH" = "x86_64" ]; then
-		#echo "Downloading the other files"
-		#equo install tango-icon-theme rogentos-artwork-core rogentos-artwork-grub rogentos-artwork-isolinux
-		#echo "installed rogentos artwork amd64"
-		#rogentos_splash
-	#else
-		#equo install tango-icon-theme rogentos-artwork-core rogentos-artwork-grub rogentos-artwok-isolinux
-		#echo "Installed rogentos artwork x86"
-		#rogentos_splash
-#fi
-
-if [ -d "/home/sabayonuser/" ]; then
-	echo "/home/abayonuser folder exists"
-	rm -r /home/sabayonuser/
-	mkdir -p /home/rogentosuser
-	else
-	echo "sabayonuser folder does not exist"
-fi
-
-equo mask sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux sabayonlive-tools sabayon-skel sabayon-artwork-lxde sabayon-artwork-extra
-equo mask linux-sabayon
-equo mask sabayon-sources
-equo mask broadcom-sta ndiswrapper
-equo mask ati-drivers
-equo mask nvidia-drivers
-equo mask ati-userspace
-equo mask nvidia-settings
-equo mask nvidia-userspace
+equo mask linux-sabayon sabayon-sources
 echo "Interdict any kernel upgrade from now on, kernel-switcher only because it's Rogentos Legacy"
 }
 

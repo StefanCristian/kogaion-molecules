@@ -100,6 +100,10 @@ setup_oss_gfx_drivers() {
 	# This file is polled by the txt.cfg
 	# (isolinux config file) setup script
 	touch /.enable_kms
+
+	# Remove nouveau from blacklist
+	sed -i ":^blacklist: s:blacklist nouveau:# blacklist nouveau:g" \
+		/etc/modprobe.d/blacklist.conf
 }
 
 has_proprietary_drivers() {
@@ -243,29 +247,17 @@ ARCH=$(uname -m)
 rog=rogentos-artwork
 
 echo "Entering folder $localz"
-equo remove sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux sabayon-artwork-lxde sabayon-skel tango-icon-theme gnome-colors-common oxygen-icons --nodeps
+equo remove anaconda anaconda-runtime sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux sabayon-artwork-lxde sabayon-skel tango-icon-theme gnome-colors-common oxygen-icons --nodeps
 echo "Removing sabayon artwork"
 
-rogentos_splash() {
-if [ -d "/etc/splash/sabayon" ]; then
-	rm -r /etc/splash/sabayon
-	ln -s /etc/splash/rogentos /etc/splash/sabayon
-	echo "So etc/splash/sabayon exists"
-	ln -s /etc/splash/rogentos /etc/splash/sabayon
-	
-	for i in `seq 1 6`; do
-	splash_manager -c set -t rogentos --tty=$i
-	done
-fi
-}
-
 if [ "$ARCH" = "x86_64" ]; then
-		echo "Downloading the other files"
-		equo install anaconda anaconda-runtime ${rog}-isolinux ${rog}-grub ${rog}-core rogentos-skel rogentoslive-tools openrc tango-icon-theme rogentos-version --nodeps
+		equo unmask anaconda
+		equo install anaconda anaconda-runtime ${rog}-isolinux ${rog}-grub ${rog}-core rogentos-skel rogentoslive-tools openrc tango-icon-theme rogentos-version gpu-detector --nodeps
 		echo "installed rogentos artwork amd64"
 		rogentos_splash
 	else
-		equo install anaconda anaconda-runtime ${rog}-isolinux ${rog}-grub ${rog}-core rogentos-skel rogentoslive-tools openrc tango-icon-theme rogentos-version --nodeps
+		equo unmask anaconda
+		equo install anaconda anaconda-runtime ${rog}-isolinux ${rog}-grub ${rog}-core rogentos-skel rogentoslive-tools openrc tango-icon-theme rogentos-version gpu-detector --nodeps
 		echo "Installed rogentos artwork x86"
 		rogentos_splash
 fi
@@ -318,6 +310,18 @@ setup_startup_caches() {
 	ldconfig
 	ldconfig
 	umount /proc
+}
+
+prepare_mate() {
+        setup_networkmanager
+	# Fix ~/.dmrc to have it load MATE
+	echo "[Desktop]" > /etc/skel/.dmrc
+	echo "Session=mate" >> /etc/skel/.dmrc
+        remove_desktop_files
+        setup_displaymanager
+        remove_mozilla_skel_cruft
+        setup_cpufrequtils
+        has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
 }
 
 prepare_lxde() {
