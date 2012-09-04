@@ -221,24 +221,30 @@ setup_misc_stuff() {
 	fi
 }
 
+rogentos_splash() {
+if [ -d "/etc/splash/sabayon" ]; then
+        rm -r /etc/splash/sabayon
+        ln -s /etc/splash/rogentos /etc/splash/sabayon
+        echo "So etc/splash/sabayon exists"
+        ln -s /etc/splash/rogentos /etc/splash/sabayon
+
+        for i in `seq 1 6`; do
+        splash_manager -c set -t rogentos --tty=$i
+        done
+fi
+}
+
 rogentos_install() {
 
 #Rogentos ISO Remaking from the Beginnings
 
 localz=$(pwd)
 ARCH=$(uname -m)
+rog=rogentos-artwork
+
 echo "Entering folder $localz"
 equo remove sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux sabayon-artwork-lxde sabayon-skel tango-icon-theme gnome-colors-common oxygen-icons --nodeps
 echo "Removing sabayon artwork"
-
-if [ "$ARCH" = "x86_64" ]; then
-
-	wget http://dl.dropbox.com/u/1338709/amd64/5/x11-themes%3Arogentos-artwork-core-1.tbz2
-	echo "Getting rogentos-artwork-core amd64"
-	else
-	wget http://dl.dropbox.com/u/1338709/x86/5/x11-themes%3Arogentos-artwork-core-1.tbz2
-	echo "Downloading rogentos-artwork-core x86"
-fi
 
 rogentos_splash() {
 if [ -d "/etc/splash/sabayon" ]; then
@@ -255,53 +261,15 @@ fi
 
 if [ "$ARCH" = "x86_64" ]; then
 		echo "Downloading the other files"
-		wget http://dl.dropbox.com/u/1338709/amd64/5/app-misc%3Arogentoslive-tools-1.0.tbz2
-		wget http://dl.dropbox.com/u/1338709/amd64/5/x11-themes%3Arogentos-artwork-grub-1.tbz2
-		wget http://dl.dropbox.com/u/1338709/amd64/5/x11-themes%3Arogentos-artwork-isolinux-1.tbz2
-		wget http://dl.dropbox.com/u/1338709/amd64/5/app-admin%3Aanaconda-9999.tbz2
-		wget http://dl.dropbox.com/u/1338709/amd64/5/app-misc%3Arogentos-skel-1.tbz2
-		wget http://dl.dropbox.com/u/1338709/amd64/5/x11-themes%3Arogentos-artwork-lxde-1.tbz2
-		wget http://dl.dropbox.com/u/1338709/amd64/5/app-misc%3Aanaconda-runtime-1.1.tbz2
-		wget http://dl.dropbox.com/u/1338709/amd64/5/sys-apps%3Aopenrc-0.9.9.3.tbz2
-		wget http://dl.dropbox.com/u/1338709/amd64/5/x11-themes%3Atango-icon-theme-0.8.90.tbz2
-		equo install x11-themes\:tango-icon-theme-0.8.90.tbz2 app-misc\:rogentos-skel-1.tbz2 x11-themes\:rogentos-artwork-core-1.tbz2 x11-themes\:rogentos-artwork-grub-1.tbz2 x11-themes\:rogentos-artwork-isolinux-1.tbz2 app-misc\:rogentoslive-tools-1.0.tbz2  app-admin\:anaconda-9999.tbz2 app-misc\:anaconda-runtime-1.1.tbz2 x11-themes\:rogentos-artwork-lxde-1.tbz2 sys-apps\:openrc-0.9.9.3.tbz2 --nodeps
+		equo install anaconda anaconda-runtime ${rog}-isolinux ${rog}-grub ${rog}-core rogentos-skel rogentoslive-tools openrc tango-icon-theme rogentos-version --nodeps
 		echo "installed rogentos artwork amd64"
 		rogentos_splash
 	else
-		wget http://dl.dropbox.com/u/1338709/x86/5/app-misc%3Arogentoslive-tools-1.0.tbz2
-		wget http://dl.dropbox.com/u/1338709/x86/5/x11-themes%3Arogentos-artwork-grub-1.tbz2
-		wget http://dl.dropbox.com/u/1338709/x86/5/x11-themes%3Arogentos-artwork-isolinux-1.tbz2
-		wget http://dl.dropbox.com/u/1338709/x86/5/app-misc%3Aanaconda-runtime-1.1.tbz2
-		wget http://dl.dropbox.com/u/1338709/x86/5/app-admin%3Aanaconda-9999.tbz2
-		wget http://dl.dropbox.com/u/1338709/x86/5/app-misc%3Arogentos-skel-1.tbz2
-		wget http://dl.dropbox.com/u/1338709/x86/5/x11-themes%3Arogentos-artwork-lxde-1.tbz2
-		wget http://dl.dropbox.com/u/1338709/x86/5/sys-apps%3Aopenrc-0.9.9.3.tbz2
-		wget http://dl.dropbox.com/u/1338709/x86/5/x11-themes%3Atango-icon-theme-0.8.90.tbz2
-		equo x11-themes\:tango-icon-theme-0.8.90.tbz2 install app-misc\:rogentos-skel-1.tbz2 x11-themes\:rogentos-artwork-core-1.tbz2 x11-themes\:rogentos-artwork-grub-1.tbz2 x11-themes\:rogentos-artwork-isolinux-1.tbz2 app-misc\:rogentoslive-tools-1.0.tbz2  app-admin\:anaconda-9999.tbz2 app-misc\:anaconda-runtime-1.1.tbz2 x11-themes\:rogentos-artwork-lxde-1.tbz2 sys-apps\:openrc-0.9.9.3.tbz2 --nodeps
+		equo install anaconda anaconda-runtime ${rog}-isolinux ${rog}-grub ${rog}-core rogentos-skel rogentoslive-tools openrc tango-icon-theme rogentos-version --nodeps
 		echo "Installed rogentos artwork x86"
 		rogentos_splash
 fi
 
-rm *.tbz2
-
-if [ -d "/home/sabayonuser/" ]; then
-	echo "/home/abayonuser folder exists"
-	rm -r /home/sabayonuser/
-	mkdir -p /home/rogentosuser
-	else
-	echo "sabayonuser folder does not exist"
-fi
-
-equo mask sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux sabayonlive-tools sabayon-skel sabayon-artwork-lxde =sys-apps/openrc-0.9.9.3 =x11-themes/tango-icon-theme-0.8.90 =x11-themes/gnome-colors-common-5.5.1-r12 =kde-base/oxygen-icons-4.9.0
-equo mask linux-sabayon
-equo mask sabayon-sources
-equo mask ati-drivers
-equo mask nvidia-drivers
-equo mask ati-userspace
-equo mask amdcccle
-equo mask nvidia-settings
-equo mask nvidia-userspace
-echo "Interdict any kernel upgrade from now on, kernel-switcher only"
 }
 
 setup_installed_packages() {
