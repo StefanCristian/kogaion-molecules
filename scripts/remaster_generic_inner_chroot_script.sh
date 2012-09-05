@@ -30,3 +30,4 @@ for repo_conf in /etc/entropy/repositories.conf /etc/entropy/repositories.conf.d
 done
 
 equo mask sabayon-skel sabayon-version sabayon-artwork-grub
+equo remove sabayon-artwork-grub sabayon-artwork-core sabayon-artwork-isolinux sabayon-version sabayonlive-tools --nodeps

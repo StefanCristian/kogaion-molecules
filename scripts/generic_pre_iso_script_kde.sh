@@ -16,16 +16,6 @@ echo "Moving the right files where they rightfully belong"
 cp /sabayon/boot/core/autorun.inf "${CDROOT_DIR}/" 
 cp /sabayon/boot/core/rogentos.ico "${CDROOT_DIR}/"               
 cp /sabayon/boot/core/rogentos.bat "${CDROOT_DIR}/"
-chmod 755 "${CDROOT_DIR}/*"
-echo "Copying them into the ISO image"
-mkdir "${CDROOT_DIR}/syslinux/"
-cp -r /sabayon/boot/core/isolinux/* "${CDROOT_DIR}/syslinux/"
-echo "Creating folder syslinux and copying everything that's in isolinux to it"
-if [ -f "${CDROOT_DIR}/syslinux/isolinux.cfg" ]; then
-        mv "${CDROOT_DIR}/syslinux/isolinux.cfg" "${CDROOT_DIR}/syslinux/syslinux.cfg"
-fi
-chmod 755 "${CDROOT_DIR}/syslinux/*"
-echo "If we copied correctly, then do what we must"
 
 if [ "${remaster_type}" = "KDE" ] || [ "${remaster_type}" = "GNOME" ]; then
 	isolinux_source="/sabayon/remaster/legacy_standard_isolinux.cfg"
