@@ -2,6 +2,9 @@
 
 /usr/sbin/env-update && source /etc/profile
 
+ROGENTOS_MOLECULE_HOME="${ROGENTOS_MOLECULE_HOME:-/sabayon}"
+export ROGENTOS_MOLECULE_HOME
+
 remaster_type="${1}"
 isolinux_source="/sabayon/remaster/minimal_isolinux.cfg"
 isolinux_destination="${CDROOT_DIR}/isolinux/txt.cfg"

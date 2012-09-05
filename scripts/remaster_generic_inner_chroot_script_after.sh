@@ -245,9 +245,8 @@ rogentos_install() {
 localz=$(pwd)
 ARCH=$(uname -m)
 rog=rogentos-artwork
-echo "Entering folder $localz"
-equo remove anaconda anaconda-runtime sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux sabayon-artwork-lxde sabayon-skel tango-icon-theme gnome-colors-common oxygen-icons --nodeps
-echo "Removing sabayon artwork"
+
+equo remove anaconda --nodeps
 
 if [ "$ARCH" = "x86_64" ]; then
 		equo unmask anaconda
@@ -302,15 +301,14 @@ setup_portage() {
 }
 
 setup_startup_caches() {
-	mount -t proc proc /proc
 	/lib/rc/bin/rc-depend -u
 	# Generate openrc cache
-	touch /lib/rc/init.d/softlevel
+	[[ -d "/lib/rc/init.d" ]] && touch /lib/rc/init.d/softlevel
+	[[ -d "/run/openrc" ]] && touch /run/openrc/softlevel
 	/etc/init.d/savecache start
 	/etc/init.d/savecache zap
 	ldconfig
 	ldconfig
-	umount /proc
 }
 
 prepare_mate() {

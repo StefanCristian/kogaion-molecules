@@ -19,8 +19,8 @@ rm -rf /root
 cp /etc/skel /root -Rap
 chown root:root /root -R
 
-source /etc/profile
-/usr/sbin/env-update && source /etc/profile
+/usr/sbin/env-update
+. /etc/profile
 
 # Setup locale to en_US
 echo LANG=\"en_US.UTF-8\" > /etc/env.d/02locale
@@ -77,7 +77,8 @@ echo "Vacuum cleaning client db"
 equo rescue vacuum
 
 # Generate openrc cache
-touch /lib/rc/init.d/softlevel
+[[ -d "/lib/rc/init.d" ]] && touch /lib/rc/init.d/softlevel
+[[ -d "/run/openrc" ]] && touch /run/openrc/softlevel
 /etc/init.d/savecache start
 /etc/init.d/savecache zap
 
@@ -97,10 +98,36 @@ for repo_conf in /etc/entropy/repositories.conf.d/entropy_*.example; do
 done
 
 # copy Portage config from sabayonlinux.org entropy repo to system
-cp /var/lib/entropy/client/database/*/sabayonlinux.org/standard/*/*/package.mask /etc/portage/package.mask
-cp /var/lib/entropy/client/database/*/sabayonlinux.org/standard/*/*/package.unmask /etc/portage/package.unmask
-cp /var/lib/entropy/client/database/*/sabayonlinux.org/standard/*/*/package.use /etc/portage/package.use
-cp /var/lib/entropy/client/database/*/sabayonlinux.org/standard/*/*/make.conf /etc/make.conf
+for conf in package.mask package.unmask package.keywords make.conf package.use; do
+	repo_path=/var/lib/entropy/client/database/*/sabayonlinux.org/standard
+	repo_conf=$(ls -1 ${repo_path}/*/*/${conf} | sort | tail -n 1 2>/dev/null)
+	if [ -n "${repo_conf}" ]; then
+		target_path="/etc/portage/${conf}"
+		if [ "${conf}" = "make.conf" ]; then
+			target_path="/etc/make.conf"
+		fi
+		if [ ! -d "${target_path}" ]; then # do not touch dirs
+			cp "${repo_conf}" "${target_path}" # ignore
+		fi
+	fi
+done
+# split config file
+for conf in 00-sabayon.package.use; do
+	repo_path=/var/lib/entropy/client/database/*/sabayonlinux.org/standard
+	repo_conf=$(ls -1 ${repo_path}/*/*/${conf} | sort | tail -n 1 2>/dev/null)
+	if [ -n "${repo_conf}" ]; then
+		target_path="/etc/portage/${conf/00-sabayon.}/${conf}"
+		target_dir=$(dirname "${target_path}")
+		if [ -f "${target_dir}" ]; then # remove old file
+			rm "${target_dir}" # ignore failure
+		fi
+		if [ ! -d "${target_path}" ]; then
+			mkdir -p "${target_path}" # ignore failure
+		fi
+		cp "${repo_conf}" "${target_path}" # ignore
+
+	fi
+done
 
 # Update sabayon overlay
 layman -d sabayon
@@ -137,11 +164,14 @@ rm -rf /var/tmp/entropy/*
 rm -rf /var/lib/entropy/logs
 rm -rf /var/lib/entropy/glsa
 rm -rf /var/lib/entropy/tmp
+rm -rf /var/lib/entropy/*cache*
 
 # remove entropy hwhash
 rm -f /etc/entropy/.hw.hash
 
 # remove entropy pid file
 rm -f /var/run/entropy/entropy.lock
+rm -f /var/lib/entropy/entropy.pid
+rm -f /var/lib/entropy/entropy.lock # old?
 
 exit 0

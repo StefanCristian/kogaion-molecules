@@ -4,13 +4,6 @@
 /usr/sbin/env-update
 . /etc/profile
 
-LOCAZ=$(PWD)
-cd /etc/entropy/repositories.conf.d/
-wget http://pkg2.rogentos.ro/~noxis/distro/entropy_rogentoslinux
-equo repo mirrorsort rogentoslinux
-equo update --force
-cd $LOCAZ
-
 
 basic_environment_setup() {
 	eselect opengl set xorg-x11 &> /dev/null
@@ -254,14 +247,12 @@ localz=$(pwd)
 ARCH=$(uname -m)
 rog=rogentos-artwork
 echo "Entering folder $localz"
-equo remove anaconda anaconda-runtime sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux sabayon-artwork-lxde sabayon-skel tango-icon-theme gnome-colors-common
+equo remove anaconda --nodeps
 
 if [ "$ARCH" = "x86_64" ]; then
 		equo unmask anaconda
 		equo remove anaconda --nodeps
-		equo install app-admin/anaconda-9999~0 --nodeps
-		equo install tango-icon-theme oxygen-icons rogentos-skel rogentos-artwork-core rogentos-artwork-grub rogentos-artwork-isolinux rogentoslive-tools --nodeps
-		equo install anaconda-runtime gpu-detector kernel-schimbare
+		equo install anaconda --nodeps
 		echo -5 | equo conf update
 		eselect kernel set 1
 		env-update && source /etc/profile
@@ -269,9 +260,7 @@ if [ "$ARCH" = "x86_64" ]; then
 	else
 		equo unmask anaconda
 		equo remove anaconda --nodeps
-		equo install app-admin/anaconda-9999~0 --nodeps
-		equo install tango-icon-theme oxygen-icons rogentos-skel rogentos-artwork-core rogentos-artwork-grub rogentos-artwork-isolinux rogentoslive-tools rogentos-artwork-kde --nodeps
-		equo install anaconda-runtime gpu-detector kernel-schimbare
+		equo install anaconda --nodeps
 		eselect kernel set 1
 		echo -5 | equo conf update
 		env-update && source /etc/profile
@@ -317,15 +306,14 @@ setup_portage() {
 }
 
 setup_startup_caches() {
-	mount -t proc proc /proc
 	/lib/rc/bin/rc-depend -u
 	# Generate openrc cache
 	touch /lib/rc/init.d/softlevel
+	[[ -d "/run/openrc" ]] && touch /run/openrc/softlevel
 	/etc/init.d/savecache start
 	/etc/init.d/savecache zap
 	ldconfig
 	ldconfig
-	umount /proc
 }
 
 prepare_lxde() {

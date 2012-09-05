@@ -54,6 +54,7 @@ packages_to_add:
 	@fluxbox,
 	app-admin/anaconda,
 	app-admin/rigo,
+	app-admin/kernel-schimbare,
 	app-arch/file-roller,
 	app-arch/unrar,
 	app-crypt/gnupg,
@@ -123,7 +124,8 @@ packages_to_add:
 	x11-themes/tango-icon-theme,
         x11-themes/rogentos-artwork-core,
         x11-themes/rogentos-artwork-grub,
-        x11-themes/rogentos-artwork-lxde,
+        x11-themes/rogentos-artwork-lxde
+	x11-themes/rogentos-artwork-isolinux,
 	xfce-base/xfce4-panel,
 	xfce-extra/tumbler,
 	xfce-extra/xfce4-clipman-plugin,

@@ -8,7 +8,6 @@ cd /etc/entropy/repositories.conf.d/
 wget http://pkg.rogentos.ro/~rogentos/distro/entropy_rogentoslinux
 equo repo mirrorsort rogentoslinux
 equo repo mirrorsort sabayonlinux.org
-equo update --force
 cd $LOC
 
 export FORCE_EAPI=2
@@ -29,3 +28,5 @@ for repo_conf in /etc/entropy/repositories.conf /etc/entropy/repositories.conf.d
 		-e "/^product/p" -e "/^official-repository-id/p" -e "/^differential-update/p" \
 		-i "${repo_conf}"
 done
+
+equo mask sabayon-skel sabayon-version sabayon-artwork-grub
