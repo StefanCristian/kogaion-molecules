@@ -5,8 +5,9 @@ rm -f /var/run/entropy/entropy.lock
 
 LOC=$(pwd)
 cd /etc/entropy/repositories.conf.d/
-wget http://188.215.51.153/~noxis/distro/entropy_rogentoslinux
+wget http://pkg.rogentos.ro/~rogentos/distro/entropy_rogentoslinux
 equo repo mirrorsort rogentoslinux
+equo repo mirrorsort sabayonlinux.org
 equo update --force
 cd $LOC
 
@@ -18,7 +19,7 @@ if [ "${?}" != "0" ]; then
 fi
 
 # disable all mirrors but GARR
-for repo_conf in /etc/entropy/repositories.conf /etc/entropy/repositories.conf.d/entropy_*; do
+for repo_conf in /etc/entropy/repositories.conf /etc/entropy/repositories.conf.d/entropy_sab*; do
 	# skip .example files
 	if [[ "${repo_conf}" =~ .*\.example$ ]]; then
 		echo "skipping ${repo_conf}"

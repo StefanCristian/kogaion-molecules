@@ -262,6 +262,7 @@ if [ "$ARCH" = "x86_64" ]; then
 		equo install app-admin/anaconda-9999~0 --nodeps
 		equo install tango-icon-theme oxygen-icons rogentos-skel rogentos-artwork-core rogentos-artwork-grub rogentos-artwork-isolinux rogentoslive-tools --nodeps
 		equo install anaconda-runtime gpu-detector kernel-schimbare
+		echo -5 | equo conf update
 		eselect kernel set 1
 		env-update && source /etc/profile
 		rogentos_splash
@@ -272,6 +273,7 @@ if [ "$ARCH" = "x86_64" ]; then
 		equo install tango-icon-theme oxygen-icons rogentos-skel rogentos-artwork-core rogentos-artwork-grub rogentos-artwork-isolinux rogentoslive-tools rogentos-artwork-kde --nodeps
 		equo install anaconda-runtime gpu-detector kernel-schimbare
 		eselect kernel set 1
+		echo -5 | equo conf update
 		env-update && source /etc/profile
 		rogentos_splash
 fi

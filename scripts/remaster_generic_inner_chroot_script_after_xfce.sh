@@ -252,14 +252,16 @@ echo "Removing sabayon artwork"
 
 if [ "$ARCH" = "x86_64" ]; then
 		equo unmask anaconda
-		equo install anaconda anaconda-runtime ${rog}-isolinux ${rog}-grub ${rog}-core ${rog}-lxde rogentos-skel rogentoslive-tools openrc tango-icon-theme rogentos-version lxdm gpu-detector openrc kernel-schimbare --nodeps
+		equo install anaconda anaconda-runtime kernel-schimbare --nodeps
 		echo "installed rogentos artwork amd64"
+		echo -5 | equo conf update
 		env-update && source /etc/profile
 		rogentos_splash
 	else
 		equo unmask anaconda
-		equo install anaconda anaconda-runtime ${rog}-isolinux ${rog}-grub ${rog}-core ${rog}-lxde rogentos-skel rogentoslive-tools openrc tango-icon-theme rogentos-version lxdm gpu-detector openrc kernel-schimbare --nodeps
+		equo install anaconda anaconda-runtime kernel-schimbare --nodeps
 		echo "Installed rogentos artwork x86"
+		echo -5 | equo conf update
 		env-update && source /etc/profile
 		rogentos_splash
 fi

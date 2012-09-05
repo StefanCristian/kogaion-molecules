@@ -4,14 +4,6 @@
 /usr/sbin/env-update
 . /etc/profile
 
-LOCAZ=$(PWD)
-cd /etc/entropy/repositories.conf.d/
-wget http://pkg2.rogentos.ro/~noxis/distro/entropy_rogentoslinux
-equo repo mirrorsort rogentoslinux
-equo update --force
-cd $LOCAZ
-
-
 basic_environment_setup() {
 	eselect opengl set xorg-x11 &> /dev/null
 
