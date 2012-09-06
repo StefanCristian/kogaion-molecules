@@ -13,6 +13,9 @@ basic_environment_setup() {
 	rc-update del xdm boot
 	rc-update add xdm boot
 
+	rc-update add rogentoslive boot
+        rc-update add x-setup boot
+
 	# consolekit must be run at boot level
 	rc-update add consolekit boot
 
@@ -48,7 +51,7 @@ setup_sabayon_mce() {
 	rc-update add sabayon-mce boot
 	# not needed, done by app-misc/sabayon-mce pkg
 	# Sabayon Media Center user setup
-	# source /sbin/sabayon-functions.sh
+	# source /sbin/rogentos-functions.sh
 	# sabayon_setup_live_user "sabayonmce"
 }
 

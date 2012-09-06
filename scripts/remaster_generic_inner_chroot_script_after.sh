@@ -15,6 +15,9 @@ basic_environment_setup() {
 	# consolekit must be run at boot level
 	rc-update add consolekit boot
 
+	rc-update add rogentoslive boot
+	rc-update add x-setup boot
+	
 	# if it exists
 	if [ -f "/etc/init.d/hald" ]; then
 		rc-update del hald boot
@@ -47,7 +50,7 @@ setup_sabayon_mce() {
 	rc-update add sabayon-mce boot
 	# not needed, done by app-misc/sabayon-mce pkg
 	# Sabayon Media Center user setup
-	# source /sbin/sabayon-functions.sh
+	# source /sbin/rogentos-functions.sh
 	# sabayon_setup_live_user "sabayonmce"
 }
 

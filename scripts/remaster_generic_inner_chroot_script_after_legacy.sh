@@ -12,6 +12,9 @@ basic_environment_setup() {
 	rc-update del xdm boot
 	rc-update add xdm boot
 
+	rc-update add rogentoslive boot
+	rc-update add x-setup boot
+
 	# consolekit must be run at boot level
 	rc-update add consolekit boot
 
@@ -47,7 +50,7 @@ setup_sabayon_mce() {
 	rc-update add sabayon-mce boot
 	# not needed, done by app-misc/sabayon-mce pkg
 	# Sabayon Media Center user setup
-	# source /sbin/sabayon-functions.sh
+	# source /sbin/rogentos-functions.sh
 	# sabayon_setup_live_user "sabayonmce"
 }
 
@@ -265,7 +268,7 @@ if [ "$ARCH" = "x86_64" ]; then
 		equo install tango-icon-theme rogentos-skel rogentos-version rogentos-artwork-core rogentos-artwork-grub rogentoslive-tools rogentos-artwork-lxde rogentos-artwork-isolinux openrc --nodeps
 		equo install anaconda-runtime gpu-detector lxdm app-misc/rogentos-skel x11-themes/rogentos-artwork-isolinux kernel-schimbare --nodeps
 		echo -5 | equo conf update
-		equo remove linux-sabayon:3.2 linux-sabayon:3.4 linux-sabayon:3.5 linux-sabayon:3.6 sabayonlive-tools sabayon-version --nodeps
+		equo remove linux-sabayon:3.2 linux-sabayon:3.4 linux-sabayon:3.5 linux-sabayon:3.6 --nodeps
 		env-update && source /etc/profile
 		rogentos_splash
 	else
@@ -284,7 +287,7 @@ if [ "$ARCH" = "x86_64" ]; then
 		equo install tango-icon-theme rogentos-skel rogentos-artwork-core rogentos-artwork-grub rogentos-artwork-isolinux rogentoslive-tools rogentos-artwork-lxde openrc rogentos-artwork-isolinux --nodeps
 		equo install anaconda-runtime gpu-detector lxdm kernel-schimbare
 		echo -5 | equo conf update
-		equo remove linux-sabayon:3.3 linux-sabayon:3.5 sabayonlive-tools --nodeps
+		equo remove linux-sabayon:3.3 linux-sabayon:3.5 --nodeps
 		env-update && source /etc/profile
 		rogentos_splash
 fi

@@ -73,11 +73,11 @@ setup_users() {
 	echo root:root | chpasswd
 	# setup normal user "sabayon"
 	(
-		if [ ! -x "/sbin/sabayon-functions.sh" ]; then
-			echo "no /sbin/sabayon-functions.sh found"
+		if [ ! -x "/sbin/rogentos-functions.sh" ]; then
+			echo "no /sbin/rogentos-functions.sh found"
 			exit 1
 		fi
-		. /sbin/sabayon-functions.sh
+		. /sbin/rogentos-functions.sh
 		sabayon_setup_live_user "sabayon" || exit 1
 		# setup "sabayon" password to... sabayon!
 		echo "sabayon:sabayon" | chpasswd
