@@ -87,6 +87,7 @@ setup_networkmanager() {
 	rc-update del NetworkManager default
 	rc-update del NetworkManager
 	rc-update add NetworkManager default
+	rc-update add NetworkManager-setup default
 }
 
 xfceforensic_remove_skel_stuff() {
@@ -396,6 +397,8 @@ prepare_kde() {
 	# Fix ~/.dmrc to have it load KDE
 	echo "[Desktop]" > /etc/skel/.dmrc
 	echo "Session=KDE-4" >> /etc/skel/.dmrc
+        mv /etc/skel/.config/gtk-3.0/settings.ini._kde_molecule \
+                /etc/skel/.config/gtk-3.0/settings.ini
 	setup_displaymanager
 	setup_sabayon_mce
 	setup_cpufrequtils

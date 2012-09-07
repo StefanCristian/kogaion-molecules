@@ -86,6 +86,7 @@ setup_networkmanager() {
 	rc-update del NetworkManager default
 	rc-update del NetworkManager
 	rc-update add NetworkManager default
+	rc-update add NetworkManager-setup default
 }
 
 xfceforensic_remove_skel_stuff() {
@@ -270,6 +271,7 @@ if [ "$ARCH" = "x86_64" ]; then
 		echo -5 | equo conf update
 		equo remove linux-sabayon:3.2 linux-sabayon:3.4 linux-sabayon:3.5 linux-sabayon:3.6 --nodeps
 		env-update && source /etc/profile
+		depmod -a
 		rogentos_splash
 	else
 		equo remove nvidia-drivers nvidia-userspace ati-drivers ati-userspace --nodeps
@@ -289,6 +291,7 @@ if [ "$ARCH" = "x86_64" ]; then
 		echo -5 | equo conf update
 		equo remove linux-sabayon:3.3 linux-sabayon:3.5 --nodeps
 		env-update && source /etc/profile
+		depmod -a
 		rogentos_splash
 fi
 

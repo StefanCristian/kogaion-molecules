@@ -86,6 +86,7 @@ setup_networkmanager() {
 	rc-update del NetworkManager default
 	rc-update del NetworkManager
 	rc-update add NetworkManager default
+	rc-update add NetworkManager-setup default
 }
 
 xfceforensic_remove_skel_stuff() {
@@ -149,8 +150,8 @@ setup_proprietary_gfx_drivers() {
 
 	rm -rf /var/lib/entropy/client/packages/packages*/${mydir}/*/x11-drivers*
 	# dead with >=xorg-server-1.11
-	# ACCEPT_LICENSE="NVIDIA" equo install --fetch --nodeps =x11-drivers/nvidia-drivers-173*$kernel_tag
-	# ACCEPT_LICENSE="NVIDIA" equo install --fetch --nodeps =x11-drivers/nvidia-drivers-96.43.20*$kernel_tag
+	ACCEPT_LICENSE="NVIDIA" equo install --fetch --nodeps =x11-drivers/nvidia-drivers-173*$kernel_tag
+	ACCEPT_LICENSE="NVIDIA" equo install --fetch --nodeps =x11-drivers/nvidia-drivers-96.43.20*$kernel_tag
 	## not working with >=xorg-server-1.5
 	## ACCEPT_LICENSE="NVIDIA" equo install --fetch --nodeps ~x11-drivers/nvidia-drivers-71.86.*$kernel_tag
 	# mv /var/lib/entropy/client/packages/packages-nonfree/${mydir}/*/x11-drivers\:nvidia-drivers*.tbz2 /install-data/drivers/
@@ -295,6 +296,7 @@ setup_installed_packages() {
 	rm -rf /var/lib/entropy/*cache*
 	# remove entropy pid file
 	rm -f /var/run/entropy/entropy.lock
+	rm -f /var/run/entropy/entropy.pid
 }
 
 setup_portage() {
