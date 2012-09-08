@@ -36,6 +36,11 @@ basic_environment_setup() {
 
 	# Always startup this
 	rc-update add virtualbox-guest-additions boot
+	# Create a default "games" group so that
+	# the default user will be added to it during
+	# live boot, and thus, after install.
+	# See bug 3134
+	groupadd -f games
 }
 
 remove_desktop_files() {
@@ -254,6 +259,7 @@ localz=$(pwd)
 ARCH=$(uname -m)
 
 if [ "$ARCH" = "x86_64" ]; then
+		emerge -C sabayon-version
 		equo remove nvidia-drivers nvidia-userspace ati-drivers ati-userspace virtualbox-guest-additions nvidiabl net-wireless/broadcom-sta net-wireless/ndiswrapper xf86-video-virtualbox --nodeps
 		equo install linux-sabayon:3.3 sabayon-sources:3.3 ati-drivers-12.6:1,3.3.0-sabayon nvidia-drivers:0,3.3.0-sabayon =x11-drivers/nvidia-userspace-304.37
 		equo install nvidia-drivers:0,3.3.0-sabayon =x11-drivers/nvidia-userspace-304.37 --nodeps
@@ -274,6 +280,7 @@ if [ "$ARCH" = "x86_64" ]; then
 		depmod -a
 		rogentos_splash
 	else
+		emerge -C sabayon-version
 		equo remove nvidia-drivers nvidia-userspace ati-drivers ati-userspace --nodeps
 		equo install linux-sabayon:3.2 sabayon-sources:3.2 =x11-drivers/ati-userspace-11.12 =x11-drivers/ati-drivers-11.12#3.2.0-sabayon
 		env-update && source /etc/profile

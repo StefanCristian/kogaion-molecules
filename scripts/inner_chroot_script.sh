@@ -48,8 +48,8 @@ echo "inet_interfaces = localhost" >> /etc/postfix/main.cf
 sed -i 's:exec -l /bin/bash:exec -l /bin/bash -l:' /bin/bashlogin
 
 # setup /etc/hosts, add sabayon as default hostname (required by Xfce)
-sed -i "/^127.0.0.1/ s/localhost/localhost sabayon/" /etc/hosts
-sed -i "/^::1/ s/localhost/localhost sabayon/" /etc/hosts
+sed -i "/^127.0.0.1/ s/localhost/localhost rogentos/" /etc/hosts
+sed -i "/^::1/ s/localhost/localhost rogentos/" /etc/hosts
 
 # setup postfix local mail aliases
 newaliases
@@ -111,6 +111,7 @@ for conf in package.mask package.unmask package.keywords make.conf package.use; 
 		fi
 	fi
 done
+
 # split config file
 for conf in 00-sabayon.package.use; do
 	repo_path=/var/lib/entropy/client/database/*/sabayonlinux.org/standard
@@ -158,7 +159,7 @@ if [ -x "/usr/bin/fluxbox-generate_menu" ]; then
         fluxbox-generate_menu -o /etc/skel/.fluxbox/menu
 fi
 
-equo query list installed -qv > /etc/sabayon-pkglist
+equo query list installed -qv > /etc/rogentos-pkglist
 
 rm -rf /var/tmp/entropy/*
 rm -rf /var/lib/entropy/logs

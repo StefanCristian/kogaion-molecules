@@ -37,6 +37,11 @@ basic_environment_setup() {
 
 	# Always startup this
 	rc-update add virtualbox-guest-additions boot
+	# Create a default "games" group so that
+	# the default user will be added to it during
+	# live boot, and thus, after install.
+	# See bug 3134
+	groupadd -f games
 }
 
 remove_desktop_files() {
@@ -256,6 +261,7 @@ ARCH=$(uname -m)
 rog=rogentos-artwork
 echo "Entering folder $localz"
 equo remove anaconda --nodeps
+emerge -C sabayon-version
 
 if [ "$ARCH" = "x86_64" ]; then
 		equo unmask anaconda
