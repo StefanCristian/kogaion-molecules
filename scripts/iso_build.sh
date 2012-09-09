@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Path to molecules.git dir
-ROGENTOS_MOLECULE_HOME="${ROGENTOS_MOLECULE_HOME:-/sabayon}"
+ROGENTOS_MOLECULE_HOME="${ROGENTOS_MOLECULE_HOME:-/rogentos}"
 export ROGENTOS_MOLECULE_HOME
 
 ACTION="${1}"
@@ -160,13 +160,13 @@ move_to_pkg_sabayon_org() {
 		local executed=
 		for ((i=0; i < 5; i++)); do
 			rsync -av --partial --delete-excluded "${ROGENTOS_MOLECULE_HOME}"/iso_rsync/*DAILY* \
-				entropy@pkg.sabayon.org:/sabayon/rsync/rsync.sabayon.org/iso/daily \
+				entropy@pkg.sabayon.org:/rogentos/rsync/rsync.sabayon.org/iso/daily \
 				|| { sleep 10; continue; }
 			rsync -av --partial --delete-excluded "${ROGENTOS_MOLECULE_HOME}"/scripts/gen_html \
-			entropy@pkg.sabayon.org:/sabayon/rsync/iso_html_generator \
+			entropy@pkg.sabayon.org:/rogentos/rsync/iso_html_generator \
 				|| { sleep 10; continue; }
 			ssh entropy@pkg.sabayon.org \
-				/sabayon/rsync/iso_html_generator/gen_html/gen.sh \
+				/rogentos/rsync/iso_html_generator/gen_html/gen.sh \
 				|| { sleep 10; continue; }
 			executed=1
 			break

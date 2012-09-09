@@ -1,2 +1,2 @@
 #!/bin/sh
-exec /sabayon/scripts/mkloopcard.sh /sabayon/scripts/mkloopcard_beaglebone_chroot_hook.sh "$@"
+exec /rogentos/scripts/mkloopcard.sh /rogentos/scripts/mkloopcard_beaglebone_chroot_hook.sh "$@"

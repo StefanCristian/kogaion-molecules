@@ -7,4 +7,4 @@ export BOOT_PART_TYPE_INSIDE_ROOT=1
 export ROOT_PART_TYPE=ext4
 export MAKE_TARBALL=0
 
-exec /sabayon/scripts/mkloopcard.sh /sabayon/scripts/mkloopcard_efikamx_chroot_hook.sh "$@"
+exec /rogentos/scripts/mkloopcard.sh /rogentos/scripts/mkloopcard_efikamx_chroot_hook.sh "$@"

@@ -7,7 +7,7 @@ fi
 
 BUILD_SCRIPT_NAME="${1}"
 
-ROGENTOS_MOLECULE_HOME="${ROGENTOS_MOLECULE_HOME:-/sabayon}"
+ROGENTOS_MOLECULE_HOME="${ROGENTOS_MOLECULE_HOME:-/rogentos}"
 . "${ROGENTOS_MOLECULE_HOME}/scripts/iso_build.include"
 
 # Pull new data from Git
@@ -17,7 +17,7 @@ ROGENTOS_MOLECULE_HOME="${ROGENTOS_MOLECULE_HOME:-/sabayon}"
         echo "[git pull] cannot acquire lock, stale process holding it?" >&2
         kill_stale_process || exit 1
     fi
-    cd /sabayon && git pull --quiet
+    cd /rogentos && git pull --quiet
 ) 9> "${ISO_BUILD_LOCK}"
 
 # Execute build

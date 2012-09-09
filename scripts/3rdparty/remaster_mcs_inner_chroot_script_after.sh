@@ -26,10 +26,10 @@ cp /.mcs/background/* /usr/share/backgrounds/ -R || exit 1
 chown root:root /usr/share/backgrounds/ -R || exit 1
 # setup background in /etc/skel
 for file in `find /etc/skel -type f`; do
-	sed -i "s:/usr/share/backgrounds/sabayonlinux.jpg:/usr/share/backgrounds/background-mailware.jpg:g" "${file}"
-	sed -i "s:/usr/share/backgrounds/sabayonlinux.png:/usr/share/backgrounds/background-mailware.png:g" "${file}"
+	sed -i "s:/usr/share/backgrounds/rogentoslinux.jpg:/usr/share/backgrounds/background-mailware.jpg:g" "${file}"
+	sed -i "s:/usr/share/backgrounds/rogentoslinux.png:/usr/share/backgrounds/background-mailware.png:g" "${file}"
 done
-sed -i "s:/usr/share/backgrounds/sabayonlinux.png:/usr/share/backgrounds/background-mailware.png:g" /etc/init.d/installer-gui
+sed -i "s:/usr/share/backgrounds/rogentoslinux.png:/usr/share/backgrounds/background-mailware.png:g" /etc/init.d/installer-gui
 
 # setup Desktop icons
 rm /etc/skel/Desktop/*.desktop
@@ -58,8 +58,8 @@ chown root:root /etc/init.d/oemsystem-default
 rc-update add oemsystem-default default
 
 # setup fqdn
-sed -i 's/sabayon/localhost.localdomain example.com sabayon/g' /etc/hosts
-sed -i 's/sabayon/localhost.localdomain/g' /etc/conf.d/hostname
+sed -i 's/rogentos/localhost.localdomain example.com sabayon/g' /etc/hosts
+sed -i 's/rogentos/localhost.localdomain/g' /etc/conf.d/hostname
 # setup fqdn in 389-admin, stop annoying apache crap
 sed -i '/^#ServerName/ s/.*/ServerName localhost.localdomain/g' /etc/dirsrv/admin-serv/httpd.conf || exit 1
 
@@ -207,15 +207,15 @@ rm /.mcs -rf
 # Sabayon stuff
 echo "Working out Sabayon stuff"
 rm -rf /install-data || exit 1
-rm -rf /usr/share/sabayon/xdg || exit 1
-rm -rf /usr/share/applications/sabayon-*.desktop
+rm -rf /usr/share/rogentos/xdg || exit 1
+rm -rf /usr/share/applications/rogentos-*.desktop
 
 mount -t proc proc /proc
 /lib/rc/bin/rc-depend -u
 
 echo "Vacuum cleaning client db"
-rm /var/lib/entropy/client/database/*/sabayonlinux.org -rf
-rm /var/lib/entropy/client/database/*/sabayon-weekly -rf
+rm /var/lib/entropy/client/database/*/rogentoslinux.org -rf
+rm /var/lib/entropy/client/database/*/rogentos-weekly -rf
 equo rescue vacuum
 
 # cleanup log dir

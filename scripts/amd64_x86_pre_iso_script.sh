@@ -25,7 +25,7 @@ if [ ! -f "${other_iso_path}" ]; then
 fi
 
 isolinux_destination="${CDROOT_DIR}/isolinux/txt.cfg"
-isolinux_source="/sabayon/remaster/minimal_amd64_x86_isolinux.cfg"
+isolinux_source="/rogentos/remaster/minimal_amd64_x86_isolinux.cfg"
 cp "${isolinux_source}" "${isolinux_destination}" || exit 1
 
 ver=${RELEASE_VERSION}
@@ -55,8 +55,8 @@ if [ -z "${tmp_dir}" ]; then
 	exit 1
 fi
 # also rename kernel and initramfs inside the CDROOT dir
-mv "${CDROOT_DIR}/boot/sabayon" "${CDROOT_DIR}/boot/sabayon${current_arch}" || exit 1
-mv "${CDROOT_DIR}/boot/sabayon.igz" "${CDROOT_DIR}/boot/sabayon${current_arch}.igz" || exit 1
+mv "${CDROOT_DIR}/boot/rogentos" "${CDROOT_DIR}/boot/rogentos${current_arch}" || exit 1
+mv "${CDROOT_DIR}/boot/rogentos.igz" "${CDROOT_DIR}/boot/rogentos${current_arch}.igz" || exit 1
 
 mount -o loop "${other_iso_path}" "${tmp_dir}" || exit 1
 other_squashfs_path="${tmp_dir}/livecd.squashfs"
@@ -66,17 +66,17 @@ if [ ! -f "${other_squashfs_path}" ]; then
 fi
 cp "${other_squashfs_path}" "${CDROOT_DIR}/livecd${other_arch}.squashfs" || exit 1
 # copy kernel and initramfs
-cp "${tmp_dir}/boot/sabayon" "${CDROOT_DIR}/boot/sabayon${other_arch}" || exit 1
-cp "${tmp_dir}/boot/sabayon.igz" "${CDROOT_DIR}/boot/sabayon${other_arch}.igz" || exit 1
+cp "${tmp_dir}/boot/rogentos" "${CDROOT_DIR}/boot/rogentos${other_arch}" || exit 1
+cp "${tmp_dir}/boot/rogentos.igz" "${CDROOT_DIR}/boot/rogentos${other_arch}.igz" || exit 1
 
 # copy back.jpg to proper location
-isolinux_img="/sabayon/remaster/embedded_world/back.jpg"
+isolinux_img="/rogentos/remaster/embedded_world/back.jpg"
 if [ -f "${isolinux_img}" ]; then
 	cp "${isolinux_img}" "${CDROOT_DIR}/isolinux/" || exit 1
 fi
 
 # copy ARM images on the ISO
-arm_images_dir="/sabayon/images"
+arm_images_dir="/rogentos/images"
 arm_dir="${CDROOT_DIR}/ARM"
 mkdir -p "${arm_dir}" || exit 1
 
@@ -86,7 +86,7 @@ pandaboard_image="Sabayon_Linux_8_armv7a_PandaBoard_4GB.img.xz"
 
 # BeagleBone
 arm_card_dir="${arm_dir}/BeagleBone"
-arm_card_boot_dir="/sabayon/boot/arm/beaglebone"
+arm_card_boot_dir="/rogentos/boot/arm/beaglebone"
 mkdir "${arm_card_dir}" -p || exit 1
 cp "${arm_images_dir}/${beaglebone_image}" "${arm_card_dir}"/ || exit 1
 cp "${arm_images_dir}/${beaglebone_image}.md5" "${arm_card_dir}"/ || exit 1
@@ -94,7 +94,7 @@ cp "${arm_card_boot_dir}/README.txt" "${arm_card_dir}"/ || exit 1
 
 # BeagleBoard xM
 arm_card_dir="${arm_dir}/BeagleBoard-xM"
-arm_card_boot_dir="/sabayon/boot/arm/beagleboard-xm"
+arm_card_boot_dir="/rogentos/boot/arm/beagleboard-xm"
 mkdir "${arm_card_dir}" -p || exit 1
 cp "${arm_images_dir}/${beaglebone_image}" "${arm_card_dir}"/ || exit 1
 cp "${arm_images_dir}/${beaglebone_image}.md5" "${arm_card_dir}"/ || exit 1
@@ -102,7 +102,7 @@ cp "${arm_card_boot_dir}/README.txt" "${arm_card_dir}"/ || exit 1
 
 # PandaBoard
 arm_card_dir="${arm_dir}/PandaBoard"
-arm_card_boot_dir="/sabayon/boot/arm/pandaboard"
+arm_card_boot_dir="/rogentos/boot/arm/pandaboard"
 mkdir "${arm_card_dir}" -p || exit 1
 cp "${arm_images_dir}/${beaglebone_image}" "${arm_card_dir}"/ || exit 1
 cp "${arm_images_dir}/${beaglebone_image}.md5" "${arm_card_dir}"/ || exit 1

@@ -1,5 +1,5 @@
 # Path to molecules.git dir
-ROGENTOS_MOLECULE_HOME="${ROGENTOS_MOLECULE_HOME:-/sabayon}"
+ROGENTOS_MOLECULE_HOME="${ROGENTOS_MOLECULE_HOME:-/rogentos}"
 . "${ROGENTOS_MOLECULE_HOME}/scripts/iso_build.include"
 
 (

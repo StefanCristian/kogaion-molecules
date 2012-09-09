@@ -3,7 +3,7 @@
 # concurrency wrt scripts is handled in crontab
 
 # Path to molecules.git dir
-ROGENTOS_MOLECULE_HOME="${ROGENTOS_MOLECULE_HOME:-/sabayon}"
+ROGENTOS_MOLECULE_HOME="${ROGENTOS_MOLECULE_HOME:-/rogentos}"
 
 DIR="${ROGENTOS_MOLECULE_HOME}/pkgcache"
 find "${DIR}" -atime +30 -type f -delete

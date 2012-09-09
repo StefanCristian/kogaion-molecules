@@ -28,7 +28,7 @@ if [ "${arch}" = "x86_64" ]; then
 elif [ "${arch}" = "i686" ]; then
 	arch="x86"
 fi
-SABAYON_REPO_DIR="/var/lib/entropy/client/database/${arch}/sabayonlinux.org/standard/${arch}/5"
+SABAYON_REPO_DIR="/var/lib/entropy/client/database/${arch}/rogentoslinux.org/standard/${arch}/5"
 for cfg in package.mask package.unmask package.keywords package.use make.conf; do
 	cfg_path="${SABAYON_REPO_DIR}/${cfg}"
 	if [ ! -f "${cfg_path}" ]; then
@@ -42,4 +42,4 @@ for cfg in package.mask package.unmask package.keywords package.use make.conf; d
 	cp "${cfg_path}" "${dest_cfg_path}" # ignore failures
 done
 
-equo query list installed -qv > /etc/sabayon-pkglist
+equo query list installed -qv > /etc/rogentos-pkglist

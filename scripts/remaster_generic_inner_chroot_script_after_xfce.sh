@@ -53,7 +53,7 @@ setup_cpufrequtils() {
 
 setup_sabayon_mce() {
 	rc-update add rogentos-mce boot
-	# not needed, done by app-misc/sabayon-mce pkg
+	# not needed, done by app-misc/rogentos-mce pkg
 	# Sabayon Media Center user setup
 	# source /sbin/rogentos-functions.sh
 	# sabayon_setup_live_user "sabayonmce"
@@ -239,11 +239,11 @@ setup_misc_stuff() {
 }
 
 rogentos_splash() {
-if [ -d "/etc/splash/sabayon" ]; then
-        rm -r /etc/splash/sabayon
-        ln -s /etc/splash/rogentos /etc/splash/sabayon
-        echo "So etc/splash/sabayon exists"
-        ln -s /etc/splash/rogentos /etc/splash/sabayon
+if [ -d "/etc/splash/rogentos" ]; then
+        rm -r /etc/splash/rogentos
+        ln -s /etc/splash/rogentos /etc/splash/rogentos
+        echo "So etc/splash/rogentos exists"
+        ln -s /etc/splash/rogentos /etc/splash/rogentos
 
         for i in `seq 1 6`; do
         splash_manager -c set -t rogentos --tty=$i
@@ -290,8 +290,8 @@ setup_installed_packages() {
 	echo -5 | equo conf update
 
 	echo "Vacuum cleaning client db"
-	rm /var/lib/entropy/client/database/*/sabayonlinux.org -rf
-	rm /var/lib/entropy/client/database/*/sabayon-weekly -rf
+	rm /var/lib/entropy/client/database/*/rogentoslinux.org -rf
+	rm /var/lib/entropy/client/database/*/rogentos-weekly -rf
 	rm /var/lib/entropy/client/database/*/rogentoslinux -rf
 	equo rescue vacuum
 
@@ -311,9 +311,9 @@ setup_installed_packages() {
 
 setup_portage() {
 	layman -d sabayon
-	rm -rf /var/lib/layman/sabayon
+	rm -rf /var/lib/layman/rogentos
 	layman -d sabayon-distro
-	rm -rf /var/lib/layman/sabayon-distro
+	rm -rf /var/lib/layman/rogentos-distro
 	layman -d rogento
 	rm -rf /var/lib/layman/rogento
 	emaint --fix world
