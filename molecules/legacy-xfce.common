@@ -36,7 +36,7 @@ extra_mkisofs_parameters: -udf -b isolinux/isolinux.bin -c isolinux/boot.cat -is
 %env pre_iso_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/generic_pre_iso_script_legacy.sh Xfce
 
 # Post-ISO building script, called after ISO image generation.    
-%env post_iso_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/generic_post_iso_script.sh
+# %env post_iso_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/generic_post_iso_script.sh
 
 # Destination directory for the ISO image path (MANDATORY)
 %env destination_iso_directory: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/iso
