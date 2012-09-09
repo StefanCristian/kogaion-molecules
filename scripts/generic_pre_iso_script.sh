@@ -18,6 +18,12 @@ cp /sabayon/boot/core/rogentos.ico "${CDROOT_DIR}/"
 cp /sabayon/boot/core/rogentos.bat "${CDROOT_DIR}/"
 echo "Copying them into the ISO image"
 
+echo "Creating folder syslinux and copying everything that's in isolinux to it"
+if [ -f "${CDROOT_DIR}/syslinux/isolinux.cfg" ]; then
+        mv "${CDROOT_DIR}/syslinux/isolinux.cfg" "${CDROOT_DIR}/syslinux/syslinux.cfg"
+fi
+echo "If we copied correctly, then do what we must"
+
 if [ "${remaster_type}" = "KDE" ] || [ "${remaster_type}" = "GNOME" ]; then
 	isolinux_source="/sabayon/remaster/standard_isolinux.cfg"
 elif [ "${remaster_type}" = "ServerBase" ]; then
