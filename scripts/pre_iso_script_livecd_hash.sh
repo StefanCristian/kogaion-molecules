@@ -3,7 +3,7 @@
 LIVECD_SQUASHFS="${CDROOT_DIR}/livecd.squashfs"
 
 # Path to molecules.git dir
-ROGENTOS_MOLECULE_HOME="${ROGENTOS_MOLECULE_HOME:-/rogentos}"
+ROGENTOS_MOLECULE_HOME="${ROGENTOS_MOLECULE_HOME:-/sabayon}"
 export ROGENTOS_MOLECULE_HOME
 
 echo

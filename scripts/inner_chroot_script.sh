@@ -99,7 +99,7 @@ done
 
 # copy Portage config from sabayonlinux.org entropy repo to system
 for conf in package.mask package.unmask package.keywords make.conf package.use; do
-	repo_path=/var/lib/entropy/client/database/*/rogentoslinux.org/standard
+	repo_path=/var/lib/entropy/client/database/*/sabayonlinux.org/standard
 	repo_conf=$(ls -1 ${repo_path}/*/*/${conf} | sort | tail -n 1 2>/dev/null)
 	if [ -n "${repo_conf}" ]; then
 		target_path="/etc/portage/${conf}"
@@ -114,7 +114,7 @@ done
 
 # split config file
 for conf in 00-sabayon.package.use; do
-	repo_path=/var/lib/entropy/client/database/*/rogentoslinux.org/standard
+	repo_path=/var/lib/entropy/client/database/*/sabayonlinux.org/standard
 	repo_conf=$(ls -1 ${repo_path}/*/*/${conf} | sort | tail -n 1 2>/dev/null)
 	if [ -n "${repo_conf}" ]; then
 		target_path="/etc/portage/${conf/00-sabayon.}/${conf}"
@@ -132,9 +132,9 @@ done
 
 # Update sabayon overlay
 layman -d sabayon
-rm -rf /var/lib/layman/rogentos
+rm -rf /var/lib/layman/sabayon
 layman -d sabayon-distro
-rm -rf /var/lib/layman/rogentos-distro
+rm -rf /var/lib/layman/sabayon-distro
 
 # Reset users' password
 # chpasswd doesn't work anymore

@@ -1,3 +1,3 @@
 #!/bin/bash
 
-exec /rogentos/scripts/iso_build.sh "weekly" "$@"
+exec /sabayon/scripts/iso_build.sh "weekly" "$@"

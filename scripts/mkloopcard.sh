@@ -60,7 +60,7 @@ cleanup_loopbacks() {
 	[[ -n "${root_part}" ]] && losetup -d "${root_part}" 2> /dev/null
 	[[ -n "${DRIVE}" ]] && losetup -d "${DRIVE}" 2> /dev/null
 	# make sure to have run this
-	[[ -n "${tmp_dir}" ]] && CHROOT_DIR="${tmp_dir}" /rogentos/scripts/mmc_remaster_post.sh
+	[[ -n "${tmp_dir}" ]] && CHROOT_DIR="${tmp_dir}" /sabayon/scripts/mmc_remaster_post.sh
 }
 trap "cleanup_loopbacks" 1 2 3 6 9 14 15 EXIT
 
@@ -159,10 +159,10 @@ mount "${root_part}" "${tmp_dir}"
 rsync -a -H -A -X --delete-during "${CHROOT_DIR}"/ "${tmp_dir}"/ --exclude "/proc/*" --exclude "/sys/*" \
 	--exclude "/dev/pts/*" --exclude "/dev/shm/*" || exit 1
 
-CHROOT_DIR="${tmp_dir}" /rogentos/scripts/remaster_pre.sh || exit 1
+CHROOT_DIR="${tmp_dir}" /sabayon/scripts/remaster_pre.sh || exit 1
 
 # Configure 00-board-setup.start
-source_board_setup="/rogentos/boot/arm_startup/00-board-setup.start"
+source_board_setup="/sabayon/boot/arm_startup/00-board-setup.start"
 dest_board_setup="${CHROOT_DIR}/etc/local.d/00-board-setup.start"
 if [ -f "${source_board_setup}" ]; then
 	echo "Setting up ${dest_board_setup}"
@@ -204,7 +204,7 @@ chown root "${target_chroot_script}" || exit 1
 chroot "${tmp_dir}" "/${chroot_script_name}" || exit 1
 rm -f "${target_chroot_script}"
 
-CHROOT_DIR="${tmp_dir}" /rogentos/scripts/mmc_remaster_post.sh
+CHROOT_DIR="${tmp_dir}" /sabayon/scripts/mmc_remaster_post.sh
 
 # execute final cleanup of entropy stuff
 chroot "${tmp_dir}" equo rescue vacuum

@@ -1,5 +1,5 @@
 #!/bin/sh
-PKGS_DIR="/rogentos/pkgcache"
+PKGS_DIR="/sabayon/pkgcache"
 CHROOT_PKGS_DIR="${CHROOT_DIR}/var/lib/entropy/client/packages"
 
 # remove entropy hwash
