@@ -30,7 +30,7 @@ iso_title: Rogentos KDE
 %env error_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/remaster_error_script.sh
 
 # Extra mkisofs parameters, perhaps something to include/use your bootloader
-extra_mkisofs_parameters: -b isolinux/isolinux.bin -c isolinux/boot.cat
+extra_mkisofs_parameters: -udf -b isolinux/isolinux.bin -c isolinux/boot.cat -iso-level 4
 
 # Pre-ISO building script. Hook to be able to copy kernel images in place, for example
 %env pre_iso_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/generic_pre_iso_script_kde.sh KDE
@@ -48,6 +48,7 @@ extra_mkisofs_parameters: -b isolinux/isolinux.bin -c isolinux/boot.cat
 packages_to_add:
 	@fluxbox,
 	@gst-plugins,
+	@gst-plugins-extra,
 	@X,
 	@wireless,
 	app-admin/packagekit-base,

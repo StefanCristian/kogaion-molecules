@@ -30,7 +30,7 @@ iso_title: Rogentos Xfce Legacy
 %env error_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/remaster_error_script.sh
 
 # Extra mkisofs parameters, perhaps something to include/use your bootloader
-extra_mkisofs_parameters: -udf -b isolinux/isolinux.bin -c isolinux/boot.cat
+extra_mkisofs_parameters: -udf -b isolinux/isolinux.bin -c isolinux/boot.cat -iso-level 4
 
 # Pre-ISO building script. Hook to be able to copy kernel images in place, for example
 %env pre_iso_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/generic_pre_iso_script_legacy.sh Xfce
@@ -50,6 +50,7 @@ extra_mkisofs_parameters: -udf -b isolinux/isolinux.bin -c isolinux/boot.cat
 packages_to_add:
 	@X,
 	@gst-plugins,
+	@gst-plugins-extra,
 	@xfce,
 	@fluxbox,
 	app-admin/anaconda,
@@ -118,6 +119,7 @@ packages_to_add:
 	x11-themes/gtk-engines:2,
 	x11-themes/gnome-themes-standard,
 	x11-themes/iottinka-artwork,
+	x11-themees/zukitwo-brave,
 	x11-themes/rogentos-artwork-core,
 	x11-themes/rogentos-artwork-lxde,
 	x11-themes/rogentos-artwork-grub,
