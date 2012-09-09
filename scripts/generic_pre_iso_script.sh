@@ -21,6 +21,7 @@ echo "Copying them into the ISO image"
 echo "Creating folder syslinux and copying everything that's in isolinux to it"
 if [ -f "${CDROOT_DIR}/syslinux/isolinux.cfg" ]; then
         mv "${CDROOT_DIR}/syslinux/isolinux.cfg" "${CDROOT_DIR}/syslinux/syslinux.cfg"
+	sed -i 's/cdroot cdroot_type=udf/cdroot/g' "${CDROOT_DIR}/syslinux/txt.cfg"
 fi
 echo "If we copied correctly, then do what we must"
 
@@ -30,8 +31,8 @@ elif [ "${remaster_type}" = "ServerBase" ]; then
 	echo "ServerBase trigger, copying server kernel over"
 	boot_kernel=$(find "${CHROOT_DIR}/boot" -name "kernel-*" | sort | head -n 1)
 	boot_ramfs=$(find "${CHROOT_DIR}/boot" -name "initramfs-*" | sort | head -n 1)
-	cp "${boot_kernel}" "${CDROOT_DIR}/boot/sabayon" || exit 1
-	cp "${boot_ramfs}" "${CDROOT_DIR}/boot/sabayon.igz" || exit 1
+	cp "${boot_kernel}" "${CDROOT_DIR}/boot/rogentos" || exit 1
+	cp "${boot_ramfs}" "${CDROOT_DIR}/boot/rogentos.igz" || exit 1
 	isolinux_source="/sabayon/remaster/serverbase_isolinux.cfg"
 fi
 cp "${isolinux_source}" "${isolinux_destination}" || exit 1
