@@ -56,7 +56,7 @@ if [ -z "${tmp_dir}" ]; then
 fi
 # also rename kernel and initramfs inside the CDROOT dir
 mv "${CDROOT_DIR}/boot/sabayon" "${CDROOT_DIR}/boot/sabayon${current_arch}" || exit 1
-mv "${CDROOT_DIR}/boot/sabayon.igz" "${CDROOT_DIR}/boot/sabayon${current_arch}.igz" || exit 1
+mv "${CDROOT_DIR}/boot/rogentos.igz" "${CDROOT_DIR}/boot/sabayon${current_arch}.igz" || exit 1
 
 mount -o loop "${other_iso_path}" "${tmp_dir}" || exit 1
 other_squashfs_path="${tmp_dir}/livecd.squashfs"
@@ -67,7 +67,7 @@ fi
 cp "${other_squashfs_path}" "${CDROOT_DIR}/livecd${other_arch}.squashfs" || exit 1
 # copy kernel and initramfs
 cp "${tmp_dir}/boot/sabayon" "${CDROOT_DIR}/boot/sabayon${other_arch}" || exit 1
-cp "${tmp_dir}/boot/sabayon.igz" "${CDROOT_DIR}/boot/sabayon${other_arch}.igz" || exit 1
+cp "${tmp_dir}/boot/rogentos.igz" "${CDROOT_DIR}/boot/sabayon${other_arch}.igz" || exit 1
 
 # copy back.jpg to proper location
 isolinux_img="/sabayon/remaster/embedded_world/back.jpg"
