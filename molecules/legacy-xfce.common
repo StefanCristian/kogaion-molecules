@@ -68,7 +68,6 @@ packages_to_add:
 	app-misc/gnote,
 	app-text/pastebunz,
 	app-emulation/virtualbox-guest-additions,
-	app-office/libreoffice,
 	dev-java/icedtea-bin,
 	games-misc/cowsay,
 	games-misc/fortune-mod
@@ -105,8 +104,7 @@ packages_to_add:
 	sys-block/parted,
 	sys-fs/ntfs3g,
 	sys-power/cpufrequtils,
-	www-client/midori,
-	www-plugins/adobe-flash,
+	www-client/firefox,
 	x11-apps/intel-gpu-tools,
 	x11-libs/gksu,
 	x11-libs/vdpau-video,
