@@ -143,6 +143,8 @@ packages_to_add:
 	xfce-extra/xfce4-notifyd,
 	xfce-extra/xfce4-places-plugin,
 	xfce-extra/xfce4-screenshooter
+	xfce-extra/xfce4-xkb-plugin
+	xfce-extra/xfce4-datetime-plugin
 
 # x11-themes/sabayon-artwork-gnome:
 #   provides the gtk theme for lxdm
