@@ -18,12 +18,22 @@ cp /sabayon/boot/core/rogentos.ico "${CDROOT_DIR}/"
 cp /sabayon/boot/core/rogentos.bat "${CDROOT_DIR}/"
 echo "Copying them into the ISO image"
 
+cp -R "${CDROOT_DIR}/isolinux" "${CDROOT_DIR}/syslinux"
 echo "Creating folder syslinux and copying everything that's in isolinux to it"
+
 if [ -f "${CDROOT_DIR}/syslinux/isolinux.cfg" ]; then
         mv "${CDROOT_DIR}/syslinux/isolinux.cfg" "${CDROOT_DIR}/syslinux/syslinux.cfg"
 	sed -i 's/cdroot cdroot_type=udf/cdroot/g' "${CDROOT_DIR}/syslinux/txt.cfg"
 fi
 echo "If we copied correctly, then do what we must"
+
+boot_kernel=$(find "${CHROOT_DIR}/boot" -name "kernel-*" | sort | head -n 1)
+boot_ramfs=$(find "${CHROOT_DIR}/boot" -name "initramfs-*" | sort | head -n 1)
+cp "${boot_kernel}" "${CDROOT_DIR}/boot/rogentos" || exit 1
+cp "${boot_ramfs}" "${CDROOT_DIR}/boot/rogentos.igz" || exit 1
+
+mv "${CHROOT_DIR}/boot/sabayon.igz" "${CHROOT_DIR}/boot/rogentos.igz"
+mv "${CHROOT_DIR}/boot/sabayon" "${CHROOT_DIR}/boot/rogentos"
 
 if [ "${remaster_type}" = "KDE" ] || [ "${remaster_type}" = "GNOME" ]; then
 	isolinux_source="/sabayon/remaster/standard_isolinux.cfg"
@@ -69,6 +79,11 @@ isolinux_img="/sabayon/boot/core/isolinux/back.jpg"
 if [ -f "${isolinux_img}" ]; then
 	cp "${isolinux_img}" "${CDROOT_DIR}/isolinux/" || exit 1
 fi
+
+rm "${CDROOT_DIR}"/sabayon
+rm "${CDROOT_DIR}"/sabayon.igz
+rm "${CDROOT_DIR}"/boot/sabayon 
+rm "${CDROOT_DIR}"/boot/sabayon.igz
 
 # Generate livecd.squashfs.md5
 "${ROGENTOS_MOLECULE_HOME}"/scripts/pre_iso_script_livecd_hash.sh

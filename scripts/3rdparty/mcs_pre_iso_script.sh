@@ -9,7 +9,7 @@ cp /sabayon/remaster/mcs/isolinux/back.jpg "${CDROOT_DIR}/isolinux/back.jpg" || 
 echo "Copying new kernel images over"
 boot_kernel=$(find "${CHROOT_DIR}/boot" -name "kernel-*" | sort | head -n 1)
 boot_ramfs=$(find "${CHROOT_DIR}/boot" -name "initramfs-*" | sort | head -n 1)
-cp "${boot_kernel}" "${CDROOT_DIR}/boot/sabayon" || exit 1
+cp "${boot_kernel}" "${CDROOT_DIR}/boot/rogentos" || exit 1
 cp "${boot_ramfs}" "${CDROOT_DIR}/boot/rogentos.igz" || exit 1
 
 # Setup default splash theme
