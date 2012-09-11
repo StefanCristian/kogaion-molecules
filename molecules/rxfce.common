@@ -143,7 +143,6 @@ packages_to_add:
 	xfce-extra/xfce4-xkb-plugin
 	xfce-extra/xfce4-datetime-plugin
 	xfce-extra/thunar-archive-plugin
-	xfce-extra/thunar-archive-plugin
 	xfce-extra/thunar-volman
 
 # x11-themes/sabayon-artwork-gnome:
