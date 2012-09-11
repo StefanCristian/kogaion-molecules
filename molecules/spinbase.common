@@ -7,6 +7,9 @@ release_string: Sabayon Linux
 # File to write release string
 release_file: /etc/sabayon-edition
 
+# Enable XZ compression in mksquashfs
+extra_mksquashfs_parameters: -comp xz -Xbcj x86
+
 # Destination chroot directory, where files are pushed to before creating the squashfs image
 # NOTE: data will be stored inside an auto-generated subdir
 %env destination_chroot: ${SABAYON_MOLECULE_HOME:-/sabayon}
