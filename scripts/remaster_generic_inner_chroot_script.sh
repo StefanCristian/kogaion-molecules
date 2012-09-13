@@ -32,4 +32,4 @@ done
 equo mask sabayon-skel sabayon-version sabayon-artwork-grub
 equo remove sabayon-artwork-grub sabayon-artwork-core sabayon-artwork-isolinux sabayon-version sabayon-skel sabayonlive-tools grub --nodeps
 emerge -C sabayon-version
-equo rescue spmsync --ask
+equo mask sabayon-version

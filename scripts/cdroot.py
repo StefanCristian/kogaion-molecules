@@ -47,8 +47,12 @@ def replace_version(path):
 # Change txt.cfg and isolinux.txt to match version
 isolinux_cfg = os.path.join(cdroot_dir, "isolinux/txt.cfg")
 isolinux_txt = os.path.join(cdroot_dir, "isolinux/isolinux.txt")
+syslinux_cfg = os.path.join(cdroot_dir, "syslinux/txt.cfg")
+syslinux_txt = os.path.join(cdroot_dir, "syslinux/isolinux.txt")
 replace_version(isolinux_cfg)
 replace_version(isolinux_txt)
+replace_version(syslinux_cfg)
+replace_version(syslinux_txt)
 
 # Copy pkglist over, if exists
 sabayon_pkgs_file = os.path.join(chroot_dir, "etc/rogentos-pkglist")
@@ -60,8 +64,11 @@ if os.path.isfile(sabayon_pkgs_file):
 
 # copy back.jpg to proper location
 isolinux_img = os.path.join(chroot_dir, "/sabayon/boot/core/isolinux/back.jpg")
+syslinux_img = os.path.join(cdroot_dir, "/sabayon/boot/core/syslinux/back.jpg")
 if os.path.isfile(isolinux_img):
     shutil.copy2(isolinux_img, os.path.join(cdroot_dir, "isolinux/back.jpg"))
+if os.path.isfile(syslinux_img):
+    shutil.copy2(syslinux_img, os.path.join(cdroot_dir, "syslinux/back.jpg"))
 
 iso_md5_script = os.path.join(rogentos_molecule_home, "scripts/pre_iso_script_livecd_hash.sh")
 exit_st = subprocess.call([iso_md5_script])
