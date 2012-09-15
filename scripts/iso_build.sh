@@ -117,7 +117,9 @@ elif [ "${ACTION}" = "daily" ]; then
 		"sabayon-amd64-serverbase.spec"
 		"sabayon-x86-serverbase.spec"
 		"sabayon-amd64-hardenedserver.spec"
+		"rogentos-amd64-hardenedserver.spec"
 		"sabayon-x86-hardenedserver.spec"
+		"rogentos-x86-hardenedserver.spec"
 	)
 	REMASTER_SPECS_ISO=(
 		"Sabayon_Linux_DAILY_amd64_G.iso"
