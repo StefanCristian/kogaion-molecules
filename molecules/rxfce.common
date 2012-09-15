@@ -77,7 +77,7 @@ packages_to_add:
 	app-emulation/virtualbox-guest-additions,
 	dev-java/icedtea-bin,
 	games-misc/cowsay,
-	games-misc/fortune-mod
+	games-misc/fortune-mod,
 	gnome-extra/nm-applet-gtk2,
 	gnome-extra/polkit-gnome,
 	gnome-base/orbit,
