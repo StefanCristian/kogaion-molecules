@@ -1,5 +1,5 @@
 # use abs path, otherwise daily iso build automagic won't work
-%env %import ${ROGENTOS_MOLECULE_HOME:-/sabayon}/molecules/hardenedserver.common
+%env %import ${ROGENTOS_MOLECULE_HOME:-/sabayon}/molecules/rhardenedserver.common
 
 release_version: 1
 release_desc: x86 Hardened Server
