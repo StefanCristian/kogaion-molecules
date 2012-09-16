@@ -68,7 +68,7 @@ initrd /boot/Initrd
 ( cd /boot/grub && ln -sf grub.conf menu.lst ) || exit 1
 
 # Generate list of installed packages
-equo query list installed -qv > /etc/sabayon-pkglist
+equo query list installed -qv > /etc/rogentos-pkglist
 
 /lib/rc/bin/rc-depend -u
 
