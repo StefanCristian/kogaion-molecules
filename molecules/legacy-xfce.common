@@ -121,7 +121,7 @@ packages_to_add:
 	x11-themes/gtk-engines:2,
 	x11-themes/gnome-themes-standard,
 	x11-themes/iottinka-artwork,
-	x11-themees/zukitwo-brave,
+	x11-themes/zukitwo-brave,
 	x11-themes/rogentos-artwork-core,
 	x11-themes/rogentos-artwork-lxde,
 	x11-themes/rogentos-artwork-grub,
