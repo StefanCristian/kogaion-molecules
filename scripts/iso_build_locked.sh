@@ -28,7 +28,7 @@ ROGENTOS_MOLECULE_HOME="${ROGENTOS_MOLECULE_HOME:-/sabayon}"
         kill_stale_process || exit 1
     fi
 
-    "${ROGENTOS_MOLECULE_HOME}/scripts/${BUILD_SCRIPT_NAME}"
+    "${ROGENTOS_MOLECULE_HOME}/scripts/${BUILD_SCRIPT_NAME}" "${@}"
 
 ) 9> "${ISO_BUILD_LOCK}"
 
