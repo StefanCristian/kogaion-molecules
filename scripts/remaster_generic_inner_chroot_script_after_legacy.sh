@@ -270,7 +270,7 @@ if [ "$ARCH" = "x86_64" ]; then
 		equo install nvidia-drivers nvidia-userspace virtualbox-guest-additions:0,3.3.0-sabayon app-emulation/virtualbox-modules:0,3.3.0-sabayon net-wireless/ndiswrapper:0,3.3.0-sabayon net-wireless/broadcom-sta:0,3.3.0-sabayon net-wireless/madwifi-ng:0,3.3.0-sabayon nvidiabl:0,3.3.0-sabayon xf86-video-virtualbox:0,3.3.0-sabayon --nodeps
 		equo install grub
 		equo remove anaconda --nodeps
-		equo install app-admin/anaconda-9999 --deep
+		equo install app-admin/anaconda-9999 openrc --deep
 		echo -5 | equo conf update
 		equo remove linux-sabayon:3.2 linux-sabayon:3.4 linux-sabayon:3.5 linux-sabayon:3.6 --nodeps
 		env-update && source /etc/profile
@@ -287,7 +287,7 @@ if [ "$ARCH" = "x86_64" ]; then
 		equo install =x11-drivers/nvidia-drivers-290.10#3.2.0-sabayon =x11-drivers/nvidia-userspace-290.10 =media-video/nvidia-settings-290.10 --nodeps
 		equo install grub =x11-base/xorg-server-1.11.4
 		equo remove anaconda virtualbox-guest-additions:0,3.2.0-sabayon app-emulation/virtualbox-modules:0,3.2.0-sabayon net-wireless/broadcom-sta:0,3.2.0-sabayon net-wireless/madwifi-ng:0,3.2.0-sabayon net-wireless/ndiswrapper:0,3.2.0-sabayon xf86-video-virtualbox:0,3.2.0-sabayon nvidiabl:0,3.2.0-sabayon --nodeps
-		equo install app-admin/anaconda-9999 --deep
+		equo install app-admin/anaconda-9999 openrc --deep
 		echo -5 | equo conf update
 		equo remove linux-sabayon:3.3 linux-sabayon:3.5 --nodeps
 		env-update && source /etc/profile
