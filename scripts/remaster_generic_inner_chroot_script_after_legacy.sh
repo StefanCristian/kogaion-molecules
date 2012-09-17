@@ -271,16 +271,12 @@ if [ "$ARCH" = "x86_64" ]; then
 		equo install grub
 		equo remove anaconda --nodeps
 		equo install app-admin/anaconda-9999 --deep
-		equo remove sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux sabayon-artwork-lxde sabayon-skel sabayonlive-tools tango-icon-theme gnome-colors-common oxygen-icons --nodeps
-		equo install tango-icon-theme rogentos-skel rogentos-version rogentos-artwork-core rogentos-artwork-grub rogentoslive-tools rogentos-artwork-lxde rogentos-artwork-isolinux openrc --nodeps
-		equo install anaconda-runtime gpu-detector lxdm app-misc/rogentos-skel x11-themes/rogentos-artwork-isolinux kernel-schimbare --nodeps
 		echo -5 | equo conf update
 		equo remove linux-sabayon:3.2 linux-sabayon:3.4 linux-sabayon:3.5 linux-sabayon:3.6 --nodeps
 		env-update && source /etc/profile
 		depmod -a
 		rogentos_splash
 	else
-		emerge -C sabayon-version
 		equo remove nvidia-drivers nvidia-userspace ati-drivers ati-userspace --nodeps
 		equo install linux-sabayon:3.2 sabayon-sources:3.2 =x11-drivers/ati-userspace-11.12 =x11-drivers/ati-drivers-11.12#3.2.0-sabayon
 		env-update && source /etc/profile
@@ -292,9 +288,6 @@ if [ "$ARCH" = "x86_64" ]; then
 		equo install grub =x11-base/xorg-server-1.11.4
 		equo remove anaconda virtualbox-guest-additions:0,3.2.0-sabayon app-emulation/virtualbox-modules:0,3.2.0-sabayon net-wireless/broadcom-sta:0,3.2.0-sabayon net-wireless/madwifi-ng:0,3.2.0-sabayon net-wireless/ndiswrapper:0,3.2.0-sabayon xf86-video-virtualbox:0,3.2.0-sabayon nvidiabl:0,3.2.0-sabayon --nodeps
 		equo install app-admin/anaconda-9999 --deep
-		equo remove sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux sabayon-artwork-lxde sabayon-skel tango-icon-theme gnome-colors-common oxygen-icons sabayonlive-tools
-		equo install tango-icon-theme rogentos-skel rogentos-artwork-core rogentos-artwork-grub rogentos-artwork-isolinux rogentoslive-tools rogentos-artwork-lxde openrc rogentos-artwork-isolinux --nodeps
-		equo install anaconda-runtime gpu-detector lxdm kernel-schimbare
 		echo -5 | equo conf update
 		equo remove linux-sabayon:3.3 linux-sabayon:3.5 --nodeps
 		env-update && source /etc/profile
