@@ -4,6 +4,8 @@
 /usr/sbin/env-update
 . /etc/profile
 
+splash_manager -c set -t rogentos --tty=1
+
 basic_environment_setup() {
 	eselect opengl set xorg-x11 &> /dev/null
 
@@ -261,13 +263,13 @@ rog=rogentos-artwork
 
 echo "Entering folder $localz"
 equo remove anaconda --nodeps
-emerge -C sabayon-version
 
 if [ "$ARCH" = "x86_64" ]; then
 		equo unmask anaconda
 		equo install anaconda --nodeps
 		echo "installed rogentos artwork amd64"
 		echo -5 | equo conf update
+		depmod -a
 		env-update && source /etc/profile
 		rogentos_splash
 	else
@@ -275,6 +277,7 @@ if [ "$ARCH" = "x86_64" ]; then
 		equo install anaconda --nodeps
 		echo "Installed rogentos artwork x86"
 		echo -5 | equo conf update
+		depmod -a
 		env-update && source /etc/profile
 		rogentos_splash
 fi

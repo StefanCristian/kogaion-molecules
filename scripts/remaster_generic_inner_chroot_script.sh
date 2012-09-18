@@ -8,10 +8,17 @@
 rm -f /var/run/entropy/entropy.lock
 
 LOC=$(pwd)
-cd /etc/entropy/repositories.conf.d/
+EREPO=/etc/entropy/repositories.conf.d
+cd "$EREPO"
 wget http://pkg.rogentos.ro/~rogentos/distro/entropy_rogentoslinux
 equo repo mirrorsort rogentoslinux
 equo repo mirrorsort sabayonlinux.org
+if [ -f "/etc/entropy/repositories.conf.d/entropy_sabayonlinux.org.example" ]; then
+	mv "${EREPO}/entropy_sabayonlinux.org.example" "${EREPO}/entropy_sabayonlinux.org"
+fi
+if [ -f "${EREPO}/entropy_sabayon-weekly" ]; then
+	mv "${EREPO}/entropy_sabayon-weekly" "${EREPO}/entropy_sabayon-weekly.example"
+fi
 cd $LOC
 
 export FORCE_EAPI=2
@@ -44,4 +51,4 @@ done
 equo mask sabayon-skel sabayon-version sabayon-artwork-grub
 equo remove sabayon-artwork-grub sabayon-artwork-core sabayon-artwork-isolinux sabayon-version sabayon-skel sabayonlive-tools grub --nodeps
 emerge -C sabayon-version
-equo rescue spmsync --ask
+equo mask sabayon-version

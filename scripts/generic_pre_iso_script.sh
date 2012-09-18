@@ -33,14 +33,15 @@ mv "${CHROOT_DIR}/boot/sabayon" "${CHROOT_DIR}/boot/rogentos"
 
 if [ "${remaster_type}" = "KDE" ] || [ "${remaster_type}" = "GNOME" ]; then
 	isolinux_source="/sabayon/remaster/standard_isolinux.cfg"
-elif [ "${remaster_type}" = "ServerBase" ]; then
-	echo "ServerBase trigger, copying server kernel over"
-	boot_kernel=$(find "${CHROOT_DIR}/boot" -name "kernel-*" | sort | head -n 1)
-	boot_ramfs=$(find "${CHROOT_DIR}/boot" -name "initramfs-*" | sort | head -n 1)
-	cp "${boot_kernel}" "${CDROOT_DIR}/boot/rogentos" || exit 1
-	cp "${boot_ramfs}" "${CDROOT_DIR}/boot/rogentos.igz" || exit 1
-	isolinux_source="/sabayon/remaster/serverbase_isolinux.cfg"
+elif [ "${remaster_type}" = "HardenedServer" ]; then
+        echo "HardenedServer trigger, copying server kernel over"
+        boot_kernel=$(find "${CHROOT_DIR}/boot" -name "kernel-*" | sort | head -n 1)
+        boot_ramfs=$(find "${CHROOT_DIR}/boot" -name "initramfs-*" | sort | head -n 1)
+        cp "${boot_kernel}" "${CDROOT_DIR}/boot/sabayon" || exit 1
+        cp "${boot_ramfs}" "${CDROOT_DIR}/boot/sabayon.igz" || exit 1
+        isolinux_source="${SABAYON_MOLECULE_HOME}/remaster/hardenedserver_isolinux.cfg"
 fi
+
 cp "${isolinux_source}" "${isolinux_destination}" || exit 1
 
 ver=${RELEASE_VERSION}

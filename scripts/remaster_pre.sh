@@ -1,4 +1,8 @@
 #!/bin/sh
+
+ROGENTOS_MOLECULE_HOME="${ROGENTOS_MOLECULE_HOME:-/sabayon}"
+export ROGENTOS_MOLECULE_HOME
+
 PKGS_DIR="/sabayon/pkgcache"
 CHROOT_PKGS_DIR="${CHROOT_DIR}/var/lib/entropy/client/packages"
 
