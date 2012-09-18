@@ -106,6 +106,7 @@ packages_to_add:
 	net-irc/xchat,
 	net-p2p/deluge,
 	net-print/cups,
+	net-wireless/madwifi-ng-tools,
 	net-wireless/bluez,
 	net-wireless/bluez-firmware,
 	net-wireless/bluez-hcidump,
