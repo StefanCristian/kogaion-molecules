@@ -9,7 +9,7 @@ release_desc: x86 Hardened Server
 prechroot: linux32
 
 # Path to source ISO file (MANDATORY)
-%env source_iso: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/iso/Sabayon_Linux_SpinBase_DAILY_x86.iso
+%env source_iso: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/Sabayon_Linux_SpinBase_DAILY_x86.iso
 
 # Destination ISO image name, call whatever you want.iso, not mandatory
 destination_iso_image_name: Rogentos_HardenedServer_1_x86.iso
