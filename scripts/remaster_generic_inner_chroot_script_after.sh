@@ -266,13 +266,11 @@ if [ "$ARCH" = "x86_64" ]; then
 		equo unmask anaconda
 		equo install anaconda kernel-schimbare --nodeps
 		echo "installed rogentos artwork amd64"
-		echo -5 | equo conf update
 		rogentos_splash
 	else
 		equo unmask anaconda
 		equo install anaconda kernel-schimbare --nodeps
 		echo "Installed rogentos artwork x86"
-		equo -5 | equo conf update
 		rogentos_splash
 fi
 
