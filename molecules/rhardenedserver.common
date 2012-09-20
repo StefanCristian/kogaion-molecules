@@ -33,13 +33,13 @@ extra_mksquashfs_parameters: -comp xz -Xbcj x86
 %env error_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/remaster_error_script.sh
 
 # Extra mkisofs parameters, perhaps something to include/use your bootloader
-extra_mkisofs_parameters: -b isolinux/isolinux.bin -c isolinux/boot.cat
+extra_mkisofs_parameters: -b isolinux/isolinux.bin -c isolinux/boot.cat -iso-level 4
 
 # Pre-ISO building script. Hook to be able to copy kernel images in place, for example
 %env pre_iso_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/generic_pre_iso_script.sh HardenedServer
 
 # Post-ISO building script, called after ISO image generation.    
-%env post_iso_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/generic_post_iso_script.sh
+# %env post_iso_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/generic_post_iso_script.sh
 
 # Destination directory for the ISO image path (MANDATORY)
 %env destination_iso_directory: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/iso
@@ -68,6 +68,7 @@ packages_to_add:
         x11-themes/equinox-themes,
         x11-themes/gtk-engines:2,
         x11-libs/libXxf86misc,
+	x11-themes/rogentos-artwork-resplash,
         x11-themes/gnome-themes-standard,
         x11-themes/hicolor-icon-theme,
         x11-themes/equinox-themes,
