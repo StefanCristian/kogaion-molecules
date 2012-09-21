@@ -68,8 +68,9 @@ packages_to_add:
         app-misc/rogentos-skel,
 	app-misc/rogentos-version,
 	app-misc/anaconda-runtime-gui,
-	app-misc/gnote,
+	app-misc/galculator,
 	app-text/pastebunz,
+	app-text/epdfview,
 	app-emulation/virtualbox-guest-additions,
 	dev-java/icedtea-bin,
 	games-misc/cowsay,
@@ -82,7 +83,7 @@ packages_to_add:
 	media-fonts/dejavu,
 	media-fonts/ttf-bitstream-vera,
 	media-gfx/gimp,
-	media-gfx/ristretto,
+	media-gfx/gpicview,
 	media-gfx/shotwell,
 	media-libs/libdvdcss,
 	media-libs/libdvdnav,
@@ -97,7 +98,7 @@ packages_to_add:
 	net-firewall/ufw-frontends,
 	net-im/pidgin,
 	net-irc/xchat,
-	net-p2p/transmission-gtk,
+	net-p2p/deluge,
 	net-print/cups,
 	net-wireless/bluez,
 	net-wireless/bluez-firmware,
@@ -108,7 +109,7 @@ packages_to_add:
 	sys-block/parted,
 	sys-fs/ntfs3g,
 	sys-power/cpufrequtils,
-	www-client/firefox,
+	www-client/chromium,
 	x11-apps/intel-gpu-tools,
 	x11-libs/gksu,
 	x11-libs/vdpau-video,
@@ -131,11 +132,14 @@ packages_to_add:
 	x11-themes/zukitwo-brave,
 	xfce-base/xfce4-panel,
 	xfce-extra/tumbler,
-	xfce-extra/xfce4-clipman-plugin,
 	xfce-extra/xfce4-mixer,
 	xfce-extra/xfce4-notifyd,
 	xfce-extra/xfce4-places-plugin,
 	xfce-extra/xfce4-screenshooter
+	xfce-extra/xfce4-xkb-plugin
+	xfce-extra/xfce4-datetime-plugin
+	xfce-extra/thunar-archive-plugin
+	xfce-extra/thunar-volman
 
 # x11-themes/sabayon-artwork-gnome:
 #   provides the gtk theme for lxdm

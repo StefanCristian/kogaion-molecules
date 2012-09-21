@@ -76,15 +76,10 @@ packages_to_add:
 	app-emulation/wine,
 	app-laptop/nvidiabl,
 	app-misc/anaconda-runtime-gui,
-	app-misc/gnote,
+	app-misc/galculator,
 	app-misc/sabayon-music,
-	app-office/libreoffice,
-	app-office/libreoffice-l10n-de,
-	app-office/libreoffice-l10n-es,
-	app-office/libreoffice-l10n-fr,
-	app-office/libreoffice-l10n-it,
-	app-office/libreoffice-l10n-nl,
-	app-office/libreoffice-l10n-pt,
+	app-office/abiword,
+	app-office/gnumeric,
 	app-text/epdfview,
 	app-text/pastebunz,
 	dev-java/icedtea-bin,
@@ -96,7 +91,7 @@ packages_to_add:
 	media-fonts/dejavu,
 	media-fonts/ttf-bitstream-vera,
 	media-gfx/gimp,
-	media-gfx/ristretto,
+	media-gfx/gpicview,
 	media-gfx/shotwell,
 	media-libs/libdvdcss,
 	media-libs/libdvdnav,
@@ -104,6 +99,8 @@ packages_to_add:
 	media-libs/libdvdread,
 	media-sound/exaile,
 	media-video/totem,
+	media-video/tv-maxe,
+	media-tv/xbmc,
 	net-dialup/globespan-adsl,
 	net-dialup/gnome-ppp,
 	net-dialup/ppp,
@@ -111,7 +108,7 @@ packages_to_add:
 	net-firewall/ufw-frontends,
 	net-im/pidgin,
 	net-irc/xchat,
-	net-p2p/transmission-gtk,
+	net-p2p/deluge,
 	net-print/cups,
 	net-wireless/bluez,
 	net-wireless/bluez-firmware,
@@ -123,7 +120,7 @@ packages_to_add:
 	sys-fs/ntfs3g,
 	sys-fs/zfs,
 	sys-power/cpufrequtils,
-	www-client/midori,
+	www-client/chromium,
 	www-plugins/adobe-flash,
 	x11-drivers/ati-drivers,
 	x11-drivers/nvidia-drivers,
@@ -141,11 +138,15 @@ packages_to_add:
 	x11-themes/tango-icon-theme,
 	xfce-base/xfce4-panel,
 	xfce-extra/tumbler,
-	xfce-extra/xfce4-clipman-plugin,
 	xfce-extra/xfce4-mixer,
 	xfce-extra/xfce4-notifyd,
 	xfce-extra/xfce4-places-plugin,
 	xfce-extra/xfce4-screenshooter
+	xfce-extra/xfce4-xkb-plugin
+	xfce-extra/xfce4-datetime-plugin
+	xfce-extra/thunar-archive-plugin
+	xfce-extra/thunar-volman
+
 
 # x11-themes/sabayon-artwork-gnome:
 #   provides the gtk theme for lxdm
