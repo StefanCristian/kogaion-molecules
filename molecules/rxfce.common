@@ -128,7 +128,6 @@ packages_to_add:
 	x11-misc/magneto-gtk,
 	x11-misc/xvkbd,
 	x11-terms/terminal,
-	x11-terms/xterm,
 	x11-themes/equinox-themes,
 	x11-themes/gtk-engines:2,
 	x11-themes/gnome-themes-standard,
@@ -142,7 +141,6 @@ packages_to_add:
 	x11-themes/zukitwo-brave,
 	xfce-base/xfce4-panel,
 	xfce-extra/tumbler,
-	xfce-extra/xfce4-clipman-plugin,
 	xfce-extra/xfce4-mixer,
 	xfce-extra/xfce4-notifyd,
 	xfce-extra/xfce4-places-plugin,
@@ -151,6 +149,7 @@ packages_to_add:
 	xfce-extra/xfce4-datetime-plugin
 	xfce-extra/thunar-archive-plugin
 	xfce-extra/thunar-volman
+	x11-plugins/pidgin-privacy-please
 
 # x11-themes/sabayon-artwork-gnome:
 #   provides the gtk theme for lxdm
