@@ -260,6 +260,7 @@ ARCH=$(uname -m)
 rog=rogentos-artwork
 
 equo remove anaconda --nodeps
+echo -5 | equo conf update
 emerge -C sabayon-version
 
 if [ "$ARCH" = "x86_64" ]; then
