@@ -7,6 +7,9 @@
 basic_environment_setup() {
 	eselect opengl set xorg-x11 &> /dev/null
 
+	rc-update del bluetooth
+	rc-update add bluetooth default
+
 	# automatically start xdm
 	rc-update del xdm default
 	rc-update del xdm boot

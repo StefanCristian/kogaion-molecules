@@ -12,6 +12,9 @@ basic_environment_setup() {
 	rc-update del xdm boot
 	rc-update add xdm boot
 
+	rc-update del bluetooth
+	rc-update add bluetooth default
+
 	# consolekit must be run at boot level
 	rc-update add consolekit boot
 

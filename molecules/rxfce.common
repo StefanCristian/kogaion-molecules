@@ -107,6 +107,7 @@ packages_to_add:
 	net-p2p/deluge,
 	net-print/cups,
 	net-wireless/madwifi-ng-tools,
+	net-wireless/blueman,
 	net-wireless/bluez,
 	net-wireless/bluez-firmware,
 	net-wireless/bluez-hcidump,
