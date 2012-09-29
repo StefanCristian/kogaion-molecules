@@ -63,6 +63,7 @@ packages_to_add:
 	app-crypt/gnupg,
 	app-crypt/pinentry-gtk2,
 	app-emulation/wine,
+	app-emulation/vmware-tools,
 	app-laptop/nvidiabl,
         app-misc/rogentoslive-tools,
         app-misc/rogentos-skel,
