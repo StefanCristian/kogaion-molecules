@@ -55,6 +55,7 @@ packages_to_add:
 	@gst-plugins,
 	@gst-plugins-extra,
 	@xfce,
+	@wireless,
 	@fluxbox,
 	app-admin/anaconda,
 	app-admin/rigo,
