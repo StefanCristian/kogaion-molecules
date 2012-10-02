@@ -449,6 +449,8 @@ prepare_system() {
 		prepare_kde
 	elif [ "${de}" = "awesome" ]; then
 		prepare_awesome
+	elif [ "${de}" = "mate" ]; then
+		prepare_mate
 	fi
 }
 

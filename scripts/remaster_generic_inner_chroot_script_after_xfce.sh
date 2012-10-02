@@ -240,6 +240,14 @@ setup_misc_stuff() {
 	# Regenerate Fluxbox menu
 	if [ -x "/usr/bin/fluxbox-generate_menu" ]; then
 		fluxbox-generate_menu -o /etc/skel/.fluxbox/menu
+		elif [ ! -d "/etc/skel/.fluxbox/menu" ]; then
+		echo "It didn't work the first time, doing it again + chown"
+			fluxbox_generate_menu -o /etc/skel/.fluxbox/menu
+			chown rogentosuser /etc/skel/.fluxbox/
+		echo "Fixing the fluxbox problem once and for all"
+		elif [ -d "/home/rogentosuser/" ]; then
+			echo "this was created, so we do chown"
+			chown rogentosuser /home/rogentosuser/
 	fi
 }
 
@@ -285,7 +293,7 @@ if [ "$ARCH" = "x86_64" ]; then
 		rogentos_splash
 fi
 
-equo mask linux-sabayon sabayon-sources
+equo mask linux-sabayon virtualbox-guest-additions broadcom-sta ndiswrapper
 echo "Se va folosi kernel-schimbare pentru schimbarea nucleului"
 }
 
@@ -299,6 +307,7 @@ setup_installed_packages() {
 	rm /var/lib/entropy/client/database/*/sabayonlinux.org -rf
 	rm /var/lib/entropy/client/database/*/sabayon-weekly -rf
 	rm /var/lib/entropy/client/database/*/rogentoslinux -rf
+	rm /var/lib/entropy/client/database/*/rogentos -rf
 	equo rescue vacuum
 
 	# restore original repositories.conf (all mirrors were filtered for speed)

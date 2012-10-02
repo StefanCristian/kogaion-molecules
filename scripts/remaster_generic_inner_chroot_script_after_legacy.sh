@@ -238,6 +238,10 @@ setup_misc_stuff() {
 	# Regenerate Fluxbox menu
 	if [ -x "/usr/bin/fluxbox-generate_menu" ]; then
 		fluxbox-generate_menu -o /etc/skel/.fluxbox/menu
+		elif [ ! -d "/etc/skel/.fluxbox/" ]; then
+			fluxbox-generate_menu -o /etc/skel/.fluxbox/menu
+			chown rogentosuser /etc/skel/.fluxbox/
+		echo "Fix privileges and menus once and for all"
 	fi
 }
 
@@ -300,7 +304,6 @@ fi
 
 equo mask sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux sabayonlive-tools sabayon-skel sabayon-artwork-lxde
 equo mask linux-sabayon
-equo mask sabayon-sources
 equo mask ati-drivers
 equo mask nvidia-drivers
 equo mask ati-userspace
@@ -339,6 +342,8 @@ setup_portage() {
 	rm -rf /var/lib/layman/sabayon
 	layman -d sabayon-distro
 	rm -rf /var/lib/layman/sabayon-distro
+	layman -d rogento
+	rm -rf /var/lib/layman/rogento
 	emaint --fix world
 }
 
