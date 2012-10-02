@@ -63,7 +63,7 @@ if __name__ == "__main__":
             print("started sshd in chroot: %s" % (chroot,))
         else:
             print("NOT started sshd in chroot: %s, perhaps already started?" % (chroot,))
-        ch_f.write("\t%s at: root@localhost -p %s\n" % (chroot, start_port,))
+        ch_f.write("\t%s at: root@BlackNoxis -p %s\n" % (chroot, start_port,))
 
     ch_f.flush()
     ch_f.close()
