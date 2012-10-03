@@ -22,6 +22,12 @@ cp /sabayon/boot/core/rogentos.ico "${CDROOT_DIR}/"
 cp /sabayon/boot/core/rogentos.bat "${CDROOT_DIR}/"
 echo "Copying them into the ISO image"
 
+if [ -d "/home/rogentosuser/.gvfs" ]; then
+	echo "...all is doomed"
+	umount /home/rogentosuser/.gvfs
+	rm -r /home/rogentosuser/.gvfs
+fi
+
 echo "If we copied correctly, then do what we must"
 boot_kernel=$(find "${CHROOT_DIR}/boot" -name "kernel-*" | sort | head -n 1)
 boot_ramfs=$(find "${CHROOT_DIR}/boot" -name "initramfs-*" | sort | head -n 1)
