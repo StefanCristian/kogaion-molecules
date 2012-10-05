@@ -118,8 +118,8 @@ setup_oss_gfx_drivers() {
 	touch /.enable_kms
 
 	# Remove nouveau from blacklist
-	sed -i ":^blacklist: s:blacklist nouveau:# blacklist nouveau:g" \
-		/etc/modprobe.d/blacklist.conf
+	#sed -i ":^blacklist: s:blacklist nouveau:# blacklist nouveau:g" \
+		#/etc/modprobe.d/blacklist.conf
 }
 
 has_proprietary_drivers() {
