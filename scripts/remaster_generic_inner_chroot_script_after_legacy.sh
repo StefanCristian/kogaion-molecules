@@ -267,7 +267,7 @@ ARCH=$(uname -m)
 
 if [ "$ARCH" = "x86_64" ]; then
 		equo remove nvidia-drivers nvidia-userspace ati-drivers ati-userspace virtualbox-guest-additions nvidiabl net-wireless/broadcom-sta net-wireless/ndiswrapper xf86-video-virtualbox --nodeps
-		equo install linux-sabayon:3.3 sabayon-sources:3.3 ati-drivers-12.6:1,3.3.0-sabayon nvidia-drivers:0,3.3.0-sabayon =x11-drivers/nvidia-userspace-304.37
+		equo install linux-sabayon:3.3 sabayon-sources:3.3 ati-drivers-12.6:1,3.3.0-sabayon nvidia-drivers:0,3.3.0-sabayon =x11-drivers/nvidia-userspace-304.37 ati-userspace@rogentoslinux
 		depmod -a
 		env-update && source /etc/profile
 		equo remove linux-sabayon:3.2 linux-sabayon:3.4 linux-sabayon:3.5 linux-sabayon:3.6 sabayon-sources:3.4 sabayon-sources:3.5 sabayon-sources:3.6 --nodeps
