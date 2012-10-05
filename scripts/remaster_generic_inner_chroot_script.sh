@@ -51,4 +51,12 @@ done
 equo mask sabayon-skel sabayon-version sabayon-artwork-grub
 equo remove sabayon-artwork-grub sabayon-artwork-core sabayon-artwork-isolinux sabayon-version sabayon-skel sabayonlive-tools grub --nodeps
 emerge -C sabayon-version
-equo mask sabayon-version
+equo mask sabayon-version openrc@sabayonlinux.org openrc@sabayon-limbo openrc@sabayon-weekly
+equo mask grub@sabayonlinux.org grub@sabayon-weekly grub@sabayon-limbo
+equo mask oxygen-icons@sabayon-weekly oxygen-icons@sabayonlinux.org oxygen-icons@sabayon-limbo
+equo mask gnome-colors-common@sabayon-weekly gnome-colors-common@sabayonlinux.org gnome-colors-common@sabayon-limbo
+equo mask tango-icon-theme@sabayon-weekly tango-icon-theme@sabayonlinux.org tango-icon-theme@sabayon-limbo
+equo mask elementary-icon-theme@sabayon-weekly elementary-icon-theme@sabayonlinux.org elementary-icon-theme@sabayon-limbo
+equo mask lxdm@sabayon-weekly lxdm@sabayonlinux.org lxdm@sabayon-limbo
+equo mask anaconda@sabayon-weekly anaconda@sabayonlinux.org anaconda@sabayon-limbo
+equo mask anaconda-runtime@sabayon-weekly anaconda-runtime@sabayonlinux.org anaconda-runtime@sabayon-limbo
