@@ -60,3 +60,39 @@ equo mask elementary-icon-theme@sabayon-weekly elementary-icon-theme@sabayonlinu
 equo mask lxdm@sabayon-weekly lxdm@sabayonlinux.org lxdm@sabayon-limbo
 equo mask anaconda@sabayon-weekly anaconda@sabayonlinux.org anaconda@sabayon-limbo
 equo mask anaconda-runtime@sabayon-weekly anaconda-runtime@sabayonlinux.org anaconda-runtime@sabayon-limbo
+
+echo ">=sys-apps/openrc-0.10.5@sabayon-limbo" >> /etc/entropy/packages/package.mask
+echo ">=sys-apps/openrc-0.10.5@sabayonlinux.org" >> /etc/entropy/packages/package.mask
+echo ">=sys-apps/openrc-0.10.5@sabayon-weekly" >> /etc/entropy/packages/package.mask
+
+echo ">=sys-boot/grub-2.00@sabayon-limbo" >> /etc/entropy/packages/package.mask
+echo ">=sys-boot/grub-2.00@sabayonlinux.rg" >> /etc/entropy/packages/package.mask
+echo ">=sys-boot/grub-2.00@sabayon-weekly" >> /etc/entropy/packages/package.mask
+
+echo ">=kde-base/oxygen-icons-4.9.2@sabayon-weekly" >> /etc/entropy/packages/package.mask
+echo ">=kde-base/oxygen-icons-4.9.2@sabayonlinux.org" >> /etc/entropy/packages/package.mask
+echo ">=kde-base/oxygen-icons-4.9.2@sabayon-limbo" >> /etc/entropy/packages/package.mask
+
+echo ">=x11-themes/gnome-colors-common-5.5.1-r12@sabayon-weekly" >> /etc/entropy/packages/package.mask
+echo ">=x11-themes/gnome-colors-common-5.5.1-r12@sabayonlinux.org" >> /etc/entropy/packages/package.mask
+echo ">=x11-themes/gnome-colors-common-5.5.1-r12@sabayon-limbo" >> /etc/entropy/packages/package.mask
+
+echo ">=x11-themes/tango-icon-theme-0.8.90@sabayon-weekly" >> /etc/entropy/packages/package.mask
+echo ">=x11-themes/tango-icon-theme-0.8.90@sabayonlinux.org" >> /etc/entropy/packages/package.mask
+echo ">=x11-themes/tango-icon-theme-0.8.90@sabayon-limbo" >> /etc/entropy/packages/package.mask
+
+echo ">=x11-themes/elementary-icon-theme-2.7.1-r1@sabayon-weekly" >> /etc/entropy/packages/package.mask
+echo ">=x11-themes/elementary-icon-theme-2.7.1-r1@sabayonlinux.org" >> /etc/entropy/packages/package.mask
+echo ">=x11-themes/elementary-icon-theme-2.7.1-r1@sabayon-limbo" >> /etc/entropy/packages/package.mask
+
+echo ">=lxde-base/lxdm-0.4.1-r5@sabayon-weekly" >> /etc/entropy/packages/package.mask
+echo ">=lxde-base/lxdm-0.4.1-r5@sabayonlinux.org" >> /etc/entropy/packages/package.mask
+echo ">=lxde-base/lxdm-0.4.1-r5@sabayon-limbo" >> /etc/entropy/packages/package.mask
+
+echo ">=app-admin/anaconda-0.9.9.95@sabayon-weekly" >> /etc/entropy/packages/package.mask
+echo ">=app-admin/anaconda-0.9.9.95@sabayonlinux.org" >> /etc/entropy/packages/package.mask
+echo ">=app-admin/anaconda-0.9.9.95@sabayon-limbo" >> /etc/entropy/packages/package.mask
+
+echo ">=app-misc/anaconda-runtime-1.1-r1@sabayon-weekly" >> /etc/entropy/packages/package.mask
+echo ">=app-misc/anaconda-runtime-1.1-r1@sabayonlinux.org" >> /etc/entropy/packages/package.mask
+echo ">=app-misc/anaconda-runtime-1.1-r1@sabayon-limbo" >> /etc/entropy/packages/package.mask

@@ -282,6 +282,7 @@ if [ "$ARCH" = "x86_64" ]; then
 		env-update && source /etc/profile
 		depmod -a
 		rogentos_splash
+		equo config rogentos-artwork-resplash
 	else
 		equo remove nvidia-drivers nvidia-userspace ati-drivers ati-userspace --nodeps
 		equo install linux-sabayon:3.2 sabayon-sources:3.2 =x11-drivers/ati-userspace-11.12 =x11-drivers/ati-drivers-11.12#3.2.0-sabayon
@@ -300,6 +301,20 @@ if [ "$ARCH" = "x86_64" ]; then
 		env-update && source /etc/profile
 		depmod -a
 		rogentos_splash
+		equo config rogentos-artwork-resplash
+
+		echo ">=x11-base/xorg-server-1.11.4-r1@sabayon-weekly" >> /etc/entropy/packages/package.mask
+		echo ">=x11-base/xorg-server-1.11.4-r1@sabayonlinux.org" >> /etc/entropy/packages/package.mask
+		echo ">=x11-base/xorg-server-1.11.4-r1@sabayon-limbo" >> /etc/entropy/packages/package.mask
+
+		echo ">=x11-drivers/ati-drivers-12.2@sabayon-weekly" >> /etc/entropy/packages/package.mask
+		echo ">=x11-drivers/ati-drivers-12.2@sabayonlinux.org" >> /etc/entropy/packages/package.mask
+		echo ">=x11-drivers/ati-drivers-12.2@sabayon-limbo" >> /etc/entropy/packages/package.mask
+
+                echo ">=x11-base/xorg-drivers-1.12@sabayon-weekly" >> /etc/entropy/packages/package.mask
+                echo ">=x11-base/xorg-drivers-1.12@sabayonlinux.org" >> /etc/entropy/packages/package.mask
+                echo ">=x11-base/xorg-drivers-1.12@sabayon-limbo" >> /etc/entropy/packages/package.mask
+
 fi
 
 equo mask sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux sabayonlive-tools sabayon-skel sabayon-artwork-lxde
