@@ -315,6 +315,33 @@ if [ "$ARCH" = "x86_64" ]; then
                 echo ">=x11-base/xorg-drivers-1.12@sabayonlinux.org" >> /etc/entropy/packages/package.mask
                 echo ">=x11-base/xorg-drivers-1.12@sabayon-limbo" >> /etc/entropy/packages/package.mask
 
+		echo ">=x11-drivers/xf86-input-evdev-2.7.3@sabayon-weekly" >> /etc/entropy/packages/package.mask
+		echo ">=x11-drivers/xf86-input-evdev-2.7.3@sabayonlinux.org" >> /etc/entropy/packages/package.mask
+		echo ">=x11-drivers/xf86-input-evdev-2.7.3@sabayon-limbo" >> /etc/entropy/packages/package.mask
+		echo ">=x11-drivers/xf86-input-evdev-2.7.3@rogentoslinux" >> /etc/entropy/packages/package.mask
+
+                echo ">=x11-drivers/xf86-input-void-1.4.0@sabayon-weekly" >> /etc/entropy/packages/package.mask
+                echo ">=x11-drivers/xf86-input-void-1.4.0@sabayonlinux.org" >> /etc/entropy/packages/package.mask
+                echo ">=x11-drivers/xf86-input-void-1.4.0@sabayon-limbo" >> /etc/entropy/packages/package.mask
+                echo ">=x11-drivers/xf86-input-void-1.4.0@rogentoslinux" >> /etc/entropy/packages/package.mask
+
+                echo ">=x11-drivers/xf86-video-fbdev-0.4.3@sabayon-weekly" >> /etc/entropy/packages/package.mask
+                echo ">=x11-drivers/xf86-video-fbdev-0.4.3@sabayonlinux.org" >> /etc/entropy/packages/package.mask
+                echo ">=x11-drivers/xf86-video-fbdev-0.4.3@sabayon-limbo" >> /etc/entropy/packages/package.mask
+                echo ">=x11-drivers/xf86-video-fbdev-0.4.3@rogentoslinux" >> /etc/entropy/packages/package.mask
+
+                echo ">=x11-drivers/xf86-video-vesa-2.3.2@sabayon-weekly" >> /etc/entropy/packages/package.mask
+                echo ">=x11-drivers/xf86-video-vesa-2.3.2@sabayonlinux.org" >> /etc/entropy/packages/package.mask
+                echo ">=x11-drivers/xf86-video-vesa-2.3.2@sabayon-limbo" >> /etc/entropy/packages/package.mask
+                echo ">=x11-drivers/xf86-video-vesa-2.3.2@rogentoslinux" >> /etc/entropy/packages/package.mask
+
+		equo install x11-drivers/xf86-video-vesa@rogentos-legacy
+		equo install x11-drivers/xf86-video-fbdev@rogentos-legacy
+		equo install x11-drivers/xf86-input-evdev@rogentos-legacy
+		equo install x11-drivers/xf86-input-void@rogentos-legacy
+		equo install x11-drivers/ati-drivers@rogentos-legacy
+		equo install x11-drivers/ati-userspace@rogentos-legacy
+		depmod -a
 fi
 
 equo mask sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux sabayonlive-tools sabayon-skel sabayon-artwork-lxde

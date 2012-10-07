@@ -19,7 +19,7 @@ extra_mksquashfs_parameters: -comp xz -Xbcj x86
 %env outer_chroot_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/remaster_pre.sh
 
 # Execute repositories update here, in a more fault-tolerant flavor
-%env inner_chroot_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/remaster_generic_inner_chroot_script.sh
+%env inner_chroot_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/remaster_generic_inner_chroot_script_legacy.sh
 
 # Inner chroot script command, to be executed inside destination chroot after
 # packages installation and removal
