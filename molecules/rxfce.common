@@ -147,11 +147,12 @@ packages_to_add:
 	xfce-extra/xfce4-mixer,
 	xfce-extra/xfce4-notifyd,
 	xfce-extra/xfce4-places-plugin,
-	xfce-extra/xfce4-screenshooter
-	xfce-extra/xfce4-xkb-plugin
-	xfce-extra/xfce4-datetime-plugin
-	xfce-extra/thunar-archive-plugin
-	xfce-extra/thunar-volman
+	xfce-extra/xfce4-screenshooter,
+	xfce-extra/xfce4-xkb-plugin,
+	xfce-extra/xfce4-gvfs-mount,
+	xfce-extra/xfce4-datetime-plugin,
+	xfce-extra/thunar-archive-plugin,
+	xfce-extra/thunar-volman,
 	x11-plugins/pidgin-privacy-please
 
 # x11-themes/sabayon-artwork-gnome:
