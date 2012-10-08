@@ -99,8 +99,7 @@ setup_networkmanager() {
 
 xfceforensic_remove_skel_stuff() {
 	# remove no longer needed folders/files
-	rm -rf /etc/skel/.config/xfce4/desktop
-	rm -rf /etc/skel/.config/xfce4/panel
+	rm -rf /etc/skel/.config/xfce4/{desktop,panel}
 	rm -rf /etc/skel/Desktop/*
 	rm -rf /usr/share/backgrounds/iottinka
 	rm -rf /usr/share/wallpapers/*
@@ -303,54 +302,48 @@ if [ "$ARCH" = "x86_64" ]; then
 		rogentos_splash
 		equo config rogentos-artwork-resplash
 
-		echo ">=x11-base/xorg-server-1.11.4-r1@sabayon-weekly" >> /etc/entropy/packages/package.mask
-		echo ">=x11-base/xorg-server-1.11.4-r1@sabayonlinux.org" >> /etc/entropy/packages/package.mask
-		echo ">=x11-base/xorg-server-1.11.4-r1@sabayon-limbo" >> /etc/entropy/packages/package.mask
+		echo ">=x11-base/xorg-server-1.11.4-r1@sabayon-weekly
+		      >=x11-base/xorg-server-1.11.4-r1@sabayonlinux.org
+		      >=x11-base/xorg-server-1.11.4-r1@sabayon-limbo
 
-		echo ">=x11-drivers/ati-drivers-12.2@sabayon-weekly" >> /etc/entropy/packages/package.mask
-		echo ">=x11-drivers/ati-drivers-12.2@sabayonlinux.org" >> /etc/entropy/packages/package.mask
-		echo ">=x11-drivers/ati-drivers-12.2@sabayon-limbo" >> /etc/entropy/packages/package.mask
+		      >=x11-drivers/ati-drivers-12.2@sabayon-weekly
+		      >=x11-drivers/ati-drivers-12.2@sabayonlinux.org
+		      >=x11-drivers/ati-drivers-12.2@sabayon-limbo
 
-                echo ">=x11-base/xorg-drivers-1.12@sabayon-weekly" >> /etc/entropy/packages/package.mask
-                echo ">=x11-base/xorg-drivers-1.12@sabayonlinux.org" >> /etc/entropy/packages/package.mask
-                echo ">=x11-base/xorg-drivers-1.12@sabayon-limbo" >> /etc/entropy/packages/package.mask
+                      >=x11-base/xorg-drivers-1.12@sabayon-weekly
+                      >=x11-base/xorg-drivers-1.12@sabayonlinux.org
+                      >=x11-base/xorg-drivers-1.12@sabayon-limbo
 
-		echo ">=x11-drivers/xf86-input-evdev-2.7.3@sabayon-weekly" >> /etc/entropy/packages/package.mask
-		echo ">=x11-drivers/xf86-input-evdev-2.7.3@sabayonlinux.org" >> /etc/entropy/packages/package.mask
-		echo ">=x11-drivers/xf86-input-evdev-2.7.3@sabayon-limbo" >> /etc/entropy/packages/package.mask
-		echo ">=x11-drivers/xf86-input-evdev-2.7.3@rogentoslinux" >> /etc/entropy/packages/package.mask
+		      >=x11-drivers/xf86-input-evdev-2.7.3@sabayon-weekly
+		      >=x11-drivers/xf86-input-evdev-2.7.3@sabayonlinux.org
+		      >=x11-drivers/xf86-input-evdev-2.7.3@sabayon-limbo
+		      >=x11-drivers/xf86-input-evdev-2.7.3@rogentoslinux
 
-                echo ">=x11-drivers/xf86-input-void-1.4.0@sabayon-weekly" >> /etc/entropy/packages/package.mask
-                echo ">=x11-drivers/xf86-input-void-1.4.0@sabayonlinux.org" >> /etc/entropy/packages/package.mask
-                echo ">=x11-drivers/xf86-input-void-1.4.0@sabayon-limbo" >> /etc/entropy/packages/package.mask
-                echo ">=x11-drivers/xf86-input-void-1.4.0@rogentoslinux" >> /etc/entropy/packages/package.mask
+                      >=x11-drivers/xf86-input-void-1.4.0@sabayon-weekly
+                      >=x11-drivers/xf86-input-void-1.4.0@sabayonlinux.org
+                      >=x11-drivers/xf86-input-void-1.4.0@sabayon-limbo
+                      >=x11-drivers/xf86-input-void-1.4.0@rogentoslinux
 
-                echo ">=x11-drivers/xf86-video-fbdev-0.4.3@sabayon-weekly" >> /etc/entropy/packages/package.mask
-                echo ">=x11-drivers/xf86-video-fbdev-0.4.3@sabayonlinux.org" >> /etc/entropy/packages/package.mask
-                echo ">=x11-drivers/xf86-video-fbdev-0.4.3@sabayon-limbo" >> /etc/entropy/packages/package.mask
-                echo ">=x11-drivers/xf86-video-fbdev-0.4.3@rogentoslinux" >> /etc/entropy/packages/package.mask
+                      >=x11-drivers/xf86-video-fbdev-0.4.3@sabayon-weekly
+                      >=x11-drivers/xf86-video-fbdev-0.4.3@sabayonlinux.org
+                      >=x11-drivers/xf86-video-fbdev-0.4.3@sabayon-limbo
+                      >=x11-drivers/xf86-video-fbdev-0.4.3@rogentoslinux
 
-                echo ">=x11-drivers/xf86-video-vesa-2.3.2@sabayon-weekly" >> /etc/entropy/packages/package.mask
-                echo ">=x11-drivers/xf86-video-vesa-2.3.2@sabayonlinux.org" >> /etc/entropy/packages/package.mask
-                echo ">=x11-drivers/xf86-video-vesa-2.3.2@sabayon-limbo" >> /etc/entropy/packages/package.mask
-                echo ">=x11-drivers/xf86-video-vesa-2.3.2@rogentoslinux" >> /etc/entropy/packages/package.mask
+                      >=x11-drivers/xf86-video-vesa-2.3.2@sabayon-weekly
+                      >=x11-drivers/xf86-video-vesa-2.3.2@sabayonlinux.org
+                      >=x11-drivers/xf86-video-vesa-2.3.2@sabayon-limbo
+                      >=x11-drivers/xf86-video-vesa-2.3.2@rogentoslinux" >> /etc/entropy/packages/package.mask
 
-		equo install x11-drivers/xf86-video-vesa@rogentos-legacy
-		equo install x11-drivers/xf86-video-fbdev@rogentos-legacy
-		equo install x11-drivers/xf86-input-evdev@rogentos-legacy
-		equo install x11-drivers/xf86-input-void@rogentos-legacy
-		equo install x11-drivers/ati-drivers@rogentos-legacy
-		equo install x11-drivers/ati-userspace@rogentos-legacy
+		for PKG in xf86-video-vesa xf86-video-fbdev xf86-input-evdev xf86-input-void ati-drivers ati-userspace; do
+			equo install x11-drivers/$PKG@rogentos-legacy
+		done
 		depmod -a
 fi
 
-equo mask sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux sabayonlive-tools sabayon-skel sabayon-artwork-lxde
-equo mask linux-sabayon
-equo mask ati-drivers
-equo mask nvidia-drivers
-equo mask ati-userspace
-equo mask nvidia-settings
-equo mask nvidia-userspace xorg-server nvidia-drivers nvidia-userspace virtualbox-guest-additions app-emulation/virtualbox-modules ndiswrapper net-wireless/broadcom-sta net-wireless/madwifi-ng nvidiabl xf86-video-virtualbox xorg-drivers
+for PKG in sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux sabayonlive-tools sabayon-skel sabayon-artwork-lxde linux-sabayon ati-drivers nvidia-drivers ati-userspace nvidia-settings nvidia-userspace xorg-server nvidia-drivers nvidia-userspace virtualbox-guest-additions app-emulation/virtualbox-modules ndiswrapper net-wireless/broadcom-sta net-wireless/madwifi-ng nvidiabl xf86-video-virtualbox xorg-drivers ; do
+equo mask $PKG
+done
+
 echo "Interdict any kernel upgrade from now on, kernel-switcher only because it's Rogentos Legacy"
 }
 
