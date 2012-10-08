@@ -1,11 +1,11 @@
 #!/bin/sh
 
-echo
-echo "Configuring AMI root filesystem"
-echo "Ext4 is the expected filesystem type"
-echo "/dev/sda1 is the expected root filesystem partition"
-echo "ec2-user is the expected user"
-echo
+echo "
+Configuring AMI root filesystem
+Ext4 is the expected filesystem type
+/dev/sda1 is the expected root filesystem partition
+ec2-user is the expected user
+"
 
 /usr/sbin/env-update
 . /etc/profile
