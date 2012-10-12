@@ -271,11 +271,10 @@ if [ "$ARCH" = "x86_64" ]; then
 		env-update && source /etc/profile
 		equo remove linux-sabayon:3.2 linux-sabayon:3.4 linux-sabayon:3.5 linux-sabayon:3.6 sabayon-sources:3.4 sabayon-sources:3.5 sabayon-sources:3.6 --nodeps
 		eselect kernel set 1
-		equo unmask anaconda
 		equo install virtualbox-guest-additions:0,3.3.0-sabayon app-emulation/virtualbox-modules:0,3.3.0-sabayon net-wireless/ndiswrapper:0,3.3.0-sabayon net-wireless/broadcom-sta:0,3.3.0-sabayon net-wireless/madwifi-ng:0,3.3.0-sabayon nvidiabl:0,3.3.0-sabayon xf86-video-virtualbox:0,3.3.0-sabayon --nodeps
 		equo install grub
 		equo remove anaconda --nodeps
-		equo install app-admin/anaconda-9999 openrc --deep
+		equo install openrc --deep
 		echo -5 | equo conf update
 		equo remove linux-sabayon:3.2 linux-sabayon:3.4 linux-sabayon:3.5 linux-sabayon:3.6 --nodeps
 		env-update && source /etc/profile
@@ -288,12 +287,11 @@ if [ "$ARCH" = "x86_64" ]; then
 		env-update && source /etc/profile
 		equo remove linux-sabayon:3.3 linux-sabayon:3.4 linux-sabayon:3.5 linux-sabayon:3.6 sabayon-sources:3.4 sabayon-sources:3.5 sabayon-sources:3.6 --nodeps
 		eselect kernel set 1
-		equo unmask anaconda
 		equo install linux-sabayon:3.2 sabayon-sources:3.2 =x11-drivers/ati-userspace-11.12 =x11-drivers/ati-drivers-11.12#3.2.0-sabayon --nodeps
 		equo install =x11-drivers/nvidia-drivers-290.10#3.2.0-sabayon =x11-drivers/nvidia-userspace-290.10 =media-video/nvidia-settings-290.10 --nodeps
 		equo install grub xorg-server@rogentoslinux
-		equo remove anaconda virtualbox-guest-additions:0,3.2.0-sabayon app-emulation/virtualbox-modules:0,3.2.0-sabayon net-wireless/broadcom-sta:0,3.2.0-sabayon net-wireless/madwifi-ng:0,3.2.0-sabayon net-wireless/ndiswrapper:0,3.2.0-sabayon xf86-video-virtualbox:0,3.2.0-sabayon nvidiabl:0,3.2.0-sabayon --nodeps
-		equo install app-admin/anaconda-9999 openrc --deep
+		equo remove virtualbox-guest-additions:0,3.2.0-sabayon app-emulation/virtualbox-modules:0,3.2.0-sabayon net-wireless/broadcom-sta:0,3.2.0-sabayon net-wireless/madwifi-ng:0,3.2.0-sabayon net-wireless/ndiswrapper:0,3.2.0-sabayon xf86-video-virtualbox:0,3.2.0-sabayon nvidiabl:0,3.2.0-sabayon --nodeps
+		equo install openrc --deep
 		depmod -a
 		echo -5 | equo conf update
 		equo remove linux-sabayon:3.3 linux-sabayon:3.5 --nodeps
@@ -329,18 +327,23 @@ if [ "$ARCH" = "x86_64" ]; then
                       >=x11-drivers/xf86-video-fbdev-0.4.3@sabayon-limbo
                       >=x11-drivers/xf86-video-fbdev-0.4.3@rogentoslinux
 
+                      >=x11-drivers/xf86-input-synaptics-1.6.2@sabayon-weekly
+                      >=x11-drivers/xf86-input-synaptics-1.6.2@sabayonlinux.org
+                      >=x11-drivers/xf86-input-synaptics-1.6.2@sabayon-limbo
+                      >=x11-drivers/xf86-input-synaptics-1.6.2@rogentoslinux
+
                       >=x11-drivers/xf86-video-vesa-2.3.2@sabayon-weekly
                       >=x11-drivers/xf86-video-vesa-2.3.2@sabayonlinux.org
                       >=x11-drivers/xf86-video-vesa-2.3.2@sabayon-limbo
                       >=x11-drivers/xf86-video-vesa-2.3.2@rogentoslinux" >> /etc/entropy/packages/package.mask
 
-		for PKG in xf86-video-vesa xf86-video-fbdev xf86-input-evdev xf86-input-void ati-drivers ati-userspace; do
+		for PKG in xf86-video-vesa xf86-video-fbdev xf86-input-evdev xf86-input-void xf86-input-synaptics ati-drivers ati-userspace xf86-input-synaptics xf86-video-ati xf86-video-intel xf86-video-nouveau xf86-video-nv xf86-video-i740 xf86-video-virtualbox anaconda; do
 			equo install x11-drivers/$PKG@rogentos-legacy
 		done
 		depmod -a
 fi
 
-for PKG in sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux sabayonlive-tools sabayon-skel sabayon-artwork-lxde linux-sabayon ati-drivers nvidia-drivers ati-userspace nvidia-settings nvidia-userspace xorg-server nvidia-drivers nvidia-userspace virtualbox-guest-additions app-emulation/virtualbox-modules ndiswrapper net-wireless/broadcom-sta net-wireless/madwifi-ng nvidiabl xf86-video-virtualbox xorg-drivers ; do
+for PKG in sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux sabayonlive-tools sabayon-skel sabayon-artwork-lxde linux-sabayon ati-drivers nvidia-drivers ati-userspace nvidia-settings nvidia-userspace xorg-server nvidia-drivers nvidia-userspace virtualbox-guest-additions app-emulation/virtualbox-modules ndiswrapper net-wireless/broadcom-sta net-wireless/madwifi-ng nvidiabl xf86-video-virtualbox ; do
 equo mask $PKG
 done
 
@@ -356,6 +359,8 @@ setup_installed_packages() {
 	echo "Vacuum cleaning client db"
 	rm /var/lib/entropy/client/database/*/sabayonlinux.org -rf
 	rm /var/lib/entropy/client/database/*/sabayon-weekly -rf
+	rm /var/lib/entropy/client/database/*/rogentolisnux -rf
+	rm /var/lib/entropy/client/database/*/rogentos-legacy -rf
 	equo rescue vacuum
 
 	# restore original repositories.conf (all mirrors were filtered for speed)

@@ -111,7 +111,7 @@ packages_to_add:
 	sys-block/parted,
 	sys-fs/ntfs3g,
 	sys-power/cpufrequtils,
-	www-client/firefox,
+	www-client/chromium,
 	x11-apps/intel-gpu-tools,
 	x11-libs/gksu,
 	x11-libs/vdpau-video,
