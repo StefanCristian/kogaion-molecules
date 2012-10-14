@@ -53,47 +53,89 @@ equo mask sabayon-skel sabayon-version sabayon-artwork-grub
 equo remove sabayon-artwork-grub sabayon-artwork-core sabayon-artwork-isolinux sabayon-version sabayon-skel sabayonlive-tools grub --nodeps
 emerge -C sabayon-version
 equo mask sabayon-version openrc@sabayonlinux.org openrc@sabayon-limbo openrc@sabayon-weekly
-equo mask grub@sabayonlinux.org grub@sabayon-weekly grub@sabayon-limbo
-equo mask oxygen-icons@sabayon-weekly oxygen-icons@sabayonlinux.org oxygen-icons@sabayon-limbo
-equo mask gnome-colors-common@sabayon-weekly gnome-colors-common@sabayonlinux.org gnome-colors-common@sabayon-limbo
-equo mask tango-icon-theme@sabayon-weekly tango-icon-theme@sabayonlinux.org tango-icon-theme@sabayon-limbo
-equo mask elementary-icon-theme@sabayon-weekly elementary-icon-theme@sabayonlinux.org elementary-icon-theme@sabayon-limbo
-equo mask lxdm@sabayon-weekly lxdm@sabayonlinux.org lxdm@sabayon-limbo
-equo mask anaconda@sabayon-weekly anaconda@sabayonlinux.org anaconda@sabayon-limbo
-equo mask anaconda-runtime@sabayon-weekly anaconda-runtime@sabayonlinux.org anaconda-runtime@sabayon-limbo
+equo mask grub@sabayon-weekly grub@sabayonlinux.org grub@sabayon-limbo
 
-echo ">=sys-apps/openrc-0.10.5@sabayon-limbo" >> /etc/entropy/packages/package.mask
-echo ">=sys-apps/openrc-0.10.5@sabayonlinux.org" >> /etc/entropy/packages/package.mask
-echo ">=sys-apps/openrc-0.10.5@sabayon-weekly" >> /etc/entropy/packages/package.mask
+echo ">=sys-apps/openrc-0.9@sabayon-limbo
+>=sys-apps/openrc-0.9@sabayonlinux.org
+>=sys-apps/openrc-0.9@sabayon-weekly
 
-echo ">=sys-boot/grub-2.00@sabayon-limbo" >> /etc/entropy/packages/package.mask
-echo ">=sys-boot/grub-2.00@sabayonlinux.rg" >> /etc/entropy/packages/package.mask
-echo ">=sys-boot/grub-2.00@sabayon-weekly" >> /etc/entropy/packages/package.mask
+>=sys-boot/grub-2.00@sabayon-limbo
+>=sys-boot/grub-2.00@sabayonlinux.rg
+>=sys-boot/grub-2.00@sabayon-weekly
 
-echo ">=kde-base/oxygen-icons-4.9.2@sabayon-weekly" >> /etc/entropy/packages/package.mask
-echo ">=kde-base/oxygen-icons-4.9.2@sabayonlinux.org" >> /etc/entropy/packages/package.mask
-echo ">=kde-base/oxygen-icons-4.9.2@sabayon-limbo" >> /etc/entropy/packages/package.mask
+>=app-misc/sabayon-version-1@sabayonlinux.org
+>=app-misc/sabayon-version-1@sabayon-weekly
+>=app-misc/sabayon-version-1@sabayon-limbo
 
-echo ">=x11-themes/gnome-colors-common-5.5.1-r12@sabayon-weekly" >> /etc/entropy/packages/package.mask
-echo ">=x11-themes/gnome-colors-common-5.5.1-r12@sabayonlinux.org" >> /etc/entropy/packages/package.mask
-echo ">=x11-themes/gnome-colors-common-5.5.1-r12@sabayon-limbo" >> /etc/entropy/packages/package.mask
+>=app-misc/sabayon-skel-1@sabayonlinux.org
+>=app-misc/sabayon-skel-1@sabayon-weekly
+>=app-misc/sabayon-skel-1@sabayon-limbo
 
-echo ">=x11-themes/tango-icon-theme-0.8.90@sabayon-weekly" >> /etc/entropy/packages/package.mask
-echo ">=x11-themes/tango-icon-theme-0.8.90@sabayonlinux.org" >> /etc/entropy/packages/package.mask
-echo ">=x11-themes/tango-icon-theme-0.8.90@sabayon-limbo" >> /etc/entropy/packages/package.mask
+>=app-misc/sabayonlive-tools-1@sabayonlinux.org
+>=app-misc/sabayonlive-tools-1@sabayon-weekly
+>=app-misc/sabayonlive-tools-1@sabayon-limbo
 
-echo ">=x11-themes/elementary-icon-theme-2.7.1-r1@sabayon-weekly" >> /etc/entropy/packages/package.mask
-echo ">=x11-themes/elementary-icon-theme-2.7.1-r1@sabayonlinux.org" >> /etc/entropy/packages/package.mask
-echo ">=x11-themes/elementary-icon-theme-2.7.1-r1@sabayon-limbo" >> /etc/entropy/packages/package.mask
+>=x11-themes/sabayon-artwork-core-1@sabayonlinux.org
+>=x11-themes/sabayon-artwork-core-1@sabayon-weekly
+>=x11-themes/sabayon-artwork-core-1@sabayon-limbo
 
-echo ">=lxde-base/lxdm-0.4.1-r5@sabayon-weekly" >> /etc/entropy/packages/package.mask
-echo ">=lxde-base/lxdm-0.4.1-r5@sabayonlinux.org" >> /etc/entropy/packages/package.mask
-echo ">=lxde-base/lxdm-0.4.1-r5@sabayon-limbo" >> /etc/entropy/packages/package.mask
+>=x11-themes/sabayon-artwork-lxde-1@sabayonlinux.org
+>=x11-themes/sabayon-artwork-lxde-1@sabayon-weekly
+>=x11-themes/sabayon-artwork-lxde-1@sabayon-limbo
 
-echo ">=app-admin/anaconda-0.9.9.95@sabayon-weekly" >> /etc/entropy/packages/package.mask
-echo ">=app-admin/anaconda-0.9.9.95@sabayonlinux.org" >> /etc/entropy/packages/package.mask
-echo ">=app-admin/anaconda-0.9.9.95@sabayon-limbo" >> /etc/entropy/packages/package.mask
+>=x11-themes/sabayon-artwork-kde-1@sabayonlinux.org
+>=x11-themes/sabayon-artwork-kde-1@sabayon-weekly
+>=x11-themes/sabayon-artwork-kde-1@sabayon-limbo
 
-echo ">=app-misc/anaconda-runtime-1.1-r1@sabayon-weekly" >> /etc/entropy/packages/package.mask
-echo ">=app-misc/anaconda-runtime-1.1-r1@sabayonlinux.org" >> /etc/entropy/packages/package.mask
-echo ">=app-misc/anaconda-runtime-1.1-r1@sabayon-limbo" >> /etc/entropy/packages/package.mask
+>=x11-themes/sabayon-artwork-isolinux-1@sabayonlinux.org
+>=x11-themes/sabayon-artwork-isolinux-1@sabayon-weekly
+>=x11-themes/sabayon-artwork-isolinux-1@sabayon-limbo
+
+>=x11-themes/sabayon-artwork-grub-1@sabayonlinux.org
+>=x11-themes/sabayon-artwork-grub-1@sabayon-weekly
+>=x11-themes/sabayon-artwork-grub-1@sabayon-limbo
+
+>=x11-themes/sabayon-artwork-gnome-1@sabayonlinux.org
+>=x11-themes/sabayon-artwork-gnome-1@sabayon-weekly
+>=x11-themes/sabayon-artwork-gnome-1@sabayon-limbo
+
+>=x11-themes/sabayon-artwork-extra-1@sabayonlinux.org
+>=x11-themes/sabayon-artwork-extra-1@sabayon-weekly
+>=x11-themes/sabayon-artwork-extra-1@sabayon-limbo
+
+>=kde-base/oxygen-icons-4.9.0@sabayon-weekly
+>=kde-base/oxygen-icons-4.9.1@sabayonlinux.org
+>=kde-base/oxygen-icons-4.9.2@sabayon-limbo
+
+>=x11-themes/gnome-colors-common-5.5.1@sabayon-weekly
+>=x11-themes/gnome-colors-common-5.5.1@sabayonlinux.org
+>=x11-themes/gnome-colors-common-5.5.1@sabayon-limbo
+
+>=x11-themes/tango-icon-theme-0.8.90@sabayon-weekly
+>=x11-themes/tango-icon-theme-0.8.90@sabayonlinux.org
+>=x11-themes/tango-icon-theme-0.8.90@sabayon-limbo
+
+>=x11-themes/elementary-icon-theme-2.7.1@sabayon-weekly
+>=x11-themes/elementary-icon-theme-2.7.1@sabayonlinux.org
+>=x11-themes/elementary-icon-theme-2.7.1@sabayon-limbo
+
+>=sys-apps/gpu-detector-1@sabayon-weekly
+>=sys-apps/gpu-detector-1@sabayonlinux.org
+>=sys-apps/gpu-detector-1@sabayon-limbo
+
+>=lxde-base/lxdm-0.4.1-r5@sabayon-weekly
+>=lxde-base/lxdm-0.4.1-r5@sabayonlinux.org
+>=lxde-base/lxdm-0.4.1-r5@sabayon-limbo
+
+>=x11-base/xorg-server-1.11@sabayon-weekly
+>=x11-base/xorg-server-1.11@sabayonlinux.org
+>=x11-base/xorg-server-1.11@sabayon-limbo
+
+>=app-admin/anaconda-0.1@sabayon-weekly
+>=app-admin/anaconda-0.1@sabayonlinux.org
+>=app-admin/anaconda-0.1@sabayon-limbo
+
+>=app-misc/anaconda-runtime-1.1-r1@sabayon-weekly
+>=app-misc/anaconda-runtime-1.1-r1@sabayonlinux.org
+>=app-misc/anaconda-runtime-1.1-r1@sabayon-limbo" >> /etc/entropy/packages/package.mask
+

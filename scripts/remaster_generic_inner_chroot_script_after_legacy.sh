@@ -1,3 +1,4 @@
+
 #!/bin/bash
 
 # do not remove these
@@ -156,6 +157,14 @@ setup_proprietary_gfx_drivers() {
 	kernel_tag="#$(cat "${kernel_tag_file}")"
 
 	rm -rf /var/lib/entropy/client/packages/packages*/${mydir}/*/x11-drivers*
+	
+        ACCEPT_LICENSE="NVIDIA" equo install --fetch --nodeps =x11-drivers/nvidia-userspace-173*$kernel_tag \
+                =x11-drivers/nvidia-drivers-173*$kernel_tag
+        ACCEPT_LICENSE="NVIDIA" equo install --fetch --nodeps =x11-drivers/nvidia-drivers-96*$kernel_tag \
+                =x11-drivers/nvidia-userspace-96*$kernel_tag
+
+        mv /var/lib/entropy/client/packages/packages-nonfree/${mydir}/*/x11-drivers\:nvidia-{drivers,userspace}*.tbz2 \
+                /install-data/drivers/
 	# dead with >=xorg-server-1.11
 	# ACCEPT_LICENSE="NVIDIA" equo install --fetch --nodeps =x11-drivers/nvidia-drivers-173*$kernel_tag
 	# ACCEPT_LICENSE="NVIDIA" equo install --fetch --nodeps =x11-drivers/nvidia-drivers-96.43.20*$kernel_tag
@@ -300,9 +309,9 @@ if [ "$ARCH" = "x86_64" ]; then
 		rogentos_splash
 		equo config rogentos-artwork-resplash
 
-		echo ">=x11-base/xorg-server-1.11.4-r1@sabayon-weekly
-		      >=x11-base/xorg-server-1.11.4-r1@sabayonlinux.org
-		      >=x11-base/xorg-server-1.11.4-r1@sabayon-limbo
+		echo ">=x11-base/xorg-server-1.10@sabayon-weekly
+		      >=x11-base/xorg-server-1.10@sabayonlinux.org
+		      >=x11-base/xorg-server-1.10@sabayon-limbo
 
 		      >=x11-drivers/ati-drivers-12.2@sabayon-weekly
 		      >=x11-drivers/ati-drivers-12.2@sabayonlinux.org
@@ -311,6 +320,22 @@ if [ "$ARCH" = "x86_64" ]; then
                       >=x11-base/xorg-drivers-1.12@sabayon-weekly
                       >=x11-base/xorg-drivers-1.12@sabayonlinux.org
                       >=x11-base/xorg-drivers-1.12@sabayon-limbo
+
+		      >=x11-drivers/xf86-video-ati-1@sabayon-weekly
+		      >=x11-drivers/xf86-video-ati-1@sabayonlinux.org
+		      >=x11-drivers/xf86-video-ati-1@sabayon-limbo
+
+		      >=x11-drivers/xf86-video-nv-1@sabayon-weekly
+		      >=x11-drivers/xf86-video-nv-1@sabayonlinux.org
+		      >=x11-drivers/xf86-video-nv-1@sabayon-limbo
+
+		      >=x11-drivers/xf86-video-nouveau-1@sabayon-weekly
+		      >=x11-drivers/xf86-video-nouveau-1@sabayonlinux.org
+		      >=x11-drivers/xf86-video-nouveau-1@sabayon-limbo
+
+		      >=x11-drivers/xf86-video-intel-1@sabayon-weekly
+		      >=x11-drivers/xf86-video-intel-1@sabayonlinux.org
+	   	      >=x11-drivers/xf86-video-intel-1@sabayon-limbo
 
 		      >=x11-drivers/xf86-input-evdev-2.7.3@sabayon-weekly
 		      >=x11-drivers/xf86-input-evdev-2.7.3@sabayonlinux.org
@@ -331,6 +356,14 @@ if [ "$ARCH" = "x86_64" ]; then
                       >=x11-drivers/xf86-input-synaptics-1.6.2@sabayonlinux.org
                       >=x11-drivers/xf86-input-synaptics-1.6.2@sabayon-limbo
                       >=x11-drivers/xf86-input-synaptics-1.6.2@rogentoslinux
+
+		      >=x11-drivers/xf86-video-i740-1@sabayon-weekly
+		      >=x11-drivers/xf86-video-i740-1@sabayonlinux.org
+		      >=x11-drivers/xf86-video-i740-1@sabayon-limbo
+
+		      >=x11-drivers/xf86-video-virtualbox-1@sabayon-weekly
+		      >=x11-drivers/xf86-video-virtualbox-1@sabayonlinux.org
+		      >=x11-drivers/xf86-video-virtualbox-1@sabayon-limbo
 
                       >=x11-drivers/xf86-video-vesa-2.3.2@sabayon-weekly
                       >=x11-drivers/xf86-video-vesa-2.3.2@sabayonlinux.org
