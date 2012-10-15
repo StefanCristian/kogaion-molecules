@@ -274,6 +274,7 @@ localz=$(pwd)
 ARCH=$(uname -m)
 
 if [ "$ARCH" = "x86_64" ]; then
+		equo unmask anaconda
 		equo remove nvidia-drivers nvidia-userspace ati-drivers ati-userspace virtualbox-guest-additions nvidiabl net-wireless/broadcom-sta net-wireless/ndiswrapper xf86-video-virtualbox --nodeps
 		equo install linux-sabayon:3.3 sabayon-sources:3.3 ati-drivers-12.6:1,3.3.0-sabayon nvidia-drivers:0,3.3.0-sabayon =x11-drivers/nvidia-userspace-304.37 ati-userspace@rogentoslinux
 		depmod -a
@@ -291,6 +292,7 @@ if [ "$ARCH" = "x86_64" ]; then
 		rogentos_splash
 		equo config rogentos-artwork-resplash
 	else
+		equo unmask anaconda
 		equo remove nvidia-drivers nvidia-userspace ati-drivers ati-userspace --nodeps
 		equo install linux-sabayon:3.2 sabayon-sources:3.2 =x11-drivers/ati-userspace-11.12 =x11-drivers/ati-drivers-11.12#3.2.0-sabayon
 		env-update && source /etc/profile
@@ -312,30 +314,37 @@ if [ "$ARCH" = "x86_64" ]; then
 		echo ">=x11-base/xorg-server-1.10@sabayon-weekly
 		      >=x11-base/xorg-server-1.10@sabayonlinux.org
 		      >=x11-base/xorg-server-1.10@sabayon-limbo
+		      >=x11-base/xorg-server-1.10@rogentoslinux
 
 		      >=x11-drivers/ati-drivers-12.2@sabayon-weekly
 		      >=x11-drivers/ati-drivers-12.2@sabayonlinux.org
 		      >=x11-drivers/ati-drivers-12.2@sabayon-limbo
+                      >=x11-drivers/ati-drivers-12.2@rogentoslinux
 
                       >=x11-base/xorg-drivers-1.12@sabayon-weekly
                       >=x11-base/xorg-drivers-1.12@sabayonlinux.org
                       >=x11-base/xorg-drivers-1.12@sabayon-limbo
+                      >=x11-base/xorg-drivers-1.12@rogentoslinux
 
 		      >=x11-drivers/xf86-video-ati-1@sabayon-weekly
 		      >=x11-drivers/xf86-video-ati-1@sabayonlinux.org
 		      >=x11-drivers/xf86-video-ati-1@sabayon-limbo
+                      >=x11-drivers/xf86-video-ati-1@rogentoslinux
 
 		      >=x11-drivers/xf86-video-nv-1@sabayon-weekly
 		      >=x11-drivers/xf86-video-nv-1@sabayonlinux.org
 		      >=x11-drivers/xf86-video-nv-1@sabayon-limbo
+                      >=x11-drivers/xf86-video-nv-1@rogentoslinux
 
 		      >=x11-drivers/xf86-video-nouveau-1@sabayon-weekly
 		      >=x11-drivers/xf86-video-nouveau-1@sabayonlinux.org
 		      >=x11-drivers/xf86-video-nouveau-1@sabayon-limbo
+                      >=x11-drivers/xf86-video-nouveau-1@rogentoslinux
 
 		      >=x11-drivers/xf86-video-intel-1@sabayon-weekly
 		      >=x11-drivers/xf86-video-intel-1@sabayonlinux.org
 	   	      >=x11-drivers/xf86-video-intel-1@sabayon-limbo
+                      >=x11-drivers/xf86-video-intel-1@rogentoslinux
 
 		      >=x11-drivers/xf86-input-evdev-2.7.3@sabayon-weekly
 		      >=x11-drivers/xf86-input-evdev-2.7.3@sabayonlinux.org
@@ -360,10 +369,12 @@ if [ "$ARCH" = "x86_64" ]; then
 		      >=x11-drivers/xf86-video-i740-1@sabayon-weekly
 		      >=x11-drivers/xf86-video-i740-1@sabayonlinux.org
 		      >=x11-drivers/xf86-video-i740-1@sabayon-limbo
+                      >=x11-drivers/xf86-video-i740-1@rogentoslinux
 
 		      >=x11-drivers/xf86-video-virtualbox-1@sabayon-weekly
 		      >=x11-drivers/xf86-video-virtualbox-1@sabayonlinux.org
 		      >=x11-drivers/xf86-video-virtualbox-1@sabayon-limbo
+                      >=x11-drivers/xf86-video-virtualbox-1@rogentoslinux
 
                       >=x11-drivers/xf86-video-vesa-2.3.2@sabayon-weekly
                       >=x11-drivers/xf86-video-vesa-2.3.2@sabayonlinux.org
@@ -371,7 +382,7 @@ if [ "$ARCH" = "x86_64" ]; then
                       >=x11-drivers/xf86-video-vesa-2.3.2@rogentoslinux" >> /etc/entropy/packages/package.mask
 
 		for PKG in xf86-video-vesa xf86-video-fbdev xf86-input-evdev xf86-input-void xf86-input-synaptics ati-drivers ati-userspace xf86-input-synaptics xf86-video-ati xf86-video-intel xf86-video-nouveau xf86-video-nv xf86-video-i740 xf86-video-virtualbox anaconda; do
-			equo install x11-drivers/$PKG@rogentos-legacy
+			equo install $PKG@rogentos-legacy
 		done
 		depmod -a
 fi
