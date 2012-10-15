@@ -290,7 +290,7 @@ if [ "$ARCH" = "x86_64" ]; then
 fi
 
 equo mask linux-sabayon sabayon-sources
-echo "Interdict any kernel upgrade from now on, kernel-switcher only because it's Rogentos Legacy"
+echo "Interdict any kernel upgrade from now on, kernel-switcher only because we have our own switcher"
 }
 
 setup_installed_packages() {
