@@ -279,6 +279,7 @@ if [ "$ARCH" = "x86_64" ]; then
 		eselect kernel set 1
 		env-update && source /etc/profile
 		rogentos_splash
+		equo config rogentos-artwork-resplash
 	else
 		equo unmask anaconda
 		equo remove anaconda --nodeps
@@ -287,6 +288,7 @@ if [ "$ARCH" = "x86_64" ]; then
 		echo -5 | equo conf update
 		env-update && source /etc/profile
 		rogentos_splash
+		equo config rogentos-artwork-resplash
 fi
 
 equo mask linux-sabayon sabayon-sources
@@ -300,6 +302,7 @@ setup_installed_packages() {
 	echo -5 | equo conf update
 
 	echo "Vacuum cleaning client db"
+
 	rm /var/lib/entropy/client/database/*/sabayonlinux.org -rf
 	rm /var/lib/entropy/client/database/*/sabayon-weekly -rf
 	rm /var/lib/entropy/client/database/*/rogentoslinux -rf
@@ -317,6 +320,12 @@ setup_installed_packages() {
 	rm -rf /var/lib/entropy/*cache*
 	# remove entropy pid file
 	rm -f /var/run/entropy/entropy.lock
+
+        for a in x86 amd64; do
+                rm -r /var/lib/entropy/client/packages/packages/$a/5/*
+                rm -r /var/lib/entropy/client/packages/packages-nonfree/$a/5/*
+                rm -r /var/lib/entropy/client/packages/packages-restricted/$a/5/*
+        done
 }
 
 setup_portage() {

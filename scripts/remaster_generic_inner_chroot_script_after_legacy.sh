@@ -419,6 +419,12 @@ setup_installed_packages() {
 	rm -rf /var/lib/entropy/*cache*
 	# remove entropy pid file
 	rm -f /var/run/entropy/entropy.lock
+
+        for a in x86 amd64; do
+                rm -r /var/lib/entropy/client/packages/packages/$a/5/*
+                rm -r /var/lib/entropy/client/packages/packages-nonfree/$a/5/*
+                rm -r /var/lib/entropy/client/packages/packages-restricted/$a/5/*
+        done
 }
 
 setup_portage() {
