@@ -1,5 +1,5 @@
 # Use abs path, otherwise daily builds automagic won't work
-%env %import ${ROGENTOS_MOLECULE_HOME:-/sabayon}/molecules/mate.common
+%env %import ${ROGENTOS_MOLECULE_HOME:-/sabayon}/molecules/rmate.common
 
 prechroot: linux32
 
