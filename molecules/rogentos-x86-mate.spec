@@ -4,7 +4,7 @@
 prechroot: linux32
 
 # Release Version
-release_version: 1.4
+release_version: 1.4.1
 
 # Release Version string description
 release_desc: x86 MATE

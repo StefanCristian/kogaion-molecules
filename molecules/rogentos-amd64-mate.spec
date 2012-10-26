@@ -2,7 +2,7 @@
 %env %import ${ROGENTOS_MOLECULE_HOME:-/sabayon}/molecules/rmate.common
 
 # Release Version
-release_version: 1.4
+release_version: 1.4.1
 
 # Release Version string description
 release_desc: amd64 MATE
