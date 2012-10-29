@@ -233,6 +233,7 @@ packages_to_add:
 	net-misc/networkmanager-openvpn,
 	net-misc/networkmanager-pptp,
 	net-misc/networkmanager-vpnc,
+	net-misc/wicd-client,
 	net-misc/ntp,
 	net-print/cups,
 	net-print/foomatic-db,

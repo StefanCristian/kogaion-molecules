@@ -108,6 +108,7 @@ packages_to_add:
 	net-irc/xchat,
 	net-p2p/deluge,
 	net-print/cups,
+	net-misc/wicd,
 	net-wireless/madwifi-ng-tools,
 	net-wireless/blueman,
 	net-wireless/bluez,
