@@ -52,4 +52,17 @@ for cfg in package.mask package.unmask package.keywords package.use make.conf; d
 	cp "${cfg_path}" "${dest_cfg_path}" # ignore failures
 done
 
+for cfg in package.mask package.unmask package.keywords package.use make.conf; do
+        cfg_path="${ROGENTOS_REPO_DIR}/${cfg}"
+        if [ ! -f "${cfg_path}" ]; then
+                continue
+        fi
+
+        dest_cfg_path="/etc/portage/${cfg}"
+        if [ "${cfg}" = "make.conf" ]; then
+                dest_cfg_path="/etc/make.conf"
+        fi
+        cp "${cfg_path}" "${dest_cfg_path}" # ignore failures
+done
+
 equo query list installed -qv > /etc/rogentos-pkglist
