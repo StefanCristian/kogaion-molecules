@@ -276,12 +276,12 @@ emerge -C sabayon-version
 
 if [ "$ARCH" = "x86_64" ]; then
 		equo unmask anaconda
-		equo install anaconda kernel-schimbare --nodeps
+		equo install anaconda@rogentoslinux kernel-schimbare --nodeps
 		echo "installed rogentos artwork amd64"
 		rogentos_splash
 	else
 		equo unmask anaconda
-		equo install anaconda kernel-schimbare --nodeps
+		equo install anaconda@rogentoslinux kernel-schimbare --nodeps
 		echo "Installed rogentos artwork x86"
 		rogentos_splash
 fi
