@@ -276,7 +276,7 @@ emerge -C sabayon-version
 
 if [ "$ARCH" = "x86_64" ]; then
 		equo unmask anaconda
-		eequo install anaconda@rogentoslinux
+		equo install anaconda@rogentoslinux
 		echo "installed rogentos artwork amd64"
 		rogentos_splash
 	else
