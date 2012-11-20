@@ -53,7 +53,7 @@ packages_to_add:
 	@X,
 	@fluxbox,
 	app-admin/rigo,
-	app-admin/anaconda,
+	app-admin/kernel-schimbare,
 	app-misc/rogentos-skel,
 	app-crypt/gnupg,
 	app-crypt/pinentry-gtk2,
