@@ -9,7 +9,7 @@ release_string: Rogentos Linux
 release_file: /etc/Rogentos-edition
 
 # ISO Image title
-iso_title: Rogentos KDE
+iso_title: Kogaion KDE
 
 # Enable XZ compression in mksquashfs
 extra_mksquashfs_parameters: -comp xz -Xbcj x86
