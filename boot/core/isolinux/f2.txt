@@ -1,4 +1,4 @@
-0fPREREQUISITES FOR RUNNING ROGENTOSLINUX07                                        09F207
+0fPREREQUISITES FOR RUNNING SABAYONLINUX07                                        09F207
 
 0fLive Environment - No 3D Desktop:07
 - i586 Processor (starting from AMD K5 and Intel Pentium)

@@ -1,13 +1,13 @@
-                  0fWelcome to Rogentos Linux!07                                   09F107
+                  0fWelcome to Sabayon Linux!07                                   09F107
 
-This is a Rogentos Linux media disc, can't you smell the difference?
+This is a Sabayon Linux media disc, can't you smell the difference?
 
 0fHELP INDEX07
 
 0fKEY    TOPIC07
 
 <09F107>   This page, the help index.
-<09F207>   Prerequisites for running RogentosLinux.
+<09F207>   Prerequisites for running SabayonLinux.
 <09F307>   Boot methods for special ways of using this media
 <09F407>   Boot parameters (part I).
 <09F507>   Boot parameters (part II).
