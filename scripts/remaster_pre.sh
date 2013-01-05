@@ -1,9 +1,10 @@
 #!/bin/sh
 
-ROGENTOS_MOLECULE_HOME="${ROGENTOS_MOLECULE_HOME:-/sabayon}"
-export ROGENTOS_MOLECULE_HOME
+# Path to molecules.git dir
+SABAYON_MOLECULE_HOME="${SABAYON_MOLECULE_HOME:-/sabayon}"
+export SABAYON_MOLECULE_HOME
 
-PKGS_DIR="/sabayon/pkgcache"
+PKGS_DIR="${SABAYON_MOLECULE_HOME}/pkgcache"
 CHROOT_PKGS_DIR="${CHROOT_DIR}/var/lib/entropy/client/packages"
 
 [[ ! -d "${PKGS_DIR}" ]] && mkdir -p "${PKGS_DIR}"

@@ -4,4 +4,4 @@
 SABAYON_MOLECULE_HOME="${SABAYON_MOLECULE_HOME:-/sabayon}"
 export SABAYON_MOLECULE_HOME
 
-exec "${SABAYON_MOLECULE_HOME}"/scripts/iso_build.sh "daily" "$@"
+exec "${SABAYON_MOLECULE_HOME}"/scripts/iso_build.sh "dailybase" "$@"

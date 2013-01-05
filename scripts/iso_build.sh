@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # Path to molecules.git dir
-ROGENTOS_MOLECULE_HOME="${ROGENTOS_MOLECULE_HOME:-/sabayon}"
-export ROGENTOS_MOLECULE_HOME
+SABAYON_MOLECULE_HOME="${SABAYON_MOLECULE_HOME:-/sabayon}"
+export SABAYON_MOLECULE_HOME
 
 ACTION="${1}"
-if [ "${ACTION}" != "daily" ] && [ "${ACTION}" != "weekly" ]; then
+if [ "${ACTION}" != "daily" ] && [ "${ACTION}" != "weekly" ] && [ "${ACTION}" != "dailybase" ]; then
 	echo "invalid action: ${ACTION}" >&2
 	exit 1
 fi
@@ -15,6 +15,7 @@ for arg in "$@"
 do
 	[[ "${arg}" = "--push" ]] && DO_PUSH="1"
 	[[ "${arg}" = "--stdout" ]] && DO_STDOUT="1"
+	[[ "${arg}" = "--sleepnight" ]] && DO_SLEEPNIGHT="1"
 	if [ "${arg}" = "--pushonly" ]; then
 		DO_PUSH="1"
 		DRY_RUN="1"
@@ -31,9 +32,13 @@ DAILY_TMPDIR=
 export CUR_DATE
 export ETP_NONINTERACTIVE=1
 export BUILDING_DAILY
+# Temporarily added to debug Equo in case of deadlock
+# export ETP_DEBUG_WATCHDOG=1
+# export ETP_DEBUG_WATCHDOG_INTERVAL=60
 
 echo "DO_PUSH=${DO_PUSH}"
 echo "DRY_RUN=${DRY_RUN}"
+echo "DO_SLEEPNIGHT=${DO_SLEEPNIGHT}"
 echo "LOG_FILE=${LOG_FILE}"
 
 # setup default language, cron might not do that
@@ -41,77 +46,61 @@ export LC_ALL="en_US.UTF-8"
 export LANG="en_US.UTF-8"
 export LANGUAGE="en_US.UTF-8"
 
-if [ "${ACTION}" = "weekly" ]; then
-	ARM_SOURCE_SPECS=(
-		"sabayon-arm-beaglebone-base-2G.spec"
-		"sabayon-arm-beaglebone-base-4G.spec"
-		"sabayon-arm-beagleboard-xm-4G.spec"
-		"sabayon-arm-beagleboard-xm-8G.spec"
-		"sabayon-arm-pandaboard-4G.spec"
-		"sabayon-arm-pandaboard-8G.spec"
-		"sabayon-arm-efikamx-base-4G.spec"
-	)
-	ARM_SOURCE_SPECS_IMG=(
-		"Sabayon_Linux_DAILY_armv7a_BeagleBone_Base_2GB.img"
-		"Sabayon_Linux_DAILY_armv7a_BeagleBone_Base_4GB.img"
-		"Sabayon_Linux_DAILY_armv7a_BeagleBoard_xM_4GB.img"
-		"Sabayon_Linux_DAILY_armv7a_BeagleBoard_xM_8GB.img"
-		"Sabayon_Linux_DAILY_armv7a_PandaBoard_4GB.img"
-		"Sabayon_Linux_DAILY_armv7a_PandaBoard_8GB.img"
-		"Sabayon_Linux_DAILY_armv7a_EfikaMX_Base_4GB.img"
-	)
-	SOURCE_SPECS=()
-	SOURCE_SPECS_ISO=()
-	REMASTER_SPECS=(
-                "sabayon-amd64-xfceforensic.spec"
-                "sabayon-x86-xfceforensic.spec"
-	)
-	REMASTER_SPECS_ISO=(
-                "Sabayon_Linux_DAILY_amd64_ForensicsXfce.iso"
-                "Sabayon_Linux_DAILY_x86_ForensicsXfce.iso"
-	)
-	REMASTER_TAR_SPECS=(
-		"sabayon-x86-spinbase-openvz-template.spec"
-		"sabayon-amd64-spinbase-openvz-template.spec"
-		"sabayon-x86-spinbase-amazon-ebs-image.spec"
-		"sabayon-amd64-spinbase-amazon-ebs-image.spec"
-	)
-	REMASTER_TAR_SPECS_TAR=(
-		"Sabayon_Linux_SpinBase_DAILY_x86_openvz.tar.gz"
-		"Sabayon_Linux_SpinBase_DAILY_amd64_openvz.tar.gz"
-		"Sabayon_Linux_SpinBase_DAILY_x86_Amazon_EBS_ext4_filesystem_image.tar.gz"
-		"Sabayon_Linux_SpinBase_DAILY_amd64_Amazon_EBS_ext4_filesystem_image.tar.gz"
-	)
-elif [ "${ACTION}" = "daily" ]; then
-	ARM_SOURCE_SPECS=()
-	ARM_SOURCE_SPECS_IMG=()
-	SOURCE_SPECS=(
+# Sleep until 22pm?
+if [ "${DO_SLEEPNIGHT}" = "1" ] && [ "${DO_PUSH}" = "1" ]; then
+	target_h=22 # 22pm
+	current_h=$(date +%H)
+	current_h=${current_h/0} # remove leading 0
+	delta_h=$(( target_h - current_h ))
+	if [ ${current_h} -ge 0 ] && [ ${current_h} -le 6 ]; then
+		# If it's past midnight and no later than 7am
+		# just push
+		echo "Just pusing out now"
+	elif [ ${delta_h} -gt 0 ]; then
+		delta_s=$(( delta_h * 3600 ))
+		echo "Sleeping for ${delta_h} hours..."
+		sleep ${delta_s} || exit 1
+	elif [ ${delta_h} -lt 0 ]; then
+		# between 22 and 24, run!
+		echo "I'm after 22pm, running"
+	else
+		echo "No need to sleep"
+	fi
+fi
+
+ARM_SOURCE_SPECS=()
+ARM_SOURCE_SPECS_IMG=()
+
+SOURCE_SPECS=()
+SOURCE_SPECS_ISO=()
+
+REMASTER_SPECS=()
+REMASTER_SPECS_ISO=()
+REMASTER_TAR_SPECS=()
+REMASTER_TAR_SPECS_TAR=()
+
+if [ "${ACTION}" = "weekly" ] || [ "${ACTION}" = "daily" ]; then
+
+	# Daily molecules
+	SOURCE_SPECS+=(
 		"sabayon-x86-spinbase.spec"
 		"sabayon-amd64-spinbase.spec"
 	)
-	SOURCE_SPECS_ISO=(
+	SOURCE_SPECS_ISO+=(
 		"Sabayon_Linux_SpinBase_DAILY_x86.iso"
 		"Sabayon_Linux_SpinBase_DAILY_amd64.iso"
 	)
-	REMASTER_SPECS=(
+	REMASTER_SPECS+=(
 		"sabayon-amd64-gnome.spec"
 		"sabayon-x86-gnome.spec"
 		"sabayon-amd64-kde.spec"
-		"rogentos-amd64-kde.spec"
 		"sabayon-x86-kde.spec"
-		"rogentos-x86-kde.spec"
 		"sabayon-amd64-mate.spec"
-		"rogentos-amd64-mate.spec"
 		"sabayon-x86-mate.spec"
-		"rogentos-x86-mate.spec"
 		"sabayon-amd64-lxde.spec"
 		"sabayon-x86-lxde.spec"
 		"sabayon-amd64-xfce.spec"
-		"rogentos-amd64-xfce.spec"
-		"rogentos-amd64-legacy.spec"
 		"sabayon-x86-xfce.spec"
-		"rogentos-x86-xfce.spec"
-		"rogentos-legacy.spec"
 		"sabayon-amd64-e17.spec"
 		"sabayon-x86-e17.spec"
 		"sabayon-amd64-corecdx.spec"
@@ -119,11 +108,9 @@ elif [ "${ACTION}" = "daily" ]; then
 		"sabayon-amd64-serverbase.spec"
 		"sabayon-x86-serverbase.spec"
 		"sabayon-amd64-hardenedserver.spec"
-		"rogentos-amd64-hardenedserver.spec"
 		"sabayon-x86-hardenedserver.spec"
-		"rogentos-x86-hardenedserver.spec"
 	)
-	REMASTER_SPECS_ISO=(
+	REMASTER_SPECS_ISO+=(
 		"Sabayon_Linux_DAILY_amd64_G.iso"
 		"Sabayon_Linux_DAILY_x86_G.iso"
 		"Sabayon_Linux_DAILY_amd64_K.iso"
@@ -143,8 +130,59 @@ elif [ "${ACTION}" = "daily" ]; then
 		"Sabayon_Linux_HardenedServer_DAILY_amd64.iso"
 		"Sabayon_Linux_HardenedServer_DAILY_x86.iso"
 	)
-	REMASTER_TAR_SPECS=()
-	REMASTER_TAR_SPECS_TAR=()
+
+
+	# Weekly molecules
+	if [ "${ACTION}" = "weekly" ]; then
+		ARM_SOURCE_SPECS+=(
+			"sabayon-arm-beaglebone-base-2G.spec"
+			"sabayon-arm-beaglebone-base-4G.spec"
+			"sabayon-arm-beagleboard-xm-4G.spec"
+			"sabayon-arm-beagleboard-xm-8G.spec"
+			"sabayon-arm-pandaboard-4G.spec"
+			"sabayon-arm-pandaboard-8G.spec"
+			"sabayon-arm-efikamx-base-4G.spec"
+		)
+		ARM_SOURCE_SPECS_IMG+=(
+			"Sabayon_Linux_DAILY_armv7a_BeagleBone_Base_2GB.img"
+			"Sabayon_Linux_DAILY_armv7a_BeagleBone_Base_4GB.img"
+			"Sabayon_Linux_DAILY_armv7a_BeagleBoard_xM_4GB.img"
+			"Sabayon_Linux_DAILY_armv7a_BeagleBoard_xM_8GB.img"
+			"Sabayon_Linux_DAILY_armv7a_PandaBoard_4GB.img"
+			"Sabayon_Linux_DAILY_armv7a_PandaBoard_8GB.img"
+			"Sabayon_Linux_DAILY_armv7a_EfikaMX_Base_4GB.img"
+		)
+		REMASTER_SPECS+=(
+			"sabayon-amd64-xfceforensic.spec"
+			"sabayon-x86-xfceforensic.spec"
+		)
+		REMASTER_SPECS_ISO+=(
+			"Sabayon_Linux_DAILY_amd64_ForensicsXfce.iso"
+			"Sabayon_Linux_DAILY_x86_ForensicsXfce.iso"
+		)
+		REMASTER_TAR_SPECS+=(
+			"sabayon-x86-spinbase-openvz-template.spec"
+			"sabayon-amd64-spinbase-openvz-template.spec"
+			"sabayon-x86-spinbase-amazon-ebs-image.spec"
+			"sabayon-amd64-spinbase-amazon-ebs-image.spec"
+		)
+		REMASTER_TAR_SPECS_TAR+=(
+			"Sabayon_Linux_SpinBase_DAILY_x86_openvz.tar.gz"
+			"Sabayon_Linux_SpinBase_DAILY_amd64_openvz.tar.gz"
+			"Sabayon_Linux_SpinBase_DAILY_x86_Amazon_EBS_ext4_filesystem_image.tar.gz"
+			"Sabayon_Linux_SpinBase_DAILY_amd64_Amazon_EBS_ext4_filesystem_image.tar.gz"
+		)
+	fi
+
+elif [ "${ACTION}" = "dailybase" ]; then
+	SOURCE_SPECS=(
+		"sabayon-x86-spinbase.spec"
+		"sabayon-amd64-spinbase.spec"
+	)
+	SOURCE_SPECS_ISO=(
+		"Sabayon_Linux_SpinBase_DAILY_x86.iso"
+		"Sabayon_Linux_SpinBase_DAILY_amd64.iso"
+	)
 fi
 
 [[ -d "/var/log/molecule" ]] || mkdir -p /var/log/molecule
@@ -159,14 +197,14 @@ cleanup_on_exit() {
 trap "cleanup_on_exit" EXIT INT TERM
 
 move_to_pkg_sabayon_org() {
-	if [ -n "${DO_PUSH}" ] || [ -f "${ROGENTOS_MOLECULE_HOME}"/DO_PUSH ]; then
-		rm -f "${ROGENTOS_MOLECULE_HOME}"/DO_PUSH
+	if [ -n "${DO_PUSH}" ] || [ -f "${SABAYON_MOLECULE_HOME}"/DO_PUSH ]; then
+		rm -f "${SABAYON_MOLECULE_HOME}"/DO_PUSH
 		local executed=
 		for ((i=0; i < 5; i++)); do
-			rsync -av --partial --delete-excluded "${ROGENTOS_MOLECULE_HOME}"/iso_rsync/*DAILY* \
+			rsync -av --partial --delete-excluded "${SABAYON_MOLECULE_HOME}"/iso_rsync/*DAILY* \
 				entropy@pkg.sabayon.org:/sabayon/rsync/rsync.sabayon.org/iso/daily \
 				|| { sleep 10; continue; }
-			rsync -av --partial --delete-excluded "${ROGENTOS_MOLECULE_HOME}"/scripts/gen_html \
+			rsync -av --partial --delete-excluded "${SABAYON_MOLECULE_HOME}"/scripts/gen_html \
 			entropy@pkg.sabayon.org:/sabayon/rsync/iso_html_generator \
 				|| { sleep 10; continue; }
 			ssh entropy@pkg.sabayon.org \
@@ -192,11 +230,11 @@ build_sabayon() {
 		local source_specs=""
 		for i in ${!SOURCE_SPECS[@]}
 		do
-			src="${ROGENTOS_MOLECULE_HOME}/molecules/${SOURCE_SPECS[i]}"
+			src="${SABAYON_MOLECULE_HOME}/molecules/${SOURCE_SPECS[i]}"
 			dst="${DAILY_TMPDIR}/${SOURCE_SPECS[i]}"
 			cp "${src}" "${dst}" -p || return 1
 			echo >> "${dst}"
-			echo "inner_source_chroot_script: ${ROGENTOS_MOLECULE_HOME}/scripts/inner_source_chroot_update.sh" >> "${dst}"
+			echo "inner_source_chroot_script: ${SABAYON_MOLECULE_HOME}/scripts/inner_source_chroot_update.sh" >> "${dst}"
 			# tweak iso image name
 			sed -i "s/^#.*destination_iso_image_name/destination_iso_image_name:/" "${dst}" || return 1
 			sed -i "s/destination_iso_image_name.*/destination_iso_image_name: ${SOURCE_SPECS_ISO[i]}/" "${dst}" || return 1
@@ -209,11 +247,11 @@ build_sabayon() {
 		local arm_source_specs=""
 		for i in ${!ARM_SOURCE_SPECS[@]}
 		do
-			src="${ROGENTOS_MOLECULE_HOME}/molecules/${ARM_SOURCE_SPECS[i]}"
+			src="${SABAYON_MOLECULE_HOME}/molecules/${ARM_SOURCE_SPECS[i]}"
 			dst="${DAILY_TMPDIR}/${ARM_SOURCE_SPECS[i]}"
 			cp "${src}" "${dst}" -p || return 1
 			echo >> "${dst}"
-			echo "inner_source_chroot_script: ${ROGENTOS_MOLECULE_HOME}/scripts/inner_source_chroot_update.sh" >> "${dst}"
+			echo "inner_source_chroot_script: ${SABAYON_MOLECULE_HOME}/scripts/inner_source_chroot_update.sh" >> "${dst}"
 			# tweak iso image name
 			sed -i "s/^#.*image_name/image_name:/" "${dst}" || return 1
 			sed -i "s/image_name.*/image_name: ${ARM_SOURCE_SPECS_IMG[i]}/" "${dst}" || return 1
@@ -226,7 +264,7 @@ build_sabayon() {
 		local remaster_specs=""
 		for i in ${!REMASTER_SPECS[@]}
 		do
-			src="${ROGENTOS_MOLECULE_HOME}/molecules/${REMASTER_SPECS[i]}"
+			src="${SABAYON_MOLECULE_HOME}/molecules/${REMASTER_SPECS[i]}"
 			dst="${DAILY_TMPDIR_REMASTER}/${REMASTER_SPECS[i]}"
 			cp "${src}" "${dst}" -p || return 1
 			# tweak iso image name
@@ -240,7 +278,7 @@ build_sabayon() {
 
 		for i in ${!REMASTER_TAR_SPECS[@]}
 		do
-			src="${ROGENTOS_MOLECULE_HOME}/molecules/${REMASTER_TAR_SPECS[i]}"
+			src="${SABAYON_MOLECULE_HOME}/molecules/${REMASTER_TAR_SPECS[i]}"
 			dst="${DAILY_TMPDIR_REMASTER}/${REMASTER_TAR_SPECS[i]}"
 			cp "${src}" "${dst}" -p || return 1
 			# tweak tar name
@@ -273,12 +311,12 @@ build_sabayon() {
 
 		if [ "${done_something}" = "1" ]; then
 			if [ "${done_images}" = "1" ]; then
-				cp -p "${ROGENTOS_MOLECULE_HOME}"/images/*DAILY* "${ROGENTOS_MOLECULE_HOME}"/iso_rsync/ || return 1
+				cp -p "${SABAYON_MOLECULE_HOME}"/images/*DAILY* "${SABAYON_MOLECULE_HOME}"/iso_rsync/ || return 1
 			fi
-			cp -p "${ROGENTOS_MOLECULE_HOME}"/iso/*DAILY* "${ROGENTOS_MOLECULE_HOME}"/iso_rsync/ || return 1
-			date > "${ROGENTOS_MOLECULE_HOME}"/iso_rsync/RELEASE_DATE_DAILY
+			cp -p "${SABAYON_MOLECULE_HOME}"/iso/*DAILY* "${SABAYON_MOLECULE_HOME}"/iso_rsync/ || return 1
+			date > "${SABAYON_MOLECULE_HOME}"/iso_rsync/RELEASE_DATE_DAILY
 			if [ "${MAKE_TORRENTS}" != "0" ]; then
-				"${ROGENTOS_MOLECULE_HOME}"/scripts/make_torrents.sh || return 1
+				"${SABAYON_MOLECULE_HOME}"/scripts/make_torrents.sh || return 1
 			fi
 		fi
 	fi
@@ -288,9 +326,21 @@ build_sabayon() {
 mail_failure() {
 	local out=${1}
 	local log_file=${2}
+	local log_cont=
+
+	# get the last 64 lines of the file
+	if [ -f "${log_file}" ]; then
+		log_cont=$(tail -n 64 "${log_file}" 2> /dev/null)
+	fi
+
 	echo "Hello there,
 iso_build.sh execution failed (miserably) with exit status: ${out}.
-Log file is at ${log_file}.
+Log file is at: ${log_file}
+
+Last log lines:
+[... snip ...]
+${log_cont}
+[... snip ...]
 
 Thanks,
 Sun" | /bin/mail -s "ISO build script failure" root
@@ -316,8 +366,6 @@ else
 		# mail root
 		mail_failure "${out}" "${log_file}"
 	fi
-fi
-
 fi
 echo "EXIT_STATUS: ${out}"
 

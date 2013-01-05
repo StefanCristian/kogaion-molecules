@@ -33,7 +33,7 @@ extra_mksquashfs_parameters: -comp xz -Xbcj x86
 %env error_script: ${SABAYON_MOLECULE_HOME:-/sabayon}/scripts/remaster_error_script.sh
 
 # Extra mkisofs parameters, perhaps something to include/use your bootloader
-extra_mkisofs_parameters: -b isolinux/isolinux.bin -c isolinux/boot.cat -eltorito-alt-boot -no-emul-boot -eltorito-boot boot/grub/efi.img
+extra_mkisofs_parameters: -b isolinux/isolinux.bin -c isolinux/boot.cat -eltorito-alt-boot -no-emul-boot -eltorito-platform efi -eltorito-boot boot/grub/efi.img
 
 # Pre-ISO building script. Hook to be able to copy kernel images in place, for example
 %env pre_iso_script: ${SABAYON_MOLECULE_HOME:-/sabayon}/scripts/generic_pre_iso_script.sh E17
@@ -82,13 +82,13 @@ packages_to_add:
 	sys-auth/consolekit,
 	sys-block/parted,
 	sys-fs/ntfs3g,
-	sys-fs/zfs,
 	sys-power/cpufrequtils,
 	www-client/midori,
 	x11-drivers/ati-drivers,
 	x11-drivers/nvidia-drivers,
 	x11-drivers/xf86-video-virtualbox,
 	x11-libs/gksu,
+	x11-misc/bumblebee,
 	x11-misc/magneto-gtk,
 	x11-terms/xterm,
 	x11-themes/equinox-themes,

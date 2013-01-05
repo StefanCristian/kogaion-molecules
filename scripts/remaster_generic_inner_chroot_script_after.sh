@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# do not remove these
 /usr/sbin/env-update
 . /etc/profile
 
@@ -12,15 +11,9 @@ basic_environment_setup() {
 	rc-update del xdm boot
 	rc-update add xdm boot
 
-	rc-update del bluetooth
-	rc-update add bluetooth default
-
 	# consolekit must be run at boot level
 	rc-update add consolekit boot
 
-	rc-update add rogentoslive boot
-	rc-update add x-setup boot
-	
 	# if it exists
 	if [ -f "/etc/init.d/hald" ]; then
 		rc-update del hald boot
@@ -39,6 +32,7 @@ basic_environment_setup() {
 
 	# Always startup this
 	rc-update add virtualbox-guest-additions boot
+
 	# Create a default "games" group so that
 	# the default user will be added to it during
 	# live boot, and thus, after install.
@@ -58,7 +52,7 @@ setup_sabayon_mce() {
 	rc-update add sabayon-mce boot
 	# not needed, done by app-misc/sabayon-mce pkg
 	# Sabayon Media Center user setup
-	# source /sbin/rogentos-functions.sh
+	# source /sbin/sabayon-functions.sh
 	# sabayon_setup_live_user "sabayonmce"
 }
 
@@ -83,6 +77,8 @@ setup_displaymanager() {
 		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="gdm"/g' /etc/conf.d/xdm
 	elif [ -n "$(equo match --installed lxde-base/lxdm -qv)" ]; then
 		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="lxdm"/g' /etc/conf.d/xdm
+        elif [ -n "$(equo match --installed x11-misc/lightdm -qv)" ]; then
+                sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="lightdm"/g' /etc/conf.d/xdm
 	elif [ -n "$(equo match --installed kde-base/kdm -qv)" ]; then
 		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="kdm"/g' /etc/conf.d/xdm
 	else
@@ -118,8 +114,8 @@ setup_oss_gfx_drivers() {
 	touch /.enable_kms
 
 	# Remove nouveau from blacklist
-	#sed -i ":^blacklist: s:blacklist nouveau:# blacklist nouveau:g" \
-		#/etc/modprobe.d/blacklist.conf
+	sed -i ":^blacklist: s:blacklist nouveau:# blacklist nouveau:g" \
+		/etc/modprobe.d/blacklist.conf
 }
 
 has_proprietary_drivers() {
@@ -157,24 +153,22 @@ setup_proprietary_gfx_drivers() {
 	kernel_tag="#$(cat "${kernel_tag_file}")"
 
 	rm -rf /var/lib/entropy/client/packages/packages*/${mydir}/*/x11-drivers*
+	# TODO: move to equo match x11-drivers/nvidia-drivers$kernel_tag --quiet --verbose --injected --multimatch
+	# but also the latest kernel is marked as injected, so you need to sort and filter out
+	ACCEPT_LICENSE="NVIDIA" equo install --fetch --nodeps =x11-drivers/nvidia-userspace-304*$kernel_tag \
+		=x11-drivers/nvidia-drivers-304*$kernel_tag
 	ACCEPT_LICENSE="NVIDIA" equo install --fetch --nodeps =x11-drivers/nvidia-userspace-173*$kernel_tag \
 		=x11-drivers/nvidia-drivers-173*$kernel_tag
 	ACCEPT_LICENSE="NVIDIA" equo install --fetch --nodeps =x11-drivers/nvidia-drivers-96*$kernel_tag \
 		=x11-drivers/nvidia-userspace-96*$kernel_tag
-
-	mv /var/lib/entropy/client/packages/packages-nonfree/${mydir}/*/x11-drivers\:nvidia-{drivers,userspace}*.tbz2 \
-		/install-data/drivers/
-	# dead with >=xorg-server-1.11
-	#ACCEPT_LICENSE="NVIDIA" equo install --fetch --nodeps =x11-drivers/nvidia-drivers-173*$kernel_tag
-	#ACCEPT_LICENSE="NVIDIA" equo install --fetch --nodeps =x11-drivers/nvidia-drivers-96.43.20*$kernel_tag
 	## not working with >=xorg-server-1.5
 	## ACCEPT_LICENSE="NVIDIA" equo install --fetch --nodeps ~x11-drivers/nvidia-drivers-71.86.*$kernel_tag
-	# mv /var/lib/entropy/client/packages/packages-nonfree/${mydir}/*/x11-drivers\:nvidia-drivers*.tbz2 /install-data/drivers/
+	mv /var/lib/entropy/client/packages/packages-nonfree/${mydir}/*/x11-drivers\:nvidia-{drivers,userspace}*.tbz2 \
+		/install-data/drivers/
 
 	# if we ship with ati-drivers, we have KMS disabled by default.
 	# and better set driver arch to classic
 	eselect mesa set r600 classic
-
 }
 
 setup_gnome_shell_extensions() {
@@ -198,6 +192,7 @@ setup_fonts() {
 		20-unhint-small-dejavu-sans-mono.conf
 		20-unhint-small-dejavu-serif.conf
 		31-cantarell.conf
+		52-infinality.conf
 		57-dejavu-sans.conf
 		57-dejavu-sans-mono.conf
 		57-dejavu-serif.conf"
@@ -209,6 +204,9 @@ setup_fonts() {
 			echo "ouch, /etc/fonts/conf.avail/${fc_en} is not available" >&2
 		fi
 	done
+	# Complete infinality setup
+	eselect infinality set infinality
+	eselect lcdfilter set infinality
 }
 
 setup_misc_stuff() {
@@ -239,65 +237,20 @@ setup_misc_stuff() {
 		rm $file
 	done
 
-	# Setup basic GTK theme for root user
-	if [ ! -f "/root/.gtkrc-2.0" ]; then
-		echo "include \"/usr/share/themes/Clearlooks/gtk-2.0/gtkrc\"" > /root/.gtkrc-2.0
-	fi
 	# Regenerate Fluxbox menu
 	if [ -x "/usr/bin/fluxbox-generate_menu" ]; then
 		fluxbox-generate_menu -o /etc/skel/.fluxbox/menu
 	fi
 }
 
-rogentos_splash() {
-if [ -d "/etc/splash/sabayon" ]; then
-        rm -r /etc/splash/sabayon
-        ln -s /etc/splash/rogentos /etc/splash/sabayon
-        echo "So etc/splash/sabayon exists"
-        ln -s /etc/splash/rogentos /etc/splash/sabayon
-
-        for i in `seq 1 6`; do
-        splash_manager -c set -t rogentos --tty=$i
-        done
-fi
-}
-
-rogentos_install() {
-
-#Rogentos ISO Remaking from the Beginnings
-
-localz=$(pwd)
-ARCH=$(uname -m)
-rog=rogentos-artwork
-
-equo remove anaconda --nodeps
-echo -5 | equo conf update
-emerge -C sabayon-version
-
-if [ "$ARCH" = "x86_64" ]; then
-		equo unmask anaconda
-		equo install anaconda@rogentoslinux
-		echo "installed rogentos artwork amd64"
-		rogentos_splash
-	else
-		equo unmask anaconda
-		equo install anaconda@rogentoslinux
-		echo "Installed rogentos artwork x86"
-		rogentos_splash
-fi
-
-}
-
 setup_installed_packages() {
-	rogentos_install
 	# Update package list
-	equo query list installed -qv > /etc/rogentos-pkglist
+	equo query list installed -qv > /etc/sabayon-pkglist
 	echo -5 | equo conf update
 
 	echo "Vacuum cleaning client db"
 	rm /var/lib/entropy/client/database/*/sabayonlinux.org -rf
 	rm /var/lib/entropy/client/database/*/sabayon-weekly -rf
-	rm /var/lib/entropy/client/database/*/rogentoslinux -rf
 	equo rescue vacuum
 
 	# restore original repositories.conf (all mirrors were filtered for speed)
@@ -312,23 +265,16 @@ setup_installed_packages() {
 	rm -rf /var/lib/entropy/*cache*
 	# remove entropy pid file
 	rm -f /var/run/entropy/entropy.lock
-	rm -f /var/run/entropy/entropy.pid
-
-        for a in x86 amd64; do
-                rm -r /var/lib/entropy/client/packages/packages/$a/5/*
-                rm -r /var/lib/entropy/client/packages/packages-nonfree/$a/5/*
-                rm -r /var/lib/entropy/client/packages/packages-restricted/$a/5/*
-        done
+	rm -f /var/lib/entropy/entropy.pid
+	rm -f /var/lib/entropy/entropy.lock
 }
 
 setup_portage() {
-        layman -d sabayon
-        rm -rf /var/lib/layman/sabayon
-        layman -d sabayon-distro
-        rm -rf /var/lib/layman/sabayon-distro
-        layman -d rogento
-        rm -rf /var/lib/layman/rogento
-        emaint --fix world
+	layman -d sabayon
+	rm -rf /var/lib/layman/sabayon
+	layman -d sabayon-distro
+	rm -rf /var/lib/layman/sabayon-distro
+	emaint --fix world
 }
 
 setup_startup_caches() {
@@ -340,6 +286,20 @@ setup_startup_caches() {
 	/etc/init.d/savecache zap
 	ldconfig
 	ldconfig
+}
+
+prepare_lxde() {
+	setup_networkmanager
+	# Fix ~/.dmrc to have it load LXDE
+	echo "[Desktop]" > /etc/skel/.dmrc
+	echo "Session=LXDE" >> /etc/skel/.dmrc
+	remove_desktop_files
+	setup_displaymanager
+	# properly tweak lxde autostart tweak, adding --desktop option
+	sed -i 's/pcmanfm -d/pcmanfm -d --desktop/g' /etc/xdg/lxsession/LXDE/autostart
+	remove_mozilla_skel_cruft
+	setup_cpufrequtils
+	has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
 }
 
 prepare_mate() {
@@ -354,15 +314,20 @@ prepare_mate() {
         has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
 }
 
-prepare_lxde() {
+prepare_e17() {
 	setup_networkmanager
-	# Fix ~/.dmrc to have it load LXDE
+	# Fix ~/.dmrc to have it load E17
 	echo "[Desktop]" > /etc/skel/.dmrc
-	echo "Session=LXDE" >> /etc/skel/.dmrc
+	echo "Session=enlightenment" >> /etc/skel/.dmrc
 	remove_desktop_files
+	# E17 spin has chromium installed
 	setup_displaymanager
-	# properly tweak lxde autostart tweak, adding --desktop option
-	sed -i 's/pcmanfm -d/pcmanfm -d --desktop/g' /etc/xdg/lxsession/LXDE/autostart
+	# Not using lxdm for now
+	# TODO: improve the lines below
+	# Make sure enlightenment is selected in lxdm
+	# sed -i '/lxdm-greeter-gtk/ a\\nlast_session=enlightenment.desktop\nlast_lang=' /etc/lxdm/lxdm.conf
+	# Fix ~/.gtkrc-2.0 for some nice icons in gtk
+	echo 'gtk-icon-theme-name="Tango" gtk-theme-name="Xfce"' | tr " " "\n" > /etc/skel/.gtkrc-2.0
 	remove_mozilla_skel_cruft
 	setup_cpufrequtils
 	has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
@@ -406,6 +371,7 @@ prepare_gnome() {
 	rc-update add system-tools-backends default
 	setup_displaymanager
 	setup_sabayon_mce
+	setup_cpufrequtils
 	has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
 }
 
@@ -427,6 +393,10 @@ prepare_kde() {
 	# Fix ~/.dmrc to have it load KDE
 	echo "[Desktop]" > /etc/skel/.dmrc
 	echo "Session=KDE-4" >> /etc/skel/.dmrc
+	# Configure proper GTK3 theme
+	# TODO: find a better solution?
+	mv /etc/skel/.config/gtk-3.0/settings.ini._kde_molecule \
+		/etc/skel/.config/gtk-3.0/settings.ini
 	setup_displaymanager
 	setup_sabayon_mce
 	setup_cpufrequtils
@@ -449,6 +419,8 @@ prepare_system() {
 	local de="${1}"
 	if [ "${de}" = "lxde" ]; then
 		prepare_lxde
+        elif [ "${de}" = "mate" ]; then
+                prepare_mate
 	elif [ "${de}" = "e17" ]; then
 		prepare_e17
 	elif [ "${de}" = "xfce" ]; then
@@ -463,8 +435,6 @@ prepare_system() {
 		prepare_kde
 	elif [ "${de}" = "awesome" ]; then
 		prepare_awesome
-	elif [ "${de}" = "mate" ]; then
-		prepare_mate
 	fi
 }
 

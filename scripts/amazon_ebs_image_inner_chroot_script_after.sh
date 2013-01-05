@@ -1,14 +1,14 @@
 #!/bin/sh
 
-echo "
-Configuring AMI root filesystem
-Ext4 is the expected filesystem type
-/dev/sda1 is the expected root filesystem partition
-ec2-user is the expected user
-"
-
 /usr/sbin/env-update
 . /etc/profile
+
+echo
+echo "Configuring AMI root filesystem"
+echo "Ext4 is the expected filesystem type"
+echo "/dev/sda1 is the expected root filesystem partition"
+echo "ec2-user is the expected user"
+echo
 
 # setup networking, make sure networkmanager is gone
 rc-update del NetworkManager boot
@@ -68,7 +68,7 @@ initrd /boot/Initrd
 ( cd /boot/grub && ln -sf grub.conf menu.lst ) || exit 1
 
 # Generate list of installed packages
-equo query list installed -qv > /etc/rogentos-pkglist
+equo query list installed -qv > /etc/sabayon-pkglist
 
 /lib/rc/bin/rc-depend -u
 
@@ -90,7 +90,8 @@ rm /var/lib/entropy/logs -rf
 rm -rf /install-data
 
 # Generate openrc cache
-touch /lib/rc/init.d/softlevel
+[[ -d "/lib/rc/init.d" ]] && touch /lib/rc/init.d/softlevel
+[[ -d "/run/openrc" ]] && touch /run/openrc/softlevel
 /etc/init.d/savecache start
 /etc/init.d/savecache zap
 
