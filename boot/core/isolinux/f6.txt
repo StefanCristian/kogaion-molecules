@@ -6,7 +6,11 @@
 
 0fXsistenCe:07 
  - What is XsistenCe? 
- - One Removable Device (USB storage) + RogentosLinux = your data everywhere.
+<<<<<<< HEAD
+ - One Removable Device (USB storage) + KogaionLinux = your data everywhere.
+=======
+ - One Removable Device (USB storage) + SabayonLinux = your data everywhere.
+>>>>>>> 082839235ca9d30604aef3813e72731794e0ee2c
    In other words, you can use your Home directory in read/write mode and
    your data will be stored on your external non-volatile removable device.
 
@@ -18,6 +22,10 @@
     - If the System does not detect an XsistenCe image, it will be created.
       - You can specify the size (MB) of it, by adding: "xsistence_mb=xxx"
 
- - boot example: > rogentos xsistence xsistence_mb=100
+<<<<<<< HEAD
+ - boot example: > kogaion xsistence xsistence_mb=100
+=======
+ - boot example: > sabayon xsistence xsistence_mb=100
+>>>>>>> 082839235ca9d30604aef3813e72731794e0ee2c
 
 Press F1control and F then 1 for the help index, or ENTER to 

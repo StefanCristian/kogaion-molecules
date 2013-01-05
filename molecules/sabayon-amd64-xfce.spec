@@ -1,14 +1,14 @@
 # Use abs path, otherwise daily builds automagic won't work
-%env %import ${ROGENTOS_MOLECULE_HOME:-/sabayon}/molecules/xfce.common
+%env %import ${SABAYON_MOLECULE_HOME:-/sabayon}/molecules/xfce.common
 
 # Release Version
-release_version: 9
+release_version: 10
 
 # Release Version string description
 release_desc: amd64 Xfce
 
 # Path to source ISO file (MANDATORY)
-%env source_iso: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/iso/Sabayon_Linux_SpinBase_DAILY_amd64.iso
+%env source_iso: ${SABAYON_MOLECULE_HOME:-/sabayon}/iso/Sabayon_Linux_SpinBase_DAILY_amd64.iso
 
 # Destination ISO image name, call whatever you want.iso, not mandatory
-destination_iso_image_name: Sabayon_Linux_9_amd64_Xfce.iso
+destination_iso_image_name: Sabayon_Linux_10_amd64_Xfce.iso
