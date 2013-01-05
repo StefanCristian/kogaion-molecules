@@ -11,8 +11,8 @@ other_iso_path="${4}"
 . /etc/profile
 
 # Path to molecules.git dir
-SABAYON_MOLECULE_HOME="${SABAYON_MOLECULE_HOME:-/sabayon}"
-export SABAYON_MOLECULE_HOME
+ROGENTOS_MOLECULE_HOME="${ROGENTOS_MOLECULE_HOME:-/sabayon}"
+export ROGENTOS_MOLECULE_HOME
 
 pre_iso_signal_handler() {
 	if [ -d "${tmp_dir}" ] && [ -n "${tmp_dir}" ]; then
@@ -30,17 +30,17 @@ fi
 
 isolinux_destination="${CDROOT_DIR}/isolinux/txt.cfg"
 grub_destination="${CDROOT_DIR}/boot/grub/grub.cfg"
-isolinux_source="${SABAYON_MOLECULE_HOME}/remaster/minimal_amd64_x86_isolinux.cfg"
-grub_source="${SABAYON_MOLECULE_HOME}/remaster/minimal_amd64_x86_grub.cfg"
+isolinux_source="${ROGENTOS_MOLECULE_HOME}/remaster/minimal_amd64_x86_isolinux.cfg"
+grub_source="${ROGENTOS_MOLECULE_HOME}/remaster/minimal_amd64_x86_grub.cfg"
 cp "${isolinux_source}" "${isolinux_destination}" || exit 1
 cp "${grub_source}" "${grub_destination}" || exit 1
 
 # Generate Language and Keyboard menus for GRUB-2
-"${SABAYON_MOLECULE_HOME}"/scripts/make_grub_langs.sh "${grub_destination}" \
+"${ROGENTOS_MOLECULE_HOME}"/scripts/make_grub_langs.sh "${grub_destination}" \
 	|| exit 1
 
 # generate EFI GRUB
-"${SABAYON_MOLECULE_HOME}"/scripts/make_grub_efi.sh || exit 1
+"${ROGENTOS_MOLECULE_HOME}"/scripts/make_grub_efi.sh || exit 1
 
 ver=${RELEASE_VERSION}
 [[ -z "${ver}" ]] && ver=${CUR_DATE}
@@ -87,13 +87,13 @@ cp "${tmp_dir}/boot/sabayon" "${CDROOT_DIR}/boot/sabayon${other_arch}" || exit 1
 cp "${tmp_dir}/boot/sabayon.igz" "${CDROOT_DIR}/boot/sabayon${other_arch}.igz" || exit 1
 
 # copy back.jpg to proper location
-isolinux_img="${SABAYON_MOLECULE_HOME}/remaster/embedded_world/back.jpg"
+isolinux_img="${ROGENTOS_MOLECULE_HOME}/remaster/embedded_world/back.jpg"
 if [ -f "${isolinux_img}" ]; then
 	cp "${isolinux_img}" "${CDROOT_DIR}/isolinux/" || exit 1
 fi
 
 # copy ARM images on the ISO
-arm_images_dir="${SABAYON_MOLECULE_HOME}/images"
+arm_images_dir="${ROGENTOS_MOLECULE_HOME}/images"
 arm_dir="${CDROOT_DIR}/ARM"
 mkdir -p "${arm_dir}" || exit 1
 
@@ -103,7 +103,7 @@ pandaboard_image="Sabayon_Linux_9_armv7a_PandaBoard_4GB.img.xz"
 
 # BeagleBone
 arm_card_dir="${arm_dir}/BeagleBone"
-arm_card_boot_dir="${SABAYON_MOLECULE_HOME}/boot/arm/beaglebone"
+arm_card_boot_dir="${ROGENTOS_MOLECULE_HOME}/boot/arm/beaglebone"
 mkdir "${arm_card_dir}" -p || exit 1
 cp "${arm_images_dir}/${beaglebone_image}" "${arm_card_dir}"/ || exit 1
 cp "${arm_images_dir}/${beaglebone_image}.md5" "${arm_card_dir}"/ || exit 1
@@ -111,7 +111,7 @@ cp "${arm_card_boot_dir}/README.txt" "${arm_card_dir}"/ || exit 1
 
 # BeagleBoard xM
 arm_card_dir="${arm_dir}/BeagleBoard-xM"
-arm_card_boot_dir="${SABAYON_MOLECULE_HOME}/boot/arm/beagleboard-xm"
+arm_card_boot_dir="${ROGENTOS_MOLECULE_HOME}/boot/arm/beagleboard-xm"
 mkdir "${arm_card_dir}" -p || exit 1
 cp "${arm_images_dir}/${beaglebone_image}" "${arm_card_dir}"/ || exit 1
 cp "${arm_images_dir}/${beaglebone_image}.md5" "${arm_card_dir}"/ || exit 1
@@ -119,11 +119,11 @@ cp "${arm_card_boot_dir}/README.txt" "${arm_card_dir}"/ || exit 1
 
 # PandaBoard
 arm_card_dir="${arm_dir}/PandaBoard"
-arm_card_boot_dir="${SABAYON_MOLECULE_HOME}/boot/arm/pandaboard"
+arm_card_boot_dir="${ROGENTOS_MOLECULE_HOME}/boot/arm/pandaboard"
 mkdir "${arm_card_dir}" -p || exit 1
 cp "${arm_images_dir}/${beaglebone_image}" "${arm_card_dir}"/ || exit 1
 cp "${arm_images_dir}/${beaglebone_image}.md5" "${arm_card_dir}"/ || exit 1
 cp "${arm_card_boot_dir}/README.txt" "${arm_card_dir}"/ || exit 1
 
 # Generate livecd.squashfs.md5
-"${SABAYON_MOLECULE_HOME}"/scripts/pre_iso_script_livecd_hash.sh
+"${ROGENTOS_MOLECULE_HOME}"/scripts/pre_iso_script_livecd_hash.sh

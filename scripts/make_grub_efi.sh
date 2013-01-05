@@ -6,8 +6,8 @@
 # This scripts generates an EFI-enabled boot structure
 
 # Path to molecules.git dir
-SABAYON_MOLECULE_HOME="${SABAYON_MOLECULE_HOME:-/sabayon}"
-export SABAYON_MOLECULE_HOME
+ROGENTOS_MOLECULE_HOME="${ROGENTOS_MOLECULE_HOME:-/sabayon}"
+export ROGENTOS_MOLECULE_HOME
 
 MOUNT_DIRS=()
 EFI_BOOT_DIR="${CDROOT_DIR}/efi/boot"
@@ -85,7 +85,7 @@ efi_x86_64_file="${EFI_BOOT_DIR}"/bootx64.efi
 efi_i386_file="${EFI_BOOT_DIR}"/boota32.efi
 grub_efi_file="${EFI_BOOT_DIR}"/grubx64.efi
 efi_img="${GRUB_BOOT_DIR}"/efi.img
-shim_dir="${SABAYON_MOLECULE_HOME}"/boot/shim-uefi-secure-boot
+shim_dir="${ROGENTOS_MOLECULE_HOME}"/boot/shim-uefi-secure-boot
 shim_data_dir="${CHROOT_DIR}/usr/share/shim-signed-0.2"
 # This is on the ISO build server, not on the repos
 sbsign_private_key="${shim_dir}"/private.key
@@ -143,7 +143,7 @@ if [ -f "${efi_x86_64_file}" ] || [ -f "${efi_i386_file}" ]; then
 	touch "${CDROOT_DIR}/${id_file}" || exit 1
 
 	# copy the chainload grub.cfg version
-	cp "${SABAYON_MOLECULE_HOME}/boot/core/grub/grub-uefi-isohybrid.cfg" \
+	cp "${ROGENTOS_MOLECULE_HOME}/boot/core/grub/grub-uefi-isohybrid.cfg" \
 		"${tmp_grub_dir}/grub.cfg" || exit 1
 	sed -i "s:%id_file%:${id_file}:g" "${tmp_grub_dir}/grub.cfg" || exit 1
 

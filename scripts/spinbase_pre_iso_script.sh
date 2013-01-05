@@ -4,8 +4,8 @@
 . /etc/profile
 
 # Path to molecules.git dir
-SABAYON_MOLECULE_HOME="${SABAYON_MOLECULE_HOME:-/sabayon}"
-export SABAYON_MOLECULE_HOME
+ROGENTOS_MOLECULE_HOME="${ROGENTOS_MOLECULE_HOME:-/sabayon}"
+export ROGENTOS_MOLECULE_HOME
 
 boot_dir="${CHROOT_DIR}/boot"
 cdroot_boot_dir="${CDROOT_DIR}/boot"
@@ -50,13 +50,13 @@ for path in "${isolinux_dest}" "${isolinux_dest_txt}" "${grub_dest}"; do
 done
 
 # Generate Language and Keyboard menus for GRUB-2
-"${SABAYON_MOLECULE_HOME}"/scripts/make_grub_langs.sh "${grub_dest}" \
+"${ROGENTOS_MOLECULE_HOME}"/scripts/make_grub_langs.sh "${grub_dest}" \
 	|| exit 1
 
 # generate EFI GRUB
-"${SABAYON_MOLECULE_HOME}"/scripts/make_grub_efi.sh || exit 1
+"${ROGENTOS_MOLECULE_HOME}"/scripts/make_grub_efi.sh || exit 1
 
-sabayon_pkgs_file="${CHROOT_DIR}/etc/sabayon-pkglist"
+sabayon_pkgs_file="${CHROOT_DIR}/etc/rogentos-pkglist"
 if [ -f "${sabayon_pkgs_file}" ]; then
 	cp "${sabayon_pkgs_file}" "${CDROOT_DIR}/pkglist"
 	if [ -n "${ISO_PATH}" ]; then # molecule 0.9.6 required
@@ -72,4 +72,4 @@ if [ -f "${isolinux_img}" ]; then
 fi
 
 # Generate livecd.squashfs.md5
-"${SABAYON_MOLECULE_HOME}"/scripts/pre_iso_script_livecd_hash.sh
+"${ROGENTOS_MOLECULE_HOME}"/scripts/pre_iso_script_livecd_hash.sh

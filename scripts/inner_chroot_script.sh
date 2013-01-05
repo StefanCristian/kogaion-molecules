@@ -161,7 +161,7 @@ if [ -x "/usr/bin/fluxbox-generate_menu" ]; then
         fluxbox-generate_menu -o /etc/skel/.fluxbox/menu
 fi
 
-equo query list installed -qv > /etc/sabayon-pkglist
+equo query list installed -qv > /etc/rogentos-pkglist
 
 rm -rf /var/tmp/entropy/*
 rm -rf /var/lib/entropy/logs

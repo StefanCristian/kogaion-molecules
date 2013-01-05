@@ -114,4 +114,4 @@ for conf in 00-sabayon.package.use; do
 	fi
 done
 
-equo query list installed -qv > /etc/sabayon-pkglist
+equo query list installed -qv > /etc/rogentos-pkglist

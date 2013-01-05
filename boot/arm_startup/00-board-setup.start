@@ -5,7 +5,7 @@
 echo
 echo "Hello, this is the first boot. System is being configured..."
 echo "The root password is: root"
-echo "There is also a user called \"sabayon\", with password \"sabayon\""
+echo "There is also a user called \"rogentosuser\", with password \"rogentosuser\""
 echo
 echo "Enjoy ARM"
 echo

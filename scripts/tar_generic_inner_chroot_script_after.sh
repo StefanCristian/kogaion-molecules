@@ -3,8 +3,8 @@
 /usr/sbin/env-update
 . /etc/profile
 
-# remove sabayonuser
-userdel sabayonuser
+# remove rogentosuser
+userdel rogentosuser
 
 DROP_SERVICES="
 	alsasound
@@ -38,7 +38,7 @@ rc-update del udev sysinit
 rc-update del dmesg sysinit
 
 # Generate list of installed packages
-equo query list installed -qv > /etc/sabayon-pkglist
+equo query list installed -qv > /etc/rogentos-pkglist
 
 # remove hw hash
 rm -f /etc/entropy/.hw.hash

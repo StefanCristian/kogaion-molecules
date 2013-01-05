@@ -1,13 +1,13 @@
 #!/bin/sh
 
 # Path to molecules.git dir
-SABAYON_MOLECULE_HOME="${SABAYON_MOLECULE_HOME:-/sabayon}"
-export SABAYON_MOLECULE_HOME
+ROGENTOS_MOLECULE_HOME="${ROGENTOS_MOLECULE_HOME:-/sabayon}"
+export ROGENTOS_MOLECULE_HOME
 
 # execute parent script
-"${SABAYON_MOLECULE_HOME}"/scripts/remaster_post.sh
+"${ROGENTOS_MOLECULE_HOME}"/scripts/remaster_post.sh
 
-GFORENSIC_DIR="${SABAYON_MOLECULE_HOME}/remaster/gforensic"
+GFORENSIC_DIR="${ROGENTOS_MOLECULE_HOME}/remaster/gforensic"
 # setup skel and background
 cp "${GFORENSIC_DIR}"/usr/share/backgrounds/sabayon-forensic.png "${CHROOT_DIR}/usr/share/backgrounds/sabayonlinux.png"
 cp "${GFORENSIC_DIR}"/usr/share/backgrounds/sabayon-forensic.jpg "${CHROOT_DIR}/usr/share/backgrounds/sabayonlinux.jpg"

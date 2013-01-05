@@ -1,7 +1,7 @@
 0fBOOT METHODS07                                                                  09F307
 
 0f- Available boot methods:07
-0fsabayon07
+0frogentos07
   Start the SabayonLinux Live system.
 0finstall07
   Start the Graphical Installation.
