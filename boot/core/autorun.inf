@@ -1,6 +1,13 @@
 [autorun]
+<<<<<<< HEAD
 label=Kogaion
 open=kogaion.bat
 action=Launch Virtual Kogaion
 icon=kogaion.ico
+=======
+label=Sabayon
+open=sabayon.bat
+action=Launch Virtual Sabayon
+icon=sabayon.ico
+>>>>>>> 082839235ca9d30604aef3813e72731794e0ee2c
 

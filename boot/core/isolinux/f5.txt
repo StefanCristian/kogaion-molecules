@@ -1,6 +1,10 @@
 0fBOOT PARAMETERS (PART II)07                                                     09F507
 
+<<<<<<< HEAD
 KogaionLinux supports some extra features that can be enabled by adding the boot
+=======
+SabayonLinux supports some extra features that can be enabled by adding the boot
+>>>>>>> 082839235ca9d30604aef3813e72731794e0ee2c
 parameters below. Moreover, you can tune the system to behave in different ways.
 
 0fsession=07 --> Parameter to force the autologin on a specific Desktop Environment

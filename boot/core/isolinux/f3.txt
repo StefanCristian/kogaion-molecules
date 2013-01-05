@@ -1,18 +1,31 @@
 0fBOOT METHODS07                                                                  09F307
 
 0f- Available boot methods:07
+<<<<<<< HEAD
 0fkogaion07
   Start the KogaionLinux Live system.
+=======
+0fsabayon07
+  Start the SabayonLinux Live system.
+>>>>>>> 082839235ca9d30604aef3813e72731794e0ee2c
 0finstall07
   Start the Graphical Installation.
 0ftext-install07
   Start the Text mode Installation.
 0fgenuine07
+<<<<<<< HEAD
   Start the KogaionLinux Live system without proprietary drivers.
 0fconsole07
   Start the KogaionLinux Live system without loading X.Org.
 0fdebug07
   Start the KogaionLinux Live system in Debug mode (expert).
+=======
+  Start the SabayonLinux Live system without proprietary drivers.
+0fconsole07
+  Start the SabayonLinux Live system without loading X.Org.
+0fdebug07
+  Start the SabayonLinux Live system in Debug mode (expert).
+>>>>>>> 082839235ca9d30604aef3813e72731794e0ee2c
 0fmemtest07
   Perform a memory test.
 

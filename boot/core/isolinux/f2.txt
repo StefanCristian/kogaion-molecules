@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 0fPREREQUISITES FOR RUNNING KOGAIONLINUX07                                        09F207
+=======
+0fPREREQUISITES FOR RUNNING SABAYONLINUX07                                        09F207
+>>>>>>> 082839235ca9d30604aef3813e72731794e0ee2c
 
 0fLive Environment - No 3D Desktop:07
 - i586 Processor (starting from AMD K5 and Intel Pentium)

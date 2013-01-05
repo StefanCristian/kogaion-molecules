@@ -7,15 +7,15 @@ release_string: Sabayon Linux
 # File to write release string
 release_file: /etc/sabayon-edition
 
-# Enable XZ compression in mksquashfs
-extra_mksquashfs_parameters: -comp xz -Xbcj x86
-
 # Destination chroot directory, where files are pushed to before creating the squashfs image
 # NOTE: data will be stored inside an auto-generated subdir
 %env destination_chroot: ${SABAYON_MOLECULE_HOME:-/sabayon}
 
 # Extra mirror (r)sync parameters
 extra_rsync_parameters: --one-file-system
+
+# Enable XZ compression in mksquashfs
+extra_mksquashfs_parameters: -comp xz -Xbcj x86
 
 # Inner chroot script command, to be executed inside destination chroot before packing it
 # - kmerge.sh - setup kernel bins
@@ -30,10 +30,10 @@ extra_rsync_parameters: --one-file-system
 %env merge_livecd_root: ${SABAYON_MOLECULE_HOME:-/sabayon}/boot/core
 
 # Extra mkisofs parameters, perhaps something to include/use your bootloader
-extra_mkisofs_parameters: -b isolinux/isolinux.bin -c isolinux/boot.cat
+extra_mkisofs_parameters: -b isolinux/isolinux.bin -c isolinux/boot.cat -eltorito-alt-boot -no-emul-boot -eltorito-boot boot/grub/efi.img
 
 # Pre-ISO building script. Hook to be able to copy kernel images in place, for example
-%env pre_iso_script: ${SABAYON_MOLECULE_HOME:-/sabayon}/scripts/cdroot.py
+%env pre_iso_script: ${SABAYON_MOLECULE_HOME:-/sabayon}/scripts/spinbase_pre_iso_script.sh
 
 # Post-ISO building script, called after ISO image generation.    
 %env post_iso_script: ${SABAYON_MOLECULE_HOME:-/sabayon}/scripts/generic_post_iso_script.sh
@@ -119,8 +119,10 @@ paths_to_empty:
     /var/cache/genkernel
 
 packages_to_add:
+	app-crypt/sbsigntool,
+	app-crypt/shim-signed,
 	sys-apps/smartmontools,
-	sys-fs/zfs,
+	sys-boot/grub
 
 # Make sure they don't end up into the ISO
 packages_to_remove:
