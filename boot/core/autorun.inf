@@ -1,6 +1,6 @@
 [autorun]
-label=Rogentos
-open=rogentos.bat
-action=Launch Virtual Rogentos
-icon=rogentos.ico
+label=Kogaion
+open=kogaion.bat
+action=Launch Virtual Kogaion
+icon=kogaion.ico
 
