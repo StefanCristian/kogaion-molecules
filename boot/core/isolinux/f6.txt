@@ -6,7 +6,7 @@
 
 0fXsistenCe:07 
  - What is XsistenCe? 
- - One Removable Device (USB storage) + SabayonLinux = your data everywhere.
+ - One Removable Device (USB storage) + KogaionLinux = your data everywhere.
    In other words, you can use your Home directory in read/write mode and
    your data will be stored on your external non-volatile removable device.
 
