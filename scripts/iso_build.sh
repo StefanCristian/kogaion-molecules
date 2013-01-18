@@ -100,6 +100,7 @@ if [ "${ACTION}" = "weekly" ] || [ "${ACTION}" = "daily" ]; then
 		"sabayon-amd64-lxde.spec"
 		"sabayon-x86-lxde.spec"
 		"sabayon-amd64-xfce.spec"
+		"kogaion-x86-xfce.spec"
 		"sabayon-x86-xfce.spec"
 		"sabayon-amd64-e17.spec"
 		"sabayon-x86-e17.spec"
