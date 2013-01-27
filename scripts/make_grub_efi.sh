@@ -90,10 +90,10 @@ shim_data_dir="${CHROOT_DIR}/usr/share/shim-signed-0.2"
 # This is on the ISO build server, not on the repos
 sbsign_private_key="${shim_dir}"/private.key
 # actually, UEFI SecureBoot needs the cert in DER
-# format (sabayon.cer), while sbsign requires a
-# plain old text-based x509 certificate (sabayon.crt)
-sabayon_der="${shim_dir}"/sabayon.cer
-sabayon_cert="${shim_dir}"/sabayon.crt
+# format (kogaion.cer), while sbsign requires a
+# plain old text-based x509 certificate (kogaion.crt)
+sabayon_der="${shim_dir}"/kogaion.cer
+kogaion.cert="${shim_dir}"/kogaion.crt
 
 if [ -f "${efi_x86_64_file}" ] || [ -f "${efi_i386_file}" ]; then
 
@@ -107,7 +107,7 @@ if [ -f "${efi_x86_64_file}" ] || [ -f "${efi_i386_file}" ]; then
 		cp "${sabayon_der}" "${CDROOT_DIR}"/SecureBoot/ || exit 1
 
 		# Sign
-		sbsign --key "${sbsign_private_key}" --cert "${sabayon_cert}" \
+		sbsign --key "${sbsign_private_key}" --cert "${kogaion.cert}" \
 			--output "${grub_efi_file}.signed" \
 			"${grub_efi_file}" || exit 1
 		mv "${grub_efi_file}.signed" "${grub_efi_file}" || exit 1
