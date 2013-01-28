@@ -93,7 +93,7 @@ sbsign_private_key="${shim_dir}"/private.key
 # format (kogaion.cer), while sbsign requires a
 # plain old text-based x509 certificate (kogaion.crt)
 sabayon_der="${shim_dir}"/kogaion.cer
-kogaion.cert="${shim_dir}"/kogaion.crt
+kogaion_cert="${shim_dir}"/kogaion.crt
 
 if [ -f "${efi_x86_64_file}" ] || [ -f "${efi_i386_file}" ]; then
 
@@ -107,7 +107,7 @@ if [ -f "${efi_x86_64_file}" ] || [ -f "${efi_i386_file}" ]; then
 		cp "${sabayon_der}" "${CDROOT_DIR}"/SecureBoot/ || exit 1
 
 		# Sign
-		sbsign --key "${sbsign_private_key}" --cert "${kogaion.cert}" \
+		sbsign --key "${sbsign_private_key}" --cert "${kogaion_cert}" \
 			--output "${grub_efi_file}.signed" \
 			"${grub_efi_file}" || exit 1
 		mv "${grub_efi_file}.signed" "${grub_efi_file}" || exit 1
