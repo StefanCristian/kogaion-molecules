@@ -1,3 +1,4 @@
+<<<<<<< HEAD
   
 
 
@@ -776,3 +777,189 @@
   </body>
 </html>
 
+=======
+# Define an alternative execution strategy, in this case, the value must be
+# "iso_remaster"
+execution_strategy: iso_remaster
+
+# Release string
+release_string: Rogentos Linux
+
+# File to write release string
+release_file: /etc/rogentos-edition
+
+# ISO Image title
+iso_title: Kogaion Xfce
+
+# Enable XZ compression in mksquashfs
+extra_mksquashfs_parameters: -comp xz -Xbcj x86
+
+# Outer chroot script command, to be executed outside destination chroot before
+# before entering it (and before inner_chroot_script)
+%env outer_chroot_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/remaster_pre.sh
+
+# Execute repositories update here, in a more fault-tolerant flavor
+%env inner_chroot_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/remaster_generic_inner_chroot_script.sh
+
+# Inner chroot script command, to be executed inside destination chroot after
+# packages installation and removal
+%env inner_chroot_script_after: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/remaster_generic_inner_chroot_script_after_xfce.sh xfce
+
+# Outer chroot script command, to be executed outside destination chroot before
+# before entering it (and AFTER inner_chroot_script)
+%env outer_chroot_script_after: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/remaster_post.sh
+
+# Used to umount /proc and unbind packages dir
+%env error_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/remaster_error_script.sh
+
+# Extra mkisofs parameters, perhaps something to include/use your bootloader
+extra_mkisofs_parameters: -b isolinux/isolinux.bin -c isolinux/boot.cat -eltorito-alt-boot -no-emul-boot -eltorito-platform efi -eltorito-boot boot/grub/efi.img
+
+# Pre-ISO building script. Hook to be able to copy kernel images in place, for example
+%env pre_iso_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/generic_pre_iso_script.sh Xfce
+
+# Post-ISO building script, called after ISO image generation.    
+# %env post_iso_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/generic_post_iso_script.sh
+
+# Destination directory for the ISO image path (MANDATORY)
+%env destination_iso_directory: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/iso
+
+# List of packages that would be removed from chrooted system (comma separated)
+# packages_to_remove:
+#	www-client/lynx,
+#	app-text/poppler-qt4
+
+# List of packages that would be added from chrooted system (comma separated)
+packages_to_add:
+	@X,
+	@gst-plugins,
+	@gst-plugins-extra,
+	@xfce,
+	@wireless,
+	@fluxbox,
+	app-admin/anaconda,
+	app-admin/rigo,
+	app-admin/kernel-schimbare,
+	app-arch/file-roller,
+	app-arch/unrar,
+	app-crypt/gnupg,
+	app-crypt/pinentry-gtk2,
+	app-emulation/wine,
+	app-emulation/vmware-tools,
+	app-laptop/nvidiabl,
+	app-misc/rogentos-version,
+	app-misc/anaconda-runtime-gui,
+	app-misc/galculator,
+	app-misc/rogentoslive-tools,
+	app-misc/rogentos-skel,
+	app-text/pastebunz,
+	app-text/epdfview,
+	app-office/abiword,
+	app-office/gnumeric,
+	app-emulation/virtualbox-guest-additions,
+	dev-java/icedtea-bin,
+	games-misc/cowsay,
+	games-misc/fortune-mod,
+	gnome-extra/nm-applet-gtk2,
+	gnome-extra/polkit-gnome,
+	gnome-base/orbit,
+	libva-intel-driver,
+	lxde-base/lxdm,
+	media-fonts/corefonts,
+	media-fonts/dejavu,
+	media-fonts/ttf-bitstream-vera,
+	media-gfx/gimp,
+	media-gfx/gpicview,
+	media-gfx/shotwell,
+	media-libs/libdvdcss,
+	media-libs/libdvdnav,
+	media-libs/libdvdplay,
+	media-libs/libdvdread,
+	media-video/totem,
+	media-video/tv-maxe,
+	media-tv/xbmc,
+	media-sound/exaile,
+	net-dialup/globespan-adsl,
+	net-dialup/gnome-ppp,
+	net-dialup/ppp,
+	net-dialup/rp-pppoe,
+	net-firewall/ufw-frontends,
+	net-im/pidgin,
+	net-irc/xchat,
+	net-p2p/deluge,
+	net-print/cups,
+	net-misc/wicd,
+	net-wireless/madwifi-ng-tools,
+	net-wireless/blueman,
+	net-wireless/bluez,
+	net-wireless/bluez-firmware,
+	net-wireless/bluez-hcidump,
+	sys-boot/grub,
+	sys-apps/openrc,
+	sys-apps/gpu-detector,
+	sys-auth/consolekit,
+	sys-block/gparted,
+	sys-block/parted,
+	sys-fs/ntfs3g,
+	sys-power/cpufrequtils,
+	www-client/chromium,
+	x11-apps/intel-gpu-tools,
+	x11-drivers/ati-drivers,
+	x11-drivers/nvidia-drivers,
+	x11-libs/gksu,
+	x11-libs/vdpau-video,
+	x11-libs/xvba-video,
+	x11-misc/magneto-gtk,
+	x11-misc/xvkbd,
+	x11-terms/terminal,
+	x11-themes/equinox-themes,
+	x11-themes/gtk-engines:2,
+	x11-themes/gnome-themes-standard,
+	x11-themes/iottinka-artwork,
+	x11-themes/kogaion-elementary-icons,
+        x11-themes/rogentos-artwork-core,
+        x11-themes/rogentos-artwork-grub,
+        x11-themes/rogentos-artwork-lxde
+	x11-themes/rogentos-artwork-isolinux,
+	x11-themes/rogentos-artwork-resplash,
+	x11-themes/zukitwo-brave,
+	xfce-base/xfce4-panel,
+	xfce-extra/tumbler,
+	xfce-extra/xfce4-mixer,
+	xfce-extra/xfce4-notifyd,
+	xfce-extra/xfce4-places-plugin,
+	xfce-extra/xfce4-screenshooter,
+	xfce-extra/xfce4-xkb-plugin,
+	xfce-extra/xfce4-gvfs-mount,
+	xfce-extra/xfce4-datetime-plugin,
+	xfce-extra/thunar-archive-plugin,
+	xfce-extra/thunar-volman,
+	x11-plugins/pidgin-privacy-please
+
+# x11-themes/sabayon-artwork-gnome:
+#   provides the gtk theme for lxdm
+# gnome-extra/polkit-gnome:
+#   required to make nm-applet work
+
+# NOTE: xfce-base/xfce4-panel addition is a workaround
+# to current Entropy limitations in or-dependencies
+# calculation (it makes nm-applet choose xfce4-panel
+# instead of gnome-panel)
+
+# Custom shell call to packages add (default is: equo install)
+# custom_packages_add_cmd: 
+#custom_packages_add_cmd: app-misc/rogentos-version
+
+# Custom command for updating repositories (default is: equo update)
+# repositories_update_cmd:
+
+# Determine whether repositories update should be run (if packages_to_add is set)
+# (default is: no), values are: yes, no.
+execute_repositories_update: yes
+
+# Directories to remove completely (comma separated)
+# paths_to_remove:
+
+# Directories to empty (comma separated)
+# paths_to_empty:
+>>>>>>> upstream/kogaion-exp
