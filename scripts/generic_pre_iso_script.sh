@@ -28,8 +28,8 @@ if [ -d "/home/rogentosuser/.gvfs" ]; then
         rm -r /home/rogentosuser/.gvfs
 fi
 
-mv "${CHROOT_DIR}/boot/sabayon.igz" "${CHROOT_DIR}/boot/rogentos.igz"
-mv "${CHROOT_DIR}/boot/sabayon" "${CHROOT_DIR}/boot/rogentos"
+mv "${CDROOT_DIR}/boot/sabayon.igz" "${CDROOT_DIR}/boot/rogentos.igz"
+mv "${CDROOT_DIR}/boot/sabayon" "${CDROOT_DIR}/boot/rogentos"
 
 if [ "${remaster_type}" = "KDE" ] || [ "${remaster_type}" = "GNOME" ]; then
 	isolinux_source="${ROGENTOS_MOLECULE_HOME}/remaster/standard_isolinux.cfg"
