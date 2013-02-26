@@ -16,8 +16,6 @@ export ROGENTOS_MOLECULE_HOME
 
 CUR_DATE=$(date -u +%Y%m%d%H%M)
 
-#molecule $ROGENTOS_MOLECULE_HOME/kogaion-amd64-xfce.spec
-
 	for i in ${!REMASTER_SPECS[@]}
 		do
 			REMASTER_SPECS_ISO_BUILD_DATE=`basename -s .iso ${REMASTER_SPECS_ISO[i]}`'_'$CUR_DATE'.iso'
