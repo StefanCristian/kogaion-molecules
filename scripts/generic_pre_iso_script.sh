@@ -39,7 +39,7 @@ elif [ "${remaster_type}" = "ServerBase" ]; then
 	boot_kernel=$(find "${CHROOT_DIR}/boot" -name "kernel-*" | sort | head -n 1)
 	boot_ramfs=$(find "${CHROOT_DIR}/boot" -name "initramfs-*" | sort | head -n 1)
 	cp "${boot_kernel}" "${CDROOT_DIR}/boot/rogentos" || exit 1
-	cp "${boot_ramfs}" "${CDROOT_DIR}/boot/rogentios.igz" || exit 1
+	cp "${boot_ramfs}" "${CDROOT_DIR}/boot/rogentos.igz" || exit 1
 	isolinux_source="${ROGENTOS_MOLECULE_HOME}/remaster/serverbase_isolinux.cfg"
 	grub_source="${ROGENTOS_MOLECULE_HOME}/remaster/serverbase_grub.cfg"
 elif [ "${remaster_type}" = "HardenedServer" ]; then
