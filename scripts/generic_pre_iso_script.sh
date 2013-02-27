@@ -95,7 +95,9 @@ fi
 isolinux_img="/sabayon/boot/core/isolinux/back.jpg"
 syslinux_img="/sabayon/boot/core/syslinux/back.jpg"
 if [ -f "${isolinux_img}" ]; then
+	mkdir -p "${CDROOT_DIR}/isolinux/"
         cp "${isolinux_img}" "${CDROOT_DIR}/isolinux/" || exit 1
+	mkdir -p "${CDROOT_DIR}/syslinux/"
         cp "${syslinux_img}" "${CDROOT_DIR}/syslinux/" || exit 1
 fi
 
