@@ -3,6 +3,28 @@
 /usr/sbin/env-update
 . /etc/profile
 
+_get_kernel_tag() {
+	local kernel_ver="$(equo match --installed -qv virtual/linux-binary | cut -d/ -f 2)"
+	# strip -r** if exists, hopefully we don't have PN ending with -r
+	local kernel_ver="${kernel_ver%-r*}"
+	local kernel_tag_file="/etc/kernels/${kernel_ver}/RELEASE_LEVEL"
+	if [ ! -f "${kernel_tag_file}" ]; then
+		echo "cannot find ${kernel_tag_file}, wtf" >&2
+	else
+		echo "#$(cat "${kernel_tag_file}")"
+	fi
+}
+
+sd_enable() {
+	[[ -x /usr/bin/systemctl ]] && \
+		systemctl --no-reload enable -f "${1}.service"
+}
+
+sd_disable() {
+	[[ -x /usr/bin/systemctl ]] && \
+		systemctl --no-reload disable -f "${1}.service"
+}
+
 basic_environment_setup() {
 	eselect opengl set xorg-x11 &> /dev/null
 
@@ -26,18 +48,30 @@ basic_environment_setup() {
 	rc-update del sabayon-mce default
 	rc-update add nfsmount default
 
-	if [ -f /etc/init.d/zfs ] && [ "$(uname -m)" = "x86_64" ]; then
-		rc-update add zfs boot
-	fi
-
 	# Always startup this
 	rc-update add virtualbox-guest-additions boot
+
+	local kern_type="$(equo match --installed -q virtual/linux-binary)"
+	local do_zfs=1
+	if [ ! -f /etc/init.d/zfs ]; then
+		do_zfs=0
+	elif [ "$(uname -m)" != "x86_64" ]; then
+		do_zfs=0
+	elif [ "${kern_type}" = "sys-kernel/linux-hardened" ]; then
+		do_zfs=0  # currently not in the hardened kernel
+	fi
+	if [ "${do_zfs}" = "1" ]; then
+		rc-update add zfs boot
+		sd_enable zfs
+	fi
 
 	# Create a default "games" group so that
 	# the default user will be added to it during
 	# live boot, and thus, after install.
 	# See bug 3134
 	groupadd -f games
+
+	sd_enable graphical
 }
 
 remove_desktop_files() {
@@ -46,6 +80,7 @@ remove_desktop_files() {
 
 setup_cpufrequtils() {
 	rc-update add cpufrequtils default
+	sd_enable cpufrequtils
 }
 
 setup_sabayon_mce() {
@@ -75,15 +110,25 @@ setup_displaymanager() {
 	# determine what is the login manager
 	if [ -n "$(equo match --installed gnome-base/gdm -qv)" ]; then
 		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="gdm"/g' /etc/conf.d/xdm
+		sd_enable gdm
 	elif [ -n "$(equo match --installed lxde-base/lxdm -qv)" ]; then
 		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="lxdm"/g' /etc/conf.d/xdm
+		sd_enable lxdm
         elif [ -n "$(equo match --installed x11-misc/lightdm -qv)" ]; then
-                sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="lightdm"/g' /etc/conf.d/xdm
+		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="lightdm"/g' /etc/conf.d/xdm
+		sd_enable lightdm
 	elif [ -n "$(equo match --installed kde-base/kdm -qv)" ]; then
 		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="kdm"/g' /etc/conf.d/xdm
+		sd_enable kdm
 	else
 		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="xdm"/g' /etc/conf.d/xdm
+		sd_enable xdm
 	fi
+}
+
+setup_default_xsession() {
+	local sess="${1}"
+	ln -sf "${sess}.desktop" /usr/share/xsessions/default.desktop
 }
 
 setup_networkmanager() {
@@ -91,6 +136,7 @@ setup_networkmanager() {
 	rc-update del NetworkManager
 	rc-update add NetworkManager default
 	rc-update add NetworkManager-setup default
+	sd_enable NetworkManager
 }
 
 xfceforensic_remove_skel_stuff() {
@@ -128,6 +174,16 @@ has_proprietary_drivers() {
 		return 0
 	fi
 	return 1
+}
+
+setup_virtualbox() {
+	local kernel_tag=$(_get_kernel_tag)
+	equo install \
+		"virtualbox-guest-additions${kernel_tag}" \
+		"xf86-video-virtualbox${kernel_tag}"
+
+	rc-update add virtualbox-guest-additions boot
+	sd_enable virtualbox-guest-additions
 }
 
 setup_proprietary_gfx_drivers() {
@@ -274,6 +330,8 @@ setup_portage() {
 	rm -rf /var/lib/layman/sabayon
 	layman -d sabayon-distro
 	rm -rf /var/lib/layman/sabayon-distro
+	layman -d rogento
+	rm -rf /var/lib/layman/rogento
 	emaint --fix world
 }
 
@@ -294,6 +352,7 @@ prepare_lxde() {
 	echo "[Desktop]" > /etc/skel/.dmrc
 	echo "Session=LXDE" >> /etc/skel/.dmrc
 	remove_desktop_files
+	setup_default_xsession "LXDE"
 	setup_displaymanager
 	# properly tweak lxde autostart tweak, adding --desktop option
 	sed -i 's/pcmanfm -d/pcmanfm -d --desktop/g' /etc/xdg/lxsession/LXDE/autostart
@@ -308,6 +367,7 @@ prepare_mate() {
 	echo "[Desktop]" > /etc/skel/.dmrc
 	echo "Session=mate" >> /etc/skel/.dmrc
         remove_desktop_files
+	setup_default_xsession "mate"
         setup_displaymanager
         remove_mozilla_skel_cruft
         setup_cpufrequtils
@@ -320,6 +380,7 @@ prepare_e17() {
 	echo "[Desktop]" > /etc/skel/.dmrc
 	echo "Session=enlightenment" >> /etc/skel/.dmrc
 	remove_desktop_files
+	setup_default_xsession "enlightenment"
 	# E17 spin has chromium installed
 	setup_displaymanager
 	# Not using lxdm for now
@@ -339,6 +400,7 @@ prepare_xfce() {
 	echo "[Desktop]" > /etc/skel/.dmrc
 	echo "Session=xfce" >> /etc/skel/.dmrc
 	remove_desktop_files
+	setup_default_xsession "xfce"
 	remove_mozilla_skel_cruft
 	setup_cpufrequtils
 	setup_displaymanager
@@ -351,6 +413,7 @@ prepare_fluxbox() {
 	echo "[Desktop]" > /etc/skel/.dmrc
 	echo "Session=fluxbox" >> /etc/skel/.dmrc
 	remove_desktop_files
+	setup_default_xsession "fluxbox"
 	setup_displaymanager
 	remove_mozilla_skel_cruft
 	setup_cpufrequtils
@@ -366,6 +429,7 @@ prepare_gnome() {
 	else
 		echo "Session=gnome" >> /etc/skel/.dmrc
 		setup_gnome_shell_extensions
+	setup_default_xsession "gnome"
 	fi
 	rc-update del system-tools-backends boot
 	rc-update add system-tools-backends default
@@ -375,24 +439,12 @@ prepare_gnome() {
 	has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
 }
 
-prepare_xfceforensic() {
-	setup_networkmanager
-	# Fix ~/.dmrc to have it load Xfce
-	echo "[Desktop]" > /etc/skel/.dmrc
-	echo "Session=xfce" >> /etc/skel/.dmrc
-	remove_desktop_files
-	setup_cpufrequtils
-	setup_displaymanager
-	remove_mozilla_skel_cruft
-	xfceforensic_remove_skel_stuff
-	has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
-}
-
 prepare_kde() {
 	setup_networkmanager
 	# Fix ~/.dmrc to have it load KDE
 	echo "[Desktop]" > /etc/skel/.dmrc
 	echo "Session=KDE-4" >> /etc/skel/.dmrc
+	setup_default_xsession "KDE-4"
 	# Configure proper GTK3 theme
 	# TODO: find a better solution?
 	mv /etc/skel/.config/gtk-3.0/settings.ini._kde_molecule \
@@ -409,6 +461,7 @@ prepare_awesome() {
 	echo "[Desktop]" > /etc/skel/.dmrc
 	echo "Session=awesome" >> /etc/skel/.dmrc
 	remove_desktop_files
+	setup_default_xsession "awesome"
 	setup_displaymanager
 	remove_mozilla_skel_cruft
 	setup_cpufrequtils

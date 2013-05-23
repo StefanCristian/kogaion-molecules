@@ -3,6 +3,16 @@
 /usr/sbin/env-update
 . /etc/profile
 
+sd_enable() {
+	[[ -x /usr/bin/systemctl ]] && \
+		systemctl --no-reload -f enable "${1}.service"
+}
+
+sd_disable() {
+	[[ -x /usr/bin/systemctl ]] && \
+		systemctl --no-reload -f disable "${1}.service"
+}
+
 rc-update del installer-gui boot
 rc-update del x-setup boot
 rc-update del hald boot

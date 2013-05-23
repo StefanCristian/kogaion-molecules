@@ -3,6 +3,16 @@
 /usr/sbin/env-update
 . /etc/profile
 
+sd_enable() {
+	[[ -x /usr/bin/systemctl ]] && \
+		systemctl --no-reload -f enable "${1}.service"
+}
+
+sd_disable() {
+	[[ -x /usr/bin/systemctl ]] && \
+		systemctl --no-reload -f disable "${1}.service"
+}
+
 echo
 echo "Configuring AMI chroot"
 echo
@@ -63,6 +73,7 @@ equo query list installed -qv > /etc/rogentos-pkglist
 echo "Vacuum cleaning client db"
 rm /var/lib/entropy/client/database/*/sabayonlinux.org -rf
 rm /var/lib/entropy/client/database/*/sabayon-weekly -rf
+rm /var/lib/entropy/cluient/database/*/rogentoslinux -rf
 equo rescue vacuum
 
 # restore original repositories.conf (all mirrors were filtered for speed)
