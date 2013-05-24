@@ -345,7 +345,7 @@ fi
 
 equo mask linux-sabayon virtualbox-guest-additions broadcom-sta ndiswrapper xf86-video-virtualbox bbswitch nvidiabl
 echo "Se va folosi kernel-schimbare pentru schimbarea nucleului"
-echo "For kernel upgrading, use kernel-switcher
+echo "For kernel upgrading, use kernel-switcher"
 echo "Pentru a instala virtualbox, urmariti instructiunile pe wiki.rogentos.ro"
 echo "If you wish to install virtualbox-bin, follow the instructions on wiki.rogentos.ro"
 }
