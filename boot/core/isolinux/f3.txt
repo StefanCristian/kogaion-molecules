@@ -2,17 +2,17 @@
 
 0f- Available boot methods:07
 0frogentos07
-  Start the KogaionLinux Live system.
+  Start the RogentosLinux Live system.
 0finstall07
   Start the Graphical Installation.
 0ftext-install07
   Start the Text mode Installation.
 0fgenuine07
-  Start the KogaionLinux Live system without proprietary drivers.
+  Start the RogentosLinux Live system without proprietary drivers.
 0fconsole07
-  Start the KogaionLinux Live system without loading X.Org.
+  Start the RogentosLinux Live system without loading X.Org.
 0fdebug07
-  Start the KogaionLinux Live system in Debug mode (expert).
+  Start the RogentosLinux Live system in Debug mode (expert).
 0fmemtest07
   Perform a memory test.
 

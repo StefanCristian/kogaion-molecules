@@ -1,6 +1,6 @@
 [autorun]
 label=Rogentos
 open=rogentos.bat
-action=Launch Virtual Sabayon
+action=Launch Virtual Rogentos
 icon=rogentos.ico
 
