@@ -15,6 +15,15 @@ _get_kernel_tag() {
 	fi
 }
 
+install_kernel_packages() {
+	local kernel_tag=$(_get_kernel_tag)
+	local pkgs=()
+	for pkg in "${@}"; do
+		pkgs+=( "${pkg}${kernel_tag}" )
+	done
+	equo install "${pkgs[@]}"
+}
+
 sd_enable() {
 	[[ -x /usr/bin/systemctl ]] && \
 		systemctl --no-reload enable -f "${1}.service"
@@ -32,24 +41,19 @@ basic_environment_setup() {
 	rc-update del xdm default
 	rc-update del xdm boot
 	rc-update add xdm boot
+	# systemd has specific targets depending on the DM
 
 	# consolekit must be run at boot level
 	rc-update add consolekit boot
+	# systemd uses logind
 
-	# if it exists
-	if [ -f "/etc/init.d/hald" ]; then
-		rc-update del hald boot
-		rc-update del hald
-		rc-update add hald boot
-	fi
-
-	rc-update del music boot
-	rc-update add music default
 	rc-update del sabayon-mce default
+	sd_disable sabayon-mce
 	rc-update add nfsmount default
 
-	# Always startup this
-	rc-update add virtualbox-guest-additions boot
+	# setup avahi
+	rc-update add avahi-daemon default
+	sd_enable avahi-daemon
 
 	local kern_type="$(equo match --installed -q virtual/linux-binary)"
 	local do_zfs=1
@@ -71,11 +75,8 @@ basic_environment_setup() {
 	# See bug 3134
 	groupadd -f games
 
+	# all these images come with X.Org
 	sd_enable graphical
-}
-
-remove_desktop_files() {
-	rm /etc/skel/Desktop/WorldOfGooDemo-world-of-goo-demo.desktop
 }
 
 setup_cpufrequtils() {
@@ -85,10 +86,7 @@ setup_cpufrequtils() {
 
 setup_sabayon_mce() {
 	rc-update add sabayon-mce boot
-	# not needed, done by app-misc/sabayon-mce pkg
-	# Sabayon Media Center user setup
-	# source /sbin/sabayon-functions.sh
-	# sabayon_setup_live_user "sabayonmce"
+	sd_enable sabayon-mce
 }
 
 switch_kernel() {
@@ -114,7 +112,7 @@ setup_displaymanager() {
 	elif [ -n "$(equo match --installed lxde-base/lxdm -qv)" ]; then
 		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="lxdm"/g' /etc/conf.d/xdm
 		sd_enable lxdm
-        elif [ -n "$(equo match --installed x11-misc/lightdm -qv)" ]; then
+	elif [ -n "$(equo match --installed x11-misc/lightdm-base -qv)" ]; then
 		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="lightdm"/g' /etc/conf.d/xdm
 		sd_enable lightdm
 	elif [ -n "$(equo match --installed kde-base/kdm -qv)" ]; then
@@ -177,13 +175,16 @@ has_proprietary_drivers() {
 }
 
 setup_virtualbox() {
-	local kernel_tag=$(_get_kernel_tag)
-	equo install \
-		"virtualbox-guest-additions${kernel_tag}" \
-		"xf86-video-virtualbox${kernel_tag}"
-
+	install_kernel_packages \
+		"app-emulation/virtualbox-guest-additions" \
+		"x11-drivers/xf86-video-virtualbox"
 	rc-update add virtualbox-guest-additions boot
 	sd_enable virtualbox-guest-additions
+}
+
+install_proprietary_gfx_drivers() {
+	install_kernel_packages "x11-drivers/ati-drivers" \
+		"x11-drivers/nvidia-drivers"
 }
 
 setup_proprietary_gfx_drivers() {
@@ -192,33 +193,21 @@ setup_proprietary_gfx_drivers() {
 	if [ ! -d "/install-data/drivers" ]; then
 		mkdir -p /install-data/drivers
 	fi
-	myuname=$(uname -m)
-	mydir="x86"
+
+	local myuname=$(uname -m)
+	local mydir="x86"
 	if [ "$myuname" == "x86_64" ]; then
 		mydir="amd64"
 	fi
-	kernel_ver="$(equo match --installed -qv virtual/linux-binary | cut -d/ -f 2)"
-	# strip -r** if exists, hopefully we don't have PN ending with -r
-	kernel_ver="${kernel_ver%-r*}"
-	kernel_tag_file="/etc/kernels/${kernel_ver}/RELEASE_LEVEL"
-	if [ ! -f "${kernel_tag_file}" ]; then
-		echo "cannot find ${kernel_tag_file}, wtf" >&2
-		# do not return 1 !!!
-		return 0
-	fi
-	kernel_tag="#$(cat "${kernel_tag_file}")"
+	local kernel_tag=$(_get_kernel_tag)
 
 	rm -rf /var/lib/entropy/client/packages/packages*/${mydir}/*/x11-drivers*
-	# TODO: move to equo match x11-drivers/nvidia-drivers$kernel_tag --quiet --verbose --injected --multimatch
-	# but also the latest kernel is marked as injected, so you need to sort and filter out
-	ACCEPT_LICENSE="NVIDIA" equo install --fetch --nodeps =x11-drivers/nvidia-userspace-304*$kernel_tag \
+
+	equo install --fetch --nodeps =x11-drivers/nvidia-userspace-304* \
 		=x11-drivers/nvidia-drivers-304*$kernel_tag
-	ACCEPT_LICENSE="NVIDIA" equo install --fetch --nodeps =x11-drivers/nvidia-userspace-173*$kernel_tag \
+	equo install --fetch --nodeps =x11-drivers/nvidia-userspace-173* \
 		=x11-drivers/nvidia-drivers-173*$kernel_tag
-	ACCEPT_LICENSE="NVIDIA" equo install --fetch --nodeps =x11-drivers/nvidia-drivers-96*$kernel_tag \
-		=x11-drivers/nvidia-userspace-96*$kernel_tag
-	## not working with >=xorg-server-1.5
-	## ACCEPT_LICENSE="NVIDIA" equo install --fetch --nodeps ~x11-drivers/nvidia-drivers-71.86.*$kernel_tag
+
 	mv /var/lib/entropy/client/packages/packages-nonfree/${mydir}/*/x11-drivers\:nvidia-{drivers,userspace}*.tbz2 \
 		/install-data/drivers/
 
@@ -301,7 +290,7 @@ setup_misc_stuff() {
 
 setup_installed_packages() {
 	# Update package list
-	equo query list installed -qv > /etc/rogentos-pkglist
+	equo query list installed -qv > /etc/sabayon-pkglist
 	echo -5 | equo conf update
 
 	echo "Vacuum cleaning client db"
@@ -326,12 +315,6 @@ setup_installed_packages() {
 }
 
 setup_portage() {
-	layman -d sabayon
-	rm -rf /var/lib/layman/sabayon
-	layman -d sabayon-distro
-	rm -rf /var/lib/layman/sabayon-distro
-	layman -d rogento
-	rm -rf /var/lib/layman/rogento
 	emaint --fix world
 }
 
@@ -347,11 +330,12 @@ setup_startup_caches() {
 }
 
 prepare_lxde() {
+	install_proprietary_gfx_drivers
+	setup_virtualbox
 	setup_networkmanager
 	# Fix ~/.dmrc to have it load LXDE
 	echo "[Desktop]" > /etc/skel/.dmrc
 	echo "Session=LXDE" >> /etc/skel/.dmrc
-	remove_desktop_files
 	setup_default_xsession "LXDE"
 	setup_displaymanager
 	# properly tweak lxde autostart tweak, adding --desktop option
@@ -362,24 +346,26 @@ prepare_lxde() {
 }
 
 prepare_mate() {
-        setup_networkmanager
+	install_proprietary_gfx_drivers
+	setup_virtualbox
+	setup_networkmanager
 	# Fix ~/.dmrc to have it load MATE
 	echo "[Desktop]" > /etc/skel/.dmrc
 	echo "Session=mate" >> /etc/skel/.dmrc
-        remove_desktop_files
 	setup_default_xsession "mate"
-        setup_displaymanager
-        remove_mozilla_skel_cruft
-        setup_cpufrequtils
-        has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
+	setup_displaymanager
+	remove_mozilla_skel_cruft
+	setup_cpufrequtils
+	has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
 }
 
 prepare_e17() {
+	install_proprietary_gfx_drivers
+	setup_virtualbox
 	setup_networkmanager
 	# Fix ~/.dmrc to have it load E17
 	echo "[Desktop]" > /etc/skel/.dmrc
 	echo "Session=enlightenment" >> /etc/skel/.dmrc
-	remove_desktop_files
 	setup_default_xsession "enlightenment"
 	# E17 spin has chromium installed
 	setup_displaymanager
@@ -395,11 +381,12 @@ prepare_e17() {
 }
 
 prepare_xfce() {
+	install_proprietary_gfx_drivers
+	setup_virtualbox
 	setup_networkmanager
 	# Fix ~/.dmrc to have it load Xfce
 	echo "[Desktop]" > /etc/skel/.dmrc
 	echo "Session=xfce" >> /etc/skel/.dmrc
-	remove_desktop_files
 	setup_default_xsession "xfce"
 	remove_mozilla_skel_cruft
 	setup_cpufrequtils
@@ -408,11 +395,12 @@ prepare_xfce() {
 }
 
 prepare_fluxbox() {
+	install_proprietary_gfx_drivers
+	setup_virtualbox
 	setup_networkmanager
 	# Fix ~/.dmrc to have it load Fluxbox
 	echo "[Desktop]" > /etc/skel/.dmrc
 	echo "Session=fluxbox" >> /etc/skel/.dmrc
-	remove_desktop_files
 	setup_default_xsession "fluxbox"
 	setup_displaymanager
 	remove_mozilla_skel_cruft
@@ -421,11 +409,14 @@ prepare_fluxbox() {
 }
 
 prepare_gnome() {
+	install_proprietary_gfx_drivers
+	setup_virtualbox
 	setup_networkmanager
 	# Fix ~/.dmrc to have it load GNOME or Cinnamon
 	echo "[Desktop]" > /etc/skel/.dmrc
 	if [ -f "/usr/share/xsessions/cinnamon.desktop" ]; then
 		echo "Session=cinnamon" >> /etc/skel/.dmrc
+	setup_default_xsession "cinnamon"
 	else
 		echo "Session=gnome" >> /etc/skel/.dmrc
 		setup_gnome_shell_extensions
@@ -433,13 +424,31 @@ prepare_gnome() {
 	fi
 	rc-update del system-tools-backends boot
 	rc-update add system-tools-backends default
+	# no systemd counterpart
+
 	setup_displaymanager
 	setup_sabayon_mce
 	setup_cpufrequtils
 	has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
 }
 
+prepare_xfceforensic() {
+	install_proprietary_gfx_drivers
+	setup_networkmanager
+	# Fix ~/.dmrc to have it load Xfce
+	echo "[Desktop]" > /etc/skel/.dmrc
+	echo "Session=xfce" >> /etc/skel/.dmrc
+	setup_default_xsession "xfce"
+	setup_cpufrequtils
+	setup_displaymanager
+	remove_mozilla_skel_cruft
+	xfceforensic_remove_skel_stuff
+	has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
+}
+
 prepare_kde() {
+	install_proprietary_gfx_drivers
+	setup_virtualbox
 	setup_networkmanager
 	# Fix ~/.dmrc to have it load KDE
 	echo "[Desktop]" > /etc/skel/.dmrc
@@ -456,11 +465,12 @@ prepare_kde() {
 }
 
 prepare_awesome() {
+	install_proprietary_gfx_drivers
+	setup_virtualbox
 	setup_networkmanager
 	# Fix ~/.dmrc to have it load Awesome
 	echo "[Desktop]" > /etc/skel/.dmrc
 	echo "Session=awesome" >> /etc/skel/.dmrc
-	remove_desktop_files
 	setup_default_xsession "awesome"
 	setup_displaymanager
 	remove_mozilla_skel_cruft
