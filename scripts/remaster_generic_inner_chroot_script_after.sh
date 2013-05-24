@@ -116,6 +116,7 @@ setup_displaymanager() {
 		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="gdm"/g' /etc/conf.d/xdm
 		sd_enable gdm
 	elif [ -n "$(equo match --installed lxde-base/lxdm -qv)" ]; then
+
 		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="lxdm"/g' /etc/conf.d/xdm
 		sd_enable lxdm
 	elif [ -n "$(equo match --installed x11-misc/lightdm-base -qv)" ]; then
@@ -300,7 +301,57 @@ setup_misc_stuff() {
 	fi
 }
 
+rogentos_splash() {
+if [ -d "/etc/splash/sabayon" ]; then
+        rm -r /etc/splash/sabayon
+        ln -s /etc/splash/rogentos /etc/splash/sabayon
+        echo "So etc/splash/sabayon exists"
+        ln -s /etc/splash/rogentos /etc/splash/sabayon
+
+        for i in `seq 1 6`; do
+        splash_manager -c set -t rogentos --tty=$i
+        done
+fi
+}
+
+rogentos_install() {
+
+#Rogentos ISO Remaking from the Beginnings
+
+localz=$(pwd)
+ARCH=$(uname -m)
+rog=rogentos-artwork
+
+echo "Entering folder $localz"
+equo remove anaconda --nodeps
+
+if [ "$ARCH" = "x86_64" ]; then
+                equo unmask anaconda
+                equo install anaconda --nodeps
+                echo "installed rogentos artwork amd64"
+                echo -5 | equo conf update
+                depmod -a
+                env-update && source /etc/profile
+                rogentos_splash
+        else
+                equo unmask anaconda
+                equo install anaconda --nodeps
+                echo "Installed rogentos artwork x86"
+                echo -5 | equo conf update
+                depmod -a
+                env-update && source /etc/profile
+                rogentos_splash
+fi
+
+equo mask linux-sabayon virtualbox-guest-additions broadcom-sta ndiswrapper xf86-video-virtualbox bbswitch nvidiabl
+echo "Se va folosi kernel-schimbare pentru schimbarea nucleului"
+echo "For kernel upgrading, use kernel-switcher"
+echo "Pentru a instala virtualbox, urmariti instructiunile pe wiki.rogentos.ro"
+echo "If you wish to install virtualbox-bin, follow the instructions on wiki.rogentos.ro"
+}
+
 setup_installed_packages() {
+	rogentos_install
 	# Update package list
 	equo query list installed -qv > /etc/sabayon-pkglist
 	echo -5 | equo conf update
