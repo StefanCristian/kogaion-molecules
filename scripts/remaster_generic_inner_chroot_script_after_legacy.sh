@@ -1,66 +1,98 @@
-
 #!/bin/bash
 
-# do not remove these
 /usr/sbin/env-update
 . /etc/profile
 
+_get_kernel_tag() {
+	local kernel_ver="$(equo match --installed -qv virtual/linux-binary | cut -d/ -f 2)"
+	# strip -r** if exists, hopefully we don't have PN ending with -r
+	local kernel_ver="${kernel_ver%-r*}"
+	local kernel_tag_file="/etc/kernels/${kernel_ver}/RELEASE_LEVEL"
+	if [ ! -f "${kernel_tag_file}" ]; then
+		echo "cannot find ${kernel_tag_file}, wtf" >&2
+	else
+		echo "#$(cat "${kernel_tag_file}")"
+	fi
+}
+
+install_kernel_packages() {
+	local kernel_tag=$(_get_kernel_tag)
+	local pkgs=()
+	for pkg in "${@}"; do
+		pkgs+=( "${pkg}${kernel_tag}" )
+	done
+	equo install "${pkgs[@]}"
+}
+
+sd_enable() {
+	[[ -x /usr/bin/systemctl ]] && \
+		systemctl --no-reload enable -f "${1}.service"
+}
+
+sd_disable() {
+	[[ -x /usr/bin/systemctl ]] && \
+		systemctl --no-reload disable -f "${1}.service"
+}
+
 basic_environment_setup() {
 	eselect opengl set xorg-x11 &> /dev/null
-
-	rc-update del bluetooth
-	rc-update add bluetooth default
 
 	# automatically start xdm
 	rc-update del xdm default
 	rc-update del xdm boot
 	rc-update add xdm boot
-
-	rc-update add rogentoslive boot
-	rc-update add x-setup boot
+	# systemd has specific targets depending on the DM
 
 	# consolekit must be run at boot level
 	rc-update add consolekit boot
+	# systemd uses logind
 
-	# if it exists
-	if [ -f "/etc/init.d/hald" ]; then
-		rc-update del hald boot
-		rc-update del hald
-		rc-update add hald boot
-	fi
-
-	rc-update del music boot
-	rc-update add music default
 	rc-update del sabayon-mce default
+	sd_disable sabayon-mce
 	rc-update add nfsmount default
 
-	if [ -f /etc/init.d/zfs ] && [ "$(uname -m)" = "x86_64" ]; then
+	# setup avahi
+	rc-update add avahi-daemon default
+	sd_enable avahi-daemon
+
+	# setup printer
+	rc-update add cupsd default
+	rc-update add cups-browsed default
+	sd_enable cups
+	sd_enable cups-browsed
+
+	local kern_type="$(equo match --installed -q virtual/linux-binary)"
+	local do_zfs=1
+	if [ ! -f /etc/init.d/zfs ]; then
+		do_zfs=0
+	elif [ "$(uname -m)" != "x86_64" ]; then
+		do_zfs=0
+	elif [ "${kern_type}" = "sys-kernel/linux-hardened" ]; then
+		do_zfs=0  # currently not in the hardened kernel
+	fi
+	if [ "${do_zfs}" = "1" ]; then
 		rc-update add zfs boot
+		sd_enable zfs
 	fi
 
-	# Always startup this
-	rc-update add virtualbox-guest-additions boot
 	# Create a default "games" group so that
 	# the default user will be added to it during
 	# live boot, and thus, after install.
 	# See bug 3134
 	groupadd -f games
-}
 
-remove_desktop_files() {
-	rm /etc/skel/Desktop/WorldOfGooDemo-world-of-goo-demo.desktop
+	# all these images come with X.Org
+	sd_enable graphical
 }
 
 setup_cpufrequtils() {
 	rc-update add cpufrequtils default
+	sd_enable cpufrequtils
 }
 
 setup_sabayon_mce() {
 	rc-update add sabayon-mce boot
-	# not needed, done by app-misc/sabayon-mce pkg
-	# Sabayon Media Center user setup
-	# source /sbin/rogentos-functions.sh
-	# sabayon_setup_live_user "sabayonmce"
+	sd_enable sabayon-mce
 }
 
 switch_kernel() {
@@ -82,13 +114,25 @@ setup_displaymanager() {
 	# determine what is the login manager
 	if [ -n "$(equo match --installed gnome-base/gdm -qv)" ]; then
 		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="gdm"/g' /etc/conf.d/xdm
+		sd_enable gdm
 	elif [ -n "$(equo match --installed lxde-base/lxdm -qv)" ]; then
 		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="lxdm"/g' /etc/conf.d/xdm
+		sd_enable lxdm
+	elif [ -n "$(equo match --installed x11-misc/lightdm-base -qv)" ]; then
+		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="lightdm"/g' /etc/conf.d/xdm
+		sd_enable lightdm
 	elif [ -n "$(equo match --installed kde-base/kdm -qv)" ]; then
 		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="kdm"/g' /etc/conf.d/xdm
+		sd_enable kdm
 	else
 		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="xdm"/g' /etc/conf.d/xdm
+		sd_enable xdm
 	fi
+}
+
+setup_default_xsession() {
+	local sess="${1}"
+	ln -sf "${sess}.desktop" /usr/share/xsessions/default.desktop
 }
 
 setup_networkmanager() {
@@ -96,11 +140,13 @@ setup_networkmanager() {
 	rc-update del NetworkManager
 	rc-update add NetworkManager default
 	rc-update add NetworkManager-setup default
+	sd_enable NetworkManager
 }
 
 xfceforensic_remove_skel_stuff() {
 	# remove no longer needed folders/files
-	rm -rf /etc/skel/.config/xfce4/{desktop,panel}
+	rm -rf /etc/skel/.config/xfce4/desktop
+	rm -rf /etc/skel/.config/xfce4/panel
 	rm -rf /etc/skel/Desktop/*
 	rm -rf /usr/share/backgrounds/iottinka
 	rm -rf /usr/share/wallpapers/*
@@ -118,8 +164,8 @@ setup_oss_gfx_drivers() {
 	touch /.enable_kms
 
 	# Remove nouveau from blacklist
-	#sed -i ":^blacklist: s:blacklist nouveau:# blacklist nouveau:g" \
-		#/etc/modprobe.d/blacklist.conf
+	sed -i ":^blacklist: s:blacklist nouveau:# blacklist nouveau:g" \
+		/etc/modprobe.d/blacklist.conf
 }
 
 has_proprietary_drivers() {
@@ -134,47 +180,52 @@ has_proprietary_drivers() {
 	return 1
 }
 
+setup_virtualbox() {
+	install_kernel_packages \
+		"app-emulation/virtualbox-guest-additions" \
+		"x11-drivers/xf86-video-virtualbox"
+	rc-update add virtualbox-guest-additions boot
+	sd_enable virtualbox-guest-additions
+}
+
+install_proprietary_gfx_drivers() {
+	install_kernel_packages "x11-drivers/ati-drivers" \
+		"x11-drivers/nvidia-drivers"
+}
+
 setup_proprietary_gfx_drivers() {
-	# Prepare NVIDIA legacy drivers infrastructure
+        local myuname=$(uname -m)
+        local mydir="x86"
+        if [ "${myuname}" == "x86_64" ]; then
+                mydir="amd64"
+        fi
+        local kernel_tag=$(_get_kernel_tag)
+        local pkgs_dir=/var/lib/entropy/client/packages
+        local cd_dir=/install-data/drivers
+        local pkgs=(
+                "=x11-drivers/nvidia-userspace-304*"
+                "=x11-drivers/nvidia-drivers-304*${kernel_tag}"
+                "=x11-drivers/nvidia-userspace-173*"
+                "=x11-drivers/nvidia-drivers-173*${kernel_tag}"
+        )
+        local ts=
+        local tp=
+        local pkg_f=
 
-	if [ ! -d "/install-data/drivers" ]; then
-		mkdir -p /install-data/drivers
-	fi
-	myuname=$(uname -m)
-	mydir="x86"
-	if [ "$myuname" == "x86_64" ]; then
-		mydir="amd64"
-	fi
-	kernel_ver="$(equo match --installed -qv virtual/linux-binary | cut -d/ -f 2)"
-	# strip -r** if exists, hopefully we don't have PN ending with -r
-	kernel_ver="${kernel_ver%-r*}"
-	kernel_tag_file="/etc/kernels/${kernel_ver}/RELEASE_LEVEL"
-	if [ ! -f "${kernel_tag_file}" ]; then
-		echo "cannot find ${kernel_tag_file}, wtf" >&2
-		# do not return 1 !!!
-		return 0
-	fi
-	kernel_tag="#$(cat "${kernel_tag_file}")"
+        mkdir -p "${cd_dir}" || return 1
+        equo download --nodeps "${pkgs[@]}" || return 1
 
-	rm -rf /var/lib/entropy/client/packages/packages*/${mydir}/*/x11-drivers*
-	
-        ACCEPT_LICENSE="NVIDIA" equo install --fetch --nodeps =x11-drivers/nvidia-userspace-173*$kernel_tag \
-                =x11-drivers/nvidia-drivers-173*$kernel_tag
-        ACCEPT_LICENSE="NVIDIA" equo install --fetch --nodeps =x11-drivers/nvidia-drivers-96*$kernel_tag \
-                =x11-drivers/nvidia-userspace-96*$kernel_tag
-
-        mv /var/lib/entropy/client/packages/packages-nonfree/${mydir}/*/x11-drivers\:nvidia-{drivers,userspace}*.tbz2 \
-                /install-data/drivers/
-	# dead with >=xorg-server-1.11
-	# ACCEPT_LICENSE="NVIDIA" equo install --fetch --nodeps =x11-drivers/nvidia-drivers-173*$kernel_tag
-	# ACCEPT_LICENSE="NVIDIA" equo install --fetch --nodeps =x11-drivers/nvidia-drivers-96.43.20*$kernel_tag
-	## not working with >=xorg-server-1.5
-	## ACCEPT_LICENSE="NVIDIA" equo install --fetch --nodeps ~x11-drivers/nvidia-drivers-71.86.*$kernel_tag
-	# mv /var/lib/entropy/client/packages/packages-nonfree/${mydir}/*/x11-drivers\:nvidia-drivers*.tbz2 /install-data/drivers/
-
-	# if we ship with ati-drivers, we have KMS disabled by default.
-	# and better set driver arch to classic
-	eselect mesa set r600 classic
+        OLDIFS=${IFS}
+        IFS='
+'
+        local data=( $(equo match --quiet --showdownload "${pkgs[@]}") )
+        IFS=${OLDIFS}
+        for ts in "${data[@]}"; do
+                tp=( ${ts} )
+                pkg_f="${pkgs_dir}/${tp[1]}"
+                echo "Copying ${pkg_f} to ${cd_dir}"
+                cp "${pkg_f}" "${cd_dir}"/
+        done
 }
 
 setup_gnome_shell_extensions() {
@@ -198,6 +249,7 @@ setup_fonts() {
 		20-unhint-small-dejavu-sans-mono.conf
 		20-unhint-small-dejavu-serif.conf
 		31-cantarell.conf
+		52-infinality.conf
 		57-dejavu-sans.conf
 		57-dejavu-sans-mono.conf
 		57-dejavu-serif.conf"
@@ -209,6 +261,9 @@ setup_fonts() {
 			echo "ouch, /etc/fonts/conf.avail/${fc_en} is not available" >&2
 		fi
 	done
+	# Complete infinality setup
+	eselect infinality set infinality
+	eselect lcdfilter set infinality
 }
 
 setup_misc_stuff() {
@@ -217,7 +272,7 @@ setup_misc_stuff() {
 		cp -p /etc/samba/smb.conf.default /etc/samba/smb.conf
 	fi
 
-	# if Sabayon GNOME, drop qt-gui bins
+	# if Rogentos GNOME, drop qt-gui bins
 	gnome_panel=$(qlist -ICve gnome-base/gnome-panel)
 	if [ -n "${gnome_panel}" ]; then
 		find /usr/share/applications -name "*qt-gui*.desktop" | xargs rm
@@ -239,17 +294,9 @@ setup_misc_stuff() {
 		rm $file
 	done
 
-	# Setup basic GTK theme for root user
-	if [ ! -f "/root/.gtkrc-2.0" ]; then
-		echo "include \"/usr/share/themes/Clearlooks/gtk-2.0/gtkrc\"" > /root/.gtkrc-2.0
-	fi
 	# Regenerate Fluxbox menu
 	if [ -x "/usr/bin/fluxbox-generate_menu" ]; then
 		fluxbox-generate_menu -o /etc/skel/.fluxbox/menu
-		elif [ ! -d "/etc/skel/.fluxbox/" ]; then
-			fluxbox-generate_menu -o /etc/skel/.fluxbox/menu
-			chown rogentosuser /etc/skel/.fluxbox/
-		echo "Fix privileges and menus once and for all"
 	fi
 }
 
@@ -274,51 +321,51 @@ localz=$(pwd)
 ARCH=$(uname -m)
 
 if [ "$ARCH" = "x86_64" ]; then
-		equo unmask anaconda
-		equo remove nvidia-drivers nvidia-userspace ati-drivers ati-userspace virtualbox-guest-additions nvidiabl net-wireless/broadcom-sta net-wireless/ndiswrapper xf86-video-virtualbox --nodeps
-		equo install linux-sabayon:3.3 sabayon-sources:3.3 ati-drivers-12.6:1,3.3.0-sabayon nvidia-drivers:0,3.3.0-sabayon =x11-drivers/nvidia-userspace-304.37 ati-userspace@rogentoslinux
-		depmod -a
-		env-update && source /etc/profile
-		equo remove linux-sabayon:3.2 linux-sabayon:3.4 linux-sabayon:3.5 linux-sabayon:3.6 sabayon-sources:3.4 sabayon-sources:3.5 sabayon-sources:3.6 --nodeps
-		eselect kernel set 1
-		equo install virtualbox-guest-additions:0,3.3.0-sabayon app-emulation/virtualbox-modules:0,3.3.0-sabayon net-wireless/ndiswrapper:0,3.3.0-sabayon net-wireless/broadcom-sta:0,3.3.0-sabayon net-wireless/madwifi-ng:0,3.3.0-sabayon nvidiabl:0,3.3.0-sabayon xf86-video-virtualbox:0,3.3.0-sabayon --nodeps
-		equo install grub
-		equo remove anaconda --nodeps
-		equo install openrc --deep
-		echo -5 | equo conf update
-		equo remove linux-sabayon:3.2 linux-sabayon:3.4 linux-sabayon:3.5 linux-sabayon:3.6 --nodeps
-		env-update && source /etc/profile
-		depmod -a
-		rogentos_splash
-		equo config rogentos-artwork-resplash
-	else
-		equo unmask anaconda
-		equo remove nvidia-drivers nvidia-userspace ati-drivers ati-userspace --nodeps
-		equo install linux-sabayon:3.2 sabayon-sources:3.2 =x11-drivers/ati-userspace-11.12 =x11-drivers/ati-drivers-11.12#3.2.0-sabayon
-		env-update && source /etc/profile
-		equo remove linux-sabayon:3.3 linux-sabayon:3.4 linux-sabayon:3.5 linux-sabayon:3.6 sabayon-sources:3.4 sabayon-sources:3.5 sabayon-sources:3.6 --nodeps
-		eselect kernel set 1
-		equo install linux-sabayon:3.2 sabayon-sources:3.2 =x11-drivers/ati-userspace-11.12 =x11-drivers/ati-drivers-11.12#3.2.0-sabayon --nodeps
-		equo install =x11-drivers/nvidia-drivers-290.10#3.2.0-sabayon =x11-drivers/nvidia-userspace-290.10 =media-video/nvidia-settings-290.10 --nodeps
-		equo install grub xorg-server@rogentoslinux
-		equo remove virtualbox-guest-additions:0,3.2.0-sabayon app-emulation/virtualbox-modules:0,3.2.0-sabayon net-wireless/broadcom-sta:0,3.2.0-sabayon net-wireless/madwifi-ng:0,3.2.0-sabayon net-wireless/ndiswrapper:0,3.2.0-sabayon xf86-video-virtualbox:0,3.2.0-sabayon nvidiabl:0,3.2.0-sabayon --nodeps
-		equo install openrc --deep
-		depmod -a
-		echo -5 | equo conf update
-		equo remove linux-sabayon:3.3 linux-sabayon:3.5 --nodeps
-		env-update && source /etc/profile
-		depmod -a
-		rogentos_splash
-		equo config rogentos-artwork-resplash
+                equo unmask anaconda
+                equo remove nvidia-drivers nvidia-userspace ati-drivers ati-userspace virtualbox-guest-additions nvidiabl net-wireless/broadcom-sta net-wireless/ndiswrapper xf86-video-virtualbox --nodeps
+                equo install linux-sabayon:3.3 sabayon-sources:3.3 ati-drivers-12.6:1,3.3.0-sabayon nvidia-drivers:0,3.3.0-sabayon =x11-drivers/nvidia-userspace-304.37 ati-userspace@rogentoslinux
+                depmod -a
+                env-update && source /etc/profile
+                equo remove linux-sabayon:3.2 linux-sabayon:3.4 linux-sabayon:3.5 linux-sabayon:3.6 sabayon-sources:3.4 sabayon-sources:3.5 sabayon-sources:3.6 --nodeps
+                eselect kernel set 1
+                equo install virtualbox-guest-additions:0,3.3.0-sabayon app-emulation/virtualbox-modules:0,3.3.0-sabayon net-wireless/ndiswrapper:0,3.3.0-sabayon net-wireless/broadcom-sta:0,3.3.0-sabayon net-wireless/madwifi-ng:0,3.3.0-sabayon nvidiabl:0,3.3.0-sa$
+                equo install grub
+                equo remove anaconda --nodeps
+                equo install openrc --deep
+                echo -5 | equo conf update
+                equo remove linux-sabayon:3.2 linux-sabayon:3.4 linux-sabayon:3.5 linux-sabayon:3.6 --nodeps
+                env-update && source /etc/profile
+                depmod -a
+                rogentos_splash
+                equo config rogentos-artwork-resplash
+        else
+                equo unmask anaconda
+                equo remove nvidia-drivers nvidia-userspace ati-drivers ati-userspace --nodeps
+                equo install linux-sabayon:3.2 sabayon-sources:3.2 =x11-drivers/ati-userspace-11.12 =x11-drivers/ati-drivers-11.12#3.2.0-sabayon
+                env-update && source /etc/profile
+                equo remove linux-sabayon:3.3 linux-sabayon:3.4 linux-sabayon:3.5 linux-sabayon:3.6 sabayon-sources:3.4 sabayon-sources:3.5 sabayon-sources:3.6 --nodeps
+eselect kernel set 1
+                equo install linux-sabayon:3.2 sabayon-sources:3.2 =x11-drivers/ati-userspace-11.12 =x11-drivers/ati-drivers-11.12#3.2.0-sabayon --nodeps
+                equo install =x11-drivers/nvidia-drivers-290.10#3.2.0-sabayon =x11-drivers/nvidia-userspace-290.10 =media-video/nvidia-settings-290.10 --nodeps
+                equo install grub xorg-server@rogentoslinux
+                equo remove virtualbox-guest-additions:0,3.2.0-sabayon app-emulation/virtualbox-modules:0,3.2.0-sabayon net-wireless/broadcom-sta:0,3.2.0-sabayon net-wireless/madwifi-ng:0,3.2.0-sabayon net-wireless/ndiswrapper:0,3.2.0-sabayon xf86-video-virtualbo$
+                equo install openrc --deep
+                depmod -a
+                echo -5 | equo conf update
+                equo remove linux-sabayon:3.3 linux-sabayon:3.5 --nodeps
+                env-update && source /etc/profile
+                depmod -a
+                rogentos_splash
+                equo config rogentos-artwork-resplash
 
-		echo ">=x11-base/xorg-server-1.10@sabayon-weekly
-		      >=x11-base/xorg-server-1.10@sabayonlinux.org
-		      >=x11-base/xorg-server-1.10@sabayon-limbo
-		      >=x11-base/xorg-server-1.10@rogentoslinux
+                echo ">=x11-base/xorg-server-1.10@sabayon-weekly
+                      >=x11-base/xorg-server-1.10@sabayonlinux.org
+                      >=x11-base/xorg-server-1.10@sabayon-limbo
+                      >=x11-base/xorg-server-1.10@rogentoslinux
 
-		      >=x11-drivers/ati-drivers-12.2@sabayon-weekly
-		      >=x11-drivers/ati-drivers-12.2@sabayonlinux.org
-		      >=x11-drivers/ati-drivers-12.2@sabayon-limbo
+                      >=x11-drivers/ati-drivers-12.2@sabayon-weekly
+                      >=x11-drivers/ati-drivers-12.2@sabayonlinux.org
+                      >=x11-drivers/ati-drivers-12.2@sabayon-limbo
                       >=x11-drivers/ati-drivers-12.2@rogentoslinux
 
                       >=x11-base/xorg-drivers-1.12@sabayon-weekly
@@ -326,30 +373,30 @@ if [ "$ARCH" = "x86_64" ]; then
                       >=x11-base/xorg-drivers-1.12@sabayon-limbo
                       >=x11-base/xorg-drivers-1.12@rogentoslinux
 
-		      >=x11-drivers/xf86-video-ati-1@sabayon-weekly
-		      >=x11-drivers/xf86-video-ati-1@sabayonlinux.org
-		      >=x11-drivers/xf86-video-ati-1@sabayon-limbo
+                      >=x11-drivers/xf86-video-ati-1@sabayon-weekly
+                      >=x11-drivers/xf86-video-ati-1@sabayonlinux.org
+                      >=x11-drivers/xf86-video-ati-1@sabayon-limbo
                       >=x11-drivers/xf86-video-ati-1@rogentoslinux
 
-		      >=x11-drivers/xf86-video-nv-1@sabayon-weekly
-		      >=x11-drivers/xf86-video-nv-1@sabayonlinux.org
-		      >=x11-drivers/xf86-video-nv-1@sabayon-limbo
+                      >=x11-drivers/xf86-video-nv-1@sabayon-weekly
+                      >=x11-drivers/xf86-video-nv-1@sabayonlinux.org
+                      >=x11-drivers/xf86-video-nv-1@sabayon-limbo
                       >=x11-drivers/xf86-video-nv-1@rogentoslinux
 
-		      >=x11-drivers/xf86-video-nouveau-1@sabayon-weekly
-		      >=x11-drivers/xf86-video-nouveau-1@sabayonlinux.org
-		      >=x11-drivers/xf86-video-nouveau-1@sabayon-limbo
+                      >=x11-drivers/xf86-video-nouveau-1@sabayon-weekly
+                      >=x11-drivers/xf86-video-nouveau-1@sabayonlinux.org
+                      >=x11-drivers/xf86-video-nouveau-1@sabayon-limbo
                       >=x11-drivers/xf86-video-nouveau-1@rogentoslinux
 
-		      >=x11-drivers/xf86-video-intel-1@sabayon-weekly
-		      >=x11-drivers/xf86-video-intel-1@sabayonlinux.org
-	   	      >=x11-drivers/xf86-video-intel-1@sabayon-limbo
+                      >=x11-drivers/xf86-video-intel-1@sabayon-weekly
+                      >=x11-drivers/xf86-video-intel-1@sabayonlinux.org
+                      >=x11-drivers/xf86-video-intel-1@sabayon-limbo
                       >=x11-drivers/xf86-video-intel-1@rogentoslinux
 
-		      >=x11-drivers/xf86-input-evdev-2.7.3@sabayon-weekly
-		      >=x11-drivers/xf86-input-evdev-2.7.3@sabayonlinux.org
-		      >=x11-drivers/xf86-input-evdev-2.7.3@sabayon-limbo
-		      >=x11-drivers/xf86-input-evdev-2.7.3@rogentoslinux
+                      >=x11-drivers/xf86-input-evdev-2.7.3@sabayon-weekly
+                      >=x11-drivers/xf86-input-evdev-2.7.3@sabayonlinux.org
+                      >=x11-drivers/xf86-input-evdev-2.7.3@sabayon-limbo
+                      >=x11-drivers/xf86-input-evdev-2.7.3@rogentoslinux
 
                       >=x11-drivers/xf86-input-void-1.4.0@sabayon-weekly
                       >=x11-drivers/xf86-input-void-1.4.0@sabayonlinux.org
@@ -359,21 +406,20 @@ if [ "$ARCH" = "x86_64" ]; then
                       >=x11-drivers/xf86-video-fbdev-0.4.3@sabayon-weekly
                       >=x11-drivers/xf86-video-fbdev-0.4.3@sabayonlinux.org
                       >=x11-drivers/xf86-video-fbdev-0.4.3@sabayon-limbo
-                      >=x11-drivers/xf86-video-fbdev-0.4.3@rogentoslinux
 
                       >=x11-drivers/xf86-input-synaptics-1.6.2@sabayon-weekly
                       >=x11-drivers/xf86-input-synaptics-1.6.2@sabayonlinux.org
                       >=x11-drivers/xf86-input-synaptics-1.6.2@sabayon-limbo
                       >=x11-drivers/xf86-input-synaptics-1.6.2@rogentoslinux
 
-		      >=x11-drivers/xf86-video-i740-1@sabayon-weekly
-		      >=x11-drivers/xf86-video-i740-1@sabayonlinux.org
-		      >=x11-drivers/xf86-video-i740-1@sabayon-limbo
+                      >=x11-drivers/xf86-video-i740-1@sabayon-weekly
+                      >=x11-drivers/xf86-video-i740-1@sabayonlinux.org
+                      >=x11-drivers/xf86-video-i740-1@sabayon-limbo
                       >=x11-drivers/xf86-video-i740-1@rogentoslinux
 
-		      >=x11-drivers/xf86-video-virtualbox-1@sabayon-weekly
-		      >=x11-drivers/xf86-video-virtualbox-1@sabayonlinux.org
-		      >=x11-drivers/xf86-video-virtualbox-1@sabayon-limbo
+                      >=x11-drivers/xf86-video-virtualbox-1@sabayon-weekly
+                      >=x11-drivers/xf86-video-virtualbox-1@sabayonlinux.org
+                      >=x11-drivers/xf86-video-virtualbox-1@sabayon-limbo
                       >=x11-drivers/xf86-video-virtualbox-1@rogentoslinux
 
                       >=x11-drivers/xf86-video-vesa-2.3.2@sabayon-weekly
@@ -381,30 +427,29 @@ if [ "$ARCH" = "x86_64" ]; then
                       >=x11-drivers/xf86-video-vesa-2.3.2@sabayon-limbo
                       >=x11-drivers/xf86-video-vesa-2.3.2@rogentoslinux" >> /etc/entropy/packages/package.mask
 
-		for PKG in xf86-video-vesa xf86-video-fbdev xf86-input-evdev xf86-input-void xf86-input-synaptics ati-drivers ati-userspace xf86-input-synaptics xf86-video-ati xf86-video-intel xf86-video-nouveau xf86-video-nv xf86-video-i740 xf86-video-virtualbox anaconda; do
-			equo install $PKG@rogentos-legacy
-		done
-		depmod -a
+                for PKG in xf86-video-vesa xf86-video-fbdev xf86-input-evdev xf86-input-void xf86-input-synaptics ati-drivers ati-userspace xf86-input-synaptics xf86-video-ati xf86-video-intel xf86-video-nouveau xf86-video-nv xf86-video-i740 xf86-video-virtualbox$
+                        equo install $PKG@rogentos-legacy
+                done
+                depmod -a
 fi
 
-for PKG in sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux sabayonlive-tools sabayon-skel sabayon-artwork-lxde linux-sabayon ati-drivers nvidia-drivers ati-userspace nvidia-settings nvidia-userspace xorg-server nvidia-drivers nvidia-userspace virtualbox-guest-additions app-emulation/virtualbox-modules ndiswrapper net-wireless/broadcom-sta net-wireless/madwifi-ng nvidiabl xf86-video-virtualbox ; do
+for PKG in sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux sabayonlive-tools sabayon-skel sabayon-artwork-lxde linux-sabayon ati-drivers nvidia-drivers ati-userspace nvidia-settings nvidia-userspace xorg-server nvidia-drivers nvidia-userspace v$
 equo mask $PKG
 done
 
-echo "Interdict any kernel upgrade from now on, kernel-switcher only because it's Rogentos Legacy"
+echo "Forbid any kernel upgrade from now on, kernel-switcher only because it's Rogentos Legacy"
 }
 
 setup_installed_packages() {
 	rogentos_install
 	# Update package list
-	equo query list installed -qv > /etc/rogentos-pkglist
+	equo query list installed -qv > /etc/sabayon-pkglist
 	echo -5 | equo conf update
 
 	echo "Vacuum cleaning client db"
 	rm /var/lib/entropy/client/database/*/sabayonlinux.org -rf
 	rm /var/lib/entropy/client/database/*/sabayon-weekly -rf
-	rm /var/lib/entropy/client/database/*/rogentolisnux -rf
-	rm /var/lib/entropy/client/database/*/rogentos-legacy -rf
+	rm /var/lib/entropy/client/database/*/rogentoslinux -rf
 	equo rescue vacuum
 
 	# restore original repositories.conf (all mirrors were filtered for speed)
@@ -419,28 +464,18 @@ setup_installed_packages() {
 	rm -rf /var/lib/entropy/*cache*
 	# remove entropy pid file
 	rm -f /var/run/entropy/entropy.lock
-
-        for a in x86 amd64; do
-                rm -r /var/lib/entropy/client/packages/packages/$a/5/*
-                rm -r /var/lib/entropy/client/packages/packages-nonfree/$a/5/*
-                rm -r /var/lib/entropy/client/packages/packages-restricted/$a/5/*
-        done
+	rm -f /var/lib/entropy/entropy.pid
+	rm -f /var/lib/entropy/entropy.lock
 }
 
 setup_portage() {
-	layman -d sabayon
-	rm -rf /var/lib/layman/sabayon
-	layman -d sabayon-distro
-	rm -rf /var/lib/layman/sabayon-distro
-	layman -d rogento
-	rm -rf /var/lib/layman/rogento
 	emaint --fix world
 }
 
 setup_startup_caches() {
 	/lib/rc/bin/rc-depend -u
 	# Generate openrc cache
-	touch /lib/rc/init.d/softlevel
+	[[ -d "/lib/rc/init.d" ]] && touch /lib/rc/init.d/softlevel
 	[[ -d "/run/openrc" ]] && touch /run/openrc/softlevel
 	/etc/init.d/savecache start
 	/etc/init.d/savecache zap
@@ -449,11 +484,13 @@ setup_startup_caches() {
 }
 
 prepare_lxde() {
+	install_proprietary_gfx_drivers
+	setup_virtualbox
 	setup_networkmanager
 	# Fix ~/.dmrc to have it load LXDE
 	echo "[Desktop]" > /etc/skel/.dmrc
 	echo "Session=LXDE" >> /etc/skel/.dmrc
-	remove_desktop_files
+	setup_default_xsession "LXDE"
 	setup_displaymanager
 	# properly tweak lxde autostart tweak, adding --desktop option
 	sed -i 's/pcmanfm -d/pcmanfm -d --desktop/g' /etc/xdg/lxsession/LXDE/autostart
@@ -462,12 +499,49 @@ prepare_lxde() {
 	has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
 }
 
+prepare_mate() {
+	install_proprietary_gfx_drivers
+	setup_virtualbox
+	setup_networkmanager
+	# Fix ~/.dmrc to have it load MATE
+	echo "[Desktop]" > /etc/skel/.dmrc
+	echo "Session=mate" >> /etc/skel/.dmrc
+	setup_default_xsession "mate"
+	setup_displaymanager
+	remove_mozilla_skel_cruft
+	setup_cpufrequtils
+	has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
+}
+
+prepare_e17() {
+	install_proprietary_gfx_drivers
+	setup_virtualbox
+	setup_networkmanager
+	# Fix ~/.dmrc to have it load E17
+	echo "[Desktop]" > /etc/skel/.dmrc
+	echo "Session=enlightenment" >> /etc/skel/.dmrc
+	setup_default_xsession "enlightenment"
+	# E17 spin has chromium installed
+	setup_displaymanager
+	# Not using lxdm for now
+	# TODO: improve the lines below
+	# Make sure enlightenment is selected in lxdm
+	# sed -i '/lxdm-greeter-gtk/ a\\nlast_session=enlightenment.desktop\nlast_lang=' /etc/lxdm/lxdm.conf
+	# Fix ~/.gtkrc-2.0 for some nice icons in gtk
+	echo 'gtk-icon-theme-name="Tango" gtk-theme-name="Xfce"' | tr " " "\n" > /etc/skel/.gtkrc-2.0
+	remove_mozilla_skel_cruft
+	setup_cpufrequtils
+	has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
+}
+
 prepare_xfce() {
+	install_proprietary_gfx_drivers
+	setup_virtualbox
 	setup_networkmanager
 	# Fix ~/.dmrc to have it load Xfce
 	echo "[Desktop]" > /etc/skel/.dmrc
 	echo "Session=xfce" >> /etc/skel/.dmrc
-	remove_desktop_files
+	setup_default_xsession "xfce"
 	remove_mozilla_skel_cruft
 	setup_cpufrequtils
 	setup_displaymanager
@@ -475,11 +549,13 @@ prepare_xfce() {
 }
 
 prepare_fluxbox() {
+	install_proprietary_gfx_drivers
+	setup_virtualbox
 	setup_networkmanager
 	# Fix ~/.dmrc to have it load Fluxbox
 	echo "[Desktop]" > /etc/skel/.dmrc
 	echo "Session=fluxbox" >> /etc/skel/.dmrc
-	remove_desktop_files
+	setup_default_xsession "fluxbox"
 	setup_displaymanager
 	remove_mozilla_skel_cruft
 	setup_cpufrequtils
@@ -487,28 +563,36 @@ prepare_fluxbox() {
 }
 
 prepare_gnome() {
+	install_proprietary_gfx_drivers
+	setup_virtualbox
 	setup_networkmanager
 	# Fix ~/.dmrc to have it load GNOME or Cinnamon
 	echo "[Desktop]" > /etc/skel/.dmrc
 	if [ -f "/usr/share/xsessions/cinnamon.desktop" ]; then
 		echo "Session=cinnamon" >> /etc/skel/.dmrc
+	setup_default_xsession "cinnamon"
 	else
 		echo "Session=gnome" >> /etc/skel/.dmrc
 		setup_gnome_shell_extensions
+	setup_default_xsession "gnome"
 	fi
 	rc-update del system-tools-backends boot
 	rc-update add system-tools-backends default
+	# no systemd counterpart
+
 	setup_displaymanager
 	setup_sabayon_mce
+	setup_cpufrequtils
 	has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
 }
 
 prepare_xfceforensic() {
+	install_proprietary_gfx_drivers
 	setup_networkmanager
 	# Fix ~/.dmrc to have it load Xfce
 	echo "[Desktop]" > /etc/skel/.dmrc
 	echo "Session=xfce" >> /etc/skel/.dmrc
-	remove_desktop_files
+	setup_default_xsession "xfce"
 	setup_cpufrequtils
 	setup_displaymanager
 	remove_mozilla_skel_cruft
@@ -517,10 +601,17 @@ prepare_xfceforensic() {
 }
 
 prepare_kde() {
+	install_proprietary_gfx_drivers
+	setup_virtualbox
 	setup_networkmanager
 	# Fix ~/.dmrc to have it load KDE
 	echo "[Desktop]" > /etc/skel/.dmrc
 	echo "Session=KDE-4" >> /etc/skel/.dmrc
+	setup_default_xsession "KDE-4"
+	# Configure proper GTK3 theme
+	# TODO: find a better solution?
+	mv /etc/skel/.config/gtk-3.0/settings.ini._kde_molecule \
+		/etc/skel/.config/gtk-3.0/settings.ini
 	setup_displaymanager
 	setup_sabayon_mce
 	setup_cpufrequtils
@@ -528,11 +619,13 @@ prepare_kde() {
 }
 
 prepare_awesome() {
+	install_proprietary_gfx_drivers
+	setup_virtualbox
 	setup_networkmanager
 	# Fix ~/.dmrc to have it load Awesome
 	echo "[Desktop]" > /etc/skel/.dmrc
 	echo "Session=awesome" >> /etc/skel/.dmrc
-	remove_desktop_files
+	setup_default_xsession "awesome"
 	setup_displaymanager
 	remove_mozilla_skel_cruft
 	setup_cpufrequtils
@@ -543,6 +636,8 @@ prepare_system() {
 	local de="${1}"
 	if [ "${de}" = "lxde" ]; then
 		prepare_lxde
+        elif [ "${de}" = "mate" ]; then
+                prepare_mate
 	elif [ "${de}" = "e17" ]; then
 		prepare_e17
 	elif [ "${de}" = "xfce" ]; then
