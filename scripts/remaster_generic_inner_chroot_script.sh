@@ -13,6 +13,7 @@ cd "$EREPO"
 wget http://pkg.rogentos.ro/~rogentos/distro/entropy_rogentoslinux
 equo repo mirrorsort rogentoslinux
 equo repo mirrorsort sabayonlinux.org
+equo update
 if [ -f "/etc/entropy/repositories.conf.d/entropy_sabayonlinux.org.example" ]; then
 	mv "${EREPO}/entropy_sabayonlinux.org.example" "${EREPO}/entropy_sabayonlinux.org"
 fi
