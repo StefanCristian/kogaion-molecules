@@ -3,13 +3,13 @@
 execution_strategy: iso_remaster
 
 # Release string
-release_string: Sabayon Linux
+release_string: Rogentos Linux
 
 # File to write release string
 release_file: /etc/sabayon-edition
 
 # ISO Image title
-iso_title: Sabayon KDE
+iso_title: Rogentos KDE
 
 # Enable XZ compression in mksquashfs
 extra_mksquashfs_parameters: -comp xz -Xbcj x86
@@ -73,10 +73,8 @@ packages_to_add:
 	app-dicts/myspell-fr,
 	app-dicts/myspell-it,
 	app-dicts/myspell-nl,
-	app-emulation/virtualbox-guest-additions,
 	app-emulation/wine,
 	app-misc/sabayon-mce,
-	app-misc/sabayon-music,
 	app-misc/sabayon-skel,
 	app-misc/sabayon-version,
 	app-office/libreoffice,
@@ -251,6 +249,7 @@ packages_to_add:
 	kde-base/plasma-workspace,
 	kde-base/policykit-kde,
 	kde-base/powerdevil,
+	kde-base/print-manager,
 	kde-base/pykde4,
 	kde-base/qguiplatformplugin_kde,
 	kde-base/solid,
@@ -310,15 +309,11 @@ packages_to_add:
 	www-client/chromium,
 	www-plugins/adobe-flash,
 	x11-apps/xdm,
-	x11-drivers/ati-drivers,
-	x11-drivers/nvidia-drivers,
-	x11-drivers/xf86-video-virtualbox,
 	x11-libs/libva-vdpau-driver,
 	x11-libs/xvba-video,
 	x11-misc/desktop-acceleration-helpers,
 	x11-misc/xvkbd,
-	x11-themes/gnome-themes-standard,
-	x11-themes/gtk-engines-qtcurve,
+	x11-themes/caledonia-plasma-theme,
 	x11-themes/oxygen-gtk:2,
 	x11-themes/oxygen-gtk:3,
 	x11-themes/sabayon-artwork-extra,
@@ -327,12 +322,6 @@ packages_to_add:
 	x11-themes/sound-theme-freedesktop,
 	x11-themes/xcursor-themes,
 	x11-wm/twm
-
-# x11-themes/gnome-themes-standard:
-# oxygen-gtk contains a bug that screws Rigo's GTK3 nice
-# InfoBar backgrounds. So currently, GTK3 default theme
-# is set to Adwaita, which is contained inside
-# x11-themes/gnome-themes-standard
 
 # Custom shell call to packages add (default is: equo install)
 # custom_packages_add_cmd: 

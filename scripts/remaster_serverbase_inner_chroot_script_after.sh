@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 /usr/sbin/env-update
 . /etc/profile
@@ -15,8 +15,10 @@ sd_disable() {
 
 rc-update del installer-gui boot
 rc-update del x-setup boot
-rc-update del hald boot
 rc-update del avahi-daemon default
+
+sd_disable installer-gui
+sd_disable avahi-daemon
 
 # A RUNNING NetworkManager is required by Anaconda !!
 # re-enable rc_hotplug

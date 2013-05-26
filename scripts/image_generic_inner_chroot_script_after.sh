@@ -19,15 +19,18 @@ echo
 
 # setup networking, make sure networkmanager is gone
 rc-update del networkmanager default &> /dev/null
+sd_disable NetworkManager
 # add eth0, should get dhcp by default already
 rc-update add net.eth0 default
 
 # drop other useless services
-rc-update del sabayonlive boot
+rc-update del rogentoslive boot
 rc-update del x-setup boot
+sd_disable rogentoslive
 
 # Enable ssh
 rc-update add sshd default
+sd_enable sshd
 
 # delete root password, only ssh allowed
 passwd -d root
@@ -66,14 +69,13 @@ kernel ${kernel_bin} root=/dev/sda1
 # initrd ${initrd_bin}
 
 # Generate list of installed packages
-equo query list installed -qv > /etc/rogentos-pkglist
+equo query list installed -qv > /etc/sabayon-pkglist
 
 /lib/rc/bin/rc-depend -u
 
 echo "Vacuum cleaning client db"
 rm /var/lib/entropy/client/database/*/sabayonlinux.org -rf
 rm /var/lib/entropy/client/database/*/sabayon-weekly -rf
-rm /var/lib/entropy/cluient/database/*/rogentoslinux -rf
 equo rescue vacuum
 
 # restore original repositories.conf (all mirrors were filtered for speed)

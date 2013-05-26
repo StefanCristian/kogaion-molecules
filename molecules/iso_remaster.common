@@ -3,13 +3,13 @@
 execution_strategy: iso_remaster
 
 # Release string
-release_string: Sabayon Linux
+release_string: Rogentos Linux
 
 # File to write release string
 release_file: /etc/sabayon-edition
 
 # ISO Image title
-iso_title: Sabayon KDE
+iso_title: Rogentos KDE
 
 # Outer chroot script command, to be executed outside destination chroot before
 # before entering it (and before inner_chroot_script)

@@ -2,7 +2,7 @@
 %env %import ${SABAYON_MOLECULE_HOME:-/sabayon}/molecules/lxde.common
 
 # Release Version
-release_version: 10
+%env release_version: ${SABAYON_RELEASE:-11}
 
 # Release Version string description
 release_desc: x86 LXDE
@@ -11,7 +11,7 @@ release_desc: x86 LXDE
 prechroot: linux32
 
 # Path to source ISO file (MANDATORY)
-%env source_iso: ${SABAYON_MOLECULE_HOME:-/sabayon}/iso/Sabayon_Linux_SpinBase_DAILY_x86.iso
+%env source_iso: ${SABAYON_MOLECULE_HOME:-/sabayon}/iso/Sabayon_Linux_${ISO_TAG:-DAILY}_x86_SpinBase.iso
 
 # Destination ISO image name, call whatever you want.iso, not mandatory
-destination_iso_image_name: Sabayon_Linux_10_x86_LXDE.iso
+%env destination_iso_image_name: Sabayon_Linux_${SABAYON_RELEASE:-11}_x86_LXDE.iso

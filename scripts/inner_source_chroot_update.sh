@@ -83,6 +83,10 @@ fi
 
 rm -rf /var/lib/entropy/client/packages
 
+# Make sure that systemd is still the default init system
+eselect sysvinit set systemd
+eselect settingsd set systemd
+
 # copy Portage config from sabayonlinux.org entropy repo to system
 for conf in package.mask package.unmask package.keywords make.conf package.use; do
 	repo_path=/var/lib/entropy/client/database/*/sabayonlinux.org/standard
@@ -99,7 +103,8 @@ for conf in package.mask package.unmask package.keywords make.conf package.use; 
 done
 
 # split config file
-for conf in 00-sabayon.package.use; do
+for conf in 00-sabayon.package.use 00-sabayon.package.mask \
+	00-sabayon.package.unmask 00-sabayon.package.keywords; do
 	repo_path=/var/lib/entropy/client/database/*/sabayonlinux.org/standard
 	repo_conf=$(ls -1 ${repo_path}/*/*/${conf} | sort | tail -n 1 2>/dev/null)
 	if [ -n "${repo_conf}" ]; then
@@ -114,4 +119,14 @@ for conf in 00-sabayon.package.use; do
 	fi
 done
 
-equo query list installed -qv > /etc/rogentos-pkglist
+# Update /usr/portage/profiles
+# This is actually not strictly needed but several
+# gentoo tools expect to find valid /etc/make.profile symlink
+# This part is best effort, if it will be able to complete
+# correctly, fine.
+# For a list of mirrors, see: http://www.gentoo.org/main/en/mirrors-rsync.xml
+RSYNC_URI="rsync://rsync.at.gentoo.org/gentoo-portage/profiles"
+PROFILES_DIR="/usr/portage/profiles"
+safe_run rsync -av -H -A -X --delete-during "${RSYNC_URI}/" "${PROFILES_DIR}/"
+
+equo query list installed -qv > /etc/sabayon-pkglist

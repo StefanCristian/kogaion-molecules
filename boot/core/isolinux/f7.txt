@@ -1,5 +1,5 @@
 0fGAMING AND MULTIMEDIA CAPABILITIES07                                            09F707
-RogentosLinux is the most advanced and complete Linux distribution
+SabayonLinux is the most advanced and complete Linux distribution
 when it comes to multimedia completeness and capabilities.
 
 0fsecondlife07
@@ -22,7 +22,7 @@ when it comes to multimedia completeness and capabilities.
 0fgeexbox07
   Start GeeXboX 1.0 Media Center.
 0fmediacenter 07
-  Start RogentosLinux with Freevo Media Center.
+  Start SabayonLinux with Freevo Media Center.
 
 Press F1control and F then 1 for the help index, or ENTER to 
 

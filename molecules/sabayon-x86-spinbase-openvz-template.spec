@@ -6,7 +6,7 @@
 prechroot: linux32
 
 # Path to source ISO file (MANDATORY)
-%env source_iso: ${SABAYON_MOLECULE_HOME:-/sabayon}/iso/Sabayon_Linux_SpinBase_DAILY_x86.iso
+%env source_iso: ${SABAYON_MOLECULE_HOME:-/sabayon}/iso/Sabayon_Linux_${ISO_TAG:-DAILY}_x86_SpinBase.iso
 
-release_version: 10
-tar_name: Sabayon_Linux_SpinBase_10_x86_openvz.tar.gz
+%env release_version: ${SABAYON_RELEASE:-11}
+%env tar_name: Sabayon_Linux_${SABAYON_RELEASE:-11}_x86_SpinBase_openvz.tar.gz

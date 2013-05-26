@@ -18,7 +18,7 @@ if [ ! -f "${kernel}" ]; then
 	exit 1
 fi
 
-initramfss=( "${boot_dir}"/initramfs-* )
+initramfss=( "${boot_dir}"/initramfs-genkernel-* )
 # get the first one and see if it exists
 initramfs="${initramfss[0]}"
 if [ ! -f "${initramfs}" ]; then
@@ -33,13 +33,10 @@ cp "${initramfs}" "${cdroot_boot_dir}"/sabayon.igz || exit 1
 # Write build info
 build_date=$(date)
 build_file="${CDROOT_DIR}"/BUILD_INFO
-echo "Sabayon ISO image build information" > "${build_file}" || exit 1
+echo "Rogentos ISO image build information" > "${build_file}" || exit 1
 echo "Built on: ${build_date}" >> "${build_file}" || exit 1
 
-ver=${RELEASE_VERSION}
-[[ -z "${ver}" ]] && ver=${CUR_DATE}
-[[ -z "${ver}" ]] && ver="6"
-
+ver="${RELEASE_VERSION}"
 isolinux_dest="${CDROOT_DIR}/isolinux/txt.cfg"
 isolinux_dest_txt="${CDROOT_DIR}/isolinux/isolinux.txt"
 grub_dest="${CDROOT_DIR}/boot/grub/grub.cfg"
@@ -56,7 +53,7 @@ done
 # generate EFI GRUB
 "${ROGENTOS_MOLECULE_HOME}"/scripts/make_grub_efi.sh || exit 1
 
-sabayon_pkgs_file="${CHROOT_DIR}/etc/rogentos-pkglist"
+sabayon_pkgs_file="${CHROOT_DIR}/etc/sabayon-pkglist"
 if [ -f "${sabayon_pkgs_file}" ]; then
 	cp "${sabayon_pkgs_file}" "${CDROOT_DIR}/pkglist"
 	if [ -n "${ISO_PATH}" ]; then # molecule 0.9.6 required

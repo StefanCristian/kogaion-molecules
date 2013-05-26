@@ -2,7 +2,7 @@
 execution_strategy: livecd
 
 # Release string
-release_string: Sabayon Linux
+release_string: Rogentos Linux
 
 # File to write release string
 release_file: /etc/sabayon-edition

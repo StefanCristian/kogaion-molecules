@@ -3,13 +3,13 @@
 execution_strategy: iso_remaster
 
 # Release string
-release_string: Sabayon Linux
+release_string: Rogentos Linux
 
 # File to write release string
 release_file: /etc/sabayon-edition
 
 # ISO Image title
-iso_title: Sabayon Forensics Xfce
+iso_title: Rogentos Forensics Xfce
 
 # Enable XZ compression in mksquashfs
 extra_mksquashfs_parameters: -comp xz -Xbcj x86
@@ -56,7 +56,6 @@ packages_to_remove:
 	app-dicts/myspell-fr,
 	app-dicts/myspell-it,
 	app-dicts/myspell-nl,
-	app-misc/sabayon-music,
 	mail-client/mailx,
 	mail-client/mailx-support,
 	net-p2p/transmission-base,

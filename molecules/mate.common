@@ -3,13 +3,13 @@
 execution_strategy: iso_remaster
 
 # Release string
-release_string: Sabayon Linux
+release_string: Rogentos Linux
 
 # File to write release string
 release_file: /etc/sabayon-edition
 
 # ISO Image title
-iso_title: Sabayon MATE
+iso_title: Rogentos MATE
 
 # Enable XZ compression in mksquashfs
 extra_mksquashfs_parameters: -comp xz -Xbcj x86
@@ -57,10 +57,8 @@ packages_to_add:
 	app-admin/rigo,
 	app-crypt/gnupg,
 	app-crypt/pinentry-gtk2,
-	app-emulation/virtualbox-guest-additions,
 	app-text/pastebunz,
 	gnome-extra/nm-applet-gtk2,
-	lxde-base/lxdm,
 	mate-base/mate,
 	media-plugins/alsa-plugins,
 	media-sound/audacious,
@@ -73,14 +71,11 @@ packages_to_add:
 	sys-block/parted,
 	sys-fs/ntfs3g,
 	sys-power/cpufrequtils,
-	www-client/midori,
+	www-client/chromium,
 	x11-misc/magneto-gtk,
-	x11-drivers/nvidia-drivers,
-	x11-drivers/xf86-video-virtualbox,
+	x11-misc/lightdm-base,
+	x11-misc/lightdm-gtk-greeter,
 	x11-themes/gnome-themes-standard
-
-# x11-themes/sabayon-artwork-gnome:
-# provides the gtk theme for lxdm
 
 # Custom shell call to packages add (default is: equo install)
 # custom_packages_add_cmd: 

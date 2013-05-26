@@ -3,10 +3,10 @@
 execution_strategy: iso_remaster
 
 # ISO Image title
-iso_title: Sabayon Hardened Server
+iso_title: Rogentos Hardened Server
 
 # Release string
-release_string: Sabayon Linux
+release_string: Rogentos Linux
 
 # File to write release string
 release_file: /etc/sabayon-edition

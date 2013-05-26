@@ -70,7 +70,7 @@ fi
 
 if [ -b ${PARITION2} ]; then
 	umount ${PARTITION2}
-	mkfs.ext3 -L "Sabayon" ${PARTITION2}
+	mkfs.ext3 -L "Rogentos" ${PARTITION2}
 else
 	echo "Cant find rootfs partition in /dev"
 fi

@@ -3,13 +3,13 @@
 execution_strategy: iso_remaster
 
 # Release string
-release_string: Sabayon Linux
+release_string: Rogentos Linux
 
 # File to write release string
 release_file: /etc/sabayon-edition
 
 # ISO Image title
-iso_title: Sabayon LXDE
+iso_title: Rogentos LXDE
 
 # Enable XZ compression in mksquashfs
 extra_mksquashfs_parameters: -comp xz -Xbcj x86
@@ -60,7 +60,6 @@ packages_to_add:
 	app-crypt/gnupg,
 	app-crypt/pinentry-gtk2,
 	app-editors/leafpad,
-	app-emulation/virtualbox-guest-additions,
 	app-office/abiword,
 	app-office/gnumeric,
 	app-text/pastebunz,
@@ -80,9 +79,6 @@ packages_to_add:
 	sys-power/cpufrequtils,
 	www-client/midori,
 	x11-misc/magneto-gtk,
-	x11-drivers/ati-drivers,
-	x11-drivers/nvidia-drivers,
-	x11-drivers/xf86-video-virtualbox,
 	x11-themes/gnome-themes-standard,
 	xfce-extra/xfce4-notifyd
 

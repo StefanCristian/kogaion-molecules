@@ -3,13 +3,13 @@
 execution_strategy: iso_remaster
 
 # Release string
-release_string: Sabayon Linux
+release_string: Rogentos Linux
 
 # File to write release string
 release_file: /etc/sabayon-edition
 
 # ISO Image title
-iso_title: Sabayon GNOME
+iso_title: Rogentos GNOME
 
 # Enable XZ compression in mksquashfs
 extra_mksquashfs_parameters: -comp xz -Xbcj x86
@@ -78,11 +78,9 @@ packages_to_add:
 	app-dicts/myspell-it,
 	app-dicts/myspell-nl,
 	app-editors/gedit,
-	app-emulation/virtualbox-guest-additions,
 	app-emulation/wine,
 	app-misc/gnote,
 	app-misc/sabayon-mce,
-	app-misc/sabayon-music,
 	app-misc/sabayon-version,
 	app-office/libreoffice,
 	app-office/libreoffice-l10n-de,
@@ -158,9 +156,6 @@ packages_to_add:
 	www-client/chromium,
 	www-plugins/adobe-flash,
 	x11-apps/xdm,
-	x11-drivers/ati-drivers,
-	x11-drivers/nvidia-drivers,
-	x11-drivers/xf86-video-virtualbox,
 	x11-libs/libva-vdpau-driver,
 	x11-libs/xvba-video,
 	x11-misc/alacarte,

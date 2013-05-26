@@ -3,8 +3,8 @@
 /usr/sbin/env-update
 . /etc/profile
 
-# remove rogentosuser
-userdel rogentosuser
+# remove sabayonuser
+userdel sabayonuser
 
 DROP_SERVICES="
 	alsasound
@@ -22,13 +22,12 @@ DROP_SERVICES="
 	mdadm
 	netmount
 	NetworkManager
-	sabayonlive
+	rogentoslive
 	swap
 	swapfiles
 	termencoding
 	x-setup
 "
-
 SYSTEMD_DROP_SERVICES="
 	alsa-store
 	alsa-restore
@@ -38,7 +37,7 @@ SYSTEMD_DROP_SERVICES="
 	lvm
 	mdadm
 	NetworkManager
-	sabayonlive
+	rogentoslive
 	x-setup
 "
 
@@ -56,7 +55,7 @@ done
 systemctl --no-reloab enable vixie-cron.service
 
 # Generate list of installed packages
-equo query list installed -qv > /etc/rogentos-pkglist
+equo query list installed -qv > /etc/sabayon-pkglist
 
 # remove hw hash
 rm -f /etc/entropy/.hw.hash
