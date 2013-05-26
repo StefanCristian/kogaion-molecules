@@ -28,8 +28,8 @@ if [ -d "/home/rogentosuser/.gvfs" ]; then
         rm -r /home/rogentosuser/.gvfs
 fi
 
-mv "${CDROOT_DIR}/boot/sabayon.igz" "${CDROOT_DIR}/boot/rogentos.igz"
-mv "${CDROOT_DIR}/boot/sabayon" "${CDROOT_DIR}/boot/rogentos"
+mv "${CDROOT_DIR}/boot/rogentos.igz" "${CDROOT_DIR}/boot/rogentos.igz"
+mv "${CDROOT_DIR}/boot/rogentos" "${CDROOT_DIR}/boot/rogentos"
 
 if [ "${remaster_type}" = "KDE" ] || [ "${remaster_type}" = "GNOME" ]; then
 	isolinux_source="${ROGENTOS_MOLECULE_HOME}/remaster/standard_isolinux.cfg"
@@ -103,8 +103,8 @@ fi
 
 rm "${CDROOT_DIR}"/sabayon
 rm "${CDROOT_DIR}"/sabayon.igz
-rm "${CDROOT_DIR}"/boot/sabayon
-rm "${CDROOT_DIR}"/boot/sabayon.igz
+rm "${CDROOT_DIR}"/boot/rogentos
+rm "${CDROOT_DIR}"/boot/rogentos.igz
 
 
 # Generate livecd.squashfs.md5

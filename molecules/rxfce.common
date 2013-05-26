@@ -62,7 +62,6 @@ packages_to_add:
 	app-arch/file-roller,
 	app-arch/unrar,
 	app-misc/rogentos-version,
-	app-misc/rogentos-skel,
 	app-crypt/gnupg,
 	app-crypt/pinentry-gtk2,
 	app-emulation/wine,
@@ -74,6 +73,7 @@ packages_to_add:
 	gnome-extra/nm-applet-gtk2,
 	gnome-extra/polkit-gnome,
 	media-gfx/gimp,
+	lxde-base/lxdm,
 	media-gfx/ristretto,
 	media-gfx/shotwell,
 	media-libs/libdvdcss,
@@ -124,7 +124,7 @@ packages_to_add:
 	xfce-extra/xfce4-places-plugin,
 	xfce-extra/xfce4-screenshooter
 
-# x11-themes/sabayon-artwork-gnome:
+# x11-themes/rogentos-artwork-gnome:
 #   provides the gtk theme for lxdm
 # gnome-extra/polkit-gnome:
 #   required to make nm-applet work
