@@ -134,7 +134,7 @@ for dir in "${localedir}"/*; do
 	fi
 done
 
-# Copy splash, this is in sabayon-artwork-grub, we expect to find it
+# Copy splash, this is in rogentos-artwork-grub, we expect to find it
 cp "${CHROOT_DIR}/usr/share/grub/default-splash.png" "${GRUB_BOOT_DIR}"/ \
 	|| exit 1
 
@@ -149,10 +149,10 @@ shim_data_dir="${CHROOT_DIR}/usr/share/shim-signed-0.2"
 # This is on the ISO build server, not on the repos
 sbsign_private_key="${shim_dir}"/private.key
 # actually, UEFI SecureBoot needs the cert in DER
-# format (sabayon.cer), while sbsign requires a
-# plain old text-based x509 certificate (sabayon.crt)
-sabayon_der="${shim_dir}"/sabayon.cer
-sabayon_cert="${shim_dir}"/sabayon.crt
+# format (kogaion.cer), while sbsign requires a
+# plain old text-based x509 certificate (kogaion.crt)
+kogaion_der="${shim_dir}"/kogaion.cer
+kogaion_cert="${shim_dir}"/kogaion.crt
 
 if [ -f "${efi_x86_64_file}" ] || [ -f "${efi_i386_file}" ]; then
 
@@ -163,10 +163,10 @@ if [ -f "${efi_x86_64_file}" ] || [ -f "${efi_i386_file}" ]; then
 
 		# Copy the Rogentos SecureBoot certificate to a nice dir
 		mkdir -p "${CDROOT_DIR}"/SecureBoot || exit 1
-		cp "${sabayon_der}" "${CDROOT_DIR}"/SecureBoot/ || exit 1
+		cp "${kogaion_der}" "${CDROOT_DIR}"/SecureBoot/ || exit 1
 
 		# Sign
-		sbsign --key "${sbsign_private_key}" --cert "${sabayon_cert}" \
+		sbsign --key "${sbsign_private_key}" --cert "${kogaion_cert}" \
 			--output "${grub_efi_file}.signed" \
 			"${grub_efi_file}" || exit 1
 		mv "${grub_efi_file}.signed" "${grub_efi_file}" || exit 1
@@ -210,7 +210,7 @@ if [ -f "${efi_x86_64_file}" ] || [ -f "${efi_i386_file}" ]; then
 	cp -R "${GRUB_BOOT_DIR}/"*-efi "${tmp_grub_dir}/" || exit 1
 
 	mkdir -p "${tmp_grub_dir}/SecureBoot" || exit 1
-	cp "${sabayon_der}" "${tmp_grub_dir}/SecureBoot/" || exit 1
+	cp "${kogaion_der}" "${tmp_grub_dir}/SecureBoot/" || exit 1
 
 	umount "${tmp_dir}" || exit 1
 	rmdir "${tmp_dir}" # best effort
