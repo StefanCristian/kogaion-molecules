@@ -56,57 +56,56 @@ equo remove sabayon-artwork-grub sabayon-artwork-core sabayon-artwork-isolinux s
 emerge -C sabayon-version
 equo mask sabayon-version 
 
-#for PKG in openrc grub gnome-colors-common lxdm anaconda anaconda-runtime; do
-#equo mask $PKG@sabayonlinux.org
-#equo mask $PKG@sabayon-limbo
-#equo mask $PKG@sabayon-weekly
-#done
+for PKG in openrc grub gnome-colors-common lxdm anaconda anaconda-runtime; do
+equo mask $PKG@sabayonlinux.org
+equo mask $PKG@sabayon-limbo
+equo mask $PKG@sabayon-weekly
+done
 
-#echo ">=sys-apps/openrc-0.9@sabayon-limbo
-#>=sys-apps/openrc-0.9@sabayonlinux.org
-#>=sys-apps/openrc-0.9@sabayon-weekly
+echo ">=sys-apps/openrc-0.9@sabayon-limbo
+>=sys-apps/openrc-0.9@sabayonlinux.org
+>=sys-apps/openrc-0.9@sabayon-weekly
 
-#>=app-misc/sabayonlive-tools-2.3@sabayon-limbo
-#>=app-misc/sabayonlive-tools-2.3@sabayonlinux.org
-#>=app-misc/sabayonlive-tools-2.3@sabayon-weekly
+>=app-misc/sabayonlive-tools-2.3@sabayon-limbo
+>=app-misc/sabayonlive-tools-2.3@sabayonlinux.org
+>=app-misc/sabayonlive-tools-2.3@sabayon-weekly
 
-#>=app-misc/sabayon-skel-9@sabayon-limbo
-#>=app-misc/sabayon-skel-9@sabayonlinux.org
-#>=app-misc/sabayon-skel-9@sabayon-weekly
+>=app-misc/sabayon-skel-9@sabayon-limbo
+>=app-misc/sabayon-skel-9@sabayonlinux.org
+>=app-misc/sabayon-skel-9@sabayon-weekly
 
-#>=sys-boot/grub-2.00@sabayon-limbo
-#>=sys-boot/grub-2.00@sabayonlinux.rg
-#>=sys-boot/grub-2.00@sabayon-weekly
+>=sys-boot/grub-2.00@sabayon-limbo
+>=sys-boot/grub-2.00@sabayonlinux.rg
+>=sys-boot/grub-2.00@sabayon-weekly
 
-#>=kde-base/oxygen-icons-4.9.2@sabayon-weekly
-#>=kde-base/oxygen-icons-4.9.2@sabayonlinux.org
-#>=kde-base/oxygen-icons-4.9.2@sabayon-limbo
+>=kde-base/oxygen-icons-4.9.2@sabayon-weekly
+>=kde-base/oxygen-icons-4.9.2@sabayonlinux.org
+>=kde-base/oxygen-icons-4.9.2@sabayon-limbo
 
-#>=x11-themes/gnome-colors-common-5.5.1@sabayon-weekly
-#>=x11-themes/gnome-colors-common-5.5.1@sabayonlinux.org
-#>=x11-themes/gnome-colors-common-5.5.1@sabayon-limbo
+>=x11-themes/gnome-colors-common-5.5.1@sabayon-weekly
+>=x11-themes/gnome-colors-common-5.5.1@sabayonlinux.org
+>=x11-themes/gnome-colors-common-5.5.1@sabayon-limbo
 
-#>=x11-themes/tango-icon-theme-0.8.90@sabayon-weekly
-#>=x11-themes/tango-icon-theme-0.8.90@sabayonlinux.org
-#>=x11-themes/tango-icon-theme-0.8.90@sabayon-limbo
+>=x11-themes/tango-icon-theme-0.8.90@sabayon-weekly
+>=x11-themes/tango-icon-theme-0.8.90@sabayonlinux.org
+>=x11-themes/tango-icon-theme-0.8.90@sabayon-limbo
 
-#>=x11-themes/elementary-icon-theme-2.7.1@sabayon-weekly
-#>=x11-themes/elementary-icon-theme-2.7.1@sabayonlinux.org
-#>=x11-themes/elementary-icon-theme-2.7.1@sabayon-limbo
+>=x11-themes/elementary-icon-theme-2.7.1@sabayon-weekly
+>=x11-themes/elementary-icon-theme-2.7.1@sabayonlinux.org
+>=x11-themes/elementary-icon-theme-2.7.1@sabayon-limbo
 
-#>=lxde-base/lxdm-0.4.1-r5@sabayon-weekly
-#>=lxde-base/lxdm-0.4.1-r5@sabayonlinux.org
-#>=lxde-base/lxdm-0.4.1-r5@sabayon-limbo
+>=lxde-base/lxdm-0.4.1-r5@sabayon-weekly
+>=lxde-base/lxdm-0.4.1-r5@sabayonlinux.org
+>=lxde-base/lxdm-0.4.1-r5@sabayon-limbo
 
-#>=sys-apps/gpu-detector-1@sabayon-weekly
-#>=sys-apps/gpu-detector-1@sabayonlinux.org
-#>=sys-apps/gpu-detector-1@sabayon-limbo
+>=sys-apps/gpu-detector-1@sabayon-weekly
+>=sys-apps/gpu-detector-1@sabayonlinux.org
+>=sys-apps/gpu-detector-1@sabayon-limbo
 
-#>=app-admin/anaconda-0.1@sabayon-weekly
-#>=app-admin/anaconda-0.1@sabayonlinux.org
-#>=app-admin/anaconda-0.1@sabayon-limbo
+>=app-admin/anaconda-0.1@sabayon-weekly
+>=app-admin/anaconda-0.1@sabayonlinux.org
+>=app-admin/anaconda-0.1@sabayon-limbo
 
-#>=app-misc/anaconda-runtime-1.1-r1@sabayon-weekly
-#>=app-misc/anaconda-runtime-1.1-r1@sabayonlinux.org
-#>=app-misc/anaconda-runtime-1.1-r1@sabayon-limbo" >> /etc/entropy/packages/package.mask
-#equo install grub@sabayon-weekly
+>=app-misc/anaconda-runtime-1.1-r1@sabayon-weekly
+>=app-misc/anaconda-runtime-1.1-r1@sabayonlinux.org
+>=app-misc/anaconda-runtime-1.1-r1@sabayon-limbo" >> /etc/entropy/packages/package.mask
