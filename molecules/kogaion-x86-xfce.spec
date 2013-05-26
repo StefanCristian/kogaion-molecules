@@ -2,7 +2,7 @@
 %env %import ${ROGENTOS_MOLECULE_HOME:-/sabayon}/molecules/rxfce.common
 
 # Release Version
-release_version: 1
+release_version: 2
 
 # Release Version string description
 release_desc: x86 Xfce
