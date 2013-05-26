@@ -68,9 +68,9 @@ echo "inet_interfaces = localhost" >> /etc/postfix/main.cf
 # turn bashlogin shells to actual login shells
 sed -i 's:exec -l /bin/bash:exec -l /bin/bash -l:' /bin/bashlogin
 
-# setup /etc/hosts, add sabayon as default hostname (required by Xfce)
-sed -i "/^127.0.0.1/ s/localhost/localhost sabayon/" /etc/hosts
-sed -i "/^::1/ s/localhost/localhost sabayon/" /etc/hosts
+# setup /etc/hosts, add rogentos as default hostname (required by Xfce)
+sed -i "/^127.0.0.1/ s/localhost/localhost rogentos/" /etc/hosts
+sed -i "/^::1/ s/localhost/localhost rogentos/" /etc/hosts
 
 # setup postfix local mail aliases
 newaliases
@@ -199,7 +199,7 @@ if [ -x "/usr/bin/fluxbox-generate_menu" ]; then
         fluxbox-generate_menu -o /etc/skel/.fluxbox/menu
 fi
 
-equo query list installed -qv > /etc/sabayon-pkglist
+equo query list installed -qv > /etc/rogentos-pkglist
 
 rm -rf /var/tmp/entropy/*
 rm -rf /var/lib/entropy/logs

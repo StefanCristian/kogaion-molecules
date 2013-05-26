@@ -27,8 +27,8 @@ if [ ! -f "${initramfs}" ]; then
 fi
 
 # copy kernel and initramfs
-cp "${kernel}" "${cdroot_boot_dir}"/sabayon || exit 1
-cp "${initramfs}" "${cdroot_boot_dir}"/sabayon.igz || exit 1
+cp "${kernel}" "${cdroot_boot_dir}"/rogentos || exit 1
+cp "${initramfs}" "${cdroot_boot_dir}"/rogentos.igz || exit 1
 
 # Write build info
 build_date=$(date)
@@ -53,12 +53,12 @@ done
 # generate EFI GRUB
 "${ROGENTOS_MOLECULE_HOME}"/scripts/make_grub_efi.sh || exit 1
 
-sabayon_pkgs_file="${CHROOT_DIR}/etc/sabayon-pkglist"
-if [ -f "${sabayon_pkgs_file}" ]; then
-	cp "${sabayon_pkgs_file}" "${CDROOT_DIR}/pkglist"
+rogentos_pkgs_file="${CHROOT_DIR}/etc/rogentos-pkglist"
+if [ -f "${rogentos_pkgs_file}" ]; then
+	cp "${rognetos_pkgs_file}" "${CDROOT_DIR}/pkglist"
 	if [ -n "${ISO_PATH}" ]; then # molecule 0.9.6 required
 		# copy pkglist over to ISO path + pkglist
-		cp "${sabayon_pkgs_file}" "${ISO_PATH}".pkglist
+		cp "${rogentos_pkgs_file}" "${ISO_PATH}".pkglist
 	fi
 fi
 
