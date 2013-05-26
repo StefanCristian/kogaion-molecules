@@ -129,4 +129,4 @@ RSYNC_URI="rsync://rsync.at.gentoo.org/gentoo-portage/profiles"
 PROFILES_DIR="/usr/portage/profiles"
 safe_run rsync -av -H -A -X --delete-during "${RSYNC_URI}/" "${PROFILES_DIR}/"
 
-equo query list installed -qv > /etc/sabayon-pkglist
+equo query list installed -qv > /etc/rogentos-pkglist

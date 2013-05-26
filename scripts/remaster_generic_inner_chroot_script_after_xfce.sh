@@ -352,7 +352,7 @@ echo "Use kernel-schimbare --help to change the kernels"
 setup_installed_packages() {
 	rogentos_install
 	# Update package list
-	equo query list installed -qv > /etc/sabayon-pkglist
+	equo query list installed -qv > /etc/rogentos-pkglist
 	echo -5 | equo conf update
 
 	echo "Vacuum cleaning client db"

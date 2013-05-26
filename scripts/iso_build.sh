@@ -52,12 +52,12 @@ REMASTER_TAR_SPECS_TAR=()
 # Default Rogentos release version to current date
 # composed by YYYYMMDD. This is overridden by the
 # monthly if branch below.
-if [ -z "${SABAYON_RELEASE}" ]; then  # make possible to override it
+if [ -z "${ROGENTOS_RELEASE}" ]; then  # make possible to override it
 	if [ "${ACTION}" = "release" ]; then
-		echo "Missing SABAYON_RELEASE env var" >&2
+		echo "Missing ROGENTOS_RELEASE env var" >&2
 		exit 1
 	fi
-	SABAYON_RELEASE=$(date -u +%Y%m%d)
+	ROGENTOS_RELEASE=$(date -u +%Y%m%d)
 fi
 # ISO TAG is instead used as part of the images push
 # to our mirror. It is always "DAILY" but it gets a special
@@ -164,14 +164,14 @@ elif [ "${ACTION}" = "dailybase" ]; then
 	)
 elif [ "${ACTION}" = "monthly" ] || [ "${ACTION}" = "release" ]; then
 	if [ "${ACTION}" = "monthly" ]; then
-		SABAYON_RELEASE=$(date -u +%g.%m)
+		ROGENTOS_RELEASE=$(date -u +%g.%m)
 	fi
-	if [ -z "${SABAYON_RELEASE}" ]; then  # release action must set this
-		echo "Cannot set SABAYON_RELEASE, wtf?" >&2
+	if [ -z "${ROGENTOS_RELEASE}" ]; then  # release action must set this
+		echo "Cannot set ROGENTOS_RELEASE, wtf?" >&2
 		exit 1
 	fi
-	# Rewrite ISO_TAG to SABAYON_RELEASE
-	ISO_TAG="${SABAYON_RELEASE}"
+	# Rewrite ISO_TAG to ROGENTOS_RELEASE
+	ISO_TAG="${ROGENTOS_RELEASE}"
 	if [ "${ACTION}" = "monthly" ]; then
 		OLD_ISO_TAG=$(date -u --date="last month" +%g.%m)
 		if [ -z "${OLD_ISO_TAG}" ]; then
@@ -226,10 +226,10 @@ export ISO_TAG
 
 export ETP_NONINTERACTIVE=1
 
-LOG_FILE="/var/log/molecule/autobuild-${SABAYON_RELEASE}-${$}.log"
+LOG_FILE="/var/log/molecule/autobuild-${ROGENTOS_RELEASE}-${$}.log"
 # to make ISO remaster spec files working (pre_iso_script) and
 # make molecules grab a proper release version
-export SABAYON_RELEASE
+export ROGENTOS_RELEASE
 
 echo "DO_PUSH=${DO_PUSH}"
 echo "DO_PUSHONLY=${DO_PUSHONLY}"
@@ -345,7 +345,7 @@ build_sabayon() {
 			"${dst}" || return 1
 
 		echo -n "${dst}: iso: ${SOURCE_SPECS_ISO[i]} "
-		echo "release: ${SABAYON_RELEASE}"
+		echo "release: ${ROGENTOS_RELEASE}"
 		source_specs+=( "${dst}" )
 	done
 
@@ -362,7 +362,7 @@ build_sabayon() {
 			"${dst}" || return 1
 
 		echo -n "${dst}: image: ${ARM_SOURCE_SPECS_IMG[i]} "
-		echo "release: ${SABAYON_RELEASE}"
+		echo "release: ${ROGENTOS_RELEASE}"
 		arm_source_specs+=( "${dst}" )
 	done
 
@@ -377,7 +377,7 @@ build_sabayon() {
 			"${dst}" || return 1
 
 		echo -n "${dst}: iso: ${REMASTER_SPECS_ISO[i]} "
-		echo "release: ${SABAYON_RELEASE}"
+		echo "release: ${ROGENTOS_RELEASE}"
 		remaster_specs+=( "${dst}" )
 	done
 
@@ -390,7 +390,7 @@ build_sabayon() {
 		sed -i "s/tar_name:.*/tar_name: ${REMASTER_TAR_SPECS_TAR[i]}/" "${dst}" || return 1
 
 		echo -n "${dst}: tar: ${REMASTER_TAR_SPECS_TAR[i]} "
-		echo "release: ${SABAYON_RELEASE}"
+		echo "release: ${ROGENTOS_RELEASE}"
 		remaster_specs+=( "${dst}" )
 	done
 
@@ -476,7 +476,7 @@ if [ -n "${DO_STDOUT}" ]; then
 		out=${?}
 	fi
 else
-	log_file="/var/log/molecule/autobuild-${SABAYON_RELEASE}-${$}.log"
+	log_file="/var/log/molecule/autobuild-${ROGENTOS_RELEASE}-${$}.log"
 	[[ -n "${DO_PUSHONLY}" ]] || build_sabayon &> "${log_file}"
 	out=${?}
 	if [ "${out}" = "0" ]; then

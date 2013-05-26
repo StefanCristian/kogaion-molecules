@@ -443,7 +443,7 @@ echo "Forbid any kernel upgrade from now on, kernel-switcher only because it's R
 setup_installed_packages() {
 	rogentos_install
 	# Update package list
-	equo query list installed -qv > /etc/sabayon-pkglist
+	equo query list installed -qv > /etc/rogentos-pkglist
 	echo -5 | equo conf update
 
 	echo "Vacuum cleaning client db"

@@ -55,7 +55,7 @@ done
 systemctl --no-reloab enable vixie-cron.service
 
 # Generate list of installed packages
-equo query list installed -qv > /etc/sabayon-pkglist
+equo query list installed -qv > /etc/rogentos-pkglist
 
 # remove hw hash
 rm -f /etc/entropy/.hw.hash

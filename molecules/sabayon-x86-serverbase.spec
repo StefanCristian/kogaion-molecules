@@ -1,7 +1,7 @@
 # use abs path, otherwise daily iso build automagic won't work
-%env %import ${SABAYON_MOLECULE_HOME:-/sabayon}/molecules/serverbase.common
+%env %import ${ROGENTOS_MOLECULE_HOME:-/sabayon}/molecules/serverbase.common
 
-%env release_version: ${SABAYON_RELEASE:-11}
+%env release_version: ${ROGENTOS_RELEASE:-2}
 release_desc: x86 ServerBase
 
 # pre chroot command, example, for 32bit chroots on 64bit system, you always
@@ -9,7 +9,7 @@ release_desc: x86 ServerBase
 prechroot: linux32
 
 # Path to source ISO file (MANDATORY)
-%env source_iso: ${SABAYON_MOLECULE_HOME:-/sabayon}/iso/Sabayon_Linux_${ISO_TAG:-DAILY}_x86_SpinBase.iso
+%env source_iso: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/iso/Sabayon_Linux_${ISO_TAG:-DAILY}_x86_SpinBase.iso
 
 # Destination ISO image name, call whatever you want.iso, not mandatory
-%env destination_iso_image_name: Sabayon_Linux_${SABAYON_RELEASE:-11}_x86_ServerBase.iso
+%env destination_iso_image_name: Sabayon_Linux_${ROGENTOS_RELEASE:-2}_x86_ServerBase.iso
