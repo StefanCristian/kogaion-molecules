@@ -55,6 +55,7 @@ packages_to_add:
 	app-admin/rigo,
 	app-admin/kernel-schimbare,
 	app-misc/rogentos-skel,
+	app-misc/rogentos-live,
 	app-crypt/gnupg,
 	app-crypt/pinentry-gtk2,
 	app-emulation/virtualbox-guest-additions,

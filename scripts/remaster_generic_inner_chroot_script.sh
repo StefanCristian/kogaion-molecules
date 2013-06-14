@@ -55,8 +55,8 @@ if [ "${updated}" = "0" ]; then
 	exit 1
 fi
 
-equo mask sabayon-skel sabayon-version sabayon-artwork-grub
-equo remove sabayon-artwork-grub sabayon-artwork-core sabayon-artwork-isolinux sabayon-version sabayon-skel sabayonlive-tools grub --nodeps
+equo mask sabayon-skel sabayon-version sabayon-artwork-grub sabayon-live
+equo remove sabayon-artwork-grub sabayon-artwork-core sabayon-artwork-isolinux sabayon-version sabayon-skel sabayon-live sabayonlive-tools grub sabayon-artwork-gnome --nodeps
 emerge -C sabayon-version
 equo mask sabayon-version
 
