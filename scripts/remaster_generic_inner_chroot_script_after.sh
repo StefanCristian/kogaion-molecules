@@ -40,7 +40,7 @@ basic_environment_setup() {
 	# automatically start xdm
 	rc-update del xdm default
 	rc-update del xdm boot
-	rc-update add xdm boot
+	rc-update add xdm default
 	# systemd has specific targets depending on the DM
 
 	# consolekit must be run at boot level
