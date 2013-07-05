@@ -353,8 +353,6 @@ echo "Se va folosi kernel-schimbare pentru schimbarea nucleului"
 echo "Use kernel-schimbare --help to change the kernels"
 }
 
-
-
 setup_installed_packages() {
 	rogentos_install
 	# Update package list
