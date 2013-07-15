@@ -50,7 +50,7 @@ for repo_conf in /etc/entropy/repositories.conf /etc/entropy/repositories.conf.d
 done
 
 equo mask sabayon-skel sabayon-version sabayon-artwork-grub
-equo remove sabayon-artwork-grub sabayon-artwork-core sabayon-artwork-isolinux sabayon-version sabayon-skel sabayonlive-tools grub --nodeps
+equo remove sabayon-artwork-grub sabayon-artwork-core sabayon-artwork-isolinux sabayon-version sabayon-skel rogentoslive-tools grub --nodeps
 emerge -C sabayon-version
 equo mask sabayon-version openrc@sabayonlinux.org openrc@sabayon-limbo openrc@sabayon-weekly
 equo mask grub@sabayon-weekly grub@sabayonlinux.org grub@sabayon-limbo
@@ -71,9 +71,9 @@ echo ">=sys-apps/openrc-0.9@sabayon-limbo
 >=app-misc/sabayon-skel-1@sabayon-weekly
 >=app-misc/sabayon-skel-1@sabayon-limbo
 
->=app-misc/sabayonlive-tools-1@sabayonlinux.org
->=app-misc/sabayonlive-tools-1@sabayon-weekly
->=app-misc/sabayonlive-tools-1@sabayon-limbo
+>=app-misc/rogentoslive-tools-1@sabayonlinux.org
+>=app-misc/rogentoslive-tools-1@sabayon-weekly
+>=app-misc/rogentoslive-tools-1@sabayon-limbo
 
 >=x11-themes/sabayon-artwork-core-1@sabayonlinux.org
 >=x11-themes/sabayon-artwork-core-1@sabayon-weekly

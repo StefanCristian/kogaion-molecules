@@ -1,6 +1,6 @@
 # This module contains packages that images shipping with X.Org should have
 
-# sabayon-skel required to make anaconda autostart
+# rogentos-skel required to make anaconda autostart
 # libgnomecanvas-python required by anaconda
 # x11-libs/libXxf86misc required by xset
 packages_to_add:
@@ -8,6 +8,10 @@ packages_to_add:
 	@fluxbox,
 	app-laptop/nvidiabl,
 	app-misc/rogentos-skel,
+<<<<<<< HEAD
+=======
+	app-misc/rogentoslive-tools,
+>>>>>>> experimental
 	app-misc/anaconda-runtime-gui,
 	dev-python/libgnomecanvas-python,
 	media-fonts/ttf-bitstream-vera,

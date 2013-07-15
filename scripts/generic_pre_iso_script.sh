@@ -25,11 +25,18 @@ echo "Copying them into the ISO image"
 if [ -d "/home/rogentosuser/.gvfs" ]; then
         echo "All is doomed"
         umount /home/rogentosuser/.gvfs
-        rm -r /home/rogentosuser/.gvfs
+        chown -R rogentosuser:rogentosuser /home/rogentosuser/.gvfs
 fi
 
-mv "${CDROOT_DIR}/boot/sabayon.igz" "${CDROOT_DIR}/boot/rogentos.igz"
-mv "${CDROOT_DIR}/boot/sabayon" "${CDROOT_DIR}/boot/rogentos"
+#mv "${CDROOT_DIR}/boot/sabayon.igz" "${CDROOT_DIR}/boot/rogentos.igz"
+#mv "${CDROOT_DIR}/boot/sabayon" "${CDROOT_DIR}/boot/rogentos"
+
+boot_kernel=$(find "${CHROOT_DIR}/boot" -name "kernel-*" | sort | head -n 1)
+boot_ramfs=$(find "${CHROOT_DIR}/boot" -name "initramfs-genkernel-*" | sort | head -n 1)
+if [ -n "${boot_kernel}" ] && [ -f "${boot_kernel}" ]; then
+	cp "${boot_kernel}" "${CDROOT_DIR}/boot/rogentos" || exit 1
+	cp "${boot_ramfs}" "${CDROOT_DIR}/boot/rogentos.igz" || exit 1
+fi
 
 if [ "${remaster_type}" = "KDE" ] || [ "${remaster_type}" = "GNOME" ]; then
 	isolinux_source="${ROGENTOS_MOLECULE_HOME}/remaster/standard_isolinux.cfg"
@@ -63,7 +70,7 @@ cp "${grub_source}" "${grub_destination}" || exit 1
 
 ver=${RELEASE_VERSION}
 [[ -z "${ver}" ]] && ver=${CUR_DATE}
-[[ -z "${ver}" ]] && ver="6"
+[[ -z "${ver}" ]] && ver="1"
 
 sed -i "s/__VERSION__/${ver}/g" "${isolinux_destination}" || exit 1
 sed -i "s/__FLAVOUR__/${remaster_type}/g" "${isolinux_destination}" || exit 1

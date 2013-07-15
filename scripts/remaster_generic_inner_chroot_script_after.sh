@@ -40,7 +40,7 @@ basic_environment_setup() {
 	# automatically start xdm
 	rc-update del xdm default
 	rc-update del xdm boot
-	rc-update add xdm boot
+	rc-update add xdm default
 	# systemd has specific targets depending on the DM
 
 	# consolekit must be run at boot level
@@ -55,7 +55,7 @@ basic_environment_setup() {
 	rc-update add avahi-daemon default
 	sd_enable avahi-daemon
 
-	# setup printer
+	# setup printing
 	rc-update add cupsd default
 	rc-update add cups-browsed default
 	sd_enable cups
@@ -116,7 +116,6 @@ setup_displaymanager() {
 		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="gdm"/g' /etc/conf.d/xdm
 		sd_enable gdm
 	elif [ -n "$(equo match --installed lxde-base/lxdm -qv)" ]; then
-
 		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="lxdm"/g' /etc/conf.d/xdm
 		sd_enable lxdm
 	elif [ -n "$(equo match --installed x11-misc/lightdm-base -qv)" ]; then
@@ -195,38 +194,38 @@ install_proprietary_gfx_drivers() {
 }
 
 setup_proprietary_gfx_drivers() {
-        local myuname=$(uname -m)
-        local mydir="x86"
-        if [ "${myuname}" == "x86_64" ]; then
-                mydir="amd64"
-        fi
-        local kernel_tag=$(_get_kernel_tag)
-        local pkgs_dir=/var/lib/entropy/client/packages
-        local cd_dir=/install-data/drivers
-        local pkgs=(
-                "=x11-drivers/nvidia-userspace-304*"
-                "=x11-drivers/nvidia-drivers-304*${kernel_tag}"
-                "=x11-drivers/nvidia-userspace-173*"
-                "=x11-drivers/nvidia-drivers-173*${kernel_tag}"
-        )
-        local ts=
-        local tp=
-        local pkg_f=
+	local myuname=$(uname -m)
+	local mydir="x86"
+	if [ "${myuname}" == "x86_64" ]; then
+		mydir="amd64"
+	fi
+	local kernel_tag=$(_get_kernel_tag)
+	local pkgs_dir=/var/lib/entropy/client/packages
+	local cd_dir=/install-data/drivers
+	local pkgs=(
+		"=x11-drivers/nvidia-userspace-304*"
+		"=x11-drivers/nvidia-drivers-304*${kernel_tag}"
+		"=x11-drivers/nvidia-userspace-173*"
+		"=x11-drivers/nvidia-drivers-173*${kernel_tag}"
+	)
+	local ts=
+	local tp=
+	local pkg_f=
 
-        mkdir -p "${cd_dir}" || return 1
-        equo download --nodeps "${pkgs[@]}" || return 1
+	mkdir -p "${cd_dir}" || return 1
+	equo download --nodeps "${pkgs[@]}" || return 1
 
-        OLDIFS=${IFS}
-        IFS='
+	OLDIFS=${IFS}
+	IFS='
 '
-        local data=( $(equo match --quiet --showdownload "${pkgs[@]}") )
-        IFS=${OLDIFS}
-        for ts in "${data[@]}"; do
-                tp=( ${ts} )
-                pkg_f="${pkgs_dir}/${tp[1]}"
-                echo "Copying ${pkg_f} to ${cd_dir}"
-                cp "${pkg_f}" "${cd_dir}"/
-        done
+	local data=( $(equo match --quiet --showdownload "${pkgs[@]}") )
+	IFS=${OLDIFS}
+	for ts in "${data[@]}"; do
+		tp=( ${ts} )
+		pkg_f="${pkgs_dir}/${tp[1]}"
+		echo "Copying ${pkg_f} to ${cd_dir}"
+		cp "${pkg_f}" "${cd_dir}"/
+	done
 }
 
 setup_gnome_shell_extensions() {
@@ -273,7 +272,7 @@ setup_misc_stuff() {
 		cp -p /etc/samba/smb.conf.default /etc/samba/smb.conf
 	fi
 
-	# if Sabayon GNOME, drop qt-gui bins
+	# if Rogentos GNOME, drop qt-gui bins
 	gnome_panel=$(qlist -ICve gnome-base/gnome-panel)
 	if [ -n "${gnome_panel}" ]; then
 		find /usr/share/applications -name "*qt-gui*.desktop" | xargs rm
@@ -301,65 +300,14 @@ setup_misc_stuff() {
 	fi
 }
 
-rogentos_splash() {
-if [ -d "/etc/splash/sabayon" ]; then
-        rm -r /etc/splash/sabayon
-        ln -s /etc/splash/rogentos /etc/splash/sabayon
-        echo "So etc/splash/sabayon exists"
-        ln -s /etc/splash/rogentos /etc/splash/sabayon
-
-        for i in `seq 1 6`; do
-        splash_manager -c set -t rogentos --tty=$i
-        done
-fi
-}
-
-rogentos_install() {
-
-#Rogentos ISO Remaking from the Beginnings
-
-localz=$(pwd)
-ARCH=$(uname -m)
-rog=rogentos-artwork
-
-echo "Entering folder $localz"
-equo remove anaconda --nodeps
-
-if [ "$ARCH" = "x86_64" ]; then
-                equo unmask anaconda
-                equo install anaconda --nodeps
-                echo "installed rogentos artwork amd64"
-                echo -5 | equo conf update
-                depmod -a
-                env-update && source /etc/profile
-                rogentos_splash
-        else
-                equo unmask anaconda
-                equo install anaconda --nodeps
-                echo "Installed rogentos artwork x86"
-                echo -5 | equo conf update
-                depmod -a
-                env-update && source /etc/profile
-                rogentos_splash
-fi
-
-equo mask linux-sabayon virtualbox-guest-additions broadcom-sta ndiswrapper xf86-video-virtualbox bbswitch nvidiabl
-echo "Se va folosi kernel-schimbare pentru schimbarea nucleului"
-echo "For kernel upgrading, use kernel-switcher"
-echo "Pentru a instala virtualbox, urmariti instructiunile pe wiki.rogentos.ro"
-echo "If you wish to install virtualbox-bin, follow the instructions on wiki.rogentos.ro"
-}
-
 setup_installed_packages() {
-	rogentos_install
 	# Update package list
-	equo query list installed -qv > /etc/sabayon-pkglist
+	equo query list installed -qv > /etc/rogentos-pkglist
 	echo -5 | equo conf update
 
 	echo "Vacuum cleaning client db"
 	rm /var/lib/entropy/client/database/*/sabayonlinux.org -rf
 	rm /var/lib/entropy/client/database/*/sabayon-weekly -rf
-	rm /var/lib/entropy/client/database/*/rogentoslinux -rf
 	equo rescue vacuum
 
 	# restore original repositories.conf (all mirrors were filtered for speed)

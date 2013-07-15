@@ -1,4 +1,4 @@
-Hi, welcome to Rogentos for the BeagleBone.
+Hi, welcome to Sabayon for the BeagleBone.
 
 First of all, you may want to install the image into a new SDHC card.
 Make sure to have enough space for it, for example, if you downloaded
@@ -27,10 +27,10 @@ Make sure to see the same device name inside /dev directory.
 
 Once you got the name, just dump the image into that, in this
 example, we assume that the device is /dev/sdc and the image
-name is "Rogentos_Linux_8_armv7a_BeagleBoard_xM_4GB.img".
+name is "Sabayon_Linux_8_armv7a_BeagleBoard_xM_4GB.img".
 Do this as root!
 
-  # xzcat Rogentos_Linux_8_armv7a_BeagleBoard_xM_4GB.img > /dev/sdd
+  # xzcat Sabayon_Linux_8_armv7a_BeagleBoard_xM_4GB.img > /dev/sdd
 
 Once it is done, check for any error using:
 
@@ -72,13 +72,13 @@ Then reboot!
 
 You want to know more?
 ----------------------
-Just go to http://www.rogentos.org and to http://wiki.rogentos.org
+Just go to http://www.sabayon.org and to http://wiki.sabayon.org
 and search for "BeagleBoard".
 We're full of guides.
 
 
 Contact
 -------
-Just mail us at website@rogentos.org if you need any help or register
-to our mailing list at http://lists.rogentos.org/cgi-bin/mailman/listinfo/devel
+Just mail us at website@sabayon.org if you need any help or register
+to our mailing list at http://lists.sabayon.org/cgi-bin/mailman/listinfo/devel
 

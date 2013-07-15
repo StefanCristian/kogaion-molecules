@@ -1,6 +1,6 @@
 #!/bin/bash
 # example call:
-# amd64_x86_pre_iso_script.sh GNOME 64 32 /path/to/Sabayon_Linux_DAILY_x86_G.iso
+# amd64_x86_pre_iso_script.sh GNOME 64 32 /path/to/Rogentos_Linux_DAILY_x86_G.iso
 
 remaster_type="${1}"
 current_arch="${2}"
@@ -42,10 +42,7 @@ cp "${grub_source}" "${grub_destination}" || exit 1
 # generate EFI GRUB
 "${ROGENTOS_MOLECULE_HOME}"/scripts/make_grub_efi.sh || exit 1
 
-ver=${RELEASE_VERSION}
-[[ -z "${ver}" ]] && ver=${CUR_DATE}
-[[ -z "${ver}" ]] && ver="6"
-
+ver="${RELEASE_VERSION}"
 sed -i "s/__VERSION__/${ver}/g" "${isolinux_destination}" || exit 1
 sed -i "s/__FLAVOUR__/${remaster_type}/g" "${isolinux_destination}" || exit 1
 sed -i "s/__VERSION__/${ver}/g" "${grub_destination}" || exit 1
@@ -60,8 +57,8 @@ if [ -z "${tmp_dir}" ]; then
 	exit 1
 fi
 # also rename kernel and initramfs inside the CDROOT dir
-mv "${CDROOT_DIR}/boot/sabayon" "${CDROOT_DIR}/boot/sabayon${current_arch}" || exit 1
-mv "${CDROOT_DIR}/boot/sabayon.igz" "${CDROOT_DIR}/boot/sabayon${current_arch}.igz" || exit 1
+mv "${CDROOT_DIR}/boot/rogentos" "${CDROOT_DIR}/boot/rogentos${current_arch}" || exit 1
+mv "${CDROOT_DIR}/boot/rogentos.igz" "${CDROOT_DIR}/boot/rogentos${current_arch}.igz" || exit 1
 
 mount -o loop "${other_iso_path}" "${tmp_dir}" || exit 1
 other_squashfs_path="${tmp_dir}/livecd.squashfs"
@@ -71,8 +68,8 @@ if [ ! -f "${other_squashfs_path}" ]; then
 fi
 cp "${other_squashfs_path}" "${CDROOT_DIR}/livecd${other_arch}.squashfs" || exit 1
 # copy kernel and initramfs
-cp "${tmp_dir}/boot/sabayon" "${CDROOT_DIR}/boot/sabayon${other_arch}" || exit 1
-cp "${tmp_dir}/boot/sabayon.igz" "${CDROOT_DIR}/boot/sabayon${other_arch}.igz" || exit 1
+cp "${tmp_dir}/boot/rogentos" "${CDROOT_DIR}/boot/rogentos${other_arch}" || exit 1
+cp "${tmp_dir}/boot/rogentos.igz" "${CDROOT_DIR}/boot/rogentos${other_arch}.igz" || exit 1
 
 # copy back.jpg to proper location
 isolinux_img="${ROGENTOS_MOLECULE_HOME}/remaster/embedded_world/back.jpg"
@@ -85,9 +82,9 @@ arm_images_dir="${ROGENTOS_MOLECULE_HOME}/images"
 arm_dir="${CDROOT_DIR}/ARM"
 mkdir -p "${arm_dir}" || exit 1
 
-beaglebone_image="Sabayon_Linux_9_armv7a_BeagleBone_Base_2GB.img.xz"
-beagleboard_xm_image="Sabayon_Linux_9_armv7a_BeagleBoard_xM_4GB.img.xz"
-pandaboard_image="Sabayon_Linux_9_armv7a_PandaBoard_4GB.img.xz"
+beaglebone_image="Rogentos_Linux_9_armv7a_BeagleBone_Base_2GB.img.xz"
+beagleboard_xm_image="Rogentos_Linux_9_armv7a_BeagleBoard_xM_4GB.img.xz"
+pandaboard_image="Rogentos_Linux_9_armv7a_PandaBoard_4GB.img.xz"
 
 # BeagleBone
 arm_card_dir="${arm_dir}/BeagleBone"

@@ -4,82 +4,73 @@
 ROGENTOS_MOLECULE_HOME="${ROGENTOS_MOLECULE_HOME:-/sabayon}"
 export ROGENTOS_MOLECULE_HOME
 
-ACTION="${1}"
-if [ "${ACTION}" != "daily" ] && [ "${ACTION}" != "weekly" ] && [ "${ACTION}" != "dailybase" ]; then
-	echo "invalid action: ${ACTION}" >&2
-	exit 1
-fi
-shift
-
-for arg in "$@"
-do
-	[[ "${arg}" = "--push" ]] && DO_PUSH="1"
-	[[ "${arg}" = "--stdout" ]] && DO_STDOUT="1"
-	[[ "${arg}" = "--sleepnight" ]] && DO_SLEEPNIGHT="1"
-	if [ "${arg}" = "--pushonly" ]; then
-		DO_PUSH="1"
-		DRY_RUN="1"
-	fi
-done
-
-CUR_DATE=$(date -u +%Y%m%d)
-LOG_FILE="/var/log/molecule/autobuild-${CUR_DATE}-${$}.log"
-BUILDING_DAILY=1
-MAKE_TORRENTS="${MAKE_TORRENTS:-0}"
-DAILY_TMPDIR=
-
-# to make ISO remaster spec files working (pre_iso_script)
-export CUR_DATE
-export ETP_NONINTERACTIVE=1
-export BUILDING_DAILY
-# Temporarily added to debug Equo in case of deadlock
-# export ETP_DEBUG_WATCHDOG=1
-# export ETP_DEBUG_WATCHDOG_INTERVAL=60
-
-echo "DO_PUSH=${DO_PUSH}"
-echo "DRY_RUN=${DRY_RUN}"
-echo "DO_SLEEPNIGHT=${DO_SLEEPNIGHT}"
-echo "LOG_FILE=${LOG_FILE}"
-
 # setup default language, cron might not do that
 export LC_ALL="en_US.UTF-8"
 export LANG="en_US.UTF-8"
 export LANGUAGE="en_US.UTF-8"
 
-# Sleep until 22pm?
-if [ "${DO_SLEEPNIGHT}" = "1" ] && [ "${DO_PUSH}" = "1" ]; then
-	target_h=22 # 22pm
-	current_h=$(date +%H)
-	current_h=${current_h/0} # remove leading 0
-	delta_h=$(( target_h - current_h ))
-	if [ ${current_h} -ge 0 ] && [ ${current_h} -le 6 ]; then
-		# If it's past midnight and no later than 7am
-		# just push
-		echo "Just pusing out now"
-	elif [ ${delta_h} -gt 0 ]; then
-		delta_s=$(( delta_h * 3600 ))
-		echo "Sleeping for ${delta_h} hours..."
-		sleep ${delta_s} || exit 1
-	elif [ ${delta_h} -lt 0 ]; then
-		# between 22 and 24, run!
-		echo "I'm after 22pm, running"
-	else
-		echo "No need to sleep"
-	fi
-fi
+VALID_ACTIONS=(
+	"daily"
+	"weekly"
+	"monthly"
+	"dailybase"
+	"release"
+)
 
+ACTION="${1}"
+ACTION_VALID=
+for act in "${VALID_ACTIONS[@]}"; do
+	if [ "${act}" = "${ACTION}" ]; then
+		ACTION_VALID=1
+		break
+	fi
+done
+if [ -z "${ACTION_VALID}" ]; then
+	echo "invalid action: ${ACTION}" >&2
+	exit 1
+fi
+shift
+
+for arg in "$@"; do
+	[[ "${arg}" = "--push" ]] && DO_PUSH="1"
+	[[ "${arg}" = "--stdout" ]] && DO_STDOUT="1"
+	[[ "${arg}" = "--sleepnight" ]] && DO_SLEEPNIGHT="1"
+	[[ "${arg}" = "--pushonly" ]] && DO_PUSHONLY="1"
+	[[ "${arg}" = "--torrents" ]] && MAKE_TORRENTS="1"
+done
+
+# Initialize script variables
 ARM_SOURCE_SPECS=()
 ARM_SOURCE_SPECS_IMG=()
-
 SOURCE_SPECS=()
 SOURCE_SPECS_ISO=()
-
 REMASTER_SPECS=()
 REMASTER_SPECS_ISO=()
 REMASTER_TAR_SPECS=()
 REMASTER_TAR_SPECS_TAR=()
 
+# Default Rogentos release version to current date
+# composed by YYYYMMDD. This is overridden by the
+# monthly if branch below.
+if [ -z "${ROGENTOS_RELEASE}" ]; then  # make possible to override it
+	if [ "${ACTION}" = "release" ]; then
+		echo "Missing ROGENTOS_RELEASE env var" >&2
+		exit 1
+	fi
+	ROGENTOS_RELEASE=$(date -u +%Y%m%d)
+fi
+# ISO TAG is instead used as part of the images push
+# to our mirror. It is always "DAILY" but it gets a special
+# meaning for monthly releases.
+ISO_TAG="DAILY"
+OLD_ISO_TAG=""  # used to remove OLD ISO images the local dir
+DISTRO_NAME="Rogentos_Linux"
+ISO_DIR="daily"
+CHANGELOG_DATES=""
+CHANGELOG_DIR="${ROGENTOS_MOLECULE_HOME}/${ACTION}-git-logs"
+
 if [ "${ACTION}" = "weekly" ] || [ "${ACTION}" = "daily" ]; then
+	export BUILDING_DAILY=1
 
 	# Daily molecules
 	SOURCE_SPECS+=(
@@ -87,8 +78,8 @@ if [ "${ACTION}" = "weekly" ] || [ "${ACTION}" = "daily" ]; then
 		"sabayon-amd64-spinbase.spec"
 	)
 	SOURCE_SPECS_ISO+=(
-		"Sabayon_Linux_SpinBase_DAILY_x86.iso"
-		"Sabayon_Linux_SpinBase_DAILY_amd64.iso"
+		"${DISTRO_NAME}_${ISO_TAG}_x86_SpinBase.iso"
+		"${DISTRO_NAME}_${ISO_TAG}_amd64_SpinBase.iso"
 	)
 	REMASTER_SPECS+=(
 		"sabayon-amd64-gnome.spec"
@@ -97,69 +88,55 @@ if [ "${ACTION}" = "weekly" ] || [ "${ACTION}" = "daily" ]; then
 		"sabayon-x86-kde.spec"
 		"sabayon-amd64-mate.spec"
 		"sabayon-x86-mate.spec"
-		"sabayon-amd64-lxde.spec"
-		"sabayon-x86-lxde.spec"
 		"sabayon-amd64-xfce.spec"
-		"kogaion-x86-xfce.spec"
 		"sabayon-x86-xfce.spec"
 		"sabayon-amd64-e17.spec"
 		"sabayon-x86-e17.spec"
-		"sabayon-amd64-corecdx.spec"
-		"sabayon-x86-corecdx.spec"
-		"sabayon-amd64-serverbase.spec"
-		"sabayon-x86-serverbase.spec"
-		"sabayon-amd64-hardenedserver.spec"
-		"sabayon-x86-hardenedserver.spec"
+		"sabayon-amd64-minimal.spec"
+		"sabayon-x86-minimal.spec"
 	)
 	REMASTER_SPECS_ISO+=(
-		"Sabayon_Linux_DAILY_amd64_G.iso"
-		"Sabayon_Linux_DAILY_x86_G.iso"
-		"Sabayon_Linux_DAILY_amd64_K.iso"
-		"Sabayon_Linux_DAILY_x86_K.iso"
-                "Sabayon_Linux_DAILY_amd64_MATE.iso"
-                "Sabayon_Linux_DAILY_x86_MATE.iso"
-		"Sabayon_Linux_DAILY_amd64_LXDE.iso"
-		"Sabayon_Linux_DAILY_x86_LXDE.iso"
-		"Sabayon_Linux_DAILY_amd64_Xfce.iso"
-		"Sabayon_Linux_DAILY_x86_Xfce.iso"
-		"Sabayon_Linux_DAILY_amd64_E17.iso"
-		"Sabayon_Linux_DAILY_x86_E17.iso"
-		"Sabayon_Linux_CoreCDX_DAILY_amd64.iso"
-		"Sabayon_Linux_CoreCDX_DAILY_x86.iso"
-		"Sabayon_Linux_ServerBase_DAILY_amd64.iso"
-		"Sabayon_Linux_ServerBase_DAILY_x86.iso"
-		"Sabayon_Linux_HardenedServer_DAILY_amd64.iso"
-		"Sabayon_Linux_HardenedServer_DAILY_x86.iso"
+		"${DISTRO_NAME}_${ISO_TAG}_amd64_GNOME.iso"
+		"${DISTRO_NAME}_${ISO_TAG}_x86_GNOME.iso"
+		"${DISTRO_NAME}_${ISO_TAG}_amd64_KDE.iso"
+		"${DISTRO_NAME}_${ISO_TAG}_x86_KDE.iso"
+		"${DISTRO_NAME}_${ISO_TAG}_amd64_MATE.iso"
+		"${DISTRO_NAME}_${ISO_TAG}_x86_MATE.iso"
+		"${DISTRO_NAME}_${ISO_TAG}_amd64_Xfce.iso"
+		"${DISTRO_NAME}_${ISO_TAG}_x86_Xfce.iso"
+		"${DISTRO_NAME}_${ISO_TAG}_amd64_E17.iso"
+		"${DISTRO_NAME}_${ISO_TAG}_x86_E17.iso"
+		"${DISTRO_NAME}_${ISO_TAG}_amd64_Minimal.iso"
+		"${DISTRO_NAME}_${ISO_TAG}_x86_Minimal.iso"
 	)
-
 
 	# Weekly molecules
 	if [ "${ACTION}" = "weekly" ]; then
-		ARM_SOURCE_SPECS+=(
-			"sabayon-arm-beaglebone-base-2G.spec"
-			"sabayon-arm-beaglebone-base-4G.spec"
-			"sabayon-arm-beagleboard-xm-4G.spec"
-			"sabayon-arm-beagleboard-xm-8G.spec"
-			"sabayon-arm-pandaboard-4G.spec"
-			"sabayon-arm-pandaboard-8G.spec"
-			"sabayon-arm-efikamx-base-4G.spec"
-		)
-		ARM_SOURCE_SPECS_IMG+=(
-			"Sabayon_Linux_DAILY_armv7a_BeagleBone_Base_2GB.img"
-			"Sabayon_Linux_DAILY_armv7a_BeagleBone_Base_4GB.img"
-			"Sabayon_Linux_DAILY_armv7a_BeagleBoard_xM_4GB.img"
-			"Sabayon_Linux_DAILY_armv7a_BeagleBoard_xM_8GB.img"
-			"Sabayon_Linux_DAILY_armv7a_PandaBoard_4GB.img"
-			"Sabayon_Linux_DAILY_armv7a_PandaBoard_8GB.img"
-			"Sabayon_Linux_DAILY_armv7a_EfikaMX_Base_4GB.img"
-		)
+		#ARM_SOURCE_SPECS+=(
+		#	"sabayon-arm-beaglebone-base-2G.spec"
+		#	"sabayon-arm-beaglebone-base-4G.spec"
+		#	"sabayon-arm-beagleboard-xm-4G.spec"
+		#	"sabayon-arm-beagleboard-xm-8G.spec"
+		#	"sabayon-arm-pandaboard-4G.spec"
+		#	"sabayon-arm-pandaboard-8G.spec"
+		#	"sabayon-arm-efikamx-base-4G.spec"
+		#)
+		#ARM_SOURCE_SPECS_IMG+=(
+		#	"${DISTRO_NAME}_${ISO_TAG}_armv7a_BeagleBone_Base_2GB.img"
+		#	"${DISTRO_NAME}_${ISO_TAG}_armv7a_BeagleBone_Base_4GB.img"
+		#	"${DISTRO_NAME}_${ISO_TAG}_armv7a_BeagleBoard_xM_4GB.img"
+		#	"${DISTRO_NAME}_${ISO_TAG}_armv7a_BeagleBoard_xM_8GB.img"
+		#	"${DISTRO_NAME}_${ISO_TAG}_armv7a_PandaBoard_4GB.img"
+		#	"${DISTRO_NAME}_${ISO_TAG}_armv7a_PandaBoard_8GB.img"
+		#	"${DISTRO_NAME}_${ISO_TAG}_armv7a_EfikaMX_Base_4GB.img"
+		#)
 		REMASTER_SPECS+=(
 			"sabayon-amd64-xfceforensic.spec"
 			"sabayon-x86-xfceforensic.spec"
 		)
 		REMASTER_SPECS_ISO+=(
-			"Sabayon_Linux_DAILY_amd64_ForensicsXfce.iso"
-			"Sabayon_Linux_DAILY_x86_ForensicsXfce.iso"
+			"${DISTRO_NAME}_${ISO_TAG}_amd64_ForensicsXfce.iso"
+			"${DISTRO_NAME}_${ISO_TAG}_x86_ForensicsXfce.iso"
 		)
 		REMASTER_TAR_SPECS+=(
 			"sabayon-x86-spinbase-openvz-template.spec"
@@ -168,25 +145,122 @@ if [ "${ACTION}" = "weekly" ] || [ "${ACTION}" = "daily" ]; then
 			"sabayon-amd64-spinbase-amazon-ebs-image.spec"
 		)
 		REMASTER_TAR_SPECS_TAR+=(
-			"Sabayon_Linux_SpinBase_DAILY_x86_openvz.tar.gz"
-			"Sabayon_Linux_SpinBase_DAILY_amd64_openvz.tar.gz"
-			"Sabayon_Linux_SpinBase_DAILY_x86_Amazon_EBS_ext4_filesystem_image.tar.gz"
-			"Sabayon_Linux_SpinBase_DAILY_amd64_Amazon_EBS_ext4_filesystem_image.tar.gz"
+			"${DISTRO_NAME}_${ISO_TAG}_x86_SpinBase_openvz.tar.gz"
+			"${DISTRO_NAME}_${ISO_TAG}_amd64_SpinBase_openvz.tar.gz"
+			"${DISTRO_NAME}_${ISO_TAG}_x86_SpinBase_Amazon_EBS_ext4_filesystem_image.tar.gz"
+			"${DISTRO_NAME}_${ISO_TAG}_amd64_SpinBase_Amazon_EBS_ext4_filesystem_image.tar.gz"
 		)
 	fi
-
 elif [ "${ACTION}" = "dailybase" ]; then
-	SOURCE_SPECS=(
+	export BUILDING_DAILY=1
+
+	SOURCE_SPECS+=(
 		"sabayon-x86-spinbase.spec"
 		"sabayon-amd64-spinbase.spec"
 	)
-	SOURCE_SPECS_ISO=(
-		"Sabayon_Linux_SpinBase_DAILY_x86.iso"
-		"Sabayon_Linux_SpinBase_DAILY_amd64.iso"
+	SOURCE_SPECS_ISO+=(
+		"${DISTRO_NAME}_${ISO_TAG}_x86_SpinBase.iso"
+		"${DISTRO_NAME}_${ISO_TAG}_amd64_SpinBase.iso"
+	)
+elif [ "${ACTION}" = "monthly" ] || [ "${ACTION}" = "release" ]; then
+	if [ "${ACTION}" = "monthly" ]; then
+		ROGENTOS_RELEASE=$(date -u +%g.%m)
+	fi
+	if [ -z "${ROGENTOS_RELEASE}" ]; then  # release action must set this
+		echo "Cannot set ROGENTOS_RELEASE, wtf?" >&2
+		exit 1
+	fi
+	# Rewrite ISO_TAG to ROGENTOS_RELEASE
+	ISO_TAG="${ROGENTOS_RELEASE}"
+	if [ "${ACTION}" = "monthly" ]; then
+		OLD_ISO_TAG=$(date -u --date="last month" +%g.%m)
+		if [ -z "${OLD_ISO_TAG}" ]; then
+			echo "Cannot set OLD_ISO_TAG, wtf?" >&2
+			exit 1
+		fi
+	fi
+	ISO_DIR="monthly"
+	_previous_month=$(date -d "- 1 month" "+%Y-%m-%d")
+	_current_month=$(date +%Y-%m-%d)
+	CHANGELOG_DATES="${_previous_month} ${_current_month}"
+	mkdir -p "${CHANGELOG_DIR}" || exit 1
+
+	SOURCE_SPECS+=(
+		"sabayon-x86-spinbase.spec"
+		"sabayon-amd64-spinbase.spec"
+	)
+	SOURCE_SPECS_ISO+=(
+		"${DISTRO_NAME}_${ISO_TAG}_x86_SpinBase.iso"
+		"${DISTRO_NAME}_${ISO_TAG}_amd64_SpinBase.iso"
+	)
+	REMASTER_SPECS+=(
+		"sabayon-amd64-gnome.spec"
+		"sabayon-x86-gnome.spec"
+		"sabayon-amd64-kde.spec"
+		"sabayon-x86-kde.spec"
+		"sabayon-amd64-mate.spec"
+		"sabayon-x86-mate.spec"
+		"sabayon-amd64-xfce.spec"
+		"sabayon-x86-xfce.spec"
+		"sabayon-amd64-minimal.spec"
+		"sabayon-x86-minimal.spec"
+	)
+	REMASTER_SPECS_ISO+=(
+		"${DISTRO_NAME}_${ISO_TAG}_amd64_GNOME.iso"
+		"${DISTRO_NAME}_${ISO_TAG}_x86_GNOME.iso"
+		"${DISTRO_NAME}_${ISO_TAG}_amd64_KDE.iso"
+		"${DISTRO_NAME}_${ISO_TAG}_x86_KDE.iso"
+		"${DISTRO_NAME}_${ISO_TAG}_amd64_MATE.iso"
+		"${DISTRO_NAME}_${ISO_TAG}_x86_MATE.iso"
+		"${DISTRO_NAME}_${ISO_TAG}_amd64_Xfce.iso"
+		"${DISTRO_NAME}_${ISO_TAG}_x86_Xfce.iso"
+		"${DISTRO_NAME}_${ISO_TAG}_amd64_Minimal.iso"
+		"${DISTRO_NAME}_${ISO_TAG}_x86_Minimal.iso"
 	)
 fi
 
-[[ -d "/var/log/molecule" ]] || mkdir -p /var/log/molecule
+DAILY_TMPDIR=
+
+# molecules are referencing ISO_TAG in their source_iso parameter
+export ISO_TAG
+
+export ETP_NONINTERACTIVE=1
+
+LOG_FILE="/var/log/molecule/autobuild-${ROGENTOS_RELEASE}-${$}.log"
+# to make ISO remaster spec files working (pre_iso_script) and
+# make molecules grab a proper release version
+export ROGENTOS_RELEASE
+
+echo "DO_PUSH=${DO_PUSH}"
+echo "DO_PUSHONLY=${DO_PUSHONLY}"
+echo "DO_SLEEPNIGHT=${DO_SLEEPNIGHT}"
+echo "LOG_FILE=${LOG_FILE}"
+
+sleepnight() {
+	if [ "${DO_SLEEPNIGHT}" = "1" ]; then
+		target_h=22 # 22pm
+		current_h=$(date +%H)
+		current_h=${current_h/0} # remove leading 0
+		delta_h=$(( target_h - current_h ))
+		if [ ${current_h} -ge 0 ] && [ ${current_h} -le 6 ]; then
+			# If it's past midnight and no later than 7am
+			# just push
+			echo "Just pusing out now"
+		elif [ ${delta_h} -gt 0 ]; then
+			delta_s=$(( delta_h * 3600 ))
+			echo "Sleeping for ${delta_h} hours..."
+			sleep ${delta_s} || exit 1
+		elif [ ${delta_h} -lt 0 ]; then
+			# between 22 and 24, run!
+			echo "I'm after 22pm, running"
+		else
+			echo "No need to sleep"
+		fi
+	fi
+}
+
+# Create log dir if it does not exist
+mkdir -p /var/log/molecule || exit 1
 
 cleanup_on_exit() {
 	if [ -n "${DAILY_TMPDIR}" ] && [ -d "${DAILY_TMPDIR}" ]; then
@@ -197,130 +271,176 @@ cleanup_on_exit() {
 }
 trap "cleanup_on_exit" EXIT INT TERM
 
-move_to_pkg_sabayon_org() {
-	if [ -n "${DO_PUSH}" ] || [ -f "${ROGENTOS_MOLECULE_HOME}"/DO_PUSH ]; then
-		rm -f "${ROGENTOS_MOLECULE_HOME}"/DO_PUSH
-		local executed=
-		for ((i=0; i < 5; i++)); do
-			rsync -av --partial --delete-excluded "${ROGENTOS_MOLECULE_HOME}"/iso_rsync/*DAILY* \
-				entropy@pkg.sabayon.org:/sabayon/rsync/rsync.sabayon.org/iso/daily \
-				|| { sleep 10; continue; }
-			rsync -av --partial --delete-excluded "${ROGENTOS_MOLECULE_HOME}"/scripts/gen_html \
-			entropy@pkg.sabayon.org:/sabayon/rsync/iso_html_generator \
-				|| { sleep 10; continue; }
-			ssh entropy@pkg.sabayon.org \
-				/sabayon/rsync/iso_html_generator/gen_html/gen.sh \
-				|| { sleep 10; continue; }
-			executed=1
-			break
-		done
-		[[ -n "${executed}" ]] && return 0
+safe_run() {
+	local done=0
+	local count="${1}"
+	shift
+
+	for ((i=0; i < ${count}; i++)); do
+		"${@}" && {
+			done=1;
+			break;
+		}
+		sleep 10 || return 1
+	done
+	if [ "${done}" = "0" ]; then
 		return 1
 	fi
 	return 0
 }
 
-build_sabayon() {
-	if [ -z "${DRY_RUN}" ]; then
+move_to_mirrors() {
+	local do_push="${ROGENTOS_MOLECULE_HOME}"/DO_PUSH
+	local server="entropy@pkg.sabayon.org"
+	local ssh_dir="/sabayon/rsync"
+	local ssh_path="${server}:${ssh_dir}"
 
-		DAILY_TMPDIR=$(mktemp -d --suffix=.iso_build.sh --tmpdir=/tmp)
-		[[ -z "${DAILY_TMPDIR}" ]] && return 1
-		DAILY_TMPDIR_REMASTER="${DAILY_TMPDIR}/remaster"
-		mkdir "${DAILY_TMPDIR_REMASTER}" || return 1
+	if [ -n "${DO_PUSH}" ] || [ -f "${do_push}" ]; then
 
-		local source_specs=""
-		for i in ${!SOURCE_SPECS[@]}
-		do
-			src="${ROGENTOS_MOLECULE_HOME}/molecules/${SOURCE_SPECS[i]}"
-			dst="${DAILY_TMPDIR}/${SOURCE_SPECS[i]}"
-			cp "${src}" "${dst}" -p || return 1
-			echo >> "${dst}"
-			echo "inner_source_chroot_script: ${ROGENTOS_MOLECULE_HOME}/scripts/inner_source_chroot_update.sh" >> "${dst}"
-			# tweak iso image name
-			sed -i "s/^#.*destination_iso_image_name/destination_iso_image_name:/" "${dst}" || return 1
-			sed -i "s/destination_iso_image_name.*/destination_iso_image_name: ${SOURCE_SPECS_ISO[i]}/" "${dst}" || return 1
-			# tweak release version
-			sed -i "s/release_version.*/release_version: ${CUR_DATE}/" "${dst}" || return 1
-			echo "${dst}: iso: ${SOURCE_SPECS_ISO[i]} date: ${CUR_DATE}"
-			source_specs+="${dst} "
-		done
+		sleepnight
+		rm -f "${do_push}"
 
-		local arm_source_specs=""
-		for i in ${!ARM_SOURCE_SPECS[@]}
-		do
-			src="${ROGENTOS_MOLECULE_HOME}/molecules/${ARM_SOURCE_SPECS[i]}"
-			dst="${DAILY_TMPDIR}/${ARM_SOURCE_SPECS[i]}"
-			cp "${src}" "${dst}" -p || return 1
-			echo >> "${dst}"
-			echo "inner_source_chroot_script: ${ROGENTOS_MOLECULE_HOME}/scripts/inner_source_chroot_update.sh" >> "${dst}"
-			# tweak iso image name
-			sed -i "s/^#.*image_name/image_name:/" "${dst}" || return 1
-			sed -i "s/image_name.*/image_name: ${ARM_SOURCE_SPECS_IMG[i]}/" "${dst}" || return 1
-			# tweak release version
-			sed -i "s/release_version.*/release_version: ${CUR_DATE}/" "${dst}" || return 1
-			echo "${dst}: image: ${ARM_SOURCE_SPECS_IMG[i]} date: ${CUR_DATE}"
-			arm_source_specs+="${dst} "
-		done
+		safe_run 5 rsync -av --partial --bwlimit=2048 \
+			"${ROGENTOS_MOLECULE_HOME}"/iso_rsync/*"${ISO_TAG}"* \
+			"${ssh_path}/rsync.sabayon.org/iso/${ISO_DIR}" \
+			|| return 1
 
-		local remaster_specs=""
-		for i in ${!REMASTER_SPECS[@]}
-		do
-			src="${ROGENTOS_MOLECULE_HOME}/molecules/${REMASTER_SPECS[i]}"
-			dst="${DAILY_TMPDIR_REMASTER}/${REMASTER_SPECS[i]}"
-			cp "${src}" "${dst}" -p || return 1
-			# tweak iso image name
-			sed -i "s/^#.*destination_iso_image_name/destination_iso_image_name:/" "${dst}" || return 1
-			sed -i "s/destination_iso_image_name.*/destination_iso_image_name: ${REMASTER_SPECS_ISO[i]}/" "${dst}" || return 1
-			# tweak release version
-			sed -i "s/release_version.*/release_version: ${CUR_DATE}/" "${dst}" || return 1
-			echo "${dst}: iso: ${REMASTER_SPECS_ISO[i]} date: ${CUR_DATE}"
-			remaster_specs+="${dst} "
-		done
-
-		for i in ${!REMASTER_TAR_SPECS[@]}
-		do
-			src="${ROGENTOS_MOLECULE_HOME}/molecules/${REMASTER_TAR_SPECS[i]}"
-			dst="${DAILY_TMPDIR_REMASTER}/${REMASTER_TAR_SPECS[i]}"
-			cp "${src}" "${dst}" -p || return 1
-			# tweak tar name
-			sed -i "s/^#.*tar_name/tar_name:/" "${dst}" || return 1
-			sed -i "s/tar_name.*/tar_name: ${REMASTER_TAR_SPECS_TAR[i]}/" "${dst}" || return 1
-			# tweak release version
-			sed -i "s/release_version.*/release_version: ${CUR_DATE}/" "${dst}" || return 1
-			echo "${dst}: tar: ${REMASTER_TAR_SPECS_TAR[i]} date: ${CUR_DATE}"
-			remaster_specs+="${dst} "
-		done
-
-		local done_images=0
-		local done_something=0
-		if [ -n "${arm_source_specs}" ]; then
-			molecule --nocolor ${arm_source_specs} || return 1
-			done_something=1
-			done_images=1
-		fi
-		if [ -n "${source_specs}" ]; then
-			molecule --nocolor ${source_specs} || return 1
-			done_something=1
-		fi
-		if [ -n "${remaster_specs}" ]; then
-			molecule --nocolor ${remaster_specs} || return 1
-			done_something=1
+		if [ -n "${CHANGELOG_DATES}" ]; then
+			safe_run 5 rsync -av --partial \
+			"${CHANGELOG_DIR}"/ \
+			"${ssh_path}/rsync.sabayon.org/iso/${ISO_DIR}/ChangeLogs/"
 		fi
 
-		# package phases keep loading dbus, let's kill pids back
-		ps ax | grep -- "/usr/bin/dbus-daemon --fork .* --session" | awk '{ print $1 }' | xargs kill 2> /dev/null
+		safe_run 5 rsync -av --partial \
+			"${ROGENTOS_MOLECULE_HOME}"/scripts/gen_html \
+			"${ssh_path}"/iso_html_generator \
+			|| return 1
 
-		if [ "${done_something}" = "1" ]; then
-			if [ "${done_images}" = "1" ]; then
-				cp -p "${ROGENTOS_MOLECULE_HOME}"/images/*DAILY* "${ROGENTOS_MOLECULE_HOME}"/iso_rsync/ || return 1
-			fi
-			cp -p "${ROGENTOS_MOLECULE_HOME}"/iso/*DAILY* "${ROGENTOS_MOLECULE_HOME}"/iso_rsync/ || return 1
-			date > "${ROGENTOS_MOLECULE_HOME}"/iso_rsync/RELEASE_DATE_DAILY
-			if [ "${MAKE_TORRENTS}" != "0" ]; then
-				"${ROGENTOS_MOLECULE_HOME}"/scripts/make_torrents.sh || return 1
-			fi
-		fi
+		safe_run 5 ssh "${server}" \
+			"${ssh_dir}"/iso_html_generator/gen_html/gen.sh \
+			|| return 1
 	fi
+	return 0
+}
+
+build_sabayon() {
+	DAILY_TMPDIR=$(mktemp -d --suffix=.iso_build.sh --tmpdir=/tmp)
+	[[ -z "${DAILY_TMPDIR}" ]] && return 1
+	DAILY_TMPDIR_REMASTER="${DAILY_TMPDIR}/remaster"
+	mkdir "${DAILY_TMPDIR_REMASTER}" || return 1
+
+	local scripts_dir="${ROGENTOS_MOLECULE_HOME}/scripts"
+	local inner_chroot="${scripts_dir}/inner_source_chroot_update.sh"
+
+	local source_specs=()
+	for i in ${!SOURCE_SPECS[@]}; do
+		src="${ROGENTOS_MOLECULE_HOME}/molecules/${SOURCE_SPECS[i]}"
+		dst="${DAILY_TMPDIR}/${SOURCE_SPECS[i]}"
+		cp "${src}" "${dst}" -p || return 1
+		echo >> "${dst}"
+		echo "inner_source_chroot_script: ${inner_chroot}" >> "${dst}"
+
+		# tweak iso image name
+		sed -i "s/destination_iso_image_name:.*/destination_iso_image_name: ${SOURCE_SPECS_ISO[i]}/" \
+			"${dst}" || return 1
+
+		echo -n "${dst}: iso: ${SOURCE_SPECS_ISO[i]} "
+		echo "release: ${ROGENTOS_RELEASE}"
+		source_specs+=( "${dst}" )
+	done
+
+	local arm_source_specs=()
+	for i in ${!ARM_SOURCE_SPECS[@]}; do
+		src="${ROGENTOS_MOLECULE_HOME}/molecules/${ARM_SOURCE_SPECS[i]}"
+		dst="${DAILY_TMPDIR}/${ARM_SOURCE_SPECS[i]}"
+		cp "${src}" "${dst}" -p || return 1
+		echo >> "${dst}"
+		echo "inner_source_chroot_script: ${inner_chroot}" >> "${dst}"
+
+		# tweak iso image name
+		sed -i "s/image_name:.*/image_name: ${ARM_SOURCE_SPECS_IMG[i]}/" \
+			"${dst}" || return 1
+
+		echo -n "${dst}: image: ${ARM_SOURCE_SPECS_IMG[i]} "
+		echo "release: ${ROGENTOS_RELEASE}"
+		arm_source_specs+=( "${dst}" )
+	done
+
+	local remaster_specs=()
+	for i in ${!REMASTER_SPECS[@]}; do
+		src="${ROGENTOS_MOLECULE_HOME}/molecules/${REMASTER_SPECS[i]}"
+		dst="${DAILY_TMPDIR_REMASTER}/${REMASTER_SPECS[i]}"
+		cp "${src}" "${dst}" -p || return 1
+
+		# tweak iso image name
+		sed -i "s/destination_iso_image_name:.*/destination_iso_image_name: ${REMASTER_SPECS_ISO[i]}/" \
+			"${dst}" || return 1
+
+		echo -n "${dst}: iso: ${REMASTER_SPECS_ISO[i]} "
+		echo "release: ${ROGENTOS_RELEASE}"
+		remaster_specs+=( "${dst}" )
+	done
+
+	for i in ${!REMASTER_TAR_SPECS[@]}; do
+		src="${ROGENTOS_MOLECULE_HOME}/molecules/${REMASTER_TAR_SPECS[i]}"
+		dst="${DAILY_TMPDIR_REMASTER}/${REMASTER_TAR_SPECS[i]}"
+		cp "${src}" "${dst}" -p || return 1
+
+		# tweak tar name
+		sed -i "s/tar_name:.*/tar_name: ${REMASTER_TAR_SPECS_TAR[i]}/" "${dst}" || return 1
+
+		echo -n "${dst}: tar: ${REMASTER_TAR_SPECS_TAR[i]} "
+		echo "release: ${ROGENTOS_RELEASE}"
+		remaster_specs+=( "${dst}" )
+	done
+
+	local done_images=0
+	local done_something=0
+
+	if [ ${#arm_source_specs[@]} != 0 ]; then
+		molecule --nocolor "${arm_source_specs[@]}" || return 1
+		done_something=1
+		done_images=1
+	fi
+	if [ ${#source_specs[@]} != 0 ]; then
+		molecule --nocolor "${source_specs[@]}" || return 1
+		done_something=1
+	fi
+	if [ ${#remaster_specs[@]} != 0 ]; then
+		molecule --nocolor "${remaster_specs[@]}" || return 1
+		done_something=1
+	fi
+
+	# package phases keep loading dbus, let's kill pids back
+	ps ax | grep -- "/usr/bin/dbus-daemon --fork .* --session" | awk '{ print $1 }' | xargs kill 2> /dev/null
+
+	if [ "${done_something}" = "1" ]; then
+		if [ "${done_images}" = "1" ]; then
+			cp -p "${ROGENTOS_MOLECULE_HOME}"/images/*"${ISO_TAG}"* \
+				"${ROGENTOS_MOLECULE_HOME}"/iso_rsync/ \
+				|| return 1
+		fi
+		cp -p "${ROGENTOS_MOLECULE_HOME}"/iso/*"${ISO_TAG}"* \
+			"${ROGENTOS_MOLECULE_HOME}"/iso_rsync/ || return 1
+		date > "${ROGENTOS_MOLECULE_HOME}"/iso_rsync/RELEASE_DATE_"${ISO_TAG}"
+		if [ -n "${MAKE_TORRENTS}" ]; then
+			"${ROGENTOS_MOLECULE_HOME}"/scripts/make_torrents.sh \
+			|| return 1
+		fi
+
+		# remove old ISO images?
+		if [ -n "${OLD_ISO_TAG}" ]; then
+			echo "Removing old ISO images tagged ${OLD_ISO_TAG} -- won't remove remote images"
+			rm -rf "${ROGENTOS_MOLECULE_HOME}"/{images,iso,iso_rsync}/"${DISTRO_NAME}"*"${OLD_ISO_TAG}"*
+		fi
+
+	fi
+
+	if [ -n "${CHANGELOG_DATES}" ]; then
+		"${ROGENTOS_MOLECULE_HOME}"/scripts/make_git_logs.sh \
+			"${CHANGELOG_DIR}" ${CHANGELOG_DATES}
+	fi
+
 	return 0
 }
 
@@ -349,18 +469,18 @@ Sun" | /bin/mail -s "ISO build script failure" root
 
 out="0"
 if [ -n "${DO_STDOUT}" ]; then
-	build_sabayon
+	[[ -n "${DO_PUSHONLY}" ]] || build_sabayon
 	out=${?}
 	if [ "${out}" = "0" ]; then
-		move_to_pkg_sabayon_org
+		move_to_mirrors
 		out=${?}
 	fi
 else
-	log_file="/var/log/molecule/autobuild-${CUR_DATE}-${$}.log"
-	build_sabayon &> "${log_file}"
+	log_file="/var/log/molecule/autobuild-${ROGENTOS_RELEASE}-${$}.log"
+	[[ -n "${DO_PUSHONLY}" ]] || build_sabayon &> "${log_file}"
 	out=${?}
 	if [ "${out}" = "0" ]; then
-		move_to_pkg_sabayon_org &>> "${log_file}"
+		move_to_mirrors &>> "${log_file}"
 		out=${?}
 	fi
 	if [ "${out}" != "0" ]; then

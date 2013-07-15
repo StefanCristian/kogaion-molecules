@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/bash
 # (c) Copyright 2012 Fabio Erculiani <lxnay@sabayon.org>
 # Licensed under terms of GPLv2
 
@@ -39,13 +39,15 @@ BOOT_DIR="${4}"
 CHROOT_DIR="${5}"
 # Should we make a tarball of the rootfs and bootfs?
 MAKE_TARBALL="${MAKE_TARBALL:-1}"
+SD_FUSE="${SD_FUSE:-}"
 # Boot partition type
 BOOT_PART_TYPE="${BOOT_PART_TYPE:-vfat}"
 BOOT_PART_TYPE_MBR="${BOOT_PART_TYPE_MBR:-0x0C}"
 BOOT_PART_MKFS_ARGS="${BOOT_PART_MKFS_ARGS:--n boot -F 32}"
+FIRST_PARTITION_OFFSET="${FIRST_PARTITION_OFFSET:-0}"
 # Root partition type
 ROOT_PART_TYPE="${ROOT_PART_TYPE:-ext3}"
-ROOT_PART_MKFS_ARGS="${ROOT_PART_MKFS_ARGS:--L Sabayon}"
+ROOT_PART_MKFS_ARGS="${ROOT_PART_MKFS_ARGS:--L Rogentos}"
 # Copy /boot content from Root partition to Boot partition?
 BOOT_PART_TYPE_INSIDE_ROOT="${BOOT_PART_TYPE_INSIDE_ROOT:-}"
 
@@ -70,8 +72,7 @@ trap "cleanup_loopbacks" 1 2 3 6 9 14 15 EXIT
 
 # Erase the file
 echo "Generating the empty image file at ${FILE}"
-dd if=/dev/zero of="${FILE}" bs=1024000 count="${SIZE}"
-[[ "$?" != "0" ]] && exit 1
+dd if=/dev/zero of="${FILE}" bs=1024000 count="${SIZE}" || exit 1
 
 DRIVE=$(losetup -f "${FILE}" --show)
 if [ -z "${DRIVE}" ]; then
@@ -86,7 +87,7 @@ SIZE=$(fdisk -l "${DRIVE}" | grep Disk | grep bytes | awk '{print $5}')
 CYLINDERS=$((SIZE/255/63/512))
 # Magic first partition size, given 9 cylinders below
 MAGICSIZE="73995264"
-STARTOFFSET="32256"
+STARTOFFSET=$(( 32256 + FIRST_PARTITION_OFFSET ))
 
 echo "Disk size    : ${SIZE} bytes"
 echo "Disk cyls    : ${CYLINDERS}"
@@ -215,7 +216,7 @@ chroot "${tmp_dir}" equo rescue vacuum
 
 # setup sudoers, enable wheel group
 if [ -f "${tmp_dir}/etc/sudoers" ]; then
-	echo "# added by Sabayon Molecule" >> "${tmp_dir}/etc/sudoers"
+	echo "# added by Rogentos Molecule" >> "${tmp_dir}/etc/sudoers"
 	echo "%wheel  ALL=ALL" >> "${tmp_dir}/etc/sudoers"
 fi
 
@@ -273,6 +274,10 @@ if [ -n "${DESTINATION_IMAGE_DIR}" ] && [ "${MAKE_TARBALL}" = "1" ]; then
 fi
 
 umount "${tmp_dir}" || exit 1
+
+if [ -n "${SD_FUSE}" ] && [ -x "${SD_FUSE}" ]; then
+	"${SD_FUSE}" "${DRIVE}" || exit 1
+fi
 
 cleanup_loopbacks
 echo "Your MMC image \"${FILE}\" is ready"

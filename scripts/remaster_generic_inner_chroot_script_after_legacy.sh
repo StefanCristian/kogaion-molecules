@@ -433,7 +433,7 @@ eselect kernel set 1
                 depmod -a
 fi
 
-for PKG in sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux sabayonlive-tools sabayon-skel sabayon-artwork-lxde linux-sabayon ati-drivers nvidia-drivers ati-userspace nvidia-settings nvidia-userspace xorg-server nvidia-drivers nvidia-userspace v$
+for PKG in sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux rogentoslive-tools sabayon-skel sabayon-artwork-lxde linux-sabayon ati-drivers nvidia-drivers ati-userspace nvidia-settings nvidia-userspace xorg-server nvidia-drivers nvidia-userspace v$
 equo mask $PKG
 done
 
@@ -443,7 +443,7 @@ echo "Forbid any kernel upgrade from now on, kernel-switcher only because it's R
 setup_installed_packages() {
 	rogentos_install
 	# Update package list
-	equo query list installed -qv > /etc/sabayon-pkglist
+	equo query list installed -qv > /etc/rogentos-pkglist
 	echo -5 | equo conf update
 
 	echo "Vacuum cleaning client db"

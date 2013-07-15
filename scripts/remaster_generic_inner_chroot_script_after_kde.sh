@@ -40,7 +40,7 @@ basic_environment_setup() {
 	# automatically start xdm
 	rc-update del xdm default
 	rc-update del xdm boot
-	rc-update add xdm boot
+	rc-update add xdm default
 	# systemd has specific targets depending on the DM
 
 	# consolekit must be run at boot level
@@ -260,7 +260,7 @@ setup_misc_stuff() {
 		cp -p /etc/samba/smb.conf.default /etc/samba/smb.conf
 	fi
 
-	# if Sabayon GNOME, drop qt-gui bins
+	# if Rogentos GNOME, drop qt-gui bins
 	gnome_panel=$(qlist -ICve gnome-base/gnome-panel)
 	if [ -n "${gnome_panel}" ]; then
 		find /usr/share/applications -name "*qt-gui*.desktop" | xargs rm
@@ -290,7 +290,7 @@ setup_misc_stuff() {
 
 setup_installed_packages() {
 	# Update package list
-	equo query list installed -qv > /etc/sabayon-pkglist
+	equo query list installed -qv > /etc/rogentos-pkglist
 	echo -5 | equo conf update
 
 	echo "Vacuum cleaning client db"
