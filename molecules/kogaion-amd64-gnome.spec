@@ -11,4 +11,4 @@ release_desc: amd64 GNOME
 %env source_iso: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/Sabayon_Linux_${ISO_TAG:-DAILY}_amd64_SpinBase.iso
 
 # Destination ISO image name, call whatever you want.iso, not mandatory
-%env destination_iso_image_name: Kogaion_amd64_${ROGENTOS_RELEASE}_GNOME.iso
+%env destination_iso_image_name: Kogaion_amd64_1~6_GNOME.iso
