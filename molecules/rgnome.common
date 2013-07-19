@@ -56,6 +56,8 @@ packages_to_add:
 	@gst-plugins,
 	@gst-plugins-extra,
 	@wireless,
+	app-misc/rogentos-skel,
+	app-misc/rogentos-live,
 	app-admin/gnome-system-tools,
 	app-admin/openrc-settingsd,
 	app-admin/packagekit-base,
