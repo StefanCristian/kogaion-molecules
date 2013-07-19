@@ -349,6 +349,7 @@ if [ "$ARCH" = "x86_64" ]; then
 fi
 
 equo mask linux-sabayon virtualbox-guest-additions broadcom-sta ndiswrapper xf86-video-virtualbox sabayon-sources
+equo install kogaion-artwork-core rogentos-live rogentos-skel
 echo "Se va folosi kernel-schimbare pentru schimbarea nucleului"
 echo "Use kernel-schimbare --help to change the kernels"
 }
