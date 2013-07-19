@@ -301,14 +301,12 @@ setup_misc_stuff() {
 }
 
 setup_installed_packages() {
-	equo install rogentos-live kogaion-artwork-core kogaion-artwork-gnome
 	# Update package list
 	equo query list installed -qv > /etc/rogentos-pkglist
 	echo -5 | equo conf update
 
 	echo "Vacuum cleaning client db"
 	rm /var/lib/entropy/client/database/*/sabayonlinux.org -rf
-	rm /var/lib/entropy/client/database/*/rogentoslinux -rf
 	rm /var/lib/entropy/client/database/*/sabayon-weekly -rf
 	equo rescue vacuum
 
