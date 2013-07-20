@@ -62,6 +62,8 @@ packages_to_add:
 	app-arch/file-roller,
 	app-arch/unrar,
 	app-misc/rogentos-version,
+	app-misc/rogentos-live,
+	app-misc/rogentos-skel,
 	app-crypt/gnupg,
 	app-crypt/pinentry-gtk2,
 	app-emulation/wine,
