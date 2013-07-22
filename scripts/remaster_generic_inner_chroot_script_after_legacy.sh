@@ -433,7 +433,7 @@ eselect kernel set 1
                 depmod -a
 fi
 
-for PKG in sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux rogentoslive-tools sabayon-skel sabayon-artwork-lxde linux-sabayon ati-drivers nvidia-drivers ati-userspace nvidia-settings nvidia-userspace xorg-server nvidia-drivers nvidia-userspace v$
+for PKG in sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux rogentos-live sabayon-skel sabayon-artwork-lxde linux-sabayon ati-drivers nvidia-drivers ati-userspace nvidia-settings nvidia-userspace xorg-server nvidia-drivers nvidia-userspace v$
 equo mask $PKG
 done
 

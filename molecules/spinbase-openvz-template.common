@@ -59,7 +59,7 @@ packages_to_remove:
 	app-admin/anaconda,
 	app-admin/system-config-date,
 	app-misc/anaconda-runtime,
-	app-misc/rogentoslive-tools,
+	app-misc/rogentos-live,
 	dev-libs/newt,
 	dev-util/pykickstart,
 	net-misc/networkmanager,
