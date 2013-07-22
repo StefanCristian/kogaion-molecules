@@ -112,4 +112,12 @@ echo ">=sys-apps/openrc-0.9@sabayon-limbo
 
 >=app-misc/anaconda-runtime-1.1-r1@sabayon-weekly
 >=app-misc/anaconda-runtime-1.1-r1@sabayonlinux.org
->=app-misc/anaconda-runtime-1.1-r1@sabayon-limbo" >> /etc/entropy/packages/package.mask
+>=app-misc/anaconda-runtime-1.1-r1@sabayon-limbo
+
+>=app-emulation/virtualbox-guest-additions#3.8.0-server
+>=x11-drivers/xf86-video-virtualbox#3.8.0-server
+>=x11-drivers/ati-drivers#3.8.0-server
+>=x11-drivers/nvidia-drivers#3.8.0-server
+>=sys-power/bbswitch#3.8.0-server
+>=net-wireless/broadcom-sta#3.8.0-server
+>=app-emulation/virtualbox-modules#3.8.0-server" >> /etc/entropy/packages/package.mask
