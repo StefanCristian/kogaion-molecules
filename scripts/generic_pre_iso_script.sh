@@ -38,7 +38,7 @@ if [ -n "${boot_kernel}" ] && [ -f "${boot_kernel}" ]; then
 	cp "${boot_ramfs}" "${CDROOT_DIR}/boot/rogentos.igz" || exit 1
 fi
 
-if [ "${remaster_type}" = "KDE" ] || [ "${remaster_type}" = "GNOME" ]; then
+if [ "${remaster_type}" = "KDE" ] || [ "${remaster_type}" = "GNOME" ] || [ "${remaster_type}" = "MATE"  || [ "${remaster_type}" = "XFCE"]; then
 	isolinux_source="${ROGENTOS_MOLECULE_HOME}/remaster/standard_isolinux.cfg"
 	grub_source="${ROGENTOS_MOLECULE_HOME}/remaster/standard_grub.cfg"
 elif [ "${remaster_type}" = "ServerBase" ]; then
@@ -68,8 +68,8 @@ cp "${grub_source}" "${grub_destination}" || exit 1
 # generate EFI GRUB
 "${ROGENTOS_MOLECULE_HOME}"/scripts/make_grub_efi.sh || exit 1
 
-ver=${RELEASE_VERSION}
-[[ -z "${ver}" ]] && ver=${CUR_DATE}
+ver="${RELEASE_VERSION}"
+[[ -z "${ver}" ]] && ver="${CUR_DATE}"
 [[ -z "${ver}" ]] && ver="1"
 
 sed -i "s/__VERSION__/${ver}/g" "${isolinux_destination}" || exit 1

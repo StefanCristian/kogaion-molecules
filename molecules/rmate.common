@@ -58,7 +58,6 @@ packages_to_add:
 	app-misc/rogentos-live,
 	app-crypt/gnupg,
 	app-crypt/pinentry-gtk2,
-	app-emulation/virtualbox-guest-additions,
 	app-misc/anaconda-runtime,
 	app-misc/anaconda-runtime-gui,
 	app-text/pastebunz,
