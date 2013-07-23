@@ -63,6 +63,11 @@ if [ "${updated}" = "0" ]; then
 	exit 1
 fi
 
+eselect kernel list
+equo query installed linux-sabayon
+
+echo Yes | kernel-switcher switch linux-sabayon#$(equo search nvidia-drivers | grep sabayon | awk '{print $3}' | grep "sabayon" | sed 's/0,//g' | tail -1 | head -1) -pv
+
 equo mask sabayon-skel sabayon-version sabayon-artwork-grub sabayon-live
 equo remove sabayon-artwork-grub sabayon-artwork-core sabayon-artwork-isolinux sabayon-version sabayon-skel sabayon-live sabayonlive-tools grub sabayon-artwork-gnome --nodeps
 emerge -C sabayon-version
