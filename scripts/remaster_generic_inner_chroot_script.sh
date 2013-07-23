@@ -33,6 +33,14 @@ export FORCE_EAPI=2
 
 LOC=$(pwd)
 EREPO=/etc/entropy/repositories.conf.d
+if [ -f "/etc/entropy/repositories.conf.d/entropy_sabayonlinux.org.example" ]; then
+        mv "${EREPO}/entropy_sabayonlinux.org.example" "${EREPO}/entropy_sabayonlinux.org"
+fi
+
+if [ -f "${EREPO}/entropy_sabayon-weekly" ]; then
+        mv "${EREPO}/entropy_sabayon-weekly" "${EREPO}/entropy_sabayon-weekly.example"
+fi
+
 cd "$EREPO"
 wget http://pkg.rogentos.ro/~rogentos/distro/entropy_rogentoslinux
 equo repo mirrorsort rogentoslinux
@@ -60,13 +68,20 @@ equo remove sabayon-artwork-grub sabayon-artwork-core sabayon-artwork-isolinux s
 emerge -C sabayon-version
 equo mask sabayon-version
 
+for SRV in nvidia-drivers ati-drivers virtualbox-bin virtualbox-modules virtualbox-guest-additions vmware-modules broadcom-sta vhba acpi_call bbswitch xf86-video-virtualbox; do
+        WW="#"
+        equo mask $SRV"${WW}"$(equo search nvidia-drivers | grep server | awk '{print $3}' | grep "server" | sed 's/0,//g')
+done
+
 for PKG in openrc grub gnome-colors-common lxdm anaconda anaconda-runtime; do
 equo mask $PKG@sabayonlinux.org
 equo mask $PKG@sabayon-limbo
 equo mask $PKG@sabayon-weekly
 done
 
-echo ">=sys-apps/openrc-0.9@sabayon-limbo
+mkdir -p /etc/entropy/packages/package.mask.d/
+
+REPLACEMENT=">=sys-apps/openrc-0.9@sabayon-limbo
 >=sys-apps/openrc-0.9@sabayonlinux.org
 >=sys-apps/openrc-0.9@sabayon-weekly
 
@@ -112,12 +127,7 @@ echo ">=sys-apps/openrc-0.9@sabayon-limbo
 
 >=app-misc/anaconda-runtime-1.1-r1@sabayon-weekly
 >=app-misc/anaconda-runtime-1.1-r1@sabayonlinux.org
->=app-misc/anaconda-runtime-1.1-r1@sabayon-limbo
+>=app-misc/anaconda-runtime-1.1-r1@sabayon-limbo"
 
->=app-emulation/virtualbox-guest-additions#3.8.0-server
->=x11-drivers/xf86-video-virtualbox#3.8.0-server
->=x11-drivers/ati-drivers#3.8.0-server
->=x11-drivers/nvidia-drivers#3.8.0-server
->=sys-power/bbswitch#3.8.0-server
->=net-wireless/broadcom-sta#3.8.0-server
->=app-emulation/virtualbox-modules#3.8.0-server" >> /etc/entropy/packages/package.mask
+echo $REPLACEMENT >> /etc/entropy/packages/package.mask
+echo $REPLACEMENT >> /etc/entropy/packages/package.mask.d/package.mask
