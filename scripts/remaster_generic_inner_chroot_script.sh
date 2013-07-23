@@ -70,7 +70,7 @@ equo mask sabayon-version
 
 for SRV in nvidia-drivers ati-drivers virtualbox-bin virtualbox-modules virtualbox-guest-additions vmware-modules broadcom-sta vhba acpi_call bbswitch xf86-video-virtualbox; do
         WW="#"
-        equo mask $SRV"${WW}"$(equo search ati-drivers | grep server | awk '{print $3}' | grep "server" | sed 's/1,//g')
+	equo mask $SRV"${WW}"$(equo search ati-drivers | grep server | awk '{print $3}' | grep "server" | sed 's/1,//g' | tail -1 | head -1)
 done
 
 for PKG in openrc grub gnome-colors-common lxdm anaconda anaconda-runtime; do
