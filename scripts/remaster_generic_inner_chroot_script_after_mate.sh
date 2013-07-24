@@ -139,9 +139,9 @@ setup_displaymanager() {
 	elif [ -n "$(equo match --installed lxde-base/lxdm -qv)" ]; then
 		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="lxdm"/g' /etc/conf.d/xdm
 		sd_graph_enable lxdm
-	#elif [ -n "$(equo match --installed x11-misc/lightdm-base -qv)" ]; then
-		#sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="lightdm"/g' /etc/conf.d/xdm
-		#sd_graph_enable lightdm
+	elif [ -n "$(equo match --installed x11-misc/lightdm-base -qv)" ]; then
+		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="lightdm"/g' /etc/conf.d/xdm
+		sd_graph_enable lightdm
 	elif [ -n "$(equo match --installed kde-base/kdm -qv)" ]; then
 		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="kdm"/g' /etc/conf.d/xdm
 		sd_graph_enable kdm
@@ -355,7 +355,8 @@ rog=rogentos-artwork
 # We will make sure lightdm is setup as login manager
 
 sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="lightdm"/g' /etc/conf.d/xdm
-/usr/bin/systemctl --no-reload enable -f "ligthdm.service"
+/usr/bin/systemctl --no-reload enable -f "lightdm.service"
+/usr/bin/systemctl enable lightdm
 sd_graph_enable lightdm
 
 echo "Entering folder $localz"
