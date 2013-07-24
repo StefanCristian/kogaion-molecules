@@ -647,6 +647,7 @@ prepare_awesome() {
 }
 
 prepare_system() {
+	prepare_generic
 	local de="${1}"
 	if [ "${de}" = "lxde" ]; then
 		prepare_lxde
