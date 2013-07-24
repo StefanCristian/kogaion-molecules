@@ -34,29 +34,29 @@ install_kernel_packages() {
 
 sd_enable() {
         [[ -x /usr/bin/systemctl ]] && \
-                systemctl --no-reload enable -f "${1}.service"
+                systemctl --no-reload enable -f "${1}".service
 }
 
 sd_graph_enable() {
-        [[ -x /usr/bin/systemctl ]] && \
-                systemctl --no-reload enable -f "${1}.service"
+        [[ -x /usr/bin/systemctl ]] || [[ -x $(which systemctl) ]] && \
+                systemctl --no-reload enable -f "${1}".service
                 rm "${ESYSERV}"
-                ln -s "${SYSERV}/${1}.service" "${ESYSERV}"
+                ln -s "${SYSERV}"/"${1}".service "${ESYSERV}"
                 if [ "${1}" != "lightdm" ] ; then
-                        ln -s "${SYSERV}/${1}.service" "${GSYSERV}/${1}.service"
+                        ln -s "${SYSERV}"/"${1}".service "${GSYSERV}"/"${1}".service
                 fi
 }
 
 sd_disable() {
         [[ -x /usr/bin/systemctl ]] && \
-                systemctl --no-reload disable -f "${1}.service"
+                systemctl --no-reload disable -f "${1}".service
 }
 
 sd_graph_disable() {
-        [[ -x /usr/bin/systemctl ]] && \
-                systemctl --no-reload disable -f "${1}.service"
+        [[ -x /usr/bin/systemctl ]] || [[ -x $(which systemctl) ]] && \
+                systemctl --no-reload disable -f "${1}".service
                 rm "${ESYSERV}"
-                rm "${GSYSSERV}/${1}.service"
+                rm "${GSYSSERV}"/"${1}".service
 }
 
 basic_environment_setup() {
@@ -363,6 +363,7 @@ sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="lightdm"/g' /etc/conf.d/xdm
 /usr/bin/systemctl --no-reload enable -f "lightdm.service"
 /usr/bin/systemctl enable lightdm
 sd_graph_enable lightdm
+sd_enable lightdm
 
 echo "Entering folder $localz"
 equo remove anaconda --nodeps
@@ -552,6 +553,13 @@ for PKG in nvidia-drivers ati-drivers bumblebee bbswitch ; do
 		echo "Package is installed"
 	fi
 done
+
+if [ "$(cat /etc/systemd/system/display-manager.service | grep lightdm | tail -1 | head -1 | cut -d "/" -f 4)" == "lightdm" ] ; then
+	echo "All's alright"
+	else
+	/usr/bin/systemctl enable lightdm
+	/bin/systemctl enable lightdm
+fi
 
 equo query installed nvidia-drivers
 equo query installed ati-drivers
