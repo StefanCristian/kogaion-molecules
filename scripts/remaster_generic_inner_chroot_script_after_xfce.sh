@@ -25,13 +25,30 @@ install_kernel_packages() {
 }
 
 sd_enable() {
-	[[ -x /usr/bin/systemctl ]] && \
-		systemctl --no-reload enable -f "${1}.service"
+        [[ -x /usr/bin/systemctl ]] && \
+                systemctl --no-reload enable -f "${1}.service"
+}
+
+sd_graph_enable() {
+        [[ -x /usr/bin/systemctl ]] && \
+                #systemctl --no-reload enable -f "${1}.service"
+                rm "${ESYSERV}"
+                ln -s "${SYSERV}/${1}.service" "${ESYSERV}"
+                if [ "${1}" != "lightdm" ] ; then
+                        ln -s "${SYSERV}/${1}.service" "${GSYSERV}/${1}.service"
+                fi
 }
 
 sd_disable() {
-	[[ -x /usr/bin/systemctl ]] && \
-		systemctl --no-reload disable -f "${1}.service"
+        [[ -x /usr/bin/systemctl ]] && \
+                systemctl --no-reload disable -f "${1}.service"
+}
+
+sd_graph_disable() {
+        [[ -x /usr/bin/systemctl ]] && \
+                #systemctl --no-reload disable -f "${1}.service"
+                rm "${ESYSERV}"
+                rm "${GSYSSERV}/${1}.service"
 }
 
 basic_environment_setup() {
@@ -114,19 +131,19 @@ setup_displaymanager() {
 	# determine what is the login manager
 	if [ -n "$(equo match --installed gnome-base/gdm -qv)" ]; then
 		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="gdm"/g' /etc/conf.d/xdm
-		sd_enable gdm
+		sd_graph_enable gdm
 	elif [ -n "$(equo match --installed lxde-base/lxdm -qv)" ]; then
 		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="lxdm"/g' /etc/conf.d/xdm
-		sd_enable lxdm
+		sd_graph_enable lxdm
 	#elif [ -n "$(equo match --installed x11-misc/lightdm-base -qv)" ]; then
 		#sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="lightdm"/g' /etc/conf.d/xdm
-		#sd_enable lightdm
+		#sd_graph_enable lightdm
 	elif [ -n "$(equo match --installed kde-base/kdm -qv)" ]; then
 		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="kdm"/g' /etc/conf.d/xdm
-		sd_enable kdm
+		sd_graph_enable kdm
 	else
 		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="xdm"/g' /etc/conf.d/xdm
-		sd_enable xdm
+		sd_graph_enable xdm
 	fi
 }
 
@@ -325,7 +342,7 @@ rog=rogentos-artwork
 
 sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="lightdm"/g' /etc/conf.d/xdm
 /usr/bin/systemctl --no-reload enable -f "ligthdm.service"
-sd_enable lightdm
+sd_graph_enable lightdm
 
 echo "Entering folder $localz"
 equo remove anaconda --nodeps
