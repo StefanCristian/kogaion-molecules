@@ -15,6 +15,10 @@ _get_kernel_tag() {
 	fi
 }
 
+install_packages() {
+	equo install "${@}"
+}
+
 install_kernel_packages() {
 	local kernel_tag=$(_get_kernel_tag)
 	local pkgs=()
@@ -52,7 +56,8 @@ sd_graph_disable() {
 }
 
 basic_environment_setup() {
-	eselect opengl set xorg-x11 &> /dev/null
+	eselect opengl set xorg-x11
+	eselect mesa set --auto
 
 	# automatically start xdm
 	rc-update del xdm default
@@ -197,6 +202,16 @@ setup_virtualbox() {
 		"x11-drivers/xf86-video-virtualbox"
 	rc-update add virtualbox-guest-additions boot
 	sd_enable virtualbox-guest-additions
+}
+
+install_external_kernel_modules() {
+	install_kernel_packages \
+		"app-laptop/nvidiabl" \
+		"net-wireless/ndiswrapper" \
+		"sys-power/bbswitch" \
+		"net-wireless/broadcom-sta" || return 1
+	# otherwise bbswitch is useless
+	install_packages "x11-misc/bumblebee"
 }
 
 install_proprietary_gfx_drivers() {
