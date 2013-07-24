@@ -3,6 +3,10 @@
 /usr/sbin/env-update
 . /etc/profile
 
+SYSERV="/usr/lib/systemd/system"
+ESYSERV="/etc/systemd/system/display-manager.service"
+GSYSERV="/etc/systemd/system/graphical.target.wants"
+
 _get_kernel_tag() {
 	local kernel_ver="$(equo match --installed -qv virtual/linux-binary | cut -d/ -f 2)"
 	# strip -r** if exists, hopefully we don't have PN ending with -r
@@ -35,7 +39,7 @@ sd_enable() {
 
 sd_graph_enable() {
         [[ -x /usr/bin/systemctl ]] && \
-                #systemctl --no-reload enable -f "${1}.service"
+                systemctl --no-reload enable -f "${1}.service"
                 rm "${ESYSERV}"
                 ln -s "${SYSERV}/${1}.service" "${ESYSERV}"
                 if [ "${1}" != "lightdm" ] ; then
@@ -50,7 +54,7 @@ sd_disable() {
 
 sd_graph_disable() {
         [[ -x /usr/bin/systemctl ]] && \
-                #systemctl --no-reload disable -f "${1}.service"
+                systemctl --no-reload disable -f "${1}.service"
                 rm "${ESYSERV}"
                 rm "${GSYSSERV}/${1}.service"
 }
@@ -537,6 +541,7 @@ prepare_system() {
 basic_environment_setup
 setup_fonts
 # setup Desktop Environment, might add packages
+prepare_generic
 prepare_system "${1}"
 # These have to run after prepare_system
 setup_misc_stuff

@@ -3,6 +3,10 @@
 /usr/sbin/env-update
 . /etc/profile
 
+SYSERV="/usr/lib/systemd/system"
+ESYSERV="/etc/systemd/system/display-manager.service"
+GSYSERV="/etc/systemd/system/graphical.target.wants"
+
 _get_kernel_tag() {
 	local kernel_ver="$(equo match --installed -qv virtual/linux-binary | cut -d/ -f 2)"
 	# strip -r** if exists, hopefully we don't have PN ending with -r

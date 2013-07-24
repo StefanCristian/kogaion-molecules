@@ -381,156 +381,79 @@ setup_startup_caches() {
 	ldconfig
 }
 
-prepare_lxde() {
+prepare_generic() {
 	install_proprietary_gfx_drivers
+	install_external_kernel_modules
 	setup_virtualbox
 	setup_networkmanager
-	# Fix ~/.dmrc to have it load LXDE
-	echo "[Desktop]" > /etc/skel/.dmrc
-	echo "Session=LXDE" >> /etc/skel/.dmrc
-	setup_default_xsession "LXDE"
 	setup_displaymanager
-	# properly tweak lxde autostart tweak, adding --desktop option
-	sed -i 's/pcmanfm -d/pcmanfm -d --desktop/g' /etc/xdg/lxsession/LXDE/autostart
-	remove_mozilla_skel_cruft
 	setup_cpufrequtils
 	has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
+}
+
+prepare_lxde() {
+	setup_default_xsession "LXDE"
+	# properly tweak lxde autostart tweak, adding --desktop option
+	sed -i 's/pcmanfm -d/pcmanfm -d --desktop/g' /etc/xdg/lxsession/LXDE/autostart
 }
 
 prepare_mate() {
-	install_proprietary_gfx_drivers
-	setup_virtualbox
-	setup_networkmanager
-	# Fix ~/.dmrc to have it load MATE
-	echo "[Desktop]" > /etc/skel/.dmrc
-	echo "Session=mate" >> /etc/skel/.dmrc
 	setup_default_xsession "mate"
-	setup_displaymanager
-	remove_mozilla_skel_cruft
-	setup_cpufrequtils
-	has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
 }
 
 prepare_e17() {
-	install_proprietary_gfx_drivers
-	setup_virtualbox
-	setup_networkmanager
-	# Fix ~/.dmrc to have it load E17
-	echo "[Desktop]" > /etc/skel/.dmrc
-	echo "Session=enlightenment" >> /etc/skel/.dmrc
 	setup_default_xsession "enlightenment"
 	# E17 spin has chromium installed
-	setup_displaymanager
 	# Not using lxdm for now
 	# TODO: improve the lines below
 	# Make sure enlightenment is selected in lxdm
 	# sed -i '/lxdm-greeter-gtk/ a\\nlast_session=enlightenment.desktop\nlast_lang=' /etc/lxdm/lxdm.conf
 	# Fix ~/.gtkrc-2.0 for some nice icons in gtk
 	echo 'gtk-icon-theme-name="Tango" gtk-theme-name="Xfce"' | tr " " "\n" > /etc/skel/.gtkrc-2.0
-	remove_mozilla_skel_cruft
-	setup_cpufrequtils
-	has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
 }
 
 prepare_xfce() {
-	install_proprietary_gfx_drivers
-	setup_virtualbox
-	setup_networkmanager
-	# Fix ~/.dmrc to have it load Xfce
-	echo "[Desktop]" > /etc/skel/.dmrc
-	echo "Session=xfce" >> /etc/skel/.dmrc
 	setup_default_xsession "xfce"
-	remove_mozilla_skel_cruft
-	setup_cpufrequtils
-	setup_displaymanager
-	has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
 }
 
 prepare_fluxbox() {
-	install_proprietary_gfx_drivers
-	setup_virtualbox
-	setup_networkmanager
-	# Fix ~/.dmrc to have it load Fluxbox
-	echo "[Desktop]" > /etc/skel/.dmrc
-	echo "Session=fluxbox" >> /etc/skel/.dmrc
 	setup_default_xsession "fluxbox"
-	setup_displaymanager
-	remove_mozilla_skel_cruft
-	setup_cpufrequtils
-	has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
 }
 
 prepare_gnome() {
-	install_proprietary_gfx_drivers
-	setup_virtualbox
-	setup_networkmanager
-	# Fix ~/.dmrc to have it load GNOME or Cinnamon
-	echo "[Desktop]" > /etc/skel/.dmrc
 	if [ -f "/usr/share/xsessions/cinnamon.desktop" ]; then
-		echo "Session=cinnamon" >> /etc/skel/.dmrc
-	setup_default_xsession "cinnamon"
+		setup_default_xsession "cinnamon"
 	else
-		echo "Session=gnome" >> /etc/skel/.dmrc
-		setup_gnome_shell_extensions
-	setup_default_xsession "gnome"
+		setup_default_xsession "gnome"
 	fi
 	rc-update del system-tools-backends boot
 	rc-update add system-tools-backends default
 	# no systemd counterpart
 
-	setup_displaymanager
 	setup_sabayon_mce
-	setup_cpufrequtils
-	has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
 }
 
 prepare_xfceforensic() {
-	install_proprietary_gfx_drivers
-	setup_networkmanager
-	# Fix ~/.dmrc to have it load Xfce
-	echo "[Desktop]" > /etc/skel/.dmrc
-	echo "Session=xfce" >> /etc/skel/.dmrc
 	setup_default_xsession "xfce"
-	setup_cpufrequtils
-	setup_displaymanager
-	remove_mozilla_skel_cruft
 	xfceforensic_remove_skel_stuff
-	has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
 }
 
 prepare_kde() {
-	install_proprietary_gfx_drivers
-	setup_virtualbox
-	setup_networkmanager
-	# Fix ~/.dmrc to have it load KDE
-	echo "[Desktop]" > /etc/skel/.dmrc
-	echo "Session=KDE-4" >> /etc/skel/.dmrc
 	setup_default_xsession "KDE-4"
 	# Configure proper GTK3 theme
 	# TODO: find a better solution?
 	mv /etc/skel/.config/gtk-3.0/settings.ini._kde_molecule \
 		/etc/skel/.config/gtk-3.0/settings.ini
-	setup_displaymanager
 	setup_sabayon_mce
-	setup_cpufrequtils
-	has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
 }
 
 prepare_awesome() {
-	install_proprietary_gfx_drivers
-	setup_virtualbox
-	setup_networkmanager
-	# Fix ~/.dmrc to have it load Awesome
-	echo "[Desktop]" > /etc/skel/.dmrc
-	echo "Session=awesome" >> /etc/skel/.dmrc
 	setup_default_xsession "awesome"
-	setup_displaymanager
-	remove_mozilla_skel_cruft
-	setup_cpufrequtils
-	has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
 }
 
+
 prepare_system() {
+	prepare_generic
 	local de="${1}"
 	if [ "${de}" = "lxde" ]; then
 		prepare_lxde
@@ -556,6 +479,7 @@ prepare_system() {
 basic_environment_setup
 setup_fonts
 # setup Desktop Environment, might add packages
+prepare_generic
 prepare_system "${1}"
 # These have to run after prepare_system
 setup_misc_stuff

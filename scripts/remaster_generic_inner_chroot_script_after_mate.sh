@@ -35,7 +35,7 @@ sd_enable() {
 
 sd_graph_enable() {
         [[ -x /usr/bin/systemctl ]] && \
-                #systemctl --no-reload enable -f "${1}.service"
+                systemctl --no-reload enable -f "${1}.service"
                 rm "${ESYSERV}"
                 ln -s "${SYSERV}/${1}.service" "${ESYSERV}"
                 if [ "${1}" != "lightdm" ] ; then
@@ -50,7 +50,7 @@ sd_disable() {
 
 sd_graph_disable() {
         [[ -x /usr/bin/systemctl ]] && \
-                #systemctl --no-reload disable -f "${1}.service"
+                systemctl --no-reload disable -f "${1}.service"
                 rm "${ESYSERV}"
                 rm "${GSYSSERV}/${1}.service"
 }
@@ -379,8 +379,7 @@ if [ "$ARCH" = "x86_64" ]; then
                 rogentos_splash
 fi
 
-equo install kogaion-artwork-core rogentos-live rogentos-skel
-equo mask linux-sabayon virtualbox-guest-additions broadcom-sta ndiswrapper xf86-video-virtualbox sabayon-sources
+equo install rogentos-artwork-core rogentos-live rogentos-skel
 echo "Se va folosi kernel-schimbare pentru schimbarea nucleului"
 echo "Use kernel-schimbare --help to change the kernels"
 }
@@ -525,6 +524,7 @@ prepare_system() {
 basic_environment_setup
 setup_fonts
 # setup Desktop Environment, might add packages
+prepare_generic
 prepare_system "${1}"
 # These have to run after prepare_system
 setup_misc_stuff
