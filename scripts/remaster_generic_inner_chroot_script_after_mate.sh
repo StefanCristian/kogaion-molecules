@@ -209,6 +209,16 @@ setup_virtualbox() {
 	sd_enable virtualbox-guest-additions
 }
 
+install_external_kernel_modules() {
+	install_kernel_packages \
+		"app-laptop/nvidiabl" \
+		"net-wireless/ndiswrapper" \
+		"sys-power/bbswitch" \
+		"net-wireless/broadcom-sta" || return 1
+	# otherwise bbswitch is useless
+	install_packages "x11-misc/bumblebee"
+}
+
 install_proprietary_gfx_drivers() {
 	install_kernel_packages "x11-drivers/ati-drivers" \
 		"x11-drivers/nvidia-drivers"
