@@ -4,6 +4,7 @@
 . /etc/profile
 
 SYSERV="/usr/lib/systemd/system"
+64SYSERV="/usr/lib64/systemd/system"
 ESYSERV="/etc/systemd/system/display-manager.service"
 GSYSERV="/etc/systemd/system/graphical.target.wants"
 
@@ -554,20 +555,27 @@ for PKG in nvidia-drivers ati-drivers bumblebee bbswitch ; do
 	fi
 done
 
+# Assuring lightdm will take place at the right time and at the right ARCH
+
 if [ "$(cat /etc/systemd/system/display-manager.service | grep lightdm | tail -1 | head -1 | cut -d "/" -f 4)" == "lightdm" ] ; then
 	echo "All's alright"
+		if [ "$(uname -m)" == "x86_64" ] && [ -f "/usr/lib64/systemd/system/rogentoslive.service" ] ; then
+			ln -s '/usr/lib64/systemd/system/rogentoslive.service' '/etc/systemd/system/multi-user.target.wants/rogentoslive.service'
+		else
+			ln -s '/usr/lib/systemd/system/rogentoslive.service' '/etc/systemd/system/multi-user.target.wants/rogentoslive.service'
+		fi
 	else
 	/usr/bin/systemctl enable lightdm
-	/bin/systemctl enable lightdm
+		if [ "$(uname -m)" == "x86_64" ] && [ -f "/usr/lib64/systemd/system/rogentoslive.service" ] ; then
+			ln -s '/usr/lib64/systemd/system/rogentoslive.server' '/etc/systemd/system/multi-user.target.wants/rogentoslive.service'
+		else
+			ln -s '/usr/lib/systemd/system/rogentoslive.server' '/etc/systemd/system/multi-user.target.wants/rogentoslive.service'
+		fi
 fi
 
-equo query installed nvidia-drivers
-equo query installed ati-drivers
 equo query installed linux-sabayon
 eselect kernel list
-equo query installed bumblebee
-equo query installed bbswitch
 
-echo "/boot/grub/grub.cfg"
+echo "$(cat /boot/grub/grub.cfg)"
 
 exit 0
