@@ -104,6 +104,7 @@ packages_to_add:
 	www-client/midori,
 	www-plugins/adobe-flash,
 	x11-misc/lightdm,
+	x11-misc/lightdm-base,
 	x11-misc/lightdm-gtk-greeter,
 	x11-libs/gksu,
 	x11-libs/libva-vdpau-driver,
