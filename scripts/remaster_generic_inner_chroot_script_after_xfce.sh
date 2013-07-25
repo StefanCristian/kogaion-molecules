@@ -141,19 +141,19 @@ setup_displaymanager() {
 	# determine what is the login manager
 	if [ -n "$(equo match --installed gnome-base/gdm -qv)" ]; then
 		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="gdm"/g' /etc/conf.d/xdm
-		sd_graph_enable gdm
+		sd_enable gdm
 	elif [ -n "$(equo match --installed lxde-base/lxdm -qv)" ]; then
 		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="lxdm"/g' /etc/conf.d/xdm
-		sd_graph_enable lxdm
+		sd_enable lxdm
 	elif [ -n "$(equo match --installed x11-misc/lightdm-base -qv)" ]; then
 		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="lightdm"/g' /etc/conf.d/xdm
-		sd_graph_enable lightdm
+		sd_enable lightdm
 	elif [ -n "$(equo match --installed kde-base/kdm -qv)" ]; then
 		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="kdm"/g' /etc/conf.d/xdm
-		sd_graph_enable kdm
+		sd_enable kdm
 	else
 		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="xdm"/g' /etc/conf.d/xdm
-		sd_graph_enable xdm
+		sd_enable xdm
 	fi
 }
 
@@ -360,10 +360,8 @@ rog=rogentos-artwork
 
 # We will make sure lightdm is setup as login manager
 
-sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="lightdm"/g' /etc/conf.d/xdm
-/usr/bin/systemctl --no-reload enable -f "lightdm.service"
-/usr/bin/systemctl enable lightdm
-sd_graph_enable lightdm
+#sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="lightdm"/g' /etc/conf.d/xdm
+#/usr/bin/systemctl --no-reload enable -f "lightdm.service"
 sd_enable lightdm
 
 echo "Entering folder $localz"
@@ -560,17 +558,33 @@ done
 if [ "$(cat /etc/systemd/system/display-manager.service | grep lightdm | tail -1 | head -1 | cut -d "/" -f 4)" == "lightdm" ] ; then
 	echo "All's alright"
 	if [ "$(uname -m)" == "x86_64" ] && [ -f "/usr/lib64/systemd/system/rogentoslive.service" ] ; then
-		ln -s /usr/lib64/systemd/system/rogentoslive.service /etc/systemd/system/multi-user.target.wants/
+		#ln -s /usr/lib64/systemd/system/rogentoslive.service /etc/systemd/system/multi-user.target.wants/
+	   	sd_enable lightdm
 	   else
-		ln -s /usr/lib/systemd/system/rogentoslive.service /etc/systemd/system/multi-user.target.wants/
+		#ln -s /usr/lib/systemd/system/rogentoslive.service /etc/systemd/system/multi-user.target.wants/
+		sd_enable lightdm
 	fi
 	else
-	/usr/bin/systemctl enable lightdm
+	#/usr/bin/systemctl enable lightdm
 	if [ "$(uname -m)" == "x86_64" ] && [ -f "/usr/lib64/systemd/system/rogentoslive.service" ] ; then
-		ln -s /usr/lib64/systemd/system/rogentoslive.server /etc/systemd/system/multi-user.target.wants/
+		#ln -s /usr/lib64/systemd/system/rogentoslive.server /etc/systemd/system/multi-user.target.wants/
+		sd_enable lightdm
 	else
-		ln -s /usr/lib/systemd/system/rogentoslive.server /etc/systemd/system/multi-user.target.wants/
+		sd_enable lightdm
+		#ln -s /usr/lib/systemd/system/rogentoslive.server /etc/systemd/system/multi-user.target.wants/
 	fi
+fi
+
+if [ -f "/etc/systemd/system/multi-user.target.wants/rogentoslive.service" ] ; then
+	echo "It exists"
+	else
+        	if [ "$(uname -m)" == "x86_64" ] ; then
+	                sd_enable rogentoslive
+			ln -s /usr/lib64/systemd/system/rogentoslive.server /etc/systemd/system/multi-user.target.wants/
+		else
+			sd_enable rogentoslive
+			ln -s /usr/lib/systemd/system/rogentoslive.server /etc/systemd/system/multi-user.target.wants/
+		fi
 fi
 
 equo query installed linux-sabayon
