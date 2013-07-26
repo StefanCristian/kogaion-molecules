@@ -394,7 +394,7 @@ if [ "$ARCH" = "x86_64" ]; then
                 rogentos_splash
 fi
 
-equo install rogentos-artwork-core rogentos-live rogentos-skel
+equo install rogentos-artwork-core  rogentos-skel
 echo "Se va folosi kernel-schimbare pentru schimbarea nucleului"
 echo "Use kernel-schimbare --help to change the kernels"
 }

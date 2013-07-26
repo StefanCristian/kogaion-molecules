@@ -148,7 +148,7 @@ packages_to_add:
 	x11-terms/guake,
 	x11-themes/gnome-icon-theme,
 	x11-themes/gnome-themes,
-	x11-themes/kogaion-artwork-core,
+	x11-themes/rogentos-artwork-core,
 	x11-themes/rogentos-artwork-extra,
 	x11-themes/kogaion-artwork-gnome,
 	x11-themes/sound-theme-freedesktop,
