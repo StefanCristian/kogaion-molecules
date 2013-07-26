@@ -547,7 +547,6 @@ prepare_system() {
 basic_environment_setup
 setup_fonts
 # setup Desktop Environment, might add packages
-prepare_generic
 prepare_system "${1}"
 # These have to run after prepare_system
 setup_misc_stuff
