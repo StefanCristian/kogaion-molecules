@@ -4,7 +4,7 @@
 . /etc/profile
 
 SYSERV="/usr/lib/systemd/system"
-64SYSERV="/usr/lib64/systemd/system"
+AMDSYSERV="/usr/lib64/systemd/system"
 ESYSERV="/etc/systemd/system/display-manager.service"
 GSYSERV="/etc/systemd/system/graphical.target.wants"
 
@@ -100,6 +100,7 @@ basic_environment_setup() {
 	rc-update add cups-browsed default
 	sd_enable cups
 	sd_enable cups-browsed
+	sd_enable rogentoslive
 
 	local kern_type="$(equo match --installed -q virtual/linux-binary)"
 	local do_zfs=1

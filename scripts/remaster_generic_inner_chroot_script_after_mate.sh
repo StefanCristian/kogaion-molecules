@@ -3,6 +3,19 @@
 /usr/sbin/env-update
 . /etc/profile
 
+if [ -f "/etc/systemd/system/multi-user.target.wants/sabayonlive.service" ] || [ -f "/usr/libexec/sabayonlive.sh" ] ; then
+        echo "By hell, it's a Sabayon service"
+        rm /etc/systemd/system/multi-user.target.wants/sabayonlive.service
+        rm /usr/lib/systemd/system/sabayonlive.service
+        rm /usr/libexec/installer-*
+        rm /usr/libexec/sabayonlive.sh
+        rm /sbin/sabayon-functions.sh
+        rm /usb/bin/sabayon*
+        sed -i 's/sabayon-functions/rogentos-functions/g' /usr/libexec/x-setup.sh
+        else
+        echo "There are no such files"
+fi
+
 _get_kernel_tag() {
 	local kernel_ver="$(equo match --installed -qv virtual/linux-binary | cut -d/ -f 2)"
 	# strip -r** if exists, hopefully we don't have PN ending with -r
@@ -81,6 +94,7 @@ basic_environment_setup() {
 	rc-update add cups-browsed default
 	sd_enable cups
 	sd_enable cups-browsed
+	sd_enable rogentoslive
 
 	local kern_type="$(equo match --installed -q virtual/linux-binary)"
 	local do_zfs=1
