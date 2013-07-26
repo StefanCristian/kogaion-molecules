@@ -503,4 +503,11 @@ setup_startup_caches
 # Because we didn't find yet where Entropy sets are kept
 # we manually eliminate from our ISOs the sabayon artwork
 
+# Debugging Gnome a bit
+
+eselect opengl list
+eselect kernel list
+equo query installed nvidia-drivers
+equo query installed ati-drivers
+
 exit 0
