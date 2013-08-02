@@ -42,8 +42,17 @@ install_kernel_packages() {
 }
 
 sd_enable() {
-        [[ -x /usr/bin/systemctl ]] && \
-                systemctl --no-reload enable -f "${1}.service"
+	local srv="${1}"
+	local ext=".${2:-service}"
+	[[ -x /usr/bin/systemctl ]] && \
+		systemctl --no-reload enable -f "${srv}${ext}"
+}
+
+sd_disable() {
+	local srv="${1}"
+	local ext=".${2:-service}"
+	[[ -x /usr/bin/systemctl ]] && \
+		systemctl --no-reload disable -f "${srv}${ext}"
 }
 
 sd_graph_enable() {
@@ -54,11 +63,6 @@ sd_graph_enable() {
                 if [ "${1}" != "lightdm" ] ; then
                         ln -s "${SYSERV}/${1}.service" "${GSYSERV}/${1}.service"
                 fi
-}
-
-sd_disable() {
-        [[ -x /usr/bin/systemctl ]] && \
-                systemctl --no-reload disable -f "${1}.service"
 }
 
 sd_graph_disable() {
@@ -150,18 +154,23 @@ setup_displaymanager() {
 	if [ -n "$(equo match --installed gnome-base/gdm -qv)" ]; then
 		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="gdm"/g' /etc/conf.d/xdm
 		sd_enable gdm
+		sd_enable graphical_start
 	elif [ -n "$(equo match --installed lxde-base/lxdm -qv)" ]; then
 		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="lxdm"/g' /etc/conf.d/xdm
 		sd_enable lxdm
+		sd_enable graphical_start
 	elif [ -n "$(equo match --installed x11-misc/lightdm-base -qv)" ]; then
 		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="lightdm"/g' /etc/conf.d/xdm
 		sd_enable lightdm
+		sd_enable graphical_start
 	elif [ -n "$(equo match --installed kde-base/kdm -qv)" ]; then
 		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="kdm"/g' /etc/conf.d/xdm
 		sd_enable kdm
+		sd_enable graphical_start
 	else
 		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="xdm"/g' /etc/conf.d/xdm
 		sd_enable xdm
+		sd_enable graphical_start
 	fi
 }
 
@@ -227,6 +236,7 @@ install_external_kernel_modules() {
 	install_kernel_packages \
 		"app-laptop/nvidiabl" \
 		"net-wireless/ndiswrapper" \
+		"sys-fs/zfs-kmod" \
 		"sys-power/bbswitch" \
 		"net-wireless/broadcom-sta" || return 1
 	# otherwise bbswitch is useless
@@ -545,5 +555,17 @@ setup_misc_stuff
 setup_installed_packages
 setup_portage
 setup_startup_caches
+
+equo query installed linux-sabayon
+eselect kernel list
+equo remove sabayon-artwork-core --configfiles
+equo install rogentos-artwork-core
+
+rm /var/lib/entropy/logs -rf
+rm -rf /var/lib/entropy/*cache*
+# remove entropy pid file
+rm -f /var/run/entropy/entropy.lock
+rm -f /var/lib/entropy/entropy.pid
+rm -f /var/lib/entropy/entropy.lock
 
 exit 0

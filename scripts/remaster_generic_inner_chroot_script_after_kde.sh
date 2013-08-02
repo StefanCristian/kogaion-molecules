@@ -46,8 +46,17 @@ install_kernel_packages() {
 }
 
 sd_enable() {
-        [[ -x /usr/bin/systemctl ]] && \
-                systemctl --no-reload enable -f "${1}.service"
+	local srv="${1}"
+	local ext=".${2:-service}"
+	[[ -x /usr/bin/systemctl ]] && \
+		systemctl --no-reload enable -f "${srv}${ext}"
+}
+
+sd_disable() {
+	local srv="${1}"
+	local ext=".${2:-service}"
+	[[ -x /usr/bin/systemctl ]] && \
+		systemctl --no-reload disable -f "${srv}${ext}"
 }
 
 sd_graph_enable() {
@@ -58,11 +67,6 @@ sd_graph_enable() {
                 if [ "${1}" != "lightdm" ] ; then
                         ln -s "${SYSERV}/${1}.service" "${GSYSERV}/${1}.service"
                 fi
-}
-
-sd_disable() {
-        [[ -x /usr/bin/systemctl ]] && \
-                systemctl --no-reload disable -f "${1}.service"
 }
 
 sd_graph_disable() {
@@ -225,6 +229,7 @@ install_external_kernel_modules() {
 	install_kernel_packages \
 		"app-laptop/nvidiabl" \
 		"net-wireless/ndiswrapper" \
+		"sys-fs/zfs-kmod" \
 		"sys-power/bbswitch" \
 		"net-wireless/broadcom-sta" || return 1
 	# otherwise bbswitch is useless

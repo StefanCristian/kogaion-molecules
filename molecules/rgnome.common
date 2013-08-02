@@ -76,6 +76,8 @@ packages_to_add:
 	app-text/pastebunz,
 	dev-java/icedtea-bin,
 	games-misc/cowsay,
+	gnome-base/gdm,
+	gnome-base/gnome,
 	gnome-base/gnome-shell,
 	gnome-extra/gconf-editor,
 	gnome-extra/gnome-games,
@@ -115,6 +117,7 @@ packages_to_add:
 	net-misc/networkmanager-pptp,
 	net-misc/networkmanager-vpnc,
 	net-misc/ntp,
+	net-misc/wicd,
 	net-p2p/transmission-gtk,
 	net-print/cups,
 	net-print/foomatic-db,
@@ -152,6 +155,7 @@ packages_to_add:
 	x11-themes/rogentos-artwork-extra,
 	x11-themes/kogaion-artwork-gnome,
 	x11-themes/sound-theme-freedesktop,
+	x11-themes/gdm-themes-livecd,
 	x11-themes/xcursor-themes,
 	x11-wm/twm
 

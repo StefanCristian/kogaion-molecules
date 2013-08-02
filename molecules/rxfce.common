@@ -6,7 +6,7 @@ execution_strategy: iso_remaster
 release_string: Rogentos Linux
 
 # File to write release string
-release_file: /etc/sabayon-edition
+release_file: /etc/rogentos-edition
 
 # ISO Image title
 iso_title: Rogentos Xfce

@@ -38,7 +38,7 @@ if [ -n "${boot_kernel}" ] && [ -f "${boot_kernel}" ]; then
 	cp "${boot_ramfs}" "${CDROOT_DIR}/boot/rogentos.igz" || exit 1
 fi
 
-if [ "${remaster_type}" = "KDE" ] || [ "${remaster_type}" = "GNOME" ] || [ "${remaster_type}" = "MATE"  || [ "${remaster_type}" = "XFCE"]; then
+if [ "${remaster_type}" = "KDE" ] || [ "${remaster_type}" = "GNOME" ] || [ "${remaster_type}" = "MATE" ] || [ "${remaster_type}" = "XFCE" ] ; then
 	isolinux_source="${ROGENTOS_MOLECULE_HOME}/remaster/standard_isolinux.cfg"
 	grub_source="${ROGENTOS_MOLECULE_HOME}/remaster/standard_grub.cfg"
 elif [ "${remaster_type}" = "ServerBase" ]; then

@@ -46,8 +46,17 @@ install_kernel_packages() {
 }
 
 sd_enable() {
+	local srv="${1}"
+	local ext=".${2:-service}"
 	[[ -x /usr/bin/systemctl ]] && \
-		systemctl --no-reload enable -f "${1}.service"
+		systemctl --no-reload enable -f "${srv}${ext}"
+}
+
+sd_disable() {
+	local srv="${1}"
+	local ext=".${2:-service}"
+	[[ -x /usr/bin/systemctl ]] && \
+		systemctl --no-reload disable -f "${srv}${ext}"
 }
 
 sd_graph_enable() {
@@ -58,11 +67,6 @@ sd_graph_enable() {
                 if [ "${1}" != "lightdm" ] ; then
                         ln -s "${SYSERV}/${1}.service" "${GSYSERV}/${1}.service"
                 fi
-}
-
-sd_disable() {
-	[[ -x /usr/bin/systemctl ]] && \
-		systemctl --no-reload disable -f "${1}.service"
 }
 
 sd_graph_disable() {
@@ -155,18 +159,23 @@ setup_displaymanager() {
 	if [ -n "$(equo match --installed gnome-base/gdm -qv)" ]; then
 		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="gdm"/g' /etc/conf.d/xdm
 		sd_enable gdm
+		sd_enable graphical_start
 	elif [ -n "$(equo match --installed lxde-base/lxdm -qv)" ]; then
 		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="lxdm"/g' /etc/conf.d/xdm
 		sd_enable lxdm
+		sd_enable graphical_start
 	elif [ -n "$(equo match --installed x11-misc/lightdm-base -qv)" ]; then
 		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="lightdm"/g' /etc/conf.d/xdm
 		sd_enable lightdm
+		sd_enable graphical_start
 	elif [ -n "$(equo match --installed kde-base/kdm -qv)" ]; then
 		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="kdm"/g' /etc/conf.d/xdm
 		sd_enable kdm
+		sd_enable graphical_start
 	else
 		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="xdm"/g' /etc/conf.d/xdm
 		sd_enable xdm
+		sd_enable graphical_start
 	fi
 }
 
@@ -232,6 +241,7 @@ install_external_kernel_modules() {
 	install_kernel_packages \
 		"app-laptop/nvidiabl" \
 		"net-wireless/ndiswrapper" \
+		"sys-fs/zfs-kmod" \
 		"sys-power/bbswitch" \
 		"net-wireless/broadcom-sta" || return 1
 	# otherwise bbswitch is useless
@@ -352,8 +362,8 @@ setup_misc_stuff() {
 
 setup_installed_packages() {
 	equo unmask anaconda
-	equo install anaconda rogentos-artwork-core kogaion-artwork-gnome
-	equo remove linux-server linux-sabayon:3.9 --configfiles
+	equo remove sabayon-artwork-core --configfiles
+	equo install anaconda rogentos-artwork-core kogaion-artwork-gnome gdm
 	# Update package list
 	equo query list installed -qv > /etc/rogentos-pkglist
 	echo -5 | equo conf update
@@ -509,5 +519,7 @@ eselect opengl list
 eselect kernel list
 equo query installed nvidia-drivers
 equo query installed ati-drivers
+equo query installed gdm
+systemctl | grep gdm
 
 exit 0
