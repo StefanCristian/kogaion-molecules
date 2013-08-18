@@ -56,7 +56,7 @@ execution_strategy: chroot_to_mmc
 release_file: /etc/sabayon-edition
 
 # Release string (the actual distro name)
-release_string: Sabayon Linux
+release_string: Rogentos Linux
 
 # Directories to remove completely (comma separated)
 paths_to_remove:

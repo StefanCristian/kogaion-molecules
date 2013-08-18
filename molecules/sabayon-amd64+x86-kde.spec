@@ -30,10 +30,10 @@ iso_title: Sabayon KDE
 %env error_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/remaster_error_script.sh
 
 # Extra mkisofs parameters, perhaps something to include/use your bootloader
-extra_mkisofs_parameters: -b isolinux/isolinux.bin -c isolinux/boot.cat
+extra_mkisofs_parameters: -b isolinux/isolinux.bin -c isolinux/boot.cat -eltorito-alt-boot -no-emul-boot -eltorito-platform efi -eltorito-boot boot/grub/efi.img
 
 # Pre-ISO building script. Hook to be able to copy kernel images in place, for example
-%env pre_iso_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/amd64_x86_pre_iso_script.sh KDE 64 32 ${ROGENTOS_MOLECULE_HOME:-/sabayon}/iso/Sabayon_Linux_9_x86_K.iso
+%env pre_iso_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/amd64_x86_pre_iso_script.sh KDE 64 32 ${ROGENTOS_MOLECULE_HOME:-/sabayon}/iso/Sabayon_Linux_11_x86_KDE.iso
 
 # Post-ISO building script, called after ISO image generation.    
 %env post_iso_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/generic_post_iso_script.sh
@@ -64,13 +64,13 @@ execute_repositories_update: no
 # paths_to_empty:
 
 # Release Version
-release_version: 9
+%env release_version: ${ROGENTOS_RELEASE:-2}
 
 # Release Version string description
 release_desc: amd64+x86 KDE
 
 # Path to source ISO file (MANDATORY)
-%env source_iso: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/iso/Sabayon_Linux_9_amd64_K.iso
+%env source_iso: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/iso/Sabayon_Linux_${ROGENTOS_RELEASE:-2}_amd64_KDE.iso
 
 # Destination ISO image name, call whatever you want.iso, not mandatory
-destination_iso_image_name: Sabayon_Linux_9_amd64+x86_K.iso
+%env destination_iso_image_name: Sabayon_Linux_${ROGENTOS_RELEASE:-2}_amd64+x86_KDE.iso

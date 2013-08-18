@@ -23,7 +23,7 @@ extra_mksquashfs_parameters: -comp xz -Xbcj x86
 
 # Inner chroot script command, to be executed inside destination chroot after
 # packages installation and removal
-%env inner_chroot_script_after: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/remaster_generic_inner_chroot_script_after.sh mate
+%env inner_chroot_script_after: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/remaster_generic_inner_chroot_script_after_mate.sh mate
 
 # Outer chroot script command, to be executed outside destination chroot before
 # before entering it (and AFTER inner_chroot_script)
@@ -33,7 +33,7 @@ extra_mksquashfs_parameters: -comp xz -Xbcj x86
 %env error_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/remaster_error_script.sh
 
 # Extra mkisofs parameters, perhaps something to include/use your bootloader
-extra_mkisofs_parameters: -b isolinux/isolinux.bin -c isolinux/boot.cat
+extra_mkisofs_parameters: -b isolinux/isolinux.bin -c isolinux/boot.cat -eltorito-alt-boot -no-emul-boot -eltorito-platform efi -eltorito-boot boot/grub/efi.img
 
 # Pre-ISO building script. Hook to be able to copy kernel images in place, for example
 %env pre_iso_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/generic_pre_iso_script.sh MATE
@@ -54,15 +54,15 @@ packages_to_add:
 	@fluxbox,
 	app-admin/rigo,
 	app-admin/kernel-schimbare,
+	app-emulation/virtualbox-guest-additions,
 	app-misc/rogentos-skel,
+	app-misc/rogentos-live,
 	app-crypt/gnupg,
 	app-crypt/pinentry-gtk2,
-	app-emulation/virtualbox-guest-additions,
 	app-misc/anaconda-runtime,
 	app-misc/anaconda-runtime-gui,
 	app-text/pastebunz,
 	gnome-extra/nm-applet-gtk2,
-	lxde-base/lxdm,
 	mate-base/mate,
 	media-fonts/ttf-bitstream-vera,
 	media-fonts/dejavu,
@@ -82,9 +82,12 @@ packages_to_add:
 	sys-fs/zfs,
 	sys-power/cpufrequtils,
 	www-client/midori,
-	x11-misc/magneto-gtk,
-	x11-drivers/nvidia-drivers,
 	x11-drivers/xf86-video-virtualbox,
+	x11-misc/lightdm,
+	x11-misc/magneto-gtk,
+	x11-misc/lightdm-base,
+	x11-misc/lightdm-gtk-greeter,
+	x11-drivers/nvidia-drivers,
 	x11-themes/equinox-themes,
 	x11-themes/gtk-engines:2
 

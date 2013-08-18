@@ -9,7 +9,7 @@ release_string: Rogentos Linux
 release_file: /etc/rogentos-edition
 
 # ISO Image title
-iso_title: Kogaion Xfce
+iso_title: Rogentos Xfce
 
 # Enable XZ compression in mksquashfs
 extra_mksquashfs_parameters: -comp xz -Xbcj x86
@@ -33,13 +33,13 @@ extra_mksquashfs_parameters: -comp xz -Xbcj x86
 %env error_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/remaster_error_script.sh
 
 # Extra mkisofs parameters, perhaps something to include/use your bootloader
-extra_mkisofs_parameters: -b isolinux/isolinux.bin -c isolinux/boot.cat -iso-level 4
+extra_mkisofs_parameters: -b isolinux/isolinux.bin -c isolinux/boot.cat -eltorito-alt-boot -no-emul-boot -eltorito-platform efi -eltorito-boot boot/grub/efi.img
 
 # Pre-ISO building script. Hook to be able to copy kernel images in place, for example
-%env pre_iso_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/generic_pre_iso_script.sh Xfce
+%env pre_iso_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/generic_pre_iso_script.sh XFCE
 
-# Post-ISO building script, called after ISO image generation.    
-# %env post_iso_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/generic_post_iso_script.sh
+# Post-ISO building script, called after ISO image generation.
+%env post_iso_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/generic_post_iso_script.sh
 
 # Destination directory for the ISO image path (MANDATORY)
 %env destination_iso_directory: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/iso
@@ -49,56 +49,40 @@ extra_mkisofs_parameters: -b isolinux/isolinux.bin -c isolinux/boot.cat -iso-lev
 #	www-client/lynx,
 #	app-text/poppler-qt4
 
+# Import the Graphic Environment module.
+%env %import ${ROGENTOS_MOLECULE_HOME:-/sabayon}/molecules/graphic-environment.common
+
 # List of packages that would be added from chrooted system (comma separated)
 packages_to_add:
-	@X,
 	@gst-plugins,
 	@gst-plugins-extra,
-	@xfce,
 	@wireless,
-	@fluxbox,
-	app-admin/anaconda,
+	@xfce,
 	app-admin/rigo,
-	app-admin/kernel-schimbare,
 	app-arch/file-roller,
 	app-arch/unrar,
+	app-misc/rogentos-version,
+	app-misc/rogentos-live,
+	app-misc/rogentos-skel,
 	app-crypt/gnupg,
 	app-crypt/pinentry-gtk2,
 	app-emulation/wine,
-	app-emulation/vmware-tools,
-	app-laptop/nvidiabl,
-	app-misc/rogentos-version,
-	app-misc/anaconda-runtime-gui,
-	app-misc/galculator,
-	app-misc/rogentoslive-tools,
-	app-misc/rogentos-skel,
+	app-misc/gnote,
+	app-office/libreoffice,
 	app-text/pastebunz,
-	app-text/epdfview,
-	app-office/abiword,
-	app-office/gnumeric,
-	app-emulation/virtualbox-guest-additions,
 	dev-java/icedtea-bin,
 	games-misc/cowsay,
-	games-misc/fortune-mod,
 	gnome-extra/nm-applet-gtk2,
 	gnome-extra/polkit-gnome,
-	gnome-base/orbit,
-	libva-intel-driver,
-	lxde-base/lxdm,
-	media-fonts/corefonts,
-	media-fonts/dejavu,
-	media-fonts/ttf-bitstream-vera,
 	media-gfx/gimp,
-	media-gfx/gpicview,
+	media-gfx/ristretto,
 	media-gfx/shotwell,
 	media-libs/libdvdcss,
 	media-libs/libdvdnav,
 	media-libs/libdvdplay,
 	media-libs/libdvdread,
-	media-video/totem,
-	media-video/tv-maxe,
-	media-tv/xbmc,
 	media-sound/exaile,
+	media-video/totem,
 	net-dialup/globespan-adsl,
 	net-dialup/gnome-ppp,
 	net-dialup/ppp,
@@ -106,57 +90,46 @@ packages_to_add:
 	net-firewall/ufw-frontends,
 	net-im/pidgin,
 	net-irc/xchat,
-	net-p2p/deluge,
+	net-p2p/transmission-gtk,
 	net-print/cups,
-	net-misc/wicd,
-	net-wireless/madwifi-ng-tools,
 	net-wireless/blueman,
 	net-wireless/bluez,
 	net-wireless/bluez-firmware,
 	net-wireless/bluez-hcidump,
-	sys-boot/grub,
-	sys-apps/openrc,
-	sys-apps/gpu-detector,
 	sys-auth/consolekit,
 	sys-block/gparted,
 	sys-block/parted,
 	sys-fs/ntfs3g,
 	sys-power/cpufrequtils,
-	www-client/chromium,
-	x11-apps/intel-gpu-tools,
-	x11-drivers/ati-drivers,
-	x11-drivers/nvidia-drivers,
+	www-client/midori,
+	www-plugins/adobe-flash,
+	x11-misc/lightdm,
+	x11-misc/lightdm-base,
+	x11-misc/lightdm-gtk-greeter,
 	x11-libs/gksu,
-	x11-libs/vdpau-video,
+	x11-libs/libva-vdpau-driver,
 	x11-libs/xvba-video,
 	x11-misc/magneto-gtk,
 	x11-misc/xvkbd,
-	x11-terms/terminal,
-	x11-themes/equinox-themes,
-	x11-themes/gtk-engines:2,
+	x11-terms/xfce4-terminal,
+	x11-terms/xterm,
 	x11-themes/gnome-themes-standard,
+	x11-themes/rogentos-artwork-grub,
+	x11-themes/kogaion-elementary-icons,
+	x11-themes/kogaion-light-theme,
+	x11-themes/rogentos-artwork-core, 
+	x11-themes/kogaion-artwork-lxde,
 	x11-themes/iottinka-artwork,
-	x11-themes/elementary-icon-theme,
-        x11-themes/rogentos-artwork-core,
-        x11-themes/rogentos-artwork-grub,
-        x11-themes/rogentos-artwork-lxde
-	x11-themes/rogentos-artwork-isolinux,
-	x11-themes/rogentos-artwork-resplash,
-	x11-themes/zukitwo-brave,
+	x11-themes/tango-icon-theme,
 	xfce-base/xfce4-panel,
 	xfce-extra/tumbler,
+	xfce-extra/xfce4-clipman-plugin,
 	xfce-extra/xfce4-mixer,
 	xfce-extra/xfce4-notifyd,
 	xfce-extra/xfce4-places-plugin,
-	xfce-extra/xfce4-screenshooter,
-	xfce-extra/xfce4-xkb-plugin,
-	xfce-extra/xfce4-gvfs-mount,
-	xfce-extra/xfce4-datetime-plugin,
-	xfce-extra/thunar-archive-plugin,
-	xfce-extra/thunar-volman,
-	x11-plugins/pidgin-privacy-please
+	xfce-extra/xfce4-screenshooter
 
-# x11-themes/sabayon-artwork-gnome:
+# x11-themes/rogentos-artwork-gnome:
 #   provides the gtk theme for lxdm
 # gnome-extra/polkit-gnome:
 #   required to make nm-applet work
@@ -168,7 +141,6 @@ packages_to_add:
 
 # Custom shell call to packages add (default is: equo install)
 # custom_packages_add_cmd: 
-#custom_packages_add_cmd: app-misc/rogentos-version
 
 # Custom command for updating repositories (default is: equo update)
 # repositories_update_cmd:

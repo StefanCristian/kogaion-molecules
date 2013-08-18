@@ -33,12 +33,12 @@ extra_mksquashfs_parameters: -comp xz -Xbcj x86
 %env error_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/remaster_error_script.sh
 
 # Extra mkisofs parameters, perhaps something to include/use your bootloader
-extra_mkisofs_parameters: -b isolinux/isolinux.bin -c isolinux/boot.cat
+extra_mkisofs_parameters: -b isolinux/isolinux.bin -c isolinux/boot.cat -eltorito-alt-boot -no-emul-boot -eltorito-platform efi -eltorito-boot boot/grub/efi.img
 
 # Pre-ISO building script. Hook to be able to copy kernel images in place, for example
 %env pre_iso_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/generic_pre_iso_script.sh KDE
 
-# Post-ISO building script, called after ISO image generation.    
+# Post-ISO building script, called after ISO image generation.
 %env post_iso_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/generic_post_iso_script.sh
 
 # Destination directory for the ISO image path (MANDATORY)
@@ -47,12 +47,13 @@ extra_mkisofs_parameters: -b isolinux/isolinux.bin -c isolinux/boot.cat
 # List of packages that would be removed from chrooted system (comma separated)
 # packages_to_remove:
 
+# Import the Graphic Environment module.
+%env %import ${ROGENTOS_MOLECULE_HOME:-/sabayon}/molecules/graphic-environment.common
+
 # List of packages that would be added from chrooted system (comma separated)
 packages_to_add:
-	@fluxbox,
 	@gst-plugins,
 	@gst-plugins-extra,
-	@X,
 	@wireless,
 	app-admin/packagekit-base,
 	app-admin/packagekit-qt4,
@@ -72,14 +73,10 @@ packages_to_add:
 	app-dicts/myspell-fr,
 	app-dicts/myspell-it,
 	app-dicts/myspell-nl,
-	app-emulation/virtualbox-guest-additions,
 	app-emulation/wine,
-	app-laptop/nvidiabl,
-	app-misc/anaconda-runtime-gui,
 	app-misc/sabayon-mce,
-	app-misc/rogentos-skel,
-	app-misc/rogentos-version,
-	app-text/pastebunz,
+	app-misc/sabayon-skel,
+	app-misc/sabayon-version,
 	app-office/libreoffice,
 	app-office/libreoffice-l10n-de,
 	app-office/libreoffice-l10n-es,
@@ -87,7 +84,25 @@ packages_to_add:
 	app-office/libreoffice-l10n-it,
 	app-office/libreoffice-l10n-nl,
 	app-office/libreoffice-l10n-pt,
+	app-text/pastebunz,
 	dev-java/icedtea-bin,
+	games-misc/cowsay,
+	kde-base/akregator,
+	kde-base/ark,
+	kde-base/bomber,
+	kde-base/bovo,
+	kde-base/dolphin,
+	kde-base/gwenview,
+	kde-base/kabcclient,
+	kde-base/kalarm,
+	kde-base/kamera,
+	kde-base/kapman,
+	kde-base/kappfinder,
+	kde-base/kcalc,
+	kde-base/kcharselect,
+	kde-base/kcheckpass,
+	kde-base/kcminit,
+	kde-base/kde-env,
 	kde-base/kde-l10n-bg,
 	kde-base/kde-l10n-ca,
 	kde-base/kde-l10n-cs,
@@ -127,21 +142,6 @@ packages_to_add:
 	kde-base/kde-l10n-wa,
 	kde-base/kde-l10n-zh_CN,
 	kde-base/kde-l10n-zh_TW,
-	kde-base/akregator,
-	kde-base/ark,
-	kde-base/bomber,
-	kde-base/bovo,
-	kde-base/dolphin,
-	kde-base/kabcclient,
-	kde-base/kalarm,
-	kde-base/kamera,
-	kde-base/kapman,
-	kde-base/kappfinder,
-	kde-base/kcalc,
-	kde-base/kcharselect,
-	kde-base/kcheckpass,
-	kde-base/kcminit,
-	kde-base/kde-env,
 	kde-base/kdeaccessibility-colorschemes,
 	kde-base/kdeadmin-meta,
 	kde-base/kdeartwork-colorschemes,
@@ -242,7 +242,6 @@ packages_to_add:
 	kde-base/libplasmagenericshell,
 	kde-base/libtaskmanager,
 	kde-base/mplayerthumbs,
-	kde-base/gwenview,
 	kde-base/okular,
 	kde-base/oxygen-icons,
 	kde-base/phonon-kde,
@@ -250,28 +249,25 @@ packages_to_add:
 	kde-base/plasma-workspace,
 	kde-base/policykit-kde,
 	kde-base/powerdevil,
+	kde-base/print-manager,
 	kde-base/pykde4,
 	kde-base/qguiplatformplugin_kde,
 	kde-base/solid,
 	kde-base/svgpart,
 	kde-base/systemsettings,
 	kde-base/thumbnailers,
-	kde-misc/kcm-gtk-config,
-	kde-misc/kcm-grub2,
-	kde-misc/kcm_touchpad,
 	kde-misc/kcm-ufw,
+	kde-misc/kcm_touchpad,
+	kde-misc/kde-gtk-config,
 	kde-misc/kio-sysinfo,
-	kde-misc/networkmanagement,
 	kde-misc/magneto-kde,
+	kde-misc/networkmanagement,
 	kde-misc/synaptiks,
 	kde-misc/yakuake,
-	media-fonts/ttf-bitstream-vera,
-	media-fonts/dejavu,
-	media-fonts/corefonts,
-	media-libs/libdvdread,
 	media-libs/libdvdcss,
-	media-libs/libdvdplay,
 	media-libs/libdvdnav,
+	media-libs/libdvdplay,
+	media-libs/libdvdread,
 	media-plugins/alsa-plugins,
 	media-plugins/kipi-plugins,
 	media-sound/clementine,
@@ -296,51 +292,36 @@ packages_to_add:
 	net-wireless/bluez,
 	net-wireless/bluez-firmware,
 	net-wireless/bluez-hcidump,
+	sys-apps/hdparm,
+	sys-apps/sdparm,
+	sys-apps/tuxonice-userui,
 	sys-auth/policykit,
 	sys-auth/policykit-qt,
 	sys-auth/polkit,
 	sys-auth/polkit-kde,
 	sys-auth/polkit-qt,
-	sys-apps/gpu-detector,
-	sys-apps/hdparm,
-	sys-apps/sdparm,
-	sys-apps/tuxonice-userui,
 	sys-block/parted,
 	sys-block/partitionmanager,
 	sys-fs/dmraid,
 	sys-fs/ntfs3g,
-	sys-fs/zfs,
 	sys-power/acpid,
 	sys-power/cpufrequtils,
 	www-client/chromium,
 	www-plugins/adobe-flash,
 	x11-apps/xdm,
-	x11-terms/xterm,
-	x11-drivers/xf86-video-virtualbox,
-	games-misc/cowsay,
-	x11-drivers/ati-drivers,
-	x11-drivers/nvidia-drivers,
-	x11-libs/vdpau-video,
+	x11-libs/libva-vdpau-driver,
 	x11-libs/xvba-video,
 	x11-misc/desktop-acceleration-helpers,
 	x11-misc/xvkbd,
-	x11-themes/gtk-engines:2,
-	x11-themes/gtk-engines-qtcurve,
-	x11-themes/gnome-themes-standard,
-	x11-themes/iottinka-artwork,
+	x11-themes/caledonia-plasma-theme,
 	x11-themes/oxygen-gtk:2,
 	x11-themes/oxygen-gtk:3,
-	x11-themes/rogentos-artwork-extra,
-	x11-themes/rogentos-artwork-kde,
+	x11-themes/sabayon-artwork-extra,
+	x11-themes/sabayon-artwork-kde,
+	x11-themes/sabayon-artwork-loo,
 	x11-themes/sound-theme-freedesktop,
 	x11-themes/xcursor-themes,
 	x11-wm/twm
-
-# x11-themes/gnome-themes-standard:
-# oxygen-gtk contains a bug that screws Rigo's GTK3 nice
-# InfoBar backgrounds. So currently, GTK3 default theme
-# is set to Adwaita, which is contained inside
-# x11-themes/gnome-themes-standard
 
 # Custom shell call to packages add (default is: equo install)
 # custom_packages_add_cmd: 

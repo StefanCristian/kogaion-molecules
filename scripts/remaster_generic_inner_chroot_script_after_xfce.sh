@@ -1,67 +1,143 @@
 #!/bin/bash
 
-# do not remove these
 /usr/sbin/env-update
 . /etc/profile
 
-splash_manager -c set -t rogentos --tty=1
+SYSERV="/usr/lib/systemd/system"
+AMDSYSERV="/usr/lib64/systemd/system"
+ESYSERV="/etc/systemd/system/display-manager.service"
+GSYSERV="/etc/systemd/system/graphical.target.wants"
+
+if [ -f "/etc/systemd/system/multi-user.target.wants/sabayonlive.service" ] || [ -f "/usr/libexec/sabayonlive.sh" ] ; then
+	echo "By hell, it's a Sabayon service"
+	rm /etc/systemd/system/multi-user.target.wants/sabayonlive.service
+	rm /usr/lib/systemd/system/sabayonlive.service
+	rm /usr/libexec/installer-*
+	rm /usr/libexec/sabayonlive.sh
+	rm /sbin/sabayon-functions.sh
+	rm /usb/bin/sabayon*
+	sed -i 's/sabayon-functions/rogentos-functions/g' /usr/libexec/x-setup.sh
+	else
+	echo "There are no such files"
+fi
+
+_get_kernel_tag() {
+	local kernel_ver="$(equo match --installed -qv virtual/linux-binary | cut -d/ -f 2)"
+	# strip -r** if exists, hopefully we don't have PN ending with -r
+	local kernel_ver="${kernel_ver%-r*}"
+	local kernel_tag_file="/etc/kernels/${kernel_ver}/RELEASE_LEVEL"
+	if [ ! -f "${kernel_tag_file}" ]; then
+		echo "cannot find ${kernel_tag_file}, wtf" >&2
+	else
+		echo "#$(cat "${kernel_tag_file}")"
+	fi
+}
+
+install_packages() {
+	equo install "${@}"
+}
+
+install_kernel_packages() {
+	local kernel_tag=$(_get_kernel_tag)
+	local pkgs=()
+	for pkg in "${@}"; do
+		pkgs+=( "${pkg}${kernel_tag}" )
+	done
+	equo install "${pkgs[@]}"
+}
+
+sd_enable() {
+	local srv="${1}"
+	local ext=".${2:-service}"
+	[[ -x /usr/bin/systemctl ]] && \
+		systemctl --no-reload enable -f "${srv}${ext}"
+}
+
+sd_disable() {
+	local srv="${1}"
+	local ext=".${2:-service}"
+	[[ -x /usr/bin/systemctl ]] && \
+		systemctl --no-reload disable -f "${srv}${ext}"
+}
+
+sd_graph_enable() {
+        [[ -x /usr/bin/systemctl ]] || [[ -x $(which systemctl) ]] && \
+                systemctl --no-reload enable -f "${1}".service
+                rm "${ESYSERV}"
+                ln -s "${SYSERV}"/"${1}".service "${ESYSERV}"
+                if [ "${1}" != "lightdm" ] ; then
+                        ln -s "${SYSERV}"/"${1}".service "${GSYSERV}"/"${1}".service
+                fi
+}
+
+sd_graph_disable() {
+        [[ -x /usr/bin/systemctl ]] || [[ -x $(which systemctl) ]] && \
+                systemctl --no-reload disable -f "${1}".service
+                rm "${ESYSERV}"
+                rm "${GSYSSERV}"/"${1}".service
+}
 
 basic_environment_setup() {
-	eselect opengl set xorg-x11 &> /dev/null
-
-	rc-update del bluetooth
-	rc-update add bluetooth default
+	eselect opengl set xorg-x11
+	eselect mesa set --auto
 
 	# automatically start xdm
 	rc-update del xdm default
 	rc-update del xdm boot
-	rc-update add xdm boot
-
-	rc-update add rogentoslive boot
-        rc-update add x-setup boot
+	rc-update add xdm default
+	# systemd has specific targets depending on the DM
 
 	# consolekit must be run at boot level
 	rc-update add consolekit boot
+	# systemd uses logind
 
-	# if it exists
-	if [ -f "/etc/init.d/hald" ]; then
-		rc-update del hald boot
-		rc-update del hald
-		rc-update add hald boot
-	fi
-
-	rc-update del music boot
-	rc-update add music default
-	rc-update del rogentos-mce default
+	rc-update del sabayon-mce default
+	sd_disable sabayon-mce
 	rc-update add nfsmount default
 
-	if [ -f /etc/init.d/zfs ] && [ "$(uname -m)" = "x86_64" ]; then
+	# setup avahi
+	rc-update add avahi-daemon default
+	sd_enable avahi-daemon
+
+	# setup printing
+	rc-update add cupsd default
+	rc-update add cups-browsed default
+	sd_enable cups
+	sd_enable cups-browsed
+	sd_enable rogentoslive
+
+	local kern_type="$(equo match --installed -q virtual/linux-binary)"
+	local do_zfs=1
+	if [ ! -f /etc/init.d/zfs ]; then
+		do_zfs=0
+	elif [ "$(uname -m)" != "x86_64" ]; then
+		do_zfs=0
+	elif [ "${kern_type}" = "sys-kernel/linux-hardened" ]; then
+		do_zfs=0  # currently not in the hardened kernel
+	fi
+	if [ "${do_zfs}" = "1" ]; then
 		rc-update add zfs boot
+		sd_enable zfs
 	fi
 
-	# Always startup this
-	rc-update add virtualbox-guest-additions boot
 	# Create a default "games" group so that
 	# the default user will be added to it during
 	# live boot, and thus, after install.
 	# See bug 3134
 	groupadd -f games
-}
 
-remove_desktop_files() {
-	rm /etc/skel/Desktop/WorldOfGooDemo-world-of-goo-demo.desktop
+	# all these images come with X.Org
+	sd_enable graphical
 }
 
 setup_cpufrequtils() {
 	rc-update add cpufrequtils default
+	sd_enable cpufrequtils
 }
 
 setup_sabayon_mce() {
-	rc-update add rogentos-mce boot
-	# not needed, done by app-misc/sabayon-mce pkg
-	# Sabayon Media Center user setup
-	# source /sbin/rogentos-functions.sh
-	# sabayon_setup_live_user "sabayonmce"
+	rc-update add sabayon-mce boot
+	sd_enable sabayon-mce
 }
 
 switch_kernel() {
@@ -83,13 +159,30 @@ setup_displaymanager() {
 	# determine what is the login manager
 	if [ -n "$(equo match --installed gnome-base/gdm -qv)" ]; then
 		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="gdm"/g' /etc/conf.d/xdm
+		sd_enable gdm
+		sd_enable graphical_start
 	elif [ -n "$(equo match --installed lxde-base/lxdm -qv)" ]; then
 		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="lxdm"/g' /etc/conf.d/xdm
+		sd_enable lxdm
+		sd_enable graphical_start
+	elif [ -n "$(equo match --installed x11-misc/lightdm-base -qv)" ]; then
+		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="lightdm"/g' /etc/conf.d/xdm
+		sd_enable lightdm
+		sd_enable graphical_start
 	elif [ -n "$(equo match --installed kde-base/kdm -qv)" ]; then
 		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="kdm"/g' /etc/conf.d/xdm
+		sd_enable kdm
+		sd_enable graphical_start
 	else
 		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="xdm"/g' /etc/conf.d/xdm
+		sd_enable xdm
+		sd_enable graphical_start
 	fi
+}
+
+setup_default_xsession() {
+	local sess="${1}"
+	ln -sf "${sess}.desktop" /usr/share/xsessions/default.desktop
 }
 
 setup_networkmanager() {
@@ -97,6 +190,7 @@ setup_networkmanager() {
 	rc-update del NetworkManager
 	rc-update add NetworkManager default
 	rc-update add NetworkManager-setup default
+	sd_enable NetworkManager
 }
 
 xfceforensic_remove_skel_stuff() {
@@ -120,8 +214,8 @@ setup_oss_gfx_drivers() {
 	touch /.enable_kms
 
 	# Remove nouveau from blacklist
-	#sed -i ":^blacklist: s:blacklist nouveau:# blacklist nouveau:g" \
-		#/etc/modprobe.d/blacklist.conf
+	sed -i ":^blacklist: s:blacklist nouveau:# blacklist nouveau:g" \
+		/etc/modprobe.d/blacklist.conf
 }
 
 has_proprietary_drivers() {
@@ -136,39 +230,63 @@ has_proprietary_drivers() {
 	return 1
 }
 
-setup_proprietary_gfx_drivers() {
-	# Prepare NVIDIA legacy drivers infrastructure
+setup_virtualbox() {
+	install_kernel_packages \
+		"app-emulation/virtualbox-guest-additions" \
+		"x11-drivers/xf86-video-virtualbox"
+	rc-update add virtualbox-guest-additions boot
+	sd_enable virtualbox-guest-additions
+}
 
-	if [ ! -d "/install-data/drivers" ]; then
-		mkdir -p /install-data/drivers
-	fi
-	myuname=$(uname -m)
-	mydir="x86"
-	if [ "$myuname" == "x86_64" ]; then
+install_external_kernel_modules() {
+	install_kernel_packages \
+		"app-laptop/nvidiabl" \
+		"net-wireless/ndiswrapper" \
+		"sys-fs/zfs-kmod" \
+		"sys-power/bbswitch" \
+		"net-wireless/broadcom-sta" || return 1
+	# otherwise bbswitch is useless
+	install_packages "x11-misc/bumblebee"
+}
+
+install_proprietary_gfx_drivers() {
+	install_kernel_packages "x11-drivers/ati-drivers" \
+		"x11-drivers/nvidia-drivers"
+}
+
+setup_proprietary_gfx_drivers() {
+	local myuname=$(uname -m)
+	local mydir="x86"
+	if [ "${myuname}" == "x86_64" ]; then
 		mydir="amd64"
 	fi
-	kernel_ver="$(equo match --installed -qv virtual/linux-binary | cut -d/ -f 2)"
-	# strip -r** if exists, hopefully we don't have PN ending with -r
-	kernel_ver="${kernel_ver%-r*}"
-	kernel_tag_file="/etc/kernels/${kernel_ver}/RELEASE_LEVEL"
-	if [ ! -f "${kernel_tag_file}" ]; then
-		echo "cannot find ${kernel_tag_file}, wtf" >&2
-		# do not return 1 !!!
-		return 0
-	fi
-	kernel_tag="#$(cat "${kernel_tag_file}")"
+	local kernel_tag=$(_get_kernel_tag)
+	local pkgs_dir=/var/lib/entropy/client/packages
+	local cd_dir=/install-data/drivers
+	local pkgs=(
+		"=x11-drivers/nvidia-userspace-304*"
+		"=x11-drivers/nvidia-drivers-304*${kernel_tag}"
+		"=x11-drivers/nvidia-userspace-173*"
+		"=x11-drivers/nvidia-drivers-173*${kernel_tag}"
+	)
+	local ts=
+	local tp=
+	local pkg_f=
 
-	rm -rf /var/lib/entropy/client/packages/packages*/${mydir}/*/x11-drivers*
-	# dead with >=xorg-server-1.11
-	# ACCEPT_LICENSE="NVIDIA" equo install --fetch --nodeps =x11-drivers/nvidia-drivers-173*$kernel_tag
-	# ACCEPT_LICENSE="NVIDIA" equo install --fetch --nodeps =x11-drivers/nvidia-drivers-96.43.20*$kernel_tag
-	## not working with >=xorg-server-1.5
-	## ACCEPT_LICENSE="NVIDIA" equo install --fetch --nodeps ~x11-drivers/nvidia-drivers-71.86.*$kernel_tag
-	# mv /var/lib/entropy/client/packages/packages-nonfree/${mydir}/*/x11-drivers\:nvidia-drivers*.tbz2 /install-data/drivers/
+	mkdir -p "${cd_dir}" || return 1
+	equo download --nodeps "${pkgs[@]}" || return 1
 
-	# if we ship with ati-drivers, we have KMS disabled by default.
-	# and better set driver arch to classic
-	eselect mesa set r600 classic
+	OLDIFS=${IFS}
+	IFS='
+'
+	local data=( $(equo match --quiet --showdownload "${pkgs[@]}") )
+	IFS=${OLDIFS}
+	for ts in "${data[@]}"; do
+		tp=( ${ts} )
+		pkg_f="${pkgs_dir}/${tp[1]}"
+		echo "Copying ${pkg_f} to ${cd_dir}"
+		cp "${pkg_f}" "${cd_dir}"/
+	done
 }
 
 setup_gnome_shell_extensions() {
@@ -192,6 +310,7 @@ setup_fonts() {
 		20-unhint-small-dejavu-sans-mono.conf
 		20-unhint-small-dejavu-serif.conf
 		31-cantarell.conf
+		52-infinality.conf
 		57-dejavu-sans.conf
 		57-dejavu-sans-mono.conf
 		57-dejavu-serif.conf"
@@ -203,6 +322,9 @@ setup_fonts() {
 			echo "ouch, /etc/fonts/conf.avail/${fc_en} is not available" >&2
 		fi
 	done
+	# Complete infinality setup
+	eselect infinality set infinality
+	eselect lcdfilter set infinality
 }
 
 setup_misc_stuff() {
@@ -211,7 +333,7 @@ setup_misc_stuff() {
 		cp -p /etc/samba/smb.conf.default /etc/samba/smb.conf
 	fi
 
-	# if Sabayon GNOME, drop qt-gui bins
+	# if Rogentos GNOME, drop qt-gui bins
 	gnome_panel=$(qlist -ICve gnome-base/gnome-panel)
 	if [ -n "${gnome_panel}" ]; then
 		find /usr/share/applications -name "*qt-gui*.desktop" | xargs rm
@@ -233,21 +355,9 @@ setup_misc_stuff() {
 		rm $file
 	done
 
-	# Setup basic GTK theme for root user
-	if [ ! -f "/root/.gtkrc-2.0" ]; then
-		echo "include \"/usr/share/themes/Clearlooks/gtk-2.0/gtkrc\"" > /root/.gtkrc-2.0
-	fi
 	# Regenerate Fluxbox menu
 	if [ -x "/usr/bin/fluxbox-generate_menu" ]; then
 		fluxbox-generate_menu -o /etc/skel/.fluxbox/menu
-		elif [ ! -d "/etc/skel/.fluxbox/menu" ]; then
-		echo "It didn't work the first time, doing it again + chown"
-			fluxbox_generate_menu -o /etc/skel/.fluxbox/menu
-			chown rogentosuser /etc/skel/.fluxbox/
-		echo "Fixing the fluxbox problem once and for all"
-		elif [ -d "/home/rogentosuser/" ]; then
-			echo "this was created, so we do chown"
-			chown rogentosuser /home/rogentosuser/
 	fi
 }
 
@@ -272,30 +382,40 @@ localz=$(pwd)
 ARCH=$(uname -m)
 rog=rogentos-artwork
 
+# We will make sure lightdm is setup as login manager
+
+#sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="lightdm"/g' /etc/conf.d/xdm
+#/usr/bin/systemctl --no-reload enable -f "lightdm.service"
+#sd_enable lightdm
+
 echo "Entering folder $localz"
 equo remove anaconda --nodeps
 
 if [ "$ARCH" = "x86_64" ]; then
-		equo unmask anaconda
-		equo install anaconda --nodeps
-		echo "installed rogentos artwork amd64"
-		echo -5 | equo conf update
-		depmod -a
-		env-update && source /etc/profile
-		rogentos_splash
-	else
-		equo unmask anaconda
-		equo install anaconda --nodeps
-		echo "Installed rogentos artwork x86"
-		echo -5 | equo conf update
-		depmod -a
-		env-update && source /etc/profile
-		rogentos_splash
+                equo unmask anaconda
+                equo install anaconda --nodeps
+                echo "installed rogentos artwork amd64"
+                echo -5 | equo conf update
+                depmod -a
+                env-update && source /etc/profile
+                rogentos_splash
+        else
+                equo unmask anaconda
+                equo install anaconda --nodeps
+                echo "Installed rogentos artwork x86"
+                echo -5 | equo conf update
+                depmod -a
+                env-update && source /etc/profile
+                rogentos_splash
 fi
 
-equo mask linux-sabayon virtualbox-guest-additions broadcom-sta ndiswrapper
+equo install rogentos-artwork-core  rogentos-skel
+equo remove --configfiles linux-server
 echo "Se va folosi kernel-schimbare pentru schimbarea nucleului"
+echo "Use kernel-schimbare --help to change the kernels"
 }
+
+
 
 setup_installed_packages() {
 	rogentos_install
@@ -307,7 +427,6 @@ setup_installed_packages() {
 	rm /var/lib/entropy/client/database/*/sabayonlinux.org -rf
 	rm /var/lib/entropy/client/database/*/sabayon-weekly -rf
 	rm /var/lib/entropy/client/database/*/rogentoslinux -rf
-	rm /var/lib/entropy/client/database/*/rogentos -rf
 	equo rescue vacuum
 
 	# restore original repositories.conf (all mirrors were filtered for speed)
@@ -322,124 +441,102 @@ setup_installed_packages() {
 	rm -rf /var/lib/entropy/*cache*
 	# remove entropy pid file
 	rm -f /var/run/entropy/entropy.lock
+	rm -f /var/lib/entropy/entropy.pid
+	rm -f /var/lib/entropy/entropy.lock
 }
 
 setup_portage() {
-	layman -d sabayon
-	rm -rf /var/lib/layman/sabayon
-	layman -d sabayon-distro
-	rm -rf /var/lib/layman/sabayon-distro
-	layman -d rogento
-	rm -rf /var/lib/layman/rogento
 	emaint --fix world
 }
 
 setup_startup_caches() {
 	/lib/rc/bin/rc-depend -u
 	# Generate openrc cache
-        [[ -d "/lib/rc/init.d" ]] && touch /lib/rc/init.d/softlevel
-        [[ -d "/run/openrc" ]] && touch /run/openrc/softlevel
+	[[ -d "/lib/rc/init.d" ]] && touch /lib/rc/init.d/softlevel
+	[[ -d "/run/openrc" ]] && touch /run/openrc/softlevel
 	/etc/init.d/savecache start
 	/etc/init.d/savecache zap
 	ldconfig
 	ldconfig
 }
 
-prepare_lxde() {
+prepare_generic() {
+	install_proprietary_gfx_drivers
+	install_external_kernel_modules
+	setup_virtualbox
 	setup_networkmanager
-	# Fix ~/.dmrc to have it load LXDE
-	echo "[Desktop]" > /etc/skel/.dmrc
-	echo "Session=LXDE" >> /etc/skel/.dmrc
-	remove_desktop_files
 	setup_displaymanager
-	# properly tweak lxde autostart tweak, adding --desktop option
-	sed -i 's/pcmanfm -d/pcmanfm -d --desktop/g' /etc/xdg/lxsession/LXDE/autostart
-	remove_mozilla_skel_cruft
 	setup_cpufrequtils
 	has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
+}
+
+prepare_lxde() {
+	setup_default_xsession "LXDE"
+	# properly tweak lxde autostart tweak, adding --desktop option
+	sed -i 's/pcmanfm -d/pcmanfm -d --desktop/g' /etc/xdg/lxsession/LXDE/autostart
+}
+
+prepare_mate() {
+	setup_default_xsession "mate"
+}
+
+prepare_e17() {
+	setup_default_xsession "enlightenment"
+	# E17 spin has chromium installed
+	# Not using lxdm for now
+	# TODO: improve the lines below
+	# Make sure enlightenment is selected in lxdm
+	# sed -i '/lxdm-greeter-gtk/ a\\nlast_session=enlightenment.desktop\nlast_lang=' /etc/lxdm/lxdm.conf
+	# Fix ~/.gtkrc-2.0 for some nice icons in gtk
+	echo 'gtk-icon-theme-name="Tango" gtk-theme-name="Xfce"' | tr " " "\n" > /etc/skel/.gtkrc-2.0
 }
 
 prepare_xfce() {
-	setup_networkmanager
-	# Fix ~/.dmrc to have it load Xfce
-	echo "[Desktop]" > /etc/skel/.dmrc
-	echo "Session=xfce" >> /etc/skel/.dmrc
-	remove_desktop_files
-	remove_mozilla_skel_cruft
-	setup_cpufrequtils
-	setup_displaymanager
-	has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
+	setup_default_xsession "xfce"
 }
 
 prepare_fluxbox() {
-	setup_networkmanager
-	# Fix ~/.dmrc to have it load Fluxbox
-	echo "[Desktop]" > /etc/skel/.dmrc
-	echo "Session=fluxbox" >> /etc/skel/.dmrc
-	remove_desktop_files
-	setup_displaymanager
-	remove_mozilla_skel_cruft
-	setup_cpufrequtils
-	has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
+	setup_default_xsession "fluxbox"
 }
 
 prepare_gnome() {
-	setup_networkmanager
-	# Fix ~/.dmrc to have it load GNOME or Cinnamon
-	echo "[Desktop]" > /etc/skel/.dmrc
 	if [ -f "/usr/share/xsessions/cinnamon.desktop" ]; then
-		echo "Session=cinnamon" >> /etc/skel/.dmrc
+		setup_default_xsession "cinnamon"
 	else
-		echo "Session=gnome" >> /etc/skel/.dmrc
-		setup_gnome_shell_extensions
+		setup_default_xsession "gnome"
 	fi
 	rc-update del system-tools-backends boot
 	rc-update add system-tools-backends default
-	setup_displaymanager
+	# no systemd counterpart
+
 	setup_sabayon_mce
-	has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
 }
 
 prepare_xfceforensic() {
-	setup_networkmanager
-	# Fix ~/.dmrc to have it load Xfce
-	echo "[Desktop]" > /etc/skel/.dmrc
-	echo "Session=xfce" >> /etc/skel/.dmrc
-	remove_desktop_files
-	setup_cpufrequtils
-	setup_displaymanager
-	remove_mozilla_skel_cruft
+	setup_default_xsession "xfce"
 	xfceforensic_remove_skel_stuff
-	has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
 }
 
 prepare_kde() {
-	setup_networkmanager
-	# Fix ~/.dmrc to have it load KDE
-	echo "[Desktop]" > /etc/skel/.dmrc
-	echo "Session=KDE-4" >> /etc/skel/.dmrc
-	setup_displaymanager
+	setup_default_xsession "KDE-4"
+	# Configure proper GTK3 theme
+	# TODO: find a better solution?
+	mv /etc/skel/.config/gtk-3.0/settings.ini._kde_molecule \
+		/etc/skel/.config/gtk-3.0/settings.ini
 	setup_sabayon_mce
-	setup_cpufrequtils
-	has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
 }
 
 prepare_awesome() {
-	setup_networkmanager
-	# Fix ~/.dmrc to have it load Awesome
-	echo "[Desktop]" > /etc/skel/.dmrc
-	echo "Session=awesome" >> /etc/skel/.dmrc
-	remove_desktop_files
-	setup_displaymanager
-	remove_mozilla_skel_cruft
-	setup_cpufrequtils
-	has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
+	setup_default_xsession "awesome"
 }
 
 prepare_system() {
+	prepare_generic
 	local de="${1}"
 	if [ "${de}" = "lxde" ]; then
 		prepare_lxde
+        elif [ "${de}" = "mate" ]; then
+                prepare_mate
 	elif [ "${de}" = "e17" ]; then
 		prepare_e17
 	elif [ "${de}" = "xfce" ]; then
@@ -466,5 +563,66 @@ setup_misc_stuff
 setup_installed_packages
 setup_portage
 setup_startup_caches
+
+
+# Debugging the 
+
+for PKG in nvidia-drivers ati-drivers bumblebee bbswitch ; do
+	if [ "$(equo query installed $PKG | grep "0 entries" | cut -c16-25)" == "0 entries" ] ; then
+		EVALID="$(equo query installed $PKG | grep "0 entries" | cut -c16-25)"
+		equo install $PKG
+		else
+		echo "Package is installed"
+	fi
+done
+
+# Assuring lightdm will take place at the right time and at the right ARCH
+
+if [ "$(cat /etc/systemd/system/display-manager.service | grep lightdm | tail -1 | head -1 | cut -d "/" -f 4)" == "lightdm" ] ; then
+	echo "All's alright"
+	if [ "$(uname -m)" == "x86_64" ] && [ -f "/usr/lib/systemd/system/rogentoslive.service" ] ; then
+		#ln -s /usr/lib64/systemd/system/rogentoslive.service /etc/systemd/system/multi-user.target.wants/
+	   	sd_enable lightdm
+	   else
+		#ln -s /usr/lib/systemd/system/rogentoslive.service /etc/systemd/system/multi-user.target.wants/
+		sd_enable lightdm
+	fi
+	else
+	#/usr/bin/systemctl enable lightdm
+	if [ "$(uname -m)" == "x86_64" ] && [ -f "/usr/lib/systemd/system/rogentoslive.service" ] ; then
+		#ln -s /usr/lib64/systemd/system/rogentoslive.server /etc/systemd/system/multi-user.target.wants/
+		sd_enable lightdm
+	else
+		sd_enable lightdm
+		#ln -s /usr/lib/systemd/system/rogentoslive.server /etc/systemd/system/multi-user.target.wants/
+	fi
+fi
+
+if [ -f "/etc/systemd/system/multi-user.target.wants/rogentoslive.service" ] ; then
+	echo "It exists"
+	else
+        	if [ "$(uname -m)" == "x86_64" ] ; then
+	                sd_enable rogentoslive
+			#ln -s /usr/lib64/systemd/system/rogentoslive.server /etc/systemd/system/multi-user.target.wants/
+		else
+			sd_enable rogentoslive
+			#ln -s /usr/lib/systemd/system/rogentoslive.server /etc/systemd/system/multi-user.target.wants/
+		fi
+fi
+
+equo query installed linux-sabayon
+eselect kernel list
+equo remove sabayon-artwork-core --configfiles
+equo install rogentos-artwork-core
+
+rm /var/lib/entropy/logs -rf
+rm -rf /var/lib/entropy/*cache*
+# remove entropy pid file
+rm -f /var/run/entropy/entropy.lock
+rm -f /var/lib/entropy/entropy.pid
+rm -f /var/lib/entropy/entropy.lock
+emaint --fix world
+
+echo "$(cat /boot/grub/grub.cfg)"
 
 exit 0

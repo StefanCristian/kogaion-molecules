@@ -1,10 +1,11 @@
 # List of packages to add on the PandaBoard
 packages_to_add:
+	app-admin/eselect-uimage,
 	app-admin/syslog-ng,
 	app-admin/sudo,
 	app-arch/xarchiver,
 	app-editors/leafpad,
-	app-misc/sabayonlive-tools,
+	app-misc/rogentos-live,
 	app-misc/sabayon-skel,
 	app-office/abiword,
 	app-office/gnumeric,
@@ -25,7 +26,7 @@ packages_to_add:
 	sys-auth/consolekit,
 	sys-block/parted,
 	sys-fs/ntfs3g,
-	sys-kernel/linux-panda,
+	sys-kernel/linux-sabayon,
 	sys-process/vixie-cron,
 	x11-base/xorg-server,
 	x11-drivers/xf86-input-evdev,

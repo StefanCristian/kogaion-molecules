@@ -1,11 +1,15 @@
-#! /bin/sh
+#! /bin/bash
 # (c) Copyright 2012 Fabio Erculiani <lxnay@sabayon.org>
 # Licensed under terms of GPLv2
 
 env-update
 . /etc/profile
 
-export LC_ALL=C
+export LC_ALL=en_US.UTF-8
+
+# Path to molecules.git dir
+ROGENTOS_MOLECULE_HOME="${ROGENTOS_MOLECULE_HOME:-/sabayon}"
+export ROGENTOS_MOLECULE_HOME
 
 # Expected env variables:
 # PATHS_TO_REMOVE = ";" separated list of paths to rm -rf
@@ -35,13 +39,15 @@ BOOT_DIR="${4}"
 CHROOT_DIR="${5}"
 # Should we make a tarball of the rootfs and bootfs?
 MAKE_TARBALL="${MAKE_TARBALL:-1}"
+SD_FUSE="${SD_FUSE:-}"
 # Boot partition type
 BOOT_PART_TYPE="${BOOT_PART_TYPE:-vfat}"
 BOOT_PART_TYPE_MBR="${BOOT_PART_TYPE_MBR:-0x0C}"
 BOOT_PART_MKFS_ARGS="${BOOT_PART_MKFS_ARGS:--n boot -F 32}"
+FIRST_PARTITION_OFFSET="${FIRST_PARTITION_OFFSET:-0}"
 # Root partition type
 ROOT_PART_TYPE="${ROOT_PART_TYPE:-ext3}"
-ROOT_PART_MKFS_ARGS="${ROOT_PART_MKFS_ARGS:--L Sabayon}"
+ROOT_PART_MKFS_ARGS="${ROOT_PART_MKFS_ARGS:--L Rogentos}"
 # Copy /boot content from Root partition to Boot partition?
 BOOT_PART_TYPE_INSIDE_ROOT="${BOOT_PART_TYPE_INSIDE_ROOT:-}"
 
@@ -60,14 +66,13 @@ cleanup_loopbacks() {
 	[[ -n "${root_part}" ]] && losetup -d "${root_part}" 2> /dev/null
 	[[ -n "${DRIVE}" ]] && losetup -d "${DRIVE}" 2> /dev/null
 	# make sure to have run this
-	[[ -n "${tmp_dir}" ]] && CHROOT_DIR="${tmp_dir}" /sabayon/scripts/mmc_remaster_post.sh
+	[[ -n "${tmp_dir}" ]] && CHROOT_DIR="${tmp_dir}" "${ROGENTOS_MOLECULE_HOME}"/scripts/mmc_remaster_post.sh
 }
 trap "cleanup_loopbacks" 1 2 3 6 9 14 15 EXIT
 
 # Erase the file
 echo "Generating the empty image file at ${FILE}"
-dd if=/dev/zero of="${FILE}" bs=1024000 count="${SIZE}"
-[[ "$?" != "0" ]] && exit 1
+dd if=/dev/zero of="${FILE}" bs=1024000 count="${SIZE}" || exit 1
 
 DRIVE=$(losetup -f "${FILE}" --show)
 if [ -z "${DRIVE}" ]; then
@@ -82,7 +87,7 @@ SIZE=$(fdisk -l "${DRIVE}" | grep Disk | grep bytes | awk '{print $5}')
 CYLINDERS=$((SIZE/255/63/512))
 # Magic first partition size, given 9 cylinders below
 MAGICSIZE="73995264"
-STARTOFFSET="32256"
+STARTOFFSET=$(( 32256 + FIRST_PARTITION_OFFSET ))
 
 echo "Disk size    : ${SIZE} bytes"
 echo "Disk cyls    : ${CYLINDERS}"
@@ -95,7 +100,7 @@ echo "Start offset : ${STARTOFFSET} bytes"
 {
 echo ,9,${BOOT_PART_TYPE_MBR},*
 echo ,,,-
-} | sfdisk -D -H 255 -S 63 -C $CYLINDERS $DRIVE
+} | sfdisk -D -H 255 -S 63 -C ${CYLINDERS} ${DRIVE}
 
 sleep 2
 
@@ -159,10 +164,10 @@ mount "${root_part}" "${tmp_dir}"
 rsync -a -H -A -X --delete-during "${CHROOT_DIR}"/ "${tmp_dir}"/ --exclude "/proc/*" --exclude "/sys/*" \
 	--exclude "/dev/pts/*" --exclude "/dev/shm/*" || exit 1
 
-CHROOT_DIR="${tmp_dir}" /sabayon/scripts/remaster_pre.sh || exit 1
+CHROOT_DIR="${tmp_dir}" "${ROGENTOS_MOLECULE_HOME}"/scripts/remaster_pre.sh || exit 1
 
 # Configure 00-board-setup.start
-source_board_setup="/sabayon/boot/arm_startup/00-board-setup.start"
+source_board_setup="${ROGENTOS_MOLECULE_HOME}/boot/arm_startup/00-board-setup.start"
 dest_board_setup="${CHROOT_DIR}/etc/local.d/00-board-setup.start"
 if [ -f "${source_board_setup}" ]; then
 	echo "Setting up ${dest_board_setup}"
@@ -204,14 +209,14 @@ chown root "${target_chroot_script}" || exit 1
 chroot "${tmp_dir}" "/${chroot_script_name}" || exit 1
 rm -f "${target_chroot_script}"
 
-CHROOT_DIR="${tmp_dir}" /sabayon/scripts/mmc_remaster_post.sh
+CHROOT_DIR="${tmp_dir}" "${ROGENTOS_MOLECULE_HOME}"/scripts/mmc_remaster_post.sh
 
 # execute final cleanup of entropy stuff
 chroot "${tmp_dir}" equo rescue vacuum
 
 # setup sudoers, enable wheel group
 if [ -f "${tmp_dir}/etc/sudoers" ]; then
-	echo "# added by Sabayon Molecule" >> "${tmp_dir}/etc/sudoers"
+	echo "# added by Rogentos Molecule" >> "${tmp_dir}/etc/sudoers"
 	echo "%wheel  ALL=ALL" >> "${tmp_dir}/etc/sudoers"
 fi
 
@@ -269,6 +274,10 @@ if [ -n "${DESTINATION_IMAGE_DIR}" ] && [ "${MAKE_TARBALL}" = "1" ]; then
 fi
 
 umount "${tmp_dir}" || exit 1
+
+if [ -n "${SD_FUSE}" ] && [ -x "${SD_FUSE}" ]; then
+	"${SD_FUSE}" "${DRIVE}" || exit 1
+fi
 
 cleanup_loopbacks
 echo "Your MMC image \"${FILE}\" is ready"

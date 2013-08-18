@@ -3,55 +3,80 @@
 /usr/sbin/env-update
 . /etc/profile
 
-
 # make sure there is no stale pid file around that prevents entropy from running
 rm -f /var/run/entropy/entropy.lock
 
+# disable all mirrors but GARR
+#for repo_conf in /etc/entropy/repositories.conf.d/entropy_*; do
+	# skip .example files
+	#if [[ "${repo_conf}" =~ .*\.example$ ]]; then
+		#echo "skipping ${repo_conf}"
+		#continue
+	#fi
+	#sed -n -e "/^pkg = .*pkg.sabayon.org/p" -e "/^repo = .*pkg.sabayon.org/p" \
+		#-e "/garr.it/p" -e "/^\[.*\]$/p" -i "${repo_conf}"
+
+	# replace pkg.sabayon.org with pkg.repo.sabayon.org to improve
+	# build server locality
+	#sed -i "s;http://pkg.sabayon.org;http://pkg.repo.sabayon.org;g" "${repo_conf}"
+#done
+
+if [ -f "/etc/entropy/repositories.conf.d/entropy_sabayonlinux.org.example" ]; then
+        mv "${EREPO}/entropy_sabayonlinux.org.example" "${EREPO}/entropy_sabayonlinux.org"
+fi
+	
+if [ -f "${EREPO}/entropy_sabayon-weekly" ]; then
+	mv "${EREPO}/entropy_sabayon-weekly" "${EREPO}/entropy_sabayon-weekly.example"
+fi
+
+export FORCE_EAPI=2
+
 LOC=$(pwd)
 EREPO=/etc/entropy/repositories.conf.d
+if [ -f "/etc/entropy/repositories.conf.d/entropy_sabayonlinux.org.example" ]; then
+        mv "${EREPO}/entropy_sabayonlinux.org.example" "${EREPO}/entropy_sabayonlinux.org"
+fi
+
+if [ -f "${EREPO}/entropy_sabayon-weekly" ]; then
+        mv "${EREPO}/entropy_sabayon-weekly" "${EREPO}/entropy_sabayon-weekly.example"
+fi
+
 cd "$EREPO"
 wget http://pkg.rogentos.ro/~rogentos/distro/entropy_rogentoslinux
 equo repo mirrorsort rogentoslinux
 equo repo mirrorsort sabayonlinux.org
-if [ -f "/etc/entropy/repositories.conf.d/entropy_sabayonlinux.org.example" ]; then
-	mv "${EREPO}/entropy_sabayonlinux.org.example" "${EREPO}/entropy_sabayonlinux.org"
-fi
-if [ -f "${EREPO}/entropy_sabayon-weekly" ]; then
-	mv "${EREPO}/entropy_sabayon-weekly" "${EREPO}/entropy_sabayon-weekly.example"
-fi
-cd $LOC
-
-export FORCE_EAPI=2
+equo update
 
 updated=0
-for ((i=0; i < 6; i++)); do
-		equo update && {
-				updated=1;
-				break;
-		}
+for ((i=0; i < 42; i++)); do
+	equo update && {
+		updated=1;
+		break;
+	}
+	if [ ${i} -gt 6 ]; then
+		sleep 3600 || exit 1
+	else
 		sleep 1200 || exit 1
+	fi
 done
-
 if [ "${updated}" = "0" ]; then
-		exit 1
+	exit 1
 fi
 
-# disable all mirrors but GARR
-for repo_conf in /etc/entropy/repositories.conf /etc/entropy/repositories.conf.d/entropy_sab*; do
-	# skip .example files
-	if [[ "${repo_conf}" =~ .*\.example$ ]]; then
-		echo "skipping ${repo_conf}"
-		continue
-	fi
-	sed -n -e "/pkg.sabayon.org/p" -e "/garr.it/p" -e "/^branch/p" \
-		-e "/^product/p" -e "/^official-repository-id/p" -e "/^differential-update/p" \
-		-i "${repo_conf}"
-done
+eselect kernel list
+equo query installed linux-sabayon
 
-equo mask sabayon-skel sabayon-version sabayon-artwork-grub
-equo remove sabayon-artwork-grub sabayon-artwork-core sabayon-artwork-isolinux sabayon-version sabayon-skel sabayonlive-tools grub --nodeps
+echo Yes | kernel-switcher switch linux-sabayon#$(equo search nvidia-drivers | grep sabayon | awk '{print $3}' | grep "sabayon" | sed 's/0,//g' | tail -1 | head -1) -pv
+
+equo mask sabayon-skel sabayon-version sabayon-artwork-grub sabayon-live
+equo remove sabayon-artwork-grub sabayon-artwork-core sabayon-artwork-isolinux sabayon-version sabayon-skel sabayon-live sabayonlive-tools grub sabayon-artwork-gnome --nodeps
 emerge -C sabayon-version
-equo mask sabayon-version 
+equo mask sabayon-version
+
+for SRV in nvidia-drivers ati-drivers virtualbox-bin virtualbox-modules virtualbox-guest-additions vmware-modules broadcom-sta vhba acpi_call bbswitch xf86-video-virtualbox; do
+        WW="#"
+	equo mask $SRV"${WW}"$(equo search ati-drivers | grep server | awk '{print $3}' | grep "server" | sed 's/1,//g' | tail -1 | head -1)
+done
 
 for PKG in openrc grub gnome-colors-common lxdm anaconda anaconda-runtime; do
 equo mask $PKG@sabayonlinux.org
@@ -59,7 +84,9 @@ equo mask $PKG@sabayon-limbo
 equo mask $PKG@sabayon-weekly
 done
 
-echo ">=sys-apps/openrc-0.9@sabayon-limbo
+mkdir -p /etc/entropy/packages/package.mask.d/
+
+REPLACEMENT=">=sys-apps/openrc-0.9@sabayon-limbo
 >=sys-apps/openrc-0.9@sabayonlinux.org
 >=sys-apps/openrc-0.9@sabayon-weekly
 
@@ -105,4 +132,7 @@ echo ">=sys-apps/openrc-0.9@sabayon-limbo
 
 >=app-misc/anaconda-runtime-1.1-r1@sabayon-weekly
 >=app-misc/anaconda-runtime-1.1-r1@sabayonlinux.org
->=app-misc/anaconda-runtime-1.1-r1@sabayon-limbo" >> /etc/entropy/packages/package.mask
+>=app-misc/anaconda-runtime-1.1-r1@sabayon-limbo"
+
+echo $REPLACEMENT >> /etc/entropy/packages/package.mask
+echo $REPLACEMENT >> /etc/entropy/packages/package.mask.d/package.mask
