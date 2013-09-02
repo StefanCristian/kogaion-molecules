@@ -7,7 +7,8 @@ if [ -f "/etc/systemd/system/multi-user.target.wants/sabayonlive.service" ] || [
         echo "By hell, it's a Sabayon service"
         rm /etc/systemd/system/multi-user.target.wants/sabayonlive.service
         rm /usr/lib/systemd/system/sabayonlive.service
-        rm /usr/libexec/installer-*
+	rm /usr/lib64/systemd/system/sabayonlive.service
+	rm /usr/libexec/installer-*
         rm /usr/libexec/sabayonlive.sh
         rm /sbin/sabayon-functions.sh
         rm /usb/bin/sabayon*
@@ -380,8 +381,9 @@ rog=rogentos-artwork
 
 sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="lightdm"/g' /etc/conf.d/xdm
 /usr/bin/systemctl --no-reload enable -f "lightdm.service"
-/usr/bin/systemctl enable lightdm
-sd_graph_enable lightdm
+#/usr/bin/systemctl enable lightdm
+/usr/bin/systemctl disable sabayonlive
+#sd_graph_enable lightdm
 
 echo "Entering folder $localz"
 equo remove anaconda --nodeps
@@ -411,6 +413,7 @@ echo "Use kernel-schimbare --help to change the kernels"
 
 setup_installed_packages() {
 	rogentos_install
+	switch_kernel
 	# Update package list
 	equo query list installed -qv > /etc/rogentos-pkglist
 	echo -5 | equo conf update
@@ -558,8 +561,18 @@ setup_startup_caches
 
 equo query installed linux-sabayon
 eselect kernel list
+eselect bzimage list
 equo remove sabayon-artwork-core --configfiles
-equo install rogentos-artwork-core
+
+plymouth-set-default-theme rogentos
+
+zcat /proc/config.gz > /usr/src/config
+genkernel --splash=rogentos --luks initramfs
+
+equo remove --force-system =sys-devel/$(equo query installed sys-devel/gcc | grep "Package" | awk '{ print $4 }' | cut -d "/" -f 2 | head -1) --configfiles
+equo remove ati-drivers ati-userspace nvidia-drivers nvidia-userspace --configfiles
+eselect opengl set 1
+userdel ldap
 
 rm /var/lib/entropy/logs -rf
 rm -rf /var/lib/entropy/*cache*

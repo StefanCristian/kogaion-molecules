@@ -567,4 +567,6 @@ setup_installed_packages
 setup_portage
 setup_startup_caches
 
+genkernel --splash=rogentos --disklabel --luks initramfs
+
 exit 0

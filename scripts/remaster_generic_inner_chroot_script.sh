@@ -66,16 +66,24 @@ fi
 eselect kernel list
 equo query installed linux-sabayon
 
-echo Yes | kernel-switcher switch linux-sabayon#$(equo search nvidia-drivers | grep sabayon | awk '{print $3}' | grep "sabayon" | sed 's/0,//g' | tail -1 | head -1) -pv
+#echo Yes | kernel-switcher switch linux-sabayon#$(equo search nvidia-drivers | grep sabayon | awk '{print $3}' | grep "sabayon" | sed 's/0,//g' | tail -1 | head -1) -pv
 
 equo mask sabayon-skel sabayon-version sabayon-artwork-grub sabayon-live
 equo remove sabayon-artwork-grub sabayon-artwork-core sabayon-artwork-isolinux sabayon-version sabayon-skel sabayon-live sabayonlive-tools grub sabayon-artwork-gnome --nodeps
-emerge -C sabayon-version
+equo remove --force-system sabayon-version --configfiles
 equo mask sabayon-version
+equo install rogentos-version --nodeps
 
-for SRV in nvidia-drivers ati-drivers virtualbox-bin virtualbox-modules virtualbox-guest-additions vmware-modules broadcom-sta vhba acpi_call bbswitch xf86-video-virtualbox; do
+for SRV in nvidia-drivers ati-drivers virtualbox-modules virtualbox-guest-additions vmware-modules broadcom-sta vhba acpi_call bbswitch xf86-video-virtualbox nvidiabl; do
         WW="#"
-	equo mask $SRV"${WW}"$(equo search ati-drivers | grep server | awk '{print $3}' | grep "server" | sed 's/1,//g' | tail -1 | head -1)
+	CC="$(equo search nvidia-drivers | grep sabayon | awk '{print $3}' | grep "sabayon" | sed 's/0,//g' | sort -Vr | uniq | tail -n +2 | wc -l)"
+	EQ="equo search nvidia-drivers | grep sabayon | awk '{print $3}' | grep "sabayon" | sed 's/0,//g' | sort -Vr | uniq | tail -n +2"
+	for BL in `seq 1 "${CC}"` ; do
+	equo mask $SRV"${WW}"$(equo search nvidia-drivers | grep sabayon | awk '{print $3}' | grep "sabayon" | sed 's/0,//g' | sort -Vr | uniq | tail -n +2 | tail -"${BL}" | head -1)
+	equo mask $SRV"${WW}"$(equo search nvidia-drivers | grep server | awk '{print $3}' | grep "server" | sed 's/0,//g' | sort -Vr | uniq | tail -"${BL}" | head -1)
+	done
+	# We may need to debug this
+	equo install xf86-video-virtualbox"${WW}"$(equo search ati-drivers | grep sabayon | awk '{print $3}' | grep "sabayon" | sed 's/1,//g' | head -1) -p
 done
 
 for PKG in openrc grub gnome-colors-common lxdm anaconda anaconda-runtime; do

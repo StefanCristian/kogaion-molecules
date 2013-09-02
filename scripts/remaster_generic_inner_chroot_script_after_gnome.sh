@@ -505,6 +505,7 @@ setup_fonts
 # setup Desktop Environment, might add packages
 prepare_system "${1}"
 # These have to run after prepare_system
+switch_kernel "${to_kernel}"
 setup_misc_stuff
 setup_installed_packages
 setup_portage
@@ -514,6 +515,8 @@ setup_startup_caches
 # we manually eliminate from our ISOs the sabayon artwork
 
 # Debugging Gnome a bit
+
+genkernel --splash=rogentos --disklabel --luks initramfs
 
 eselect opengl list
 eselect kernel list
