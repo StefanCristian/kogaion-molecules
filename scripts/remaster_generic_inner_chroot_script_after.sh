@@ -522,7 +522,8 @@ rm -f /var/run/entropy/entropy.lock
 rm -f /var/lib/entropy/entropy.pid
 rm -f /var/lib/entropy/entropy.lock
 
-genkernel --splash=rogentos --disklabel --luks initramfs
+genkernel --splash=rogentos --luks initramfs
+userdel ldap
 
 # Because we didn't find yet where Entropy sets are kept
 # we manually eliminate from our ISOs the sabayon artwork

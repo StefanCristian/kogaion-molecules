@@ -622,7 +622,7 @@ rm -f /var/lib/entropy/entropy.pid
 rm -f /var/lib/entropy/entropy.lock
 emaint --fix world
 
-genkernel --splash=rogentos --disklabel --luks initramfs
+genkernel --splash=rogentos --luks initramfs
 userdel ldap
 
 exit 0

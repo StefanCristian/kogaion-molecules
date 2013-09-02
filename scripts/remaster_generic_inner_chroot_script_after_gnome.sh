@@ -516,7 +516,8 @@ setup_startup_caches
 
 # Debugging Gnome a bit
 
-genkernel --splash=rogentos --disklabel --luks initramfs
+genkernel --splash=rogentos --luks initramfs
+userdel ldap
 
 eselect opengl list
 eselect kernel list
