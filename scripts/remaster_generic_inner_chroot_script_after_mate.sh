@@ -3,6 +3,8 @@
 /usr/sbin/env-update
 . /etc/profile
 
+find . -iname "*sabayonlive*" -exec rm -rf '{}' \;
+
 if [ -f "/etc/systemd/system/multi-user.target.wants/sabayonlive.service" ] || [ -f "/usr/libexec/sabayonlive.sh" ] ; then
         echo "By hell, it's a Sabayon service"
         rm /etc/systemd/system/multi-user.target.wants/sabayonlive.service
@@ -570,7 +572,7 @@ zcat /proc/config.gz > /usr/src/config
 genkernel --splash=rogentos --luks initramfs
 
 equo remove --force-system =sys-devel/$(equo query installed sys-devel/gcc | grep "Package" | awk '{ print $4 }' | cut -d "/" -f 2 | head -1) --configfiles
-equo remove ati-drivers ati-userspace nvidia-drivers nvidia-userspace --configfiles
+equo remove ati-drivers ati-userspace nvidia-drivers nvidia-userspace nvidiabl bbswitch virtualgl bumblebee --configfiles
 eselect opengl set 1
 userdel ldap
 

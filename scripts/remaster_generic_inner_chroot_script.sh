@@ -69,19 +69,27 @@ equo query installed linux-sabayon
 #echo Yes | kernel-switcher switch linux-sabayon#$(equo search nvidia-drivers | grep sabayon | awk '{print $3}' | grep "sabayon" | sed 's/0,//g' | tail -1 | head -1) -pv
 
 equo mask sabayon-skel sabayon-version sabayon-artwork-grub sabayon-live
-equo remove sabayon-artwork-grub sabayon-artwork-core sabayon-artwork-isolinux sabayon-version sabayon-skel sabayon-live sabayonlive-tools grub sabayon-artwork-gnome --nodeps
+equo remove sabayon-artwork-grub sabayon-artwork-core sabayon-artwork-isolinux sabayon-version sabayon-skel sabayon-live sabayonlive-tools sabayon-live grub sabayon-artwork-gnom --nodeps
+#equo remove linux-sabayon:$(eselect kernel list | grep "*" | awk '{print $2}' | cut -d'-' -f2) --nodeps --configfiles
+equo remove linux-sabayon --nodeps --configfiles
 equo remove --force-system sabayon-version --configfiles
 equo mask sabayon-version
 equo install rogentos-version --nodeps
 
-for SRV in nvidia-drivers ati-drivers virtualbox-modules virtualbox-guest-additions vmware-modules broadcom-sta vhba acpi_call bbswitch xf86-video-virtualbox nvidiabl; do
+for SRV in zfs-kmod sys-kernel/spl nvidia-drivers ati-drivers virtualbox-modules virtualbox-guest-additions vmware-modules broadcom-sta vhba acpi_call bbswitch xf86-video-virtualbox nvidiabl; do
         WW="#"
-	CC="$(equo search nvidia-drivers | grep sabayon | awk '{print $3}' | grep "sabayon" | sed 's/0,//g' | sort -Vr | uniq | tail -n +2 | wc -l)"
+	CC1="$(equo search nvidia-drivers | grep sabayon | awk '{print $3}' | grep "sabayon" | sed 's/0,//g' | sort -Vr | uniq | tail -n +1 | wc -l)"
+	CC="$(equo search nvidia-drivers | grep sabayon | awk '{print $3}' | grep "sabayon" | sed 's/0,//g' | sort -Vr | uniq | tail -n +4 | wc -l)"
+	EQ1="$(equo search nvidia-drivers | grep sabayon | awk '{print $3}' | grep "sabayon" | sed 's/0,//g' | sort -Vr | uniq | head -1)"
+	EQ2="$(equo search nvidia-drivers | grep sabayon | awk '{print $3}' | grep "sabayon" | sed 's/0,//g' | sort -Vr | uniq | head -2 | tail -1)"
 	EQ="equo search nvidia-drivers | grep sabayon | awk '{print $3}' | grep "sabayon" | sed 's/0,//g' | sort -Vr | uniq | tail -n +2"
 	for BL in `seq 1 "${CC}"` ; do
 	equo mask $SRV"${WW}"$(equo search nvidia-drivers | grep sabayon | awk '{print $3}' | grep "sabayon" | sed 's/0,//g' | sort -Vr | uniq | tail -n +2 | tail -"${BL}" | head -1)
 	equo mask $SRV"${WW}"$(equo search nvidia-drivers | grep server | awk '{print $3}' | grep "server" | sed 's/0,//g' | sort -Vr | uniq | tail -"${BL}" | head -1)
 	done
+	equo mask $SRV"${WW}"${EQ1}
+	equo mask $SRV"${WW}"${EQ2}
+	equo mask $SRV"${WW}"$(equo search nvidia-drivers | grep sabayon | awk '{print $3}' | grep "sabayon" | sed 's/0,//g' | sort -Vr | uniq | head -2 | tail -1)
 	# We may need to debug this
 	equo install xf86-video-virtualbox"${WW}"$(equo search ati-drivers | grep sabayon | awk '{print $3}' | grep "sabayon" | sed 's/1,//g' | head -1) -p
 done

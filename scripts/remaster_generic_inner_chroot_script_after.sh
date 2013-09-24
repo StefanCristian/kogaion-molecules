@@ -7,6 +7,8 @@ SYSERV="/usr/lib/systemd/system"
 ESYSERV="/etc/systemd/system/display-manager.service"
 GSYSERV="/etc/systemd/system/graphical.target.wants"
 
+find . -iname "*sabayonlive*" -exec rm -rf '{}' \;
+
 if [ -f "/etc/systemd/system/multi-user.target.wants/sabayonlive.service" ] || [ -f "/usr/libexec/sabayonlive.sh" ] ; then
         echo "By hell, it's a Sabayon service"
         rm /etc/systemd/system/multi-user.target.wants/sabayonlive.service
@@ -19,6 +21,8 @@ if [ -f "/etc/systemd/system/multi-user.target.wants/sabayonlive.service" ] || [
         else
         echo "There are no such files"
 fi
+
+equo remove linux-sabayon:3."$(eselect kernel list | grep "*" | awk '{print $2}' | cut -d'-' -f2 | cut -d'.' -f2)" --nodeps
 
 _get_kernel_tag() {
 	local kernel_ver="$(equo match --installed -qv virtual/linux-binary | cut -d/ -f 2)"
