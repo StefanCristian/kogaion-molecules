@@ -18,6 +18,6 @@ parameters below. Moreover, you can tune the system to behave in different ways.
 0fpci=noacpi07 --> Disable ACPI for PCI maps (HP servers and VIA chipsets)
 0ffloppy.floppy=thinkpad07 --> For some IBM ThinkPads
 0fvga=77107 --> Laptops with screen display problems
-
+^O0fxdriver=vesa^O07 -- > Needed by some Nvidia Optimus Graphics Cards
 
 Press F1control and F then 1 for the help index, or ENTER to 
