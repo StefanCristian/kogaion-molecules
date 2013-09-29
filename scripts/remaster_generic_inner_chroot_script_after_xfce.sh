@@ -8,7 +8,9 @@ AMDSYSERV="/usr/lib64/systemd/system"
 ESYSERV="/etc/systemd/system/display-manager.service"
 GSYSERV="/etc/systemd/system/graphical.target.wants"
 
-find . -iname "*sabayonlive*" -exec rm -rf '{}' \;
+find /etc -iname "*sabayonlive*" -exec rm -rf '{}' \;
+find /var -iname "*sabayonlive*" -exec rm -rf '{}' \;
+find /usr -iname "*sabayonlive*" -exec rm -rf '{}' \;
 
 if [ -f "/etc/systemd/system/multi-user.target.wants/sabayonlive.service" ] || [ -f "/usr/libexec/sabayonlive.sh" ] ; then
 	echo "By hell, it's a Sabayon service"
