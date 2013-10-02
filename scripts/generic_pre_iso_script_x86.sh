@@ -101,10 +101,12 @@ fi
 # copy back.jpg to proper location
 isolinux_img="/sabayon/boot/core/isolinux/back.jpg"
 syslinux_img="/sabayon/boot/core/syslinux/back.jpg"
+syslinux_dir="/sabayon/boot/core/syslinux/"
 if [ -f "${isolinux_img}" ]; then
 	mkdir -p "${CDROOT_DIR}/isolinux/"
         cp "${isolinux_img}" "${CDROOT_DIR}/isolinux/" || exit 1
 	mkdir -p "${CDROOT_DIR}/syslinux/"
+	cp -R "${syslinux_dir}"/* "${CDROOT_DIR}/syslinux" || exit 1
         cp "${syslinux_img}" "${CDROOT_DIR}/syslinux/" || exit 1
 fi
 
