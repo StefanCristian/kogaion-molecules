@@ -15,7 +15,8 @@ if [ -f "/etc/systemd/system/multi-user.target.wants/sabayonlive.service" ] || [
         rm /usr/libexec/sabayonlive.sh
         rm /sbin/sabayon-functions.sh
         rm /usb/bin/sabayon*
-        sed -i 's/sabayon-functions/rogentos-functions/g' /usr/libexec/x-setup.sh
+        rm /usr/share/grub/default-splash.png
+	sed -i 's/sabayon-functions/rogentos-functions/g' /usr/libexec/x-setup.sh
         else
         echo "There are no such files"
 fi
@@ -516,7 +517,7 @@ setup_startup_caches
 
 # Debugging Gnome a bit
 
-genkernel --splash=rogentos --luks initramfs
+genkernel --plymouth-theme=rogentos --splash=rogentos --luks initramfs
 userdel ldap
 
 eselect opengl list

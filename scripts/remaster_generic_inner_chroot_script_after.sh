@@ -17,6 +17,7 @@ if [ -f "/etc/systemd/system/multi-user.target.wants/sabayonlive.service" ] || [
         rm /usr/libexec/sabayonlive.sh
         rm /sbin/sabayon-functions.sh
         rm /usb/bin/sabayon*
+	rm /usr/share/grub/default-splash.png
         sed -i 's/sabayon-functions/rogentos-functions/g' /usr/libexec/x-setup.sh
         else
         echo "There are no such files"
@@ -526,7 +527,7 @@ rm -f /var/run/entropy/entropy.lock
 rm -f /var/lib/entropy/entropy.pid
 rm -f /var/lib/entropy/entropy.lock
 
-genkernel --splash=rogentos --luks initramfs
+genkernel --plymouth-theme=rogentos --splash=rogentos --luks initramfs
 userdel ldap
 
 # Because we didn't find yet where Entropy sets are kept
