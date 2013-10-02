@@ -13,6 +13,19 @@ grub_source="${ROGENTOS_MOLECULE_HOME}/remaster/minimal_grub.cfg"
 isolinux_destination="${CDROOT_DIR}/isolinux/txt.cfg"
 grub_destination="${CDROOT_DIR}/boot/grub/grub.cfg"
 
+isolinux_img="/sabayon/boot/core/isolinux/back.jpg"
+isolinux_dir="/sabayon/boot/core/isolinux/"
+syslinux_img="/sabayon/boot/core/syslinux/back.jpg"
+syslinux_dir="/sabayon/boot/core/syslinux/"
+if [ -f "${isolinux_img}" ]; then
+        mkdir -p "${CDROOT_DIR}/isolinux/"
+        cp "${isolinux_img}" "${CDROOT_DIR}/isolinux/" || exit 1
+        cp -R "${isolinux_dir}"/* "${CDROOT_DIR}/isolinux/" || exit 1
+	mkdir -p "${CDROOT_DIR}/syslinux/"
+        cp -R "${syslinux_dir}"/* "${CDROOT_DIR}"/syslinux || exit
+        cp "${syslinux_img}" "${CDROOT_DIR}/syslinux/" || exit 1
+fi
+
 rm "${CDROOT_DIR}/autorun.inf"
 rm "${CDROOT_DIR}/sabayon.ico"
 rm "${CDROOT_DIR}/sabayon.bat"
@@ -99,16 +112,16 @@ if [ -f "${rogentos_pkgs_file}" ]; then
 fi
 
 # copy back.jpg to proper location
-isolinux_img="/sabayon/boot/core/isolinux/back.jpg"
-syslinux_img="/sabayon/boot/core/syslinux/back.jpg"
-syslinux_dir="/sabayon/boot/core/syslinux/"
-if [ -f "${isolinux_img}" ]; then
-	mkdir -p "${CDROOT_DIR}/isolinux/"
-        cp "${isolinux_img}" "${CDROOT_DIR}/isolinux/" || exit 1
-	mkdir -p "${CDROOT_DIR}/syslinux/"
-	cp -R "${syslinux_dir}"/* "${CDROOT_DIR}/syslinux" || exit 1
-        cp "${syslinux_img}" "${CDROOT_DIR}/syslinux/" || exit 1
-fi
+#isolinux_img="/sabayon/boot/core/isolinux/back.jpg"
+#syslinux_img="/sabayon/boot/core/syslinux/back.jpg"
+#syslinux_dir="/sabayon/boot/core/syslinux/"
+#if [ -f "${isolinux_img}" ]; then
+	#mkdir -p "${CDROOT_DIR}/isolinux/"
+        #cp "${isolinux_img}" "${CDROOT_DIR}/isolinux/" || exit 1
+	#mkdir -p "${CDROOT_DIR}/syslinux/"
+	#cp -R "${syslinux_dir}"/* "${CDROOT_DIR}"/syslinux || exit
+        #cp "${syslinux_img}" "${CDROOT_DIR}/syslinux/" || exit 1
+#fi
 
 rm "${CDROOT_DIR}"/sabayon
 rm "${CDROOT_DIR}"/sabayon.igz
