@@ -70,7 +70,7 @@ packages_to_add:
 	media-fonts/corefonts,
 	media-plugins/alsa-plugins,
 	net-dialup/rp-pppoe,
-	net-irc/hexchat,
+	net-irc/hehexchat,
 	x11-libs/gksu,
 	sys-apps/gnome-disk-utility,
 	sys-apps/gpu-detector,
