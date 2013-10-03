@@ -54,6 +54,7 @@ packages_to_add:
 	@fluxbox,
 	app-admin/rigo,
 	app-admin/kernel-schimbare,
+	app-admin/rose-installer,
 	app-emulation/virtualbox-modules,
 	app-emulation/virtualbox-guest-additions,
 	app-misc/rogentos-skel,
