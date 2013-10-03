@@ -8,7 +8,7 @@ packages_to_add:
 	@fluxbox,
 	app-laptop/nvidiabl,
 	app-misc/rogentos-skel,
-	app-misc/rogentoslive-tools,
+	app-misc/rogentos-live,
 	app-misc/anaconda-runtime-gui,
 	dev-python/libgnomecanvas-python,
 	media-fonts/ttf-bitstream-vera,

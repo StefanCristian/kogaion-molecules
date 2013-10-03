@@ -6,10 +6,10 @@ execution_strategy: iso_remaster
 release_string: Rogentos Linux
 
 # File to write release string
-release_file: /etc/sabayon-edition
+release_file: /etc/rogentos-edition
 
 # ISO Image title
-iso_title: Rogentos MATE
+iso_title: Kogaion MATE
 
 # Enable XZ compression in mksquashfs
 extra_mksquashfs_parameters: -comp xz -Xbcj x86
@@ -23,7 +23,7 @@ extra_mksquashfs_parameters: -comp xz -Xbcj x86
 
 # Inner chroot script command, to be executed inside destination chroot after
 # packages installation and removal
-%env inner_chroot_script_after: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/remaster_generic_inner_chroot_script_after.sh mate
+%env inner_chroot_script_after: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/remaster_generic_inner_chroot_script_after_mate.sh mate
 
 # Outer chroot script command, to be executed outside destination chroot before
 # before entering it (and AFTER inner_chroot_script)
@@ -33,12 +33,12 @@ extra_mksquashfs_parameters: -comp xz -Xbcj x86
 %env error_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/remaster_error_script.sh
 
 # Extra mkisofs parameters, perhaps something to include/use your bootloader
-extra_mkisofs_parameters: -b isolinux/isolinux.bin -c isolinux/boot.cat -eltorito-alt-boot -no-emul-boot -eltorito-platform efi -eltorito-boot boot/grub/efi.img
+#extra_mkisofs_parameters: -b isolinux/isolinux.bin -c isolinux/boot.cat -eltorito-alt-boot -no-emul-boot -eltorito-platform efi -eltorito-boot boot/grub/efi.img
 
 # Pre-ISO building script. Hook to be able to copy kernel images in place, for example
-%env pre_iso_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/generic_pre_iso_script.sh MATE
+%env pre_iso_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/generic_pre_iso_script_x86.sh MATE
 
-# Post-ISO building script, called after ISO image generation.
+# Post-ISO building script, called after ISO image generation.    
 %env post_iso_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/generic_post_iso_script.sh
 
 # Destination directory for the ISO image path (MANDATORY)
@@ -48,34 +48,51 @@ extra_mkisofs_parameters: -b isolinux/isolinux.bin -c isolinux/boot.cat -eltorit
 packages_to_remove:
 	www-client/lynx
 
-# Import the Graphic Environment module.
-%env %import ${ROGENTOS_MOLECULE_HOME:-/sabayon}/molecules/graphic-environment.common
-
 # List of packages that would be added from chrooted system (comma separated)
 packages_to_add:
-	@wireless,
+	@X,
+	@fluxbox,
 	app-admin/rigo,
+	app-admin/kernel-schimbare,
+	app-emulation/virtualbox-modules,
+	app-emulation/virtualbox-guest-additions,
+	app-misc/rogentos-skel,
+	app-misc/rogentos-live,
 	app-crypt/gnupg,
 	app-crypt/pinentry-gtk2,
+	app-misc/anaconda-runtime,
+	app-misc/anaconda-runtime-gui,
 	app-text/pastebunz,
 	gnome-extra/nm-applet-gtk2,
 	mate-base/mate,
+	media-fonts/ttf-bitstream-vera,
+	media-fonts/dejavu,
+	media-fonts/corefonts,
 	media-plugins/alsa-plugins,
-	media-sound/audacious,
 	net-dialup/rp-pppoe,
 	net-irc/hexchat,
-	net-p2p/transmission-gtk,
 	x11-libs/gksu,
 	sys-apps/gnome-disk-utility,
+	sys-apps/gpu-detector,
 	sys-auth/consolekit,
 	sys-block/parted,
+	sys-devel/gcc,
 	sys-fs/ntfs3g,
+	sys-fs/zfs,
+	sys-kernel/genkernel-next,
 	sys-power/cpufrequtils,
-	www-client/chromium,
+	www-client/midori,
+	x11-drivers/xf86-video-virtualbox,
 	x11-misc/magneto-gtk,
 	x11-misc/lightdm-base,
 	x11-misc/lightdm-gtk-greeter,
+	x11-themes/kogaion-light-theme,
+	x11-themes/kogaion-dark-theme,
+	x11-themes/equinox-themes,
 	x11-themes/gnome-themes-standard
+
+# x11-themes/rogentos-artwork-gnome:
+# provides the gtk theme for lxdm
 
 # Custom shell call to packages add (default is: equo install)
 # custom_packages_add_cmd: 

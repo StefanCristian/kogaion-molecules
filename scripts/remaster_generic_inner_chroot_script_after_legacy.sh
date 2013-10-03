@@ -3,6 +3,23 @@
 /usr/sbin/env-update
 . /etc/profile
 
+SYSERV="/usr/lib/systemd/system"
+ESYSERV="/etc/systemd/system/display-manager.service"
+GSYSERV="/etc/systemd/system/graphical.target.wants"
+
+if [ -f "/etc/systemd/system/multi-user.target.wants/sabayonlive.service" ] || [ -f "/usr/libexec/sabayonlive.sh" ] ; then
+        echo "By hell, it's a Sabayon service"
+        rm /etc/systemd/system/multi-user.target.wants/sabayonlive.service
+        rm /usr/lib/systemd/system/sabayonlive.service
+        rm /usr/libexec/installer-*
+        rm /usr/libexec/sabayonlive.sh
+        rm /sbin/sabayon-functions.sh
+        rm /usb/bin/sabayon*
+        sed -i 's/sabayon-functions/rogentos-functions/g' /usr/libexec/x-setup.sh
+        else
+        echo "There are no such files"
+fi
+
 _get_kernel_tag() {
 	local kernel_ver="$(equo match --installed -qv virtual/linux-binary | cut -d/ -f 2)"
 	# strip -r** if exists, hopefully we don't have PN ending with -r
@@ -13,6 +30,10 @@ _get_kernel_tag() {
 	else
 		echo "#$(cat "${kernel_tag_file}")"
 	fi
+}
+
+install_packages() {
+	equo install "${@}"
 }
 
 install_kernel_packages() {
@@ -60,6 +81,7 @@ basic_environment_setup() {
 	rc-update add cups-browsed default
 	sd_enable cups
 	sd_enable cups-browsed
+	sd_enable rogentoslive
 
 	local kern_type="$(equo match --installed -q virtual/linux-binary)"
 	local do_zfs=1
@@ -114,19 +136,19 @@ setup_displaymanager() {
 	# determine what is the login manager
 	if [ -n "$(equo match --installed gnome-base/gdm -qv)" ]; then
 		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="gdm"/g' /etc/conf.d/xdm
-		sd_enable gdm
+		sd_graph_enable gdm
 	elif [ -n "$(equo match --installed lxde-base/lxdm -qv)" ]; then
 		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="lxdm"/g' /etc/conf.d/xdm
-		sd_enable lxdm
+		sd_graph_enable lxdm
 	elif [ -n "$(equo match --installed x11-misc/lightdm-base -qv)" ]; then
 		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="lightdm"/g' /etc/conf.d/xdm
-		sd_enable lightdm
+		sd_graph_enable lightdm
 	elif [ -n "$(equo match --installed kde-base/kdm -qv)" ]; then
 		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="kdm"/g' /etc/conf.d/xdm
-		sd_enable kdm
+		sd_graph_enable kdm
 	else
 		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="xdm"/g' /etc/conf.d/xdm
-		sd_enable xdm
+		sd_graph_enable xdm
 	fi
 }
 
@@ -186,6 +208,16 @@ setup_virtualbox() {
 		"x11-drivers/xf86-video-virtualbox"
 	rc-update add virtualbox-guest-additions boot
 	sd_enable virtualbox-guest-additions
+}
+
+install_external_kernel_modules() {
+	install_kernel_packages \
+		"app-laptop/nvidiabl" \
+		"net-wireless/ndiswrapper" \
+		"sys-power/bbswitch" \
+		"net-wireless/broadcom-sta" || return 1
+	# otherwise bbswitch is useless
+	install_packages "x11-misc/bumblebee"
 }
 
 install_proprietary_gfx_drivers() {
@@ -433,7 +465,7 @@ eselect kernel set 1
                 depmod -a
 fi
 
-for PKG in sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux rogentoslive-tools sabayon-skel sabayon-artwork-lxde linux-sabayon ati-drivers nvidia-drivers ati-userspace nvidia-settings nvidia-userspace xorg-server nvidia-drivers nvidia-userspace v$
+for PKG in sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux rogentos-live sabayon-skel sabayon-artwork-lxde linux-sabayon ati-drivers nvidia-drivers ati-userspace nvidia-settings nvidia-userspace xorg-server nvidia-drivers nvidia-userspace v$
 equo mask $PKG
 done
 
@@ -633,6 +665,7 @@ prepare_awesome() {
 }
 
 prepare_system() {
+	prepare_generic
 	local de="${1}"
 	if [ "${de}" = "lxde" ]; then
 		prepare_lxde

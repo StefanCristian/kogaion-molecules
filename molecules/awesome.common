@@ -59,7 +59,7 @@ packages_to_add:
 	media-plugins/alsa-plugins,
 	net-dialup/ppp,
 	net-dialup/rp-pppoe,
-	net-irc/xchat,
+	net-irc/hexchat,
 	sys-power/cpufrequtils,
 	sys-block/parted,
 	www-client/chromium,

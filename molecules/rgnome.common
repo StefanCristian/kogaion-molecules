@@ -23,7 +23,7 @@ extra_mksquashfs_parameters: -comp xz -Xbcj x86
 
 # Inner chroot script command, to be executed inside destination chroot after
 # packages installation and removal
-%env inner_chroot_script_after: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/remaster_generic_inner_chroot_script_after.sh gnome
+%env inner_chroot_script_after: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/remaster_generic_inner_chroot_script_after_gnome.sh gnome
 
 # Outer chroot script command, to be executed outside destination chroot before
 # before entering it (and AFTER inner_chroot_script)
@@ -56,6 +56,8 @@ packages_to_add:
 	@gst-plugins,
 	@gst-plugins-extra,
 	@wireless,
+	app-misc/rogentos-skel,
+	app-misc/rogentos-live,
 	app-admin/gnome-system-tools,
 	app-admin/openrc-settingsd,
 	app-admin/packagekit-base,
@@ -71,15 +73,11 @@ packages_to_add:
 	app-misc/gnote,
 	app-misc/rogentos-version,
 	app-office/libreoffice,
-	app-office/libreoffice-l10n-de,
-	app-office/libreoffice-l10n-es,
-	app-office/libreoffice-l10n-fr,
-	app-office/libreoffice-l10n-it,
-	app-office/libreoffice-l10n-nl,
-	app-office/libreoffice-l10n-pt,
 	app-text/pastebunz,
 	dev-java/icedtea-bin,
 	games-misc/cowsay,
+	gnome-base/gdm,
+	gnome-base/gnome,
 	gnome-base/gnome-shell,
 	gnome-extra/gconf-editor,
 	gnome-extra/gnome-games,
@@ -113,12 +111,13 @@ packages_to_add:
 	net-dialup/rp-pppoe,
 	net-firewall/ufw-frontends,
 	net-fs/samba,
-	net-irc/xchat,
+	net-irc/hexchat,
 	net-misc/networkmanager,
 	net-misc/networkmanager-openvpn,
 	net-misc/networkmanager-pptp,
 	net-misc/networkmanager-vpnc,
 	net-misc/ntp,
+	net-misc/wicd,
 	net-p2p/transmission-gtk,
 	net-print/cups,
 	net-print/foomatic-db,
@@ -133,8 +132,10 @@ packages_to_add:
 	sys-apps/hdparm,
 	sys-apps/sdparm,
 	sys-apps/tuxonice-userui,
+	sys-devel/gcc,
 	sys-block/gparted,
 	sys-block/parted,
+	sys-kernel/genkernel-next,
 	sys-fs/dmraid,
 	sys-fs/ntfs3g,
 	sys-power/acpid,
@@ -152,9 +153,11 @@ packages_to_add:
 	x11-terms/guake,
 	x11-themes/gnome-icon-theme,
 	x11-themes/gnome-themes,
+	x11-themes/rogentos-artwork-core,
 	x11-themes/rogentos-artwork-extra,
 	x11-themes/kogaion-artwork-gnome,
 	x11-themes/sound-theme-freedesktop,
+	x11-themes/gdm-themes-livecd,
 	x11-themes/xcursor-themes,
 	x11-wm/twm
 

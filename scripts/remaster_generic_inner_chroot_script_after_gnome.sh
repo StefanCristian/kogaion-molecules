@@ -15,10 +15,13 @@ if [ -f "/etc/systemd/system/multi-user.target.wants/sabayonlive.service" ] || [
         rm /usr/libexec/sabayonlive.sh
         rm /sbin/sabayon-functions.sh
         rm /usb/bin/sabayon*
-        sed -i 's/sabayon-functions/rogentos-functions/g' /usr/libexec/x-setup.sh
+        rm /usr/share/grub/default-splash.png
+	sed -i 's/sabayon-functions/rogentos-functions/g' /usr/libexec/x-setup.sh
         else
         echo "There are no such files"
 fi
+
+equo update --force
 
 _get_kernel_tag() {
 	local kernel_ver="$(equo match --installed -qv virtual/linux-binary | cut -d/ -f 2)"
@@ -61,7 +64,7 @@ sd_disable() {
 
 sd_graph_enable() {
         [[ -x /usr/bin/systemctl ]] && \
-                systemctl --no-reload enable -f "${1}.service"
+                #systemctl --no-reload enable -f "${1}.service"
                 rm "${ESYSERV}"
                 ln -s "${SYSERV}/${1}.service" "${ESYSERV}"
                 if [ "${1}" != "lightdm" ] ; then
@@ -71,7 +74,7 @@ sd_graph_enable() {
 
 sd_graph_disable() {
         [[ -x /usr/bin/systemctl ]] && \
-                systemctl --no-reload disable -f "${1}.service"
+                #systemctl --no-reload disable -f "${1}.service"
                 rm "${ESYSERV}"
                 rm "${GSYSSERV}/${1}.service"
 }
@@ -97,6 +100,13 @@ basic_environment_setup() {
 	# setup avahi
 	rc-update add avahi-daemon default
 	sd_enable avahi-daemon
+
+	# setup printing
+	rc-update add cupsd default
+	rc-update add cups-browsed default
+	sd_enable cups
+	sd_enable cups-browsed
+	sd_enable rogentoslive
 
 	local kern_type="$(equo match --installed -q virtual/linux-binary)"
 	local do_zfs=1
@@ -152,18 +162,23 @@ setup_displaymanager() {
 	if [ -n "$(equo match --installed gnome-base/gdm -qv)" ]; then
 		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="gdm"/g' /etc/conf.d/xdm
 		sd_enable gdm
+		sd_enable graphical_start
 	elif [ -n "$(equo match --installed lxde-base/lxdm -qv)" ]; then
 		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="lxdm"/g' /etc/conf.d/xdm
 		sd_enable lxdm
+		sd_enable graphical_start
 	elif [ -n "$(equo match --installed x11-misc/lightdm-base -qv)" ]; then
 		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="lightdm"/g' /etc/conf.d/xdm
 		sd_enable lightdm
+		sd_enable graphical_start
 	elif [ -n "$(equo match --installed kde-base/kdm -qv)" ]; then
 		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="kdm"/g' /etc/conf.d/xdm
 		sd_enable kdm
+		sd_enable graphical_start
 	else
 		sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="xdm"/g' /etc/conf.d/xdm
 		sd_enable xdm
+		sd_enable graphical_start
 	fi
 }
 
@@ -242,32 +257,38 @@ install_proprietary_gfx_drivers() {
 }
 
 setup_proprietary_gfx_drivers() {
-	# Prepare NVIDIA legacy drivers infrastructure
-
-	if [ ! -d "/install-data/drivers" ]; then
-		mkdir -p /install-data/drivers
-	fi
-
 	local myuname=$(uname -m)
 	local mydir="x86"
-	if [ "$myuname" == "x86_64" ]; then
+	if [ "${myuname}" == "x86_64" ]; then
 		mydir="amd64"
 	fi
 	local kernel_tag=$(_get_kernel_tag)
+	local pkgs_dir=/var/lib/entropy/client/packages
+	local cd_dir=/install-data/drivers
+	local pkgs=(
+		"=x11-drivers/nvidia-userspace-304*"
+		"=x11-drivers/nvidia-drivers-304*${kernel_tag}"
+		"=x11-drivers/nvidia-userspace-173*"
+		"=x11-drivers/nvidia-drivers-173*${kernel_tag}"
+	)
+	local ts=
+	local tp=
+	local pkg_f=
 
-	rm -rf /var/lib/entropy/client/packages/packages*/${mydir}/*/x11-drivers*
+	mkdir -p "${cd_dir}" || return 1
+	equo download --nodeps "${pkgs[@]}" || return 1
 
-	equo install --fetch --nodeps =x11-drivers/nvidia-userspace-304* \
-		=x11-drivers/nvidia-drivers-304*$kernel_tag
-	equo install --fetch --nodeps =x11-drivers/nvidia-userspace-173* \
-		=x11-drivers/nvidia-drivers-173*$kernel_tag
-
-	mv /var/lib/entropy/client/packages/packages-nonfree/${mydir}/*/x11-drivers\:nvidia-{drivers,userspace}*.tbz2 \
-		/install-data/drivers/
-
-	# if we ship with ati-drivers, we have KMS disabled by default.
-	# and better set driver arch to classic
-	eselect mesa set r600 classic
+	OLDIFS=${IFS}
+	IFS='
+'
+	local data=( $(equo match --quiet --showdownload "${pkgs[@]}") )
+	IFS=${OLDIFS}
+	for ts in "${data[@]}"; do
+		tp=( ${ts} )
+		pkg_f="${pkgs_dir}/${tp[1]}"
+		echo "Copying ${pkg_f} to ${cd_dir}"
+		cp "${pkg_f}" "${cd_dir}"/
+	done
 }
 
 setup_gnome_shell_extensions() {
@@ -343,6 +364,9 @@ setup_misc_stuff() {
 }
 
 setup_installed_packages() {
+	equo unmask anaconda
+	equo remove sabayon-artwork-core --configfiles
+	equo install anaconda rogentos-artwork-core kogaion-artwork-gnome gdm
 	# Update package list
 	equo query list installed -qv > /etc/rogentos-pkglist
 	echo -5 | equo conf update
@@ -350,6 +374,7 @@ setup_installed_packages() {
 	echo "Vacuum cleaning client db"
 	rm /var/lib/entropy/client/database/*/sabayonlinux.org -rf
 	rm /var/lib/entropy/client/database/*/sabayon-weekly -rf
+	rm /var/lib/entropy/client/database/*/rogentoslinux -rf
 	equo rescue vacuum
 
 	# restore original repositories.conf (all mirrors were filtered for speed)
@@ -383,154 +408,76 @@ setup_startup_caches() {
 	ldconfig
 }
 
-prepare_lxde() {
+prepare_generic() {
 	install_proprietary_gfx_drivers
+	install_external_kernel_modules
 	setup_virtualbox
 	setup_networkmanager
-	# Fix ~/.dmrc to have it load LXDE
-	echo "[Desktop]" > /etc/skel/.dmrc
-	echo "Session=LXDE" >> /etc/skel/.dmrc
-	setup_default_xsession "LXDE"
 	setup_displaymanager
-	# properly tweak lxde autostart tweak, adding --desktop option
-	sed -i 's/pcmanfm -d/pcmanfm -d --desktop/g' /etc/xdg/lxsession/LXDE/autostart
-	remove_mozilla_skel_cruft
 	setup_cpufrequtils
 	has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
+}
+
+prepare_lxde() {
+	setup_default_xsession "LXDE"
+	# properly tweak lxde autostart tweak, adding --desktop option
+	sed -i 's/pcmanfm -d/pcmanfm -d --desktop/g' /etc/xdg/lxsession/LXDE/autostart
 }
 
 prepare_mate() {
-	install_proprietary_gfx_drivers
-	setup_virtualbox
-	setup_networkmanager
-	# Fix ~/.dmrc to have it load MATE
-	echo "[Desktop]" > /etc/skel/.dmrc
-	echo "Session=mate" >> /etc/skel/.dmrc
 	setup_default_xsession "mate"
-	setup_displaymanager
-	remove_mozilla_skel_cruft
-	setup_cpufrequtils
-	has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
 }
 
 prepare_e17() {
-	install_proprietary_gfx_drivers
-	setup_virtualbox
-	setup_networkmanager
-	# Fix ~/.dmrc to have it load E17
-	echo "[Desktop]" > /etc/skel/.dmrc
-	echo "Session=enlightenment" >> /etc/skel/.dmrc
 	setup_default_xsession "enlightenment"
 	# E17 spin has chromium installed
-	setup_displaymanager
 	# Not using lxdm for now
 	# TODO: improve the lines below
 	# Make sure enlightenment is selected in lxdm
 	# sed -i '/lxdm-greeter-gtk/ a\\nlast_session=enlightenment.desktop\nlast_lang=' /etc/lxdm/lxdm.conf
 	# Fix ~/.gtkrc-2.0 for some nice icons in gtk
 	echo 'gtk-icon-theme-name="Tango" gtk-theme-name="Xfce"' | tr " " "\n" > /etc/skel/.gtkrc-2.0
-	remove_mozilla_skel_cruft
-	setup_cpufrequtils
-	has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
 }
 
 prepare_xfce() {
-	install_proprietary_gfx_drivers
-	setup_virtualbox
-	setup_networkmanager
-	# Fix ~/.dmrc to have it load Xfce
-	echo "[Desktop]" > /etc/skel/.dmrc
-	echo "Session=xfce" >> /etc/skel/.dmrc
 	setup_default_xsession "xfce"
-	remove_mozilla_skel_cruft
-	setup_cpufrequtils
-	setup_displaymanager
-	has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
 }
 
 prepare_fluxbox() {
-	install_proprietary_gfx_drivers
-	setup_virtualbox
-	setup_networkmanager
-	# Fix ~/.dmrc to have it load Fluxbox
-	echo "[Desktop]" > /etc/skel/.dmrc
-	echo "Session=fluxbox" >> /etc/skel/.dmrc
 	setup_default_xsession "fluxbox"
-	setup_displaymanager
-	remove_mozilla_skel_cruft
-	setup_cpufrequtils
-	has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
 }
 
 prepare_gnome() {
-	install_proprietary_gfx_drivers
-	setup_virtualbox
-	setup_networkmanager
-	# Fix ~/.dmrc to have it load GNOME or Cinnamon
-	echo "[Desktop]" > /etc/skel/.dmrc
 	if [ -f "/usr/share/xsessions/cinnamon.desktop" ]; then
-		echo "Session=cinnamon" >> /etc/skel/.dmrc
-	setup_default_xsession "cinnamon"
+		setup_default_xsession "cinnamon"
 	else
-		echo "Session=gnome" >> /etc/skel/.dmrc
-		setup_gnome_shell_extensions
-	setup_default_xsession "gnome"
+		setup_default_xsession "gnome"
 	fi
 	rc-update del system-tools-backends boot
 	rc-update add system-tools-backends default
 	# no systemd counterpart
 
-	setup_displaymanager
 	setup_sabayon_mce
-	setup_cpufrequtils
-	has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
 }
 
 prepare_xfceforensic() {
-	install_proprietary_gfx_drivers
-	setup_networkmanager
-	# Fix ~/.dmrc to have it load Xfce
-	echo "[Desktop]" > /etc/skel/.dmrc
-	echo "Session=xfce" >> /etc/skel/.dmrc
 	setup_default_xsession "xfce"
-	setup_cpufrequtils
-	setup_displaymanager
-	remove_mozilla_skel_cruft
 	xfceforensic_remove_skel_stuff
-	has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
 }
 
 prepare_kde() {
-	install_proprietary_gfx_drivers
-	setup_virtualbox
-	setup_networkmanager
-	# Fix ~/.dmrc to have it load KDE
-	echo "[Desktop]" > /etc/skel/.dmrc
-	echo "Session=KDE-4" >> /etc/skel/.dmrc
 	setup_default_xsession "KDE-4"
 	# Configure proper GTK3 theme
 	# TODO: find a better solution?
 	mv /etc/skel/.config/gtk-3.0/settings.ini._kde_molecule \
 		/etc/skel/.config/gtk-3.0/settings.ini
-	setup_displaymanager
 	setup_sabayon_mce
-	setup_cpufrequtils
-	has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
 }
 
 prepare_awesome() {
-	install_proprietary_gfx_drivers
-	setup_virtualbox
-	setup_networkmanager
-	# Fix ~/.dmrc to have it load Awesome
-	echo "[Desktop]" > /etc/skel/.dmrc
-	echo "Session=awesome" >> /etc/skel/.dmrc
 	setup_default_xsession "awesome"
-	setup_displaymanager
-	remove_mozilla_skel_cruft
-	setup_cpufrequtils
-	has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
 }
+
 
 prepare_system() {
 	prepare_generic
@@ -559,15 +506,27 @@ prepare_system() {
 basic_environment_setup
 setup_fonts
 # setup Desktop Environment, might add packages
-prepare_generic
 prepare_system "${1}"
 # These have to run after prepare_system
+switch_kernel "${to_kernel}"
 setup_misc_stuff
 setup_installed_packages
 setup_portage
 setup_startup_caches
 
-genkernel --splash=rogentos --luks initramfs
+# Because we didn't find yet where Entropy sets are kept
+# we manually eliminate from our ISOs the sabayon artwork
+
+# Debugging Gnome a bit
+
+genkernel --plymouth-theme=rogentos --splash=rogentos --luks initramfs
 userdel ldap
+
+eselect opengl list
+eselect kernel list
+equo query installed nvidia-drivers
+equo query installed ati-drivers
+equo query installed gdm
+systemctl | grep gdm
 
 exit 0
