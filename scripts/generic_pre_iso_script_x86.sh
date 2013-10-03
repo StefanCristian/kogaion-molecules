@@ -79,7 +79,7 @@ cp "${grub_source}" "${grub_destination}" || exit 1
 	|| exit 1
 
 # generate EFI GRUB
-"${ROGENTOS_MOLECULE_HOME}"/scripts/make_grub_efi.sh || exit 1
+#"${ROGENTOS_MOLECULE_HOME}"/scripts/make_grub_efi.sh || exit 1
 
 ver="${RELEASE_VERSION}"
 [[ -z "${ver}" ]] && ver="${CUR_DATE}"

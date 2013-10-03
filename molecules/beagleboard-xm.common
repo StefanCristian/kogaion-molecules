@@ -5,7 +5,7 @@ packages_to_add:
 	app-admin/sudo,
 	app-arch/xarchiver,
 	app-editors/leafpad,
-	app-misc/rogentoslive-tools,
+	app-misc/rogentos-live,
 	app-misc/sabayon-skel,
 	app-office/abiword,
 	app-office/gnumeric,

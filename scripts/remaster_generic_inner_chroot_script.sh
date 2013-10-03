@@ -33,6 +33,14 @@ export FORCE_EAPI=2
 
 LOC=$(pwd)
 EREPO=/etc/entropy/repositories.conf.d
+if [ -f "/etc/entropy/repositories.conf.d/entropy_sabayonlinux.org.example" ]; then
+        mv "${EREPO}/entropy_sabayonlinux.org.example" "${EREPO}/entropy_sabayonlinux.org"
+fi
+
+if [ -f "${EREPO}/entropy_sabayon-weekly" ]; then
+        mv "${EREPO}/entropy_sabayon-weekly" "${EREPO}/entropy_sabayon-weekly.example"
+fi
+
 cd "$EREPO"
 wget http://pkg.rogentos.ro/~rogentos/distro/entropy_rogentoslinux
 equo repo mirrorsort rogentoslinux
@@ -55,10 +63,36 @@ if [ "${updated}" = "0" ]; then
 	exit 1
 fi
 
+eselect kernel list
+equo query installed linux-sabayon
+
+#echo Yes | kernel-switcher switch linux-sabayon#$(equo search nvidia-drivers | grep sabayon | awk '{print $3}' | grep "sabayon" | sed 's/0,//g' | tail -1 | head -1) -pv
+
 equo mask sabayon-skel sabayon-version sabayon-artwork-grub sabayon-live
-equo remove sabayon-artwork-grub sabayon-artwork-core sabayon-artwork-isolinux sabayon-version sabayon-skel sabayon-live sabayonlive-tools grub sabayon-artwork-gnome --nodeps
-emerge -C sabayon-version
+equo remove sabayon-artwork-grub sabayon-artwork-core sabayon-artwork-isolinux sabayon-version sabayon-skel sabayon-live sabayonlive-tools sabayon-live grub sabayon-artwork-gnom --nodeps
+#equo remove linux-sabayon:$(eselect kernel list | grep "*" | awk '{print $2}' | cut -d'-' -f2) --nodeps --configfiles
+equo remove linux-sabayon --nodeps --configfiles
+equo remove --force-system sabayon-version --configfiles
 equo mask sabayon-version
+equo install rogentos-version --nodeps
+
+for SRV in zfs-kmod sys-kernel/spl nvidia-drivers ati-drivers virtualbox-modules virtualbox-guest-additions vmware-modules broadcom-sta vhba acpi_call bbswitch xf86-video-virtualbox nvidiabl; do
+        WW="#"
+	CC1="$(equo search nvidia-drivers | grep sabayon | awk '{print $3}' | grep "sabayon" | sed 's/0,//g' | sort -Vr | uniq | tail -n +1 | wc -l)"
+	CC="$(equo search nvidia-drivers | grep sabayon | awk '{print $3}' | grep "sabayon" | sed 's/0,//g' | sort -Vr | uniq | tail -n +4 | wc -l)"
+	EQ1="$(equo search nvidia-drivers | grep sabayon | awk '{print $3}' | grep "sabayon" | sed 's/0,//g' | sort -Vr | uniq | head -1)"
+	EQ2="$(equo search nvidia-drivers | grep sabayon | awk '{print $3}' | grep "sabayon" | sed 's/0,//g' | sort -Vr | uniq | head -2 | tail -1)"
+	EQ="equo search nvidia-drivers | grep sabayon | awk '{print $3}' | grep "sabayon" | sed 's/0,//g' | sort -Vr | uniq | tail -n +2"
+	for BL in `seq 1 "${CC}"` ; do
+	equo mask $SRV"${WW}"$(equo search nvidia-drivers | grep sabayon | awk '{print $3}' | grep "sabayon" | sed 's/0,//g' | sort -Vr | uniq | tail -n +2 | tail -"${BL}" | head -1)
+	equo mask $SRV"${WW}"$(equo search nvidia-drivers | grep server | awk '{print $3}' | grep "server" | sed 's/0,//g' | sort -Vr | uniq | tail -"${BL}" | head -1)
+	done
+	equo mask $SRV"${WW}"${EQ1}
+	equo mask $SRV"${WW}"${EQ2}
+	equo mask $SRV"${WW}"$(equo search nvidia-drivers | grep sabayon | awk '{print $3}' | grep "sabayon" | sed 's/0,//g' | sort -Vr | uniq | head -2 | tail -1)
+	# We may need to debug this
+	equo install xf86-video-virtualbox"${WW}"$(equo search ati-drivers | grep sabayon | awk '{print $3}' | grep "sabayon" | sed 's/1,//g' | head -1) -p
+done
 
 for PKG in openrc grub gnome-colors-common lxdm anaconda anaconda-runtime; do
 equo mask $PKG@sabayonlinux.org
@@ -66,7 +100,9 @@ equo mask $PKG@sabayon-limbo
 equo mask $PKG@sabayon-weekly
 done
 
-echo ">=sys-apps/openrc-0.9@sabayon-limbo
+mkdir -p /etc/entropy/packages/package.mask.d/
+
+REPLACEMENT=">=sys-apps/openrc-0.9@sabayon-limbo
 >=sys-apps/openrc-0.9@sabayonlinux.org
 >=sys-apps/openrc-0.9@sabayon-weekly
 
@@ -112,4 +148,7 @@ echo ">=sys-apps/openrc-0.9@sabayon-limbo
 
 >=app-misc/anaconda-runtime-1.1-r1@sabayon-weekly
 >=app-misc/anaconda-runtime-1.1-r1@sabayonlinux.org
->=app-misc/anaconda-runtime-1.1-r1@sabayon-limbo" >> /etc/entropy/packages/package.mask
+>=app-misc/anaconda-runtime-1.1-r1@sabayon-limbo"
+
+echo $REPLACEMENT >> /etc/entropy/packages/package.mask
+echo $REPLACEMENT >> /etc/entropy/packages/package.mask.d/package.mask
