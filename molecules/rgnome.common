@@ -83,6 +83,7 @@ packages_to_add:
 	gnome-extra/gnome-games,
 	gnome-extra/gnome-power-manager,
 	gnome-extra/gnome-screensaver,
+	gnome-extra/gnome-shell-extensions,
 	gnome-extra/gnome-shell-windowlist,
 	gnome-extra/gnome-system-monitor,
 	gnome-extra/gnome-tweak-tool,
