@@ -16,7 +16,7 @@ if [ -f "/etc/systemd/system/multi-user.target.wants/sabayonlive.service" ] || [
         rm /usr/libexec/installer-*
         rm /usr/libexec/sabayonlive.sh
         rm /sbin/sabayon-functions.sh
-        rm /usb/bin/sabayon*
+        rm /usr/bin/sabayon*
 	rm /usr/share/grub/default-splash.png
         sed -i 's/sabayon-functions/rogentos-functions/g' /usr/libexec/x-setup.sh
         else
@@ -293,12 +293,14 @@ setup_proprietary_gfx_drivers() {
 	done
 }
 
-setup_gnome_shell_extensions() {
-	local extensions="windowlist@o2net.cl"
-	for ext in ${extensions}; do
-		eselect gnome-shell-extensions enable "${ext}"
-	done
-}
+#bionel: no longer needed, included in skel
+
+#setup_gnome_shell_extensions() {
+#	local extensions="windowlist@o2net.cl"
+#	for ext in ${extensions}; do
+#		eselect gnome-shell-extensions enable "${ext}"
+#	done
+#}
 
 setup_fonts() {
 	# Cause some rendering glitches on vbox as of 2011-10-02
