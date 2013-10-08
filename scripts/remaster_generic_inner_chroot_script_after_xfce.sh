@@ -387,12 +387,6 @@ localz=$(pwd)
 ARCH=$(uname -m)
 rog=rogentos-artwork
 
-# We will make sure lightdm is setup as login manager
-
-#sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="lightdm"/g' /etc/conf.d/xdm
-#/usr/bin/systemctl --no-reload enable -f "lightdm.service"
-#sd_enable lightdm
-
 echo "Entering folder $localz"
 equo remove anaconda --nodeps
 
@@ -581,38 +575,6 @@ for PKG in nvidia-drivers ati-drivers bumblebee bbswitch ; do
 	fi
 done
 
-# Assuring lightdm will take place at the right time and at the right ARCH
-#if [ "$(cat /etc/systemd/system/display-manager.service | grep lightdm | tail -1 | head -1 | cut -d "/" -f 4)" == "lightdm" ] ; then
-	#echo "All's alright"
-	#if [ "$(uname -m)" == "x86_64" ] && [ -f "/usr/lib/systemd/system/rogentoslive.service" ] ; then
-		#ln -s /usr/lib64/systemd/system/rogentoslive.service /etc/systemd/system/multi-user.target.wants/
-	   	#sd_enable lightdm
-	   #else
-		#ln -s /usr/lib/systemd/system/rogentoslive.service /etc/systemd/system/multi-user.target.wants/
-		#sd_enable lightdm
-	#fi
-	#else
-	#/usr/bin/systemctl enable lightdm
-	#if [ "$(uname -m)" == "x86_64" ] && [ -f "/usr/lib/systemd/system/rogentoslive.service" ] ; then
-		#ln -s /usr/lib64/systemd/system/rogentoslive.server /etc/systemd/system/multi-user.target.wants/
-		#sd_enable lightdm
-	#else
-		#sd_enable lightdm
-		#ln -s /usr/lib/systemd/system/rogentoslive.server /etc/systemd/system/multi-user.target.wants/
-	#fi
-#fi
-
-#if [ -f "/etc/systemd/system/multi-user.target.wants/rogentoslive.service" ] ; then
-	#echo "It exists"
-	#else
-        	#if [ "$(uname -m)" == "x86_64" ] ; then
-	                #sd_enable rogentoslive
-			#ln -s /usr/lib64/systemd/system/rogentoslive.server /etc/systemd/system/multi-user.target.wants/
-		#else
-			#sd_enable rogentoslive
-			#ln -s /usr/lib/systemd/system/rogentoslive.server /etc/systemd/system/multi-user.target.wants/
-		#fi
-#fi
 
 equo query installed linux-sabayon
 eselect kernel list
