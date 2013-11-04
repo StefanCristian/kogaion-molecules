@@ -9,7 +9,7 @@ release_string: Rogentos Linux
 release_file: /etc/rogentos-edition
 
 # ISO Image title
-iso_title: Kogaion Xfce
+iso_title: Rogentos Xfce
 
 # Enable XZ compression in mksquashfs
 extra_mksquashfs_parameters: -comp xz -Xbcj x86
@@ -33,13 +33,13 @@ extra_mksquashfs_parameters: -comp xz -Xbcj x86
 %env error_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/remaster_error_script.sh
 
 # Extra mkisofs parameters, perhaps something to include/use your bootloader
-extra_mkisofs_parameters: -b isolinux/isolinux.bin -c isolinux/boot.cat -iso-level 4
+extra_mkisofs_parameters: -b isolinux/isolinux.bin -c isolinux/boot.cat -eltorito-alt-boot -no-emul-boot -eltorito-platform efi -eltorito-boot boot/grub/efi.img
 
 # Pre-ISO building script. Hook to be able to copy kernel images in place, for example
-%env pre_iso_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/generic_pre_iso_script.sh Xfce
+%env pre_iso_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/generic_pre_iso_script.sh XFCE
 
-# Post-ISO building script, called after ISO image generation.    
-# %env post_iso_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/generic_post_iso_script.sh
+# Post-ISO building script, called after ISO image generation.
+#%env post_iso_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/generic_post_iso_script.sh
 
 # Destination directory for the ISO image path (MANDATORY)
 %env destination_iso_directory: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/iso
@@ -48,6 +48,9 @@ extra_mkisofs_parameters: -b isolinux/isolinux.bin -c isolinux/boot.cat -iso-lev
 # packages_to_remove:
 #	www-client/lynx,
 #	app-text/poppler-qt4
+
+# Import the Graphic Environment module.
+%env %import ${ROGENTOS_MOLECULE_HOME:-/sabayon}/molecules/graphic-environment.common
 
 # List of packages that would be added from chrooted system (comma separated)
 packages_to_add:
@@ -159,7 +162,7 @@ packages_to_add:
 	xfce-extra/thunar-volman,
 	x11-plugins/pidgin-privacy-please
 
-# x11-themes/sabayon-artwork-gnome:
+# x11-themes/rogentos-artwork-gnome:
 #   provides the gtk theme for lxdm
 # gnome-extra/polkit-gnome:
 #   required to make nm-applet work
@@ -171,7 +174,6 @@ packages_to_add:
 
 # Custom shell call to packages add (default is: equo install)
 # custom_packages_add_cmd: 
-#custom_packages_add_cmd: app-misc/rogentos-version
 
 # Custom command for updating repositories (default is: equo update)
 # repositories_update_cmd:
