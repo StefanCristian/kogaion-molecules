@@ -567,7 +567,7 @@ setup_installed_packages
 setup_portage
 setup_startup_caches
 
-genkernel --splash=rogentos --luks initramfs
+genkernel  --luks initramfs
 userdel ldap
 
 exit 0

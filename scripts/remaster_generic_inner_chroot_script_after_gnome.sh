@@ -519,7 +519,7 @@ setup_startup_caches
 
 # Debugging Gnome a bit
 
-genkernel --plymouth-theme=rogentos --splash=rogentos --luks initramfs
+genkernel --plymouth-theme=rogentos  --luks initramfs
 userdel ldap
 
 eselect opengl list

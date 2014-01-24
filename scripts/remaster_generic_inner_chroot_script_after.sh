@@ -529,7 +529,7 @@ rm -f /var/run/entropy/entropy.lock
 rm -f /var/lib/entropy/entropy.pid
 rm -f /var/lib/entropy/entropy.lock
 
-genkernel --plymouth-theme=rogentos --splash=rogentos --luks initramfs
+genkernel --plymouth-theme=rogentos  --luks initramfs
 userdel ldap
 
 # Because we didn't find yet where Entropy sets are kept

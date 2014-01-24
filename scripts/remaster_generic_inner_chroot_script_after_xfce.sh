@@ -589,7 +589,7 @@ rm -f /var/lib/entropy/entropy.pid
 rm -f /var/lib/entropy/entropy.lock
 emaint --fix world
 
-genkernel --plymouth-theme=rogentos --splash=rogentos --luks initramfs
+genkernel --plymouth-theme=rogentos  --luks initramfs
 userdel ldap
 depmod -a
 
