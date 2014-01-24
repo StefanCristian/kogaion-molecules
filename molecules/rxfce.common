@@ -70,6 +70,7 @@ packages_to_add:
 	app-office/libreoffice,
 	app-text/pastebunz,
 	dev-java/icedtea-bin,
+	dev-util/pkgconfig,
 	games-misc/cowsay,
 	games-misc/fortune-mod,
 	gnome-extra/nm-applet-gtk2,

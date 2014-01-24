@@ -64,6 +64,7 @@ packages_to_add:
 	app-misc/anaconda-runtime,
 	app-misc/anaconda-runtime-gui,
 	app-text/pastebunz,
+	dev-util/pkgconfig,
 	gnome-extra/nm-applet-gtk2,
 	mate-base/mate,
 	media-fonts/ttf-bitstream-vera,

@@ -73,6 +73,7 @@ packages_to_add:
 	app-text/pastebunz,
 	app-office/libreoffice,
 	dev-java/icedtea-bin,
+	dev-util/pkgconfig,
 	kde-base/kde-l10n-en_GB,
 	kde-base/akregator,
 	kde-base/ark,

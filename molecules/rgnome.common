@@ -75,6 +75,7 @@ packages_to_add:
 	app-office/libreoffice,
 	app-text/pastebunz,
 	dev-java/icedtea-bin,
+	dev-util/pkgconfig,
 	games-misc/cowsay,
 	gnome-base/gdm,
 	gnome-base/gnome,
