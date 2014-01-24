@@ -369,7 +369,7 @@ setup_misc_stuff() {
 
 setup_installed_packages() {
 	equo unmask anaconda
-	equo install anaconda rogentos-artwork-core kogaion-artwork-gnome
+	equo install anaconda rogentos-artwork-core dev-util/pkgconfig
 	equo remove linux-server linux-sabayon:3.9 --configiles #Hardcode the kernel versions
 	# Update package list
 	equo query list installed -qv > /etc/rogentos-pkglist

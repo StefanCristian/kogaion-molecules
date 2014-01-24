@@ -389,6 +389,7 @@ rog=rogentos-artwork
 
 echo "Entering folder $localz"
 equo remove anaconda --nodeps
+equo install dev-util/pkgconfig
 
 if [ "$ARCH" = "x86_64" ]; then
                 equo unmask anaconda
