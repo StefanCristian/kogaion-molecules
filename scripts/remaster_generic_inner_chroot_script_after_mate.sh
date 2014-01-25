@@ -573,7 +573,6 @@ zcat /proc/config.gz > /usr/src/config
 genkernel --plymouth-theme=rogentos  --luks initramfs
 
 equo install dev-util/pkgconfig
-equo remove dev-util/pkgconfig --nodeps
 equo remove --force-system =sys-devel/$(equo query installed sys-devel/gcc | grep "Package" | awk '{ print $4 }' | cut -d "/" -f 2 | head -1) --configfiles
 equo remove ati-drivers ati-userspace nvidia-drivers nvidia-userspace nvidiabl bbswitch virtualgl bumblebee --configfiles
 eselect opengl set 1

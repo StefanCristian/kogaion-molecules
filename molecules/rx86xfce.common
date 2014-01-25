@@ -81,7 +81,7 @@ packages_to_add:
 	media-libs/libdvdnav,
 	media-libs/libdvdplay,
 	media-libs/libdvdread,
-	media-sound/exaile,
+	media-sound/pragha,
 	media-video/parole,
 	net-dialup/globespan-adsl,
 	net-dialup/gnome-ppp,
