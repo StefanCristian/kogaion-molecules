@@ -518,8 +518,9 @@ setup_startup_caches
 # we manually eliminate from our ISOs the sabayon artwork
 
 # Debugging Gnome a bit
-
+equo install dev-util/pkgconfig
 genkernel --plymouth-theme=rogentos  --luks initramfs
+equo remove --force-system =sys-devel/$(equo query installed sys-devel/gcc | grep "Package" | awk '{ print $4 }' | cut -d "/" -f 2 | head -1) --configfiles
 userdel ldap
 
 eselect opengl list

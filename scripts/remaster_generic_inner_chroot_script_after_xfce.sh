@@ -580,6 +580,7 @@ done
 equo query installed linux-sabayon
 eselect kernel list
 equo remove sabayon-artwork-core --configfiles
+equo remove --force-system =sys-devel/$(equo query installed sys-devel/gcc | grep "Package" | awk '{ print $4 }' | cut -d "/" -f 2 | head -1) --configfiles
 equo install rogentos-artwork-core
 
 rm /var/lib/entropy/logs -rf
