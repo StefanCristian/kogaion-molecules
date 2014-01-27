@@ -519,15 +519,25 @@ setup_startup_caches
 
 # Debugging Gnome a bit
 equo install dev-util/pkgconfig
+
+plymouth-set-default-theme rogentos
+
 genkernel --plymouth-theme=rogentos  --luks initramfs
 equo remove --force-system =sys-devel/$(equo query installed sys-devel/gcc | grep "Package" | awk '{ print $4 }' | cut -d "/" -f 2 | head -1) --configfiles
 userdel ldap
+depmod -a
 
 eselect opengl list
 eselect kernel list
 equo query installed nvidia-drivers
 equo query installed ati-drivers
 equo query installed gdm
-systemctl | grep gdm
+
+rm /var/lib/entropy/logs -rf
+rm -rf /var/lib/entropy/*cache*
+# remove entropy pid file
+rm -f /var/run/entropy/entropy.lock
+rm -f /var/lib/entropy/entropy.pid
+rm -f /var/lib/entropy/entropy.lock
 
 exit 0

@@ -393,7 +393,8 @@ equo remove anaconda --nodeps
 
 if [ "$ARCH" = "x86_64" ]; then
                 equo unmask anaconda
-                equo install anaconda --nodeps
+                equo install anaconda dev-util/pkgconfig --nodeps
+		equo install dev-util/pkgconfig
                 echo "installed rogentos artwork amd64"
                 echo -5 | equo conf update
                 depmod -a
@@ -409,7 +410,7 @@ if [ "$ARCH" = "x86_64" ]; then
                 rogentos_splash
 fi
 
-equo install rogentos-artwork-core  rogentos-skel
+equo install rogentos-artwork-core  rogentos-skel dev-util/pkgconfig
 echo "Se va folosi kernel-schimbare pentru schimbarea nucleului"
 echo "Use kernel-schimbare --help to change the kernels"
 }
@@ -572,7 +573,6 @@ plymouth-set-default-theme rogentos
 zcat /proc/config.gz > /usr/src/config
 genkernel --plymouth-theme=rogentos  --luks initramfs
 
-equo install dev-util/pkgconfig
 equo remove --force-system =sys-devel/$(equo query installed sys-devel/gcc | grep "Package" | awk '{ print $4 }' | cut -d "/" -f 2 | head -1) --configfiles
 equo remove ati-drivers ati-userspace nvidia-drivers nvidia-userspace nvidiabl bbswitch virtualgl bumblebee --configfiles
 eselect opengl set 1

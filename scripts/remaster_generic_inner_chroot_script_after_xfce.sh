@@ -589,9 +589,18 @@ rm -f /var/lib/entropy/entropy.pid
 rm -f /var/lib/entropy/entropy.lock
 emaint --fix world
 
-genkernel --plymouth-theme=rogentos  --luks initramfs
+plymouth-set-default-theme rogentos
+
+genkernel --plymouth-theme=rogentos --luks initramfs
 equo remove --force-system =sys-devel/$(equo query installed sys-devel/gcc | grep "Package" | awk '{ print $4 }' | cut -d "/" -f 2 | head -1) --configfiles
 userdel ldap
 depmod -a
+
+rm /var/lib/entropy/logs -rf
+rm -rf /var/lib/entropy/*cache*
+# remove entropy pid file
+rm -f /var/run/entropy/entropy.lock
+rm -f /var/lib/entropy/entropy.pid
+rm -f /var/lib/entropy/entropy.lock
 
 exit 0
