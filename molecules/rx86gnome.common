@@ -133,6 +133,7 @@ packages_to_add:
 	sys-apps/hdparm,
 	sys-apps/sdparm,
 	sys-apps/tuxonice-userui,
+	sys-boot/plymouth,
 	sys-devel/gcc,
 	sys-block/gparted,
 	sys-block/parted,
@@ -161,6 +162,7 @@ packages_to_add:
 	x11-themes/sound-theme-freedesktop,
 	x11-themes/gdm-themes-livecd,
 	x11-themes/xcursor-themes,
+	x11-themes/mediterranean-night,
 	x11-wm/twm
 
 # Custom shell call to packages add (default is: equo install)
