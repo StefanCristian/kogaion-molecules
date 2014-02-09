@@ -77,6 +77,7 @@ packages_to_add:
 	dev-java/icedtea-bin,
 	dev-util/pkgconfig,
 	games-misc/cowsay,
+	games-misc/fortune-mod,
 	gnome-base/gdm,
 	gnome-base/gnome,
 	gnome-base/gnome-shell,
