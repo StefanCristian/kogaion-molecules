@@ -1,12 +1,13 @@
 # Use abs path, otherwise daily builds automagic won't work
 %env %import ${ROGENTOS_MOLECULE_HOME:-/sabayon}/molecules/spinbase.common
+%env %import ${ROGENTOS_MOLECULE_HOME:-/sabayon}/molecules/x86.common
 
 # 32bit build
 prechroot: linux32
 
 # Release Version
 # Keep this here, otherwise daily builds automagic won't work
-release_version: 10
+release_version: 2
 
 # Release Version string description
 release_desc: x86 SpinBase
@@ -16,4 +17,4 @@ release_desc: x86 SpinBase
 
 # Destination ISO image name, call whatever you want.iso, not mandatory
 # Keep this here and set, otherwise daily builds automagic won't work
-destination_iso_image_name: Kogaion_Linux_SpinBase_2_x86.iso
+%env destination_iso_image_name: Kogaion_Linux_2_x86_SpinBase.iso

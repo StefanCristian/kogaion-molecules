@@ -1,12 +1,13 @@
 # Use abs path, otherwise daily builds automagic won't work
 %env %import ${ROGENTOS_MOLECULE_HOME:-/argent}/molecules/spinbase.common
+%env %import ${ROGENTOS_MOLECULE_HOME:-/argent}/molecules/x86.common
 
 # 32bit build
 prechroot: linux32
 
 # Release Version
 # Keep this here, otherwise daily builds automagic won't work
-release_version: 10
+release_version: 2
 
 # Release Version string description
 release_desc: x86 SpinBase
