@@ -3,10 +3,10 @@
 execution_strategy: iso_remaster
 
 # ISO Image title
-iso_title: Sabayon Hardened Server
+iso_title: Rogentos Hardened Server
 
 # Release string
-release_string: Sabayon Linux
+release_string: Rogentos Linux
 
 # File to write release string
 release_file: /etc/sabayon-edition
@@ -16,64 +16,51 @@ extra_mksquashfs_parameters: -comp xz -Xbcj x86
 
 # Outer chroot script command, to be executed outside destination chroot before
 # before entering it (and before inner_chroot_script)
-%env outer_chroot_script: ${SABAYON_MOLECULE_HOME:-/sabayon}/scripts/remaster_pre.sh
+%env outer_chroot_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/remaster_pre.sh
 
 # Execute repositories update here, in a more fault-tolerant flavor
-%env inner_chroot_script: ${SABAYON_MOLECULE_HOME:-/sabayon}/scripts/remaster_generic_inner_chroot_script.sh
+%env inner_chroot_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/remaster_generic_inner_chroot_script.sh
 
 # Inner chroot script command, to be executed inside destination chroot after
 # packages installation and removal
-%env inner_chroot_script_after: ${SABAYON_MOLECULE_HOME:-/sabayon}/scripts/remaster_generic_inner_chroot_script_after.sh xfce
+%env inner_chroot_script_after: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/remaster_generic_inner_chroot_script_after.sh xfce
 
 # Outer chroot script command, to be executed outside destination chroot before
 # before entering it (and AFTER inner_chroot_script)
-%env outer_chroot_script_after: ${SABAYON_MOLECULE_HOME:-/sabayon}/scripts/remaster_post.sh
+%env outer_chroot_script_after: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/remaster_post.sh
 
 # Used to umount /proc and unbind packages dir
-%env error_script: ${SABAYON_MOLECULE_HOME:-/sabayon}/scripts/remaster_error_script.sh
+%env error_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/remaster_error_script.sh
 
 # Extra mkisofs parameters, perhaps something to include/use your bootloader
-extra_mkisofs_parameters: -b isolinux/isolinux.bin -c isolinux/boot.cat
+extra_mkisofs_parameters: -b isolinux/isolinux.bin -c isolinux/boot.cat -eltorito-alt-boot -no-emul-boot -eltorito-platform efi -eltorito-boot boot/grub/efi.img
 
 # Pre-ISO building script. Hook to be able to copy kernel images in place, for example
-%env pre_iso_script: ${SABAYON_MOLECULE_HOME:-/sabayon}/scripts/generic_pre_iso_script.sh HardenedServer
+%env pre_iso_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/generic_pre_iso_script.sh HardenedServer
 
-# Post-ISO building script, called after ISO image generation.    
-%env post_iso_script: ${SABAYON_MOLECULE_HOME:-/sabayon}/scripts/generic_post_iso_script.sh
+# Post-ISO building script, called after ISO image generation.
+%env post_iso_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/generic_post_iso_script.sh
 
 # Destination directory for the ISO image path (MANDATORY)
-%env destination_iso_directory: ${SABAYON_MOLECULE_HOME:-/sabayon}/iso
+%env destination_iso_directory: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/iso
+
+# Import the Graphic Environment module.
+%env %import ${ROGENTOS_MOLECULE_HOME:-/sabayon}/molecules/graphic-environment.common
 
 packages_to_add:
-	@X,
-	@fluxbox,
 	@xfce,
 	app-admin/rigo,
 	app-misc/sabayon-skel,
-	app-misc/anaconda-runtime-gui,
 	app-text/pastebunz,
-	dev-python/libgnomecanvas-python,
 	lxde-base/lxdm,
-        media-fonts/ttf-bitstream-vera,
-        media-fonts/dejavu,
-        media-fonts/corefonts,
 	media-gfx/feh,
 	net-dialup/ppp,
 	net-dialup/rp-pppoe,
 	net-misc/tightvnc,
-	sys-apps/gpu-detector,
 	sys-block/parted,
 	sys-power/cpufrequtils,
-	x11-apps/xhost,
-	x11-apps/setxkbmap,
-	x11-themes/equinox-themes,
-	x11-themes/gtk-engines:2,
-	x11-libs/libXxf86misc,
 	x11-themes/gnome-themes-standard,
-	x11-themes/hicolor-icon-theme,
-	x11-themes/equinox-themes,
-	x11-terms/terminal,
-	x11-terms/xterm,
+	x11-terms/xfce4-terminal,
 	sys-kernel/linux-hardened,
 	sys-apps/paxctl,
 	www-client/midori

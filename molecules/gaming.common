@@ -3,13 +3,16 @@
 execution_strategy: iso_remaster
 
 # Release string
-release_string: Sabayon Linux
+release_string: Rogentos Linux
 
 # File to write release string
 release_file: /etc/sabayon-edition
 
 # ISO Image title
-iso_title: Sabayon Gaming Edition
+iso_title: Rogentos Gaming Edition
+
+# Enable XZ compression in mksquashfs
+extra_mksquashfs_parameters: -comp xz -Xbcj x86
 
 # Outer chroot script command, to be executed outside destination chroot before
 # before entering it (and before inner_chroot_script)
@@ -34,7 +37,7 @@ iso_title: Sabayon Gaming Edition
 # Please use cdrkit to make this molecule working !!! Or drop some games and remove the switch.
 # The aim is supporting >4GB files without enabling ISO LEVEL 2/3 (that would make the ISO
 # unbootable with syslinux -- no fragmented files support, for good).
-extra_mkisofs_parameters: -b isolinux/isolinux.bin -c isolinux/boot.cat -allow-limited-size
+extra_mkisofs_parameters: -b isolinux/isolinux.bin -c isolinux/boot.cat -eltorito-alt-boot -no-emul-boot -eltorito-platform efi -eltorito-boot boot/grub/efi.img -allow-limited-size
 
 # Pre-ISO building script. Hook to be able to copy kernel images in place, for example
 %env pre_iso_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/generic_pre_iso_script.sh "Gaming Edition"
@@ -62,8 +65,8 @@ packages_to_add:
 	games-strategy/freeciv,
 	games-strategy/scorched3d,
 	games-strategy/spring,
+	games-strategy/warmux,
 	games-strategy/warzone2100,
-	games-strategy/wormux,
 	games-strategy/wesnoth,
 	games-sports/foobillard,
 	games-sports/torcs,
@@ -84,6 +87,7 @@ packages_to_remove:
 	app-pda/gnome-pilot,
 	app-pda/pilot-link,
 	app-text/libwpd,
+	app-text/libwpg,
 	dev-db/mysql,
 	dev-python/pygame,
 	dev-python/twisted,
@@ -95,7 +99,6 @@ packages_to_remove:
 	mail-client/evolution,
 	media-libs/babl,
 	media-libs/gegl,
-	media-libs/libwpg,
 	media-libs/netpbm,
 	media-libs/vigra,
 	media-gfx/gimp,

@@ -3,16 +3,26 @@
 /usr/sbin/env-update
 . /etc/profile
 
+sd_enable() {
+	[[ -x /usr/bin/systemctl ]] && \
+		systemctl --no-reload enable -f "${1}.service"
+}
+
+sd_disable() {
+	[[ -x /usr/bin/systemctl ]] && \
+		systemctl --no-reload disable -f "${1}.service"
+}
+
 # create /proc if it doesn't exist
 # rsync doesn't copy it
-if [ ! -d "/proc" ]; then
-	mkdir /proc
-	touch /proc/.keep
-fi
-if [ ! -d "/dev/pts" ]; then
-	mkdir /dev/pts
-	touch /dev/pts/.keep
-fi
+mkdir -p /proc
+# do not create /proc/.keep or older anaconda will raise an exception
+# touch /proc/.keep
+rm -f /proc/.keep
+mkdir -p /dev/shm
+touch /dev/shm/.keep
+mkdir -p /dev/pts
+touch /dev/pts/.keep
 
 # Cleanup Perl cruft
 perl-cleaner --ph-clean
@@ -23,9 +33,20 @@ cp /etc/skel /root -Rap
 chown root:root /root -R
 
 # Setup locale to en_US
-echo LANG=\"en_US.UTF-8\" > /etc/env.d/02locale
-echo LANGUAGE=\"en_US.UTF-8\" >> /etc/env.d/02locale
-echo LC_ALL=\"en_US.UTF-8\" >> /etc/env.d/02locale
+for f in /etc/env.d/02locale /etc/locale.conf; do
+	echo LANG=en_US.UTF-8 > "${f}"
+	echo LANGUAGE=en_US.UTF-8 >> "${f}"
+	echo LC_ALL=en_US.UTF-8 >> "${f}"
+done
+# Needed by systemd, because it doesn't properly set a good
+# encoding in ttys. Test it with (on tty1, VT1):
+# echo -e "\xE2\x98\xA0"
+# TODO: check if the issue persists with systemd 202.
+echo FONT=LatArCyrHeb-16 > /etc/vconsole.conf
+
+# since this comes without X, set the default target to multi-user.target
+# instead of graphical.target
+sd_enable multi-user
 
 # remove SSH keys
 rm -rf /etc/ssh/*_key*
@@ -47,15 +68,40 @@ echo "inet_interfaces = localhost" >> /etc/postfix/main.cf
 # turn bashlogin shells to actual login shells
 sed -i 's:exec -l /bin/bash:exec -l /bin/bash -l:' /bin/bashlogin
 
-# setup /etc/hosts, add sabayon as default hostname (required by Xfce)
+# setup /etc/hosts, add rogentos as default hostname (required by Xfce)
 sed -i "/^127.0.0.1/ s/localhost/localhost rogentos/" /etc/hosts
 sed -i "/^::1/ s/localhost/localhost rogentos/" /etc/hosts
 
 # setup postfix local mail aliases
 newaliases
 
+# DO NOT ENABLE interactive startup !!!
+# At this time, plymouth will trigger openrc interactive
+# mode if it's not forced to NO. So, disable it completely
+# sed -i "/^#rc_interactive=/ s/#//" /etc/rc.conf
+
+# Set Plymouth default theme
+plymouth-set-default-theme rogentos
+# and make sure that fbcondecor is removed
+rc-update del fbcondecor boot
+rc-update del fbcondecor default
+
 # enable cd eject on shutdown/reboot
 rc-update add cdeject shutdown
+sd_enable cdeject
+
+# Activate services for systemd
+SYSTEMD_SERVICES=(
+	"NetworkManager"
+	"rogentoslive"
+	"installer-text"
+	"installer-gui"
+)
+for srv in "${SYSTEMD_SERVICES[@]}"; do
+	sd_enable "${srv}"
+done
+# Disable syslog in systemd, we use journald
+sd_disable syslog-ng
 
 # setup sudoers
 [ -e /etc/sudoers ] && sed -i '/NOPASSWD: ALL/ s/^# //' /etc/sudoers
@@ -111,9 +157,9 @@ for conf in package.mask package.unmask package.keywords make.conf package.use; 
 		fi
 	fi
 done
-
-# split config file
-for conf in 00-sabayon.package.use; do
+# split config files
+for conf in 00-sabayon.package.use 00-sabayon.package.mask \
+	00-sabayon.package.unmask 00-sabayon.package.keywords; do
 	repo_path=/var/lib/entropy/client/database/*/sabayonlinux.org/standard
 	repo_conf=$(ls -1 ${repo_path}/*/*/${conf} | sort | tail -n 1 2>/dev/null)
 	if [ -n "${repo_conf}" ]; then
@@ -129,12 +175,6 @@ for conf in 00-sabayon.package.use; do
 
 	fi
 done
-
-# Update sabayon overlay
-layman -d sabayon
-rm -rf /var/lib/layman/sabayon
-layman -d sabayon-distro
-rm -rf /var/lib/layman/sabayon-distro
 
 # Reset users' password
 # chpasswd doesn't work anymore

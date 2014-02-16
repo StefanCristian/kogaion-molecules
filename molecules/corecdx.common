@@ -3,10 +3,10 @@
 execution_strategy: iso_remaster
 
 # ISO Image title
-iso_title: Sabayon CoreCDX
+iso_title: Rogentos CoreCDX
 
 # Release string
-release_string: Sabayon Linux
+release_string: Rogentos Linux
 
 # File to write release string
 release_file: /etc/sabayon-edition
@@ -33,51 +33,35 @@ extra_mksquashfs_parameters: -comp xz -Xbcj x86
 %env error_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/remaster_error_script.sh
 
 # Extra mkisofs parameters, perhaps something to include/use your bootloader
-extra_mkisofs_parameters: -b isolinux/isolinux.bin -c isolinux/boot.cat
+extra_mkisofs_parameters: -b isolinux/isolinux.bin -c isolinux/boot.cat -eltorito-alt-boot -no-emul-boot -eltorito-platform efi -eltorito-boot boot/grub/efi.img
 
 # Pre-ISO building script. Hook to be able to copy kernel images in place, for example
 %env pre_iso_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/generic_pre_iso_script.sh CoreCDX
 
-# Post-ISO building script, called after ISO image generation.    
+# Post-ISO building script, called after ISO image generation.
 %env post_iso_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/generic_post_iso_script.sh
 
 # Destination directory for the ISO image path (MANDATORY)
 %env destination_iso_directory: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/iso
 
-# sabayon-skel required to make anaconda autostart
-# libgnomecanvas-python required by anaconda
-# x11-drivers/xf86-video-virtualbox#2.6.33-sabayon,
-# x11-libs/libXxf86misc required by xset
+# Import the Graphic Environment module.
+%env %import ${ROGENTOS_MOLECULE_HOME:-/sabayon}/molecules/graphic-environment.common
 
+# x11-drivers/xf86-video-virtualbox#2.6.33-sabayon,
 packages_to_add:
-	@X,
-	@fluxbox,
-        app-emulation/virtualbox-guest-additions,
-	app-misc/sabayon-skel,
-	app-misc/anaconda-runtime-gui,
+	@wireless,
+	app-emulation/virtualbox-guest-additions,
 	app-text/pastebunz,
-	dev-python/libgnomecanvas-python,
 	lxde-base/lxdm,
-        media-fonts/ttf-bitstream-vera,
-        media-fonts/dejavu,
-        media-fonts/corefonts,
 	media-gfx/feh,
 	net-dialup/ppp,
 	net-dialup/rp-pppoe,
 	net-misc/tightvnc,
-	sys-apps/gpu-detector,
 	sys-block/parted,
 	sys-power/cpufrequtils,
-	x11-apps/xhost,
-	x11-apps/setxkbmap,
-	x11-themes/equinox-themes,
-	x11-themes/gtk-engines:2,
 	x11-drivers/ati-drivers,
 	x11-drivers/nvidia-drivers,
-        x11-drivers/xf86-video-virtualbox,
-	x11-libs/libXxf86misc,
-	x11-themes/hicolor-icon-theme,
-	x11-terms/xterm
+	x11-drivers/xf86-video-virtualbox
 
 # Determine whether repositories update should be run (if packages_to_add is set)
 # (default is: no), values are: yes, no.

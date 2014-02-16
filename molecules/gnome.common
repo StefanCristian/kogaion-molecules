@@ -3,13 +3,16 @@
 execution_strategy: iso_remaster
 
 # Release string
-release_string: Sabayon Linux
+release_string: Rogentos Linux
 
 # File to write release string
 release_file: /etc/sabayon-edition
 
 # ISO Image title
-iso_title: Sabayon GNOME
+iso_title: Rogentos GNOME
+
+# Enable XZ compression in mksquashfs
+extra_mksquashfs_parameters: -comp xz -Xbcj x86
 
 # Outer chroot script command, to be executed outside destination chroot before
 # before entering it (and before inner_chroot_script)
@@ -30,12 +33,12 @@ iso_title: Sabayon GNOME
 %env error_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/remaster_error_script.sh
 
 # Extra mkisofs parameters, perhaps something to include/use your bootloader
-extra_mkisofs_parameters: -b isolinux/isolinux.bin -c isolinux/boot.cat
+extra_mkisofs_parameters: -b isolinux/isolinux.bin -c isolinux/boot.cat -eltorito-alt-boot -no-emul-boot -eltorito-platform efi -eltorito-boot boot/grub/efi.img
 
 # Pre-ISO building script. Hook to be able to copy kernel images in place, for example
 %env pre_iso_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/generic_pre_iso_script.sh GNOME
 
-# Post-ISO building script, called after ISO image generation.    
+# Post-ISO building script, called after ISO image generation.
 %env post_iso_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/generic_post_iso_script.sh
 
 # Destination directory for the ISO image path (MANDATORY)
@@ -44,14 +47,17 @@ extra_mkisofs_parameters: -b isolinux/isolinux.bin -c isolinux/boot.cat
 # List of packages that would be removed from chrooted system (comma separated)
 # packages_to_remove:
 
+# Import the Graphic Environment module.
+%env %import ${ROGENTOS_MOLECULE_HOME:-/sabayon}/molecules/graphic-environment.common
+
 # List of packages that would be added from chrooted system (comma separated)
 packages_to_add:
-	@X,
 	@gnome,
 	@gst-plugins,
-	@fluxbox,
+	@gst-plugins-extra,
 	@wireless,
 	app-admin/gnome-system-tools,
+	app-admin/openrc-settingsd,
 	app-admin/packagekit-base,
 	app-admin/packagekit-gtk,
 	app-admin/rigo,
@@ -72,16 +78,10 @@ packages_to_add:
 	app-dicts/myspell-it,
 	app-dicts/myspell-nl,
 	app-editors/gedit,
-	app-emulation/virtualbox-guest-additions,
 	app-emulation/wine,
-	app-laptop/nvidiabl,
-	app-misc/anaconda-runtime-gui,
 	app-misc/gnote,
-	app-misc/sabayon-version,
-	app-misc/sabayon-music,
 	app-misc/sabayon-mce,
-	app-misc/sabayon-skel,
-	app-text/pastebunz,
+	app-misc/sabayon-version,
 	app-office/libreoffice,
 	app-office/libreoffice-l10n-de,
 	app-office/libreoffice-l10n-es,
@@ -89,15 +89,17 @@ packages_to_add:
 	app-office/libreoffice-l10n-it,
 	app-office/libreoffice-l10n-nl,
 	app-office/libreoffice-l10n-pt,
+	app-text/pastebunz,
 	dev-java/icedtea-bin,
+	games-misc/cowsay,
 	gnome-base/gnome-shell,
 	gnome-extra/gcalctool,
 	gnome-extra/gconf-editor,
 	gnome-extra/gnome-games,
 	gnome-extra/gnome-power-manager,
 	gnome-extra/gnome-screensaver,
-	gnome-extra/gnome-system-monitor,
 	gnome-extra/gnome-shell-windowlist,
+	gnome-extra/gnome-system-monitor,
 	gnome-extra/gnome-tweak-tool,
 	gnome-extra/gnome-utils,
 	gnome-extra/gucharmap,
@@ -106,15 +108,12 @@ packages_to_add:
 	gnome-extra/nautilus-sendto,
 	gnome-extra/nm-applet,
 	gnome-extra/polkit-gnome,
-	media-fonts/ttf-bitstream-vera,
-	media-fonts/dejavu,
-	media-fonts/corefonts,
-	media-gfx/shotwell,
 	media-gfx/gimp,
-	media-libs/libdvdread,
+	media-gfx/shotwell,
 	media-libs/libdvdcss,
-	media-libs/libdvdplay,
 	media-libs/libdvdnav,
+	media-libs/libdvdplay,
+	media-libs/libdvdread,
 	media-plugins/alsa-plugins,
 	media-sound/exaile,
 	media-sound/pavucontrol,
@@ -127,7 +126,7 @@ packages_to_add:
 	net-dialup/rp-pppoe,
 	net-firewall/ufw-frontends,
 	net-fs/samba,
-	net-irc/xchat,
+	net-irc/hexchat,
 	net-misc/networkmanager,
 	net-misc/networkmanager-openvpn,
 	net-misc/networkmanager-pptp,
@@ -144,47 +143,38 @@ packages_to_add:
 	net-wireless/bluez-firmware,
 	net-wireless/bluez-hcidump,
 	net-wireless/gnome-bluetooth,
-	sys-apps/gpu-detector,
 	sys-apps/gnome-disk-utility,
 	sys-apps/hdparm,
 	sys-apps/sdparm,
 	sys-apps/tuxonice-userui,
-	sys-block/parted,
 	sys-block/gparted,
+	sys-block/parted,
 	sys-fs/dmraid,
 	sys-fs/ntfs3g,
-	sys-fs/zfs,
 	sys-power/acpid,
 	sys-power/cpufrequtils,
 	www-client/chromium,
 	www-plugins/adobe-flash,
 	x11-apps/xdm,
-	x11-terms/guake,
-	x11-terms/xterm,
-	x11-drivers/xf86-video-virtualbox,
-	games-misc/cowsay,
-	x11-drivers/ati-drivers,
-	x11-drivers/nvidia-drivers,
-	x11-libs/vdpau-video,
+	x11-libs/libva-vdpau-driver,
 	x11-libs/xvba-video,
 	x11-misc/alacarte,
+	x11-misc/bumblebee,
 	x11-misc/magneto-gtk3,
 	x11-misc/xvkbd,
 	x11-terms/gnome-terminal,
+	x11-terms/guake,
 	x11-themes/gnome-icon-theme,
 	x11-themes/gnome-themes,
-	x11-themes/gtk-engines,
-	x11-themes/hicolor-icon-theme,
 	x11-themes/sabayon-artwork-extra,
 	x11-themes/sabayon-artwork-gnome,
 	x11-themes/sabayon-artwork-loo,
 	x11-themes/sound-theme-freedesktop,
 	x11-themes/xcursor-themes,
-	x11-themes/iottinka-artwork,
 	x11-wm/twm
 
 # Custom shell call to packages add (default is: equo install)
-# custom_packages_add_cmd: 
+# custom_packages_add_cmd:
 
 # Custom command for updating repositories (default is: equo update)
 # repositories_update_cmd:

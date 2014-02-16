@@ -2,44 +2,44 @@
 execution_strategy: livecd
 
 # Release string
-release_string: Sabayon Linux
+release_string: Rogentos Linux
 
 # File to write release string
 release_file: /etc/sabayon-edition
 
-# Enable XZ compression in mksquashfs
-extra_mksquashfs_parameters: -comp xz -Xbcj x86
-
 # Destination chroot directory, where files are pushed to before creating the squashfs image
 # NOTE: data will be stored inside an auto-generated subdir
-%env destination_chroot: ${SABAYON_MOLECULE_HOME:-/sabayon}
+%env destination_chroot: ${ROGENTOS_MOLECULE_HOME:-/sabayon}
 
 # Extra mirror (r)sync parameters
 extra_rsync_parameters: --one-file-system
 
+# Enable XZ compression in mksquashfs
+extra_mksquashfs_parameters: -comp xz -Xbcj x86
+
 # Inner chroot script command, to be executed inside destination chroot before packing it
 # - kmerge.sh - setup kernel bins
-# %env inner_chroot_script: ${SABAYON_MOLECULE_HOME:-/sabayon}/scripts/inner_chroot_script.sh
-%env inner_chroot_script: ${SABAYON_MOLECULE_HOME:-/sabayon}/scripts/inner_chroot_script.sh spinbase
+# %env inner_chroot_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/inner_chroot_script.sh
+%env inner_chroot_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/inner_chroot_script.sh spinbase
 
 # Destination LiveCD root directory, where files are placed before getting mkisofs'ed
 # NOTE: data will be stored inside an auto-generated subdir
-%env destination_livecd_root: ${SABAYON_MOLECULE_HOME:-/sabayon}
+%env destination_livecd_root: ${ROGENTOS_MOLECULE_HOME:-/sabayon}
 
 # Merge directory with destination LiveCD root
-%env merge_livecd_root: ${SABAYON_MOLECULE_HOME:-/sabayon}/boot/core
+%env merge_livecd_root: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/boot/core
 
 # Extra mkisofs parameters, perhaps something to include/use your bootloader
-extra_mkisofs_parameters: -b isolinux/isolinux.bin -c isolinux/boot.cat
+extra_mkisofs_parameters: -b isolinux/isolinux.bin -c isolinux/boot.cat -eltorito-alt-boot -no-emul-boot -eltorito-platform efi -eltorito-boot boot/grub/efi.img
 
 # Pre-ISO building script. Hook to be able to copy kernel images in place, for example
-%env pre_iso_script: ${SABAYON_MOLECULE_HOME:-/sabayon}/scripts/cdroot.py
+%env pre_iso_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/spinbase_pre_iso_script.sh
 
 # Post-ISO building script, called after ISO image generation.    
-%env post_iso_script: ${SABAYON_MOLECULE_HOME:-/sabayon}/scripts/generic_post_iso_script.sh
+%env post_iso_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/generic_post_iso_script.sh
 
 # Destination directory for the ISO image path
-%env destination_iso_directory: ${SABAYON_MOLECULE_HOME:-/sabayon}/iso
+%env destination_iso_directory: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/iso
 
 # Directories to remove completely (comma separated)
 paths_to_remove:
@@ -117,19 +117,3 @@ paths_to_empty:
     /var/lib/entropy/portage,
     /var/cache/fontconfig,
     /var/cache/genkernel
-
-packages_to_add:
-	sys-apps/smartmontools,
-	sys-fs/zfs,
-
-# Make sure they don't end up into the ISO
-packages_to_remove:
-	app-i18n/man-pages-da,
-	app-i18n/man-pages-de,
-	app-i18n/man-pages-fr,
-	app-i18n/man-pages-it,
-	app-i18n/man-pages-nl,
-	app-i18n/man-pages-pl,
-	app-i18n/man-pages-ro,
-	app-i18n/man-pages-ru,
-	app-i18n/man-pages-zh_CN

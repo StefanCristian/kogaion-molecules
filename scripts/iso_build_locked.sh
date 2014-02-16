@@ -6,6 +6,7 @@ if [ -z "${1}" ]; then
 fi
 
 BUILD_SCRIPT_NAME="${1}"
+shift
 
 ROGENTOS_MOLECULE_HOME="${ROGENTOS_MOLECULE_HOME:-/sabayon}"
 . "${ROGENTOS_MOLECULE_HOME}/scripts/iso_build.include"

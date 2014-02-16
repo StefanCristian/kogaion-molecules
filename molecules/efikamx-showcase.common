@@ -1,10 +1,11 @@
 # List of packages to add
 packages_to_add:
+	app-admin/eselect-uimage,
 	app-admin/syslog-ng,
 	app-admin/sudo,
 	app-arch/xarchiver,
 	app-editors/leafpad,
-	app-misc/sabayonlive-tools,
+	app-misc/rogentos-live,
 	app-misc/sabayon-skel,
 	app-office/abiword,
 	app-office/gnumeric,

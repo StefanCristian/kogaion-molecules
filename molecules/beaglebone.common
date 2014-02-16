@@ -1,6 +1,7 @@
 # List of packages to add on the BeagleBoard xM
 packages_to_add:
-	app-misc/sabayonlive-tools,
+	app-admin/eselect-uimage,
+	app-misc/rogentos-live,
 	app-misc/sabayon-skel,
 	app-admin/syslog-ng,
 	net-misc/cnetworkmanager,

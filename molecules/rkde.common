@@ -6,7 +6,7 @@ execution_strategy: iso_remaster
 release_string: Rogentos Linux
 
 # File to write release string
-release_file: /etc/Rogentos-edition
+release_file: /etc/rogentos-edition
 
 # ISO Image title
 iso_title: Kogaion KDE
@@ -33,7 +33,7 @@ extra_mksquashfs_parameters: -comp xz -Xbcj x86
 %env error_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/remaster_error_script.sh
 
 # Extra mkisofs parameters, perhaps something to include/use your bootloader
-extra_mkisofs_parameters: -udf -b isolinux/isolinux.bin -c isolinux/boot.cat -iso-level 4
+extra_mkisofs_parameters: -b isolinux/isolinux.bin -c isolinux/boot.cat -eltorito-alt-boot -no-emul-boot -eltorito-platform efi -eltorito-boot boot/grub/efi.img
 
 # Pre-ISO building script. Hook to be able to copy kernel images in place, for example
 %env pre_iso_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/generic_pre_iso_script_kde.sh KDE
@@ -69,10 +69,11 @@ packages_to_add:
 	app-misc/rogentos-version,
 	app-misc/sabayon-mce,
 	app-misc/rogentos-skel,
-	app-misc/rogentos-version,
+	app-misc/rogentos-live,
 	app-text/pastebunz,
 	app-office/libreoffice,
 	dev-java/icedtea-bin,
+	dev-util/pkgconfig,
 	kde-base/kde-l10n-en_GB,
 	kde-base/akregator,
 	kde-base/ark,
@@ -233,7 +234,7 @@ packages_to_add:
 	net-misc/networkmanager-openvpn,
 	net-misc/networkmanager-pptp,
 	net-misc/networkmanager-vpnc,
-	net-misc/wicd-client,
+	net-misc/wicd-client-kde,
 	net-misc/ntp,
 	net-print/cups,
 	net-print/foomatic-db,
@@ -268,6 +269,7 @@ packages_to_add:
 	games-misc/cowsay,
 	x11-drivers/ati-drivers,
 	x11-drivers/nvidia-drivers,
+	x11-libs/libva-intel-driver,
 	x11-libs/vdpau-video,
 	x11-libs/xvba-video,
 	x11-misc/desktop-acceleration-helpers,
@@ -295,7 +297,7 @@ packages_to_add:
 custom_packages_add_cmd: equo install oxygen-icons rogentos-version
 
 # Custom command for updating repositories (default is: equo update)
-repositories_update_cmd: equo update
+#repositories_update_cmd: equo update
 
 # Determine whether repositories update should be run (if packages_to_add is set)
 # (default is: no), values are: yes, no.

@@ -5,11 +5,11 @@
 release_desc: armv7a Efika MX
 
 # Release Version (used to generate release_file)
-release_version: 9
+%env release_version: ${ROGENTOS_RELEASE:-2}
 
 # Specify image file name (image file name will be automatically
 # produced otherwise)
-image_name: Sabayon_Linux_9_armv7a_EfikaMX_Base_4GB.img
+%env image_name: Sabayon_Linux_${ROGENTOS_RELEASE:-2}_armv7a_EfikaMX_Base_4GB.img
 
 # Specify the image file size in Megabytes. This is mandatory.
 # To avoid runtime failure, make sure the image is large enough to fit your

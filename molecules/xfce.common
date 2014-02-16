@@ -3,13 +3,13 @@
 execution_strategy: iso_remaster
 
 # Release string
-release_string: Sabayon Linux
+release_string: Rogentos Linux
 
 # File to write release string
 release_file: /etc/sabayon-edition
 
 # ISO Image title
-iso_title: Sabayon Xfce
+iso_title: Rogentos Xfce
 
 # Enable XZ compression in mksquashfs
 extra_mksquashfs_parameters: -comp xz -Xbcj x86
@@ -33,12 +33,12 @@ extra_mksquashfs_parameters: -comp xz -Xbcj x86
 %env error_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/remaster_error_script.sh
 
 # Extra mkisofs parameters, perhaps something to include/use your bootloader
-extra_mkisofs_parameters: -b isolinux/isolinux.bin -c isolinux/boot.cat
+extra_mkisofs_parameters: -b isolinux/isolinux.bin -c isolinux/boot.cat -eltorito-alt-boot -no-emul-boot -eltorito-platform efi -eltorito-boot boot/grub/efi.img
 
 # Pre-ISO building script. Hook to be able to copy kernel images in place, for example
 %env pre_iso_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/generic_pre_iso_script.sh Xfce
 
-# Post-ISO building script, called after ISO image generation.    
+# Post-ISO building script, called after ISO image generation.
 %env post_iso_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/generic_post_iso_script.sh
 
 # Destination directory for the ISO image path (MANDATORY)
@@ -49,11 +49,14 @@ extra_mkisofs_parameters: -b isolinux/isolinux.bin -c isolinux/boot.cat
 #	www-client/lynx,
 #	app-text/poppler-qt4
 
+# Import the Graphic Environment module.
+%env %import ${ROGENTOS_MOLECULE_HOME:-/sabayon}/molecules/graphic-environment.common
+
 # List of packages that would be added from chrooted system (comma separated)
 packages_to_add:
-	@X,
-	@fluxbox,
 	@gst-plugins,
+	@gst-plugins-extra,
+	@wireless,
 	@xfce,
 	app-admin/rigo,
 	app-arch/file-roller,
@@ -72,12 +75,8 @@ packages_to_add:
 	app-dicts/myspell-fr,
 	app-dicts/myspell-it,
 	app-dicts/myspell-nl,
-	app-emulation/virtualbox-guest-additions,
 	app-emulation/wine,
-	app-laptop/nvidiabl,
-	app-misc/anaconda-runtime-gui,
 	app-misc/gnote,
-	app-misc/sabayon-music,
 	app-office/libreoffice,
 	app-office/libreoffice-l10n-de,
 	app-office/libreoffice-l10n-es,
@@ -85,16 +84,11 @@ packages_to_add:
 	app-office/libreoffice-l10n-it,
 	app-office/libreoffice-l10n-nl,
 	app-office/libreoffice-l10n-pt,
-	app-text/epdfview,
 	app-text/pastebunz,
 	dev-java/icedtea-bin,
 	games-misc/cowsay,
 	gnome-extra/nm-applet-gtk2,
 	gnome-extra/polkit-gnome,
-	lxde-base/lxdm,	
-	media-fonts/corefonts,
-	media-fonts/dejavu,
-	media-fonts/ttf-bitstream-vera,
 	media-gfx/gimp,
 	media-gfx/ristretto,
 	media-gfx/shotwell,
@@ -110,33 +104,27 @@ packages_to_add:
 	net-dialup/rp-pppoe,
 	net-firewall/ufw-frontends,
 	net-im/pidgin,
-	net-irc/xchat,
+	net-irc/hexchat,
 	net-p2p/transmission-gtk,
 	net-print/cups,
 	net-wireless/bluez,
 	net-wireless/bluez-firmware,
 	net-wireless/bluez-hcidump,
-	sys-apps/gpu-detector,
 	sys-auth/consolekit,
 	sys-block/gparted,
 	sys-block/parted,
 	sys-fs/ntfs3g,
-	sys-fs/zfs,
 	sys-power/cpufrequtils,
 	www-client/midori,
 	www-plugins/adobe-flash,
-	x11-drivers/ati-drivers,
-	x11-drivers/nvidia-drivers,
-	x11-drivers/xf86-video-virtualbox,
 	x11-libs/gksu,
-	x11-libs/vdpau-video,
+	x11-libs/libva-vdpau-driver,
 	x11-libs/xvba-video,
 	x11-misc/magneto-gtk,
 	x11-misc/xvkbd,
-	x11-terms/terminal,
+	x11-terms/xfce4-terminal,
 	x11-terms/xterm,
-	x11-themes/equinox-themes,
-	x11-themes/gtk-engines:2,
+	x11-themes/gnome-themes-standard,
 	x11-themes/iottinka-artwork,
 	x11-themes/tango-icon-theme,
 	xfce-base/xfce4-panel,

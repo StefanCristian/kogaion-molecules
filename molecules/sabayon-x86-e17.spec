@@ -2,7 +2,7 @@
 %env %import ${ROGENTOS_MOLECULE_HOME:-/sabayon}/molecules/e17.common
 
 # Release Version
-release_version: 9
+%env release_version: ${ROGENTOS_RELEASE:-2}
 
 # Release Version string description
 release_desc: x86 E17
@@ -11,7 +11,7 @@ release_desc: x86 E17
 prechroot: linux32
 
 # Path to source ISO file (MANDATORY)
-%env source_iso: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/iso/Sabayon_Linux_SpinBase_DAILY_x86.iso
+%env source_iso: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/iso/Sabayon_Linux_${ISO_TAG:-DAILY}_x86_SpinBase.iso
 
 # Destination ISO image name, call whatever you want.iso, not mandatory
-destination_iso_image_name: Sabayon_Linux_9_x86_E17.iso
+%env destination_iso_image_name: Sabayon_Linux_${ROGENTOS_RELEASE:-2}_x86_E17.iso

@@ -6,7 +6,7 @@
 # prechroot:
 
 # Path to source ISO file (MANDATORY)
-%env source_iso: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/iso/Sabayon_Linux_SpinBase_DAILY_amd64.iso
+%env source_iso: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/iso/Sabayon_Linux_${ISO_TAG:-DAILY}_amd64_SpinBase.iso
 
-release_version: 9
-tar_name: Sabayon_Linux_SpinBase_9_amd64_Amazon_EBS_ext4_filesystem_image.tar.gz
+%env release_version: ${ROGENTOS_RELEASE:-2}
+%env tar_name: Sabayon_Linux_${ROGENTOS_RELEASE:-2}_amd64_SpinBase_Amazon_EBS_ext4_filesystem_image.tar.gz
