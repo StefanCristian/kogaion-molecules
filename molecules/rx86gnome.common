@@ -76,6 +76,7 @@ packages_to_add:
 	app-text/pastebunz,
 	dev-java/icedtea-bin,
 	games-misc/cowsay,
+	games-misc/fortune-mod,
 	gnome-base/gdm,
 	gnome-base/gnome,
 	gnome-base/gnome-shell,
@@ -83,6 +84,7 @@ packages_to_add:
 	gnome-extra/gnome-games,
 	gnome-extra/gnome-power-manager,
 	gnome-extra/gnome-screensaver,
+	gnome-extra/gnome-shell-extensions,
 	gnome-extra/gnome-shell-windowlist,
 	gnome-extra/gnome-system-monitor,
 	gnome-extra/gnome-tweak-tool,
@@ -100,7 +102,7 @@ packages_to_add:
 	media-libs/libdvdplay,
 	media-libs/libdvdread,
 	media-plugins/alsa-plugins,
-	media-sound/exaile,
+	media-sound/audacious,
 	media-sound/pavucontrol,
 	media-tv/xbmc,
 	media-video/mplayer,
@@ -132,6 +134,7 @@ packages_to_add:
 	sys-apps/hdparm,
 	sys-apps/sdparm,
 	sys-apps/tuxonice-userui,
+	sys-boot/plymouth,
 	sys-devel/gcc,
 	sys-block/gparted,
 	sys-block/parted,
@@ -143,6 +146,7 @@ packages_to_add:
 	www-client/chromium,
 	www-plugins/adobe-flash,
 	x11-apps/xdm,
+	x11-libs/libva-intel-driver,
 	x11-libs/libva-vdpau-driver,
 	x11-libs/xvba-video,
 	x11-misc/alacarte,
@@ -159,6 +163,7 @@ packages_to_add:
 	x11-themes/sound-theme-freedesktop,
 	x11-themes/gdm-themes-livecd,
 	x11-themes/xcursor-themes,
+	x11-themes/mediterranean-night,
 	x11-wm/twm
 
 # Custom shell call to packages add (default is: equo install)

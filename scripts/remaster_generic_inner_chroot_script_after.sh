@@ -16,7 +16,7 @@ if [ -f "/etc/systemd/system/multi-user.target.wants/sabayonlive.service" ] || [
         rm /usr/libexec/installer-*
         rm /usr/libexec/sabayonlive.sh
         rm /sbin/sabayon-functions.sh
-        rm /usb/bin/sabayon*
+        rm /usr/bin/sabayon*
 	rm /usr/share/grub/default-splash.png
         sed -i 's/sabayon-functions/rogentos-functions/g' /usr/libexec/x-setup.sh
         else
@@ -293,12 +293,14 @@ setup_proprietary_gfx_drivers() {
 	done
 }
 
-setup_gnome_shell_extensions() {
-	local extensions="windowlist@o2net.cl"
-	for ext in ${extensions}; do
-		eselect gnome-shell-extensions enable "${ext}"
-	done
-}
+#bionel: no longer needed, included in skel
+
+#setup_gnome_shell_extensions() {
+#	local extensions="windowlist@o2net.cl"
+#	for ext in ${extensions}; do
+#		eselect gnome-shell-extensions enable "${ext}"
+#	done
+#}
 
 setup_fonts() {
 	# Cause some rendering glitches on vbox as of 2011-10-02
@@ -367,7 +369,7 @@ setup_misc_stuff() {
 
 setup_installed_packages() {
 	equo unmask anaconda
-	equo install anaconda rogentos-artwork-core kogaion-artwork-gnome
+	equo install anaconda rogentos-artwork-core dev-util/pkgconfig
 	equo remove linux-server linux-sabayon:3.9 --configiles #Hardcode the kernel versions
 	# Update package list
 	equo query list installed -qv > /etc/rogentos-pkglist
@@ -517,7 +519,9 @@ setup_startup_caches
 
 equo query installed linux-sabayon
 eselect kernel list
+equo instal dev-util/pkgconfig
 equo remove sabayon-artwork-core --configfiles
+equo remove --force-system =sys-devel/$(equo query installed sys-devel/gcc | grep "Package" | awk '{ print $4 }' | cut -d "/" -f 2 | head -1) --configfiles
 equo install rogentos-artwork-core
 
 rm /var/lib/entropy/logs -rf
@@ -527,7 +531,7 @@ rm -f /var/run/entropy/entropy.lock
 rm -f /var/lib/entropy/entropy.pid
 rm -f /var/lib/entropy/entropy.lock
 
-genkernel --plymouth-theme=rogentos --splash=rogentos --luks initramfs
+genkernel --plymouth-theme=rogentos  --luks initramfs
 userdel ldap
 
 # Because we didn't find yet where Entropy sets are kept

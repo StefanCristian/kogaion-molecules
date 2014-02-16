@@ -94,12 +94,6 @@ for SRV in zfs-kmod sys-kernel/spl nvidia-drivers ati-drivers virtualbox-modules
 	equo install xf86-video-virtualbox"${WW}"$(equo search ati-drivers | grep sabayon | awk '{print $3}' | grep "sabayon" | sed 's/1,//g' | head -1) -p
 done
 
-for PKG in openrc grub gnome-colors-common lxdm anaconda anaconda-runtime; do
-equo mask $PKG@sabayonlinux.org
-equo mask $PKG@sabayon-limbo
-equo mask $PKG@sabayon-weekly
-done
-
 mkdir -p /etc/entropy/packages/package.mask.d/
 
 REPLACEMENT=">=sys-apps/openrc-0.9@sabayon-limbo
@@ -110,13 +104,17 @@ REPLACEMENT=">=sys-apps/openrc-0.9@sabayon-limbo
 >=app-misc/sabayonlive-tools-2.3@sabayonlinux.org
 >=app-misc/sabayonlive-tools-2.3@sabayon-weekly
 
->=app-misc/sabayon-skel-9@sabayon-limbo
->=app-misc/sabayon-skel-9@sabayonlinux.org
->=app-misc/sabayon-skel-9@sabayon-weekly
+>=app-misc/sabayon-live-1.3@sabayon-limbo
+>=app-misc/sabayon-live-1.3@sabayonlinux.org
+>=app-misc/sabayon-live-1.3@sabayon-weekly
 
->=sys-boot/grub-2.00@sabayon-limbo
->=sys-boot/grub-2.00@sabayonlinux.rg
->=sys-boot/grub-2.00@sabayon-weekly
+>=app-misc/sabayon-skel-1@sabayon-limbo
+>=app-misc/sabayon-skel-1@sabayonlinux.org
+>=app-misc/sabayon-skel-1@sabayon-weekly
+
+>=sys-boot/grub-1.00@sabayon-limbo
+>=sys-boot/grub-1.00@sabayonlinux.rg
+>=sys-boot/grub-1.00@sabayon-weekly
 
 >=kde-base/oxygen-icons-4.9.2@sabayon-weekly
 >=kde-base/oxygen-icons-4.9.2@sabayonlinux.org
@@ -145,6 +143,42 @@ REPLACEMENT=">=sys-apps/openrc-0.9@sabayon-limbo
 >=app-admin/anaconda-0.1@sabayon-weekly
 >=app-admin/anaconda-0.1@sabayonlinux.org
 >=app-admin/anaconda-0.1@sabayon-limbo
+
+>=sys-boot/plymouth-1@sabayon-weekly
+>=sys-boot/plymouth-1@sabayonlinux.org
+>=sys-boot/plymouth-1@sabayon-limbo
+
+>=x11-themes/sabayon-artwork-core-1@sabayon-weekly
+>=x11-themes/sabayon-artwork-core-1@sabayonlinux.org
+>=x11-themes/sabayon-artwork-core-1@sabayon-limbo
+
+>=x11-themes/sabayon-artwork-extra-1@sabayon-weekly
+>=x11-themes/sabayon-artwork-extra-1@sabayonlinux.org
+>=x11-themes/sabayon-artwork-extra-1@sabayon-limbo
+
+>=x11-themes/sabayon-artwork-gnome-1@sabayon-weekly
+>=x11-themes/sabayon-artwork-gnome-1@sabayonlinux.org
+>=x11-themes/sabayon-artwork-gnome-1@sabayon-limbo
+
+>=x11-themes/sabayon-artwork-grub-1@sabayon-weekly
+>=x11-themes/sabayon-artwork-grub-1@sabayonlinux.org
+>=x11-themes/sabayon-artwork-grub-1@sabayon-limbo
+
+>=x11-themes/sabayon-artwork-isolinux-1@sabayon-weekly
+>=x11-themes/sabayon-artwork-isolinux-1@sabayonlinux.org
+>=x11-themes/sabayon-artwork-isolinux-1@sabayon-limbo
+
+>=x11-themes/sabayon-artwork-kde-1@sabayon-weekly
+>=x11-themes/sabayon-artwork-kde-1@sabayonlinux.org
+>=x11-themes/sabayon-artwork-kde-1@sabayon-limbo
+
+>=x11-themes/sabayon-artwork-loo-1@sabayon-weekly
+>=x11-themes/sabayon-artwork-loo-1@sabayonlinux.org
+>=x11-themes/sabayon-artwork-loo-1@sabayon-limbo
+
+>=x11-themes/sabayon-artwork-lxde-1@sabayon-weekly
+>=x11-themes/sabayon-artwork-lxde-1@sabayonlinux.org
+>=x11-themes/sabayon-artwork-lxde-1@sabayon-limbo
 
 >=app-misc/anaconda-runtime-1.1-r1@sabayon-weekly
 >=app-misc/anaconda-runtime-1.1-r1@sabayonlinux.org

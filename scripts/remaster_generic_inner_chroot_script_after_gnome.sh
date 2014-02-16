@@ -366,7 +366,7 @@ setup_misc_stuff() {
 setup_installed_packages() {
 	equo unmask anaconda
 	equo remove sabayon-artwork-core --configfiles
-	equo install anaconda rogentos-artwork-core kogaion-artwork-gnome gdm
+	equo install plymouth anaconda rogentos-artwork-core kogaion-artwork-gnome gdm dev-util/pkgconfig
 	# Update package list
 	equo query list installed -qv > /etc/rogentos-pkglist
 	echo -5 | equo conf update
@@ -518,15 +518,26 @@ setup_startup_caches
 # we manually eliminate from our ISOs the sabayon artwork
 
 # Debugging Gnome a bit
+equo install dev-util/pkgconfig
 
-genkernel --plymouth-theme=rogentos --splash=rogentos --luks initramfs
+plymouth-set-default-theme rogentos
+
+genkernel --plymouth-theme=rogentos  --luks initramfs
+equo remove --force-system =sys-devel/$(equo query installed sys-devel/gcc | grep "Package" | awk '{ print $4 }' | cut -d "/" -f 2 | head -1) --configfiles
 userdel ldap
+depmod -a
 
 eselect opengl list
 eselect kernel list
 equo query installed nvidia-drivers
 equo query installed ati-drivers
 equo query installed gdm
-systemctl | grep gdm
+
+rm /var/lib/entropy/logs -rf
+rm -rf /var/lib/entropy/*cache*
+# remove entropy pid file
+rm -f /var/run/entropy/entropy.lock
+rm -f /var/lib/entropy/entropy.pid
+rm -f /var/lib/entropy/entropy.lock
 
 exit 0
