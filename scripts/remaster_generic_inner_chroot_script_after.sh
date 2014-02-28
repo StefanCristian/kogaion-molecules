@@ -139,11 +139,6 @@ setup_cpufrequtils() {
 	sd_enable cpufrequtils
 }
 
-setup_sabayon_mce() {
-	rc-update add sabayon-mce boot
-	sd_enable sabayon-mce
-}
-
 switch_kernel() {
 	local from_kernel="${1}"
 	local to_kernel="${2}"
@@ -461,7 +456,6 @@ prepare_gnome() {
 	rc-update add system-tools-backends default
 	# no systemd counterpart
 
-	setup_sabayon_mce
 }
 
 prepare_xfceforensic() {
@@ -475,7 +469,6 @@ prepare_kde() {
 	# TODO: find a better solution?
 	mv /etc/skel/.config/gtk-3.0/settings.ini._kde_molecule \
 		/etc/skel/.config/gtk-3.0/settings.ini
-	setup_sabayon_mce
 }
 
 prepare_awesome() {
