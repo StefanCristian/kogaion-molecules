@@ -9,7 +9,7 @@ release_desc: x86 CoreCDX
 prechroot: linux32
 
 # Path to source ISO file (MANDATORY)
-%env source_iso: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/iso/Sabayon_Linux_${ISO_TAG:-DAILY}_x86_SpinBase.iso
+%env source_iso: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/Sabayon_Linux_${ISO_TAG:-DAILY}_x86_SpinBase.iso
 
 # Destination ISO image name, call whatever you want.iso, not mandatory
-%env destination_iso_image_name: Sabayon_Linux_${ROGENTOS_RELEASE:-2}_x86_Minimal.iso
+%env destination_iso_image_name: Argent_Linux_${ROGENTOS_RELEASE:-2}_x86_Minimal.iso
