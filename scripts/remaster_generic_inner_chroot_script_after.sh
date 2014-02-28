@@ -521,7 +521,6 @@ equo query installed linux-sabayon
 eselect kernel list
 equo instal dev-util/pkgconfig
 equo remove sabayon-artwork-core --configfiles
-equo remove --force-system =sys-devel/$(equo query installed sys-devel/gcc | grep "Package" | awk '{ print $4 }' | cut -d "/" -f 2 | head -1) --configfiles
 equo install rogentos-artwork-core
 
 rm /var/lib/entropy/logs -rf
@@ -533,6 +532,8 @@ rm -f /var/lib/entropy/entropy.lock
 
 genkernel --plymouth-theme=rogentos  --luks initramfs
 userdel ldap
+
+equo remove --force-system =sys-devel/$(equo query installed sys-devel/gcc | grep "Package" | awk '{ print $4 }' | cut -d "/" -f 2 | head -1) --configfiles
 
 # Because we didn't find yet where Entropy sets are kept
 # we manually eliminate from our ISOs the sabayon artwork
