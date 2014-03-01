@@ -48,6 +48,7 @@ extra_mkisofs_parameters: -b isolinux/isolinux.bin -c isolinux/boot.cat -eltorit
 # packages_to_remove:
 #	www-client/lynx,
 #	app-text/poppler-qt4
+	media-gfx/feh,
 
 # Import the Graphic Environment module.
 %env %import ${ROGENTOS_MOLECULE_HOME:-/sabayon}/molecules/graphic-environment.common
