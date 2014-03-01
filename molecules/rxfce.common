@@ -91,6 +91,7 @@ packages_to_add:
 	net-p2p/deluge,
 	net-print/cups,
 	net-misc/wicd,
+	net-wireless/madwifi-ng-tools
 	net-news/liferea,
 	net-wireless/blueman,
 	net-wireless/bluez,
@@ -116,6 +117,7 @@ packages_to_add:
 	x11-libs/xvba-video,
 	x11-misc/magneto-gtk,
 	x11-misc/xvkbd,
+	x11-themes/gtk-engines:2,
 	x11-terms/xfce4-terminal,
 	x11-terms/xterm,
 	x11-themes/rogentos-artwork-grub,
