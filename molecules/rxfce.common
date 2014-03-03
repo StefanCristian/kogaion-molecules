@@ -49,6 +49,17 @@ extra_mkisofs_parameters: -b isolinux/isolinux.bin -c isolinux/boot.cat -eltorit
 #	www-client/lynx,
 #	app-text/poppler-qt4
 	media-gfx/feh,
+	x11-wm/fluxbox,
+	app-dicts/aspell-de,
+	app-dicts/aspell-fr,
+	app-dicts/aspell-it,
+	app-dicts/aspell-nl,
+	app-dicts/aspell-pl,
+	app-dicts/myspell-de,
+	app-dicts/myspell-es,
+	app-dicts/myspell-fr,
+	app-dicts/myspell-it,
+	app-dicts/myspell-nl,
 
 # Import the Graphic Environment module.
 %env %import ${ROGENTOS_MOLECULE_HOME:-/sabayon}/molecules/graphic-environment.common
@@ -62,6 +73,7 @@ packages_to_add:
 	app-admin/rigo,
 	app-arch/file-roller,
 	app-arch/unrar,
+	app-cdr/xfburn,
 	app-misc/rogentos-version,
 	app-misc/rogentos-live,
 	app-misc/rogentos-skel,
