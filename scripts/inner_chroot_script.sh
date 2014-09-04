@@ -117,16 +117,9 @@ update-usbids
 
 echo -5 | etc-update
 mount -t proc proc /proc
-/lib/rc/bin/rc-depend -u
 
 echo "Vacuum cleaning client db"
 equo rescue vacuum
-
-# Generate openrc cache
-[[ -d "/lib/rc/init.d" ]] && touch /lib/rc/init.d/softlevel
-[[ -d "/run/openrc" ]] && touch /run/openrc/softlevel
-/etc/init.d/savecache start
-/etc/init.d/savecache zap
 
 ldconfig
 ldconfig
@@ -214,5 +207,10 @@ rm -f /etc/entropy/.hw.hash
 rm -f /var/run/entropy/entropy.lock
 rm -f /var/lib/entropy/entropy.pid
 rm -f /var/lib/entropy/entropy.lock # old?
+
+# remove /run/* and /var/lock/*
+# systemd mounts them using tmpfs
+rm -rf /run/*
+rm -rf /var/lock/*
 
 exit 0

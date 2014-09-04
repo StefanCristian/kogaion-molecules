@@ -81,6 +81,11 @@ else
 	echo
 fi
 
+for moddir in $(find /lib/modules -maxdepth 1 -type d -empty); do
+	echo "Cleaning ${moddir} because it's empty"
+	rmdir "${moddir}"
+done
+
 rm -rf /var/lib/entropy/client/packages
 
 # Make sure that systemd is still the default init system
@@ -108,7 +113,7 @@ for conf in 00-sabayon.package.use 00-sabayon.package.mask \
 	repo_path=/var/lib/entropy/client/database/*/sabayonlinux.org/standard
 	repo_conf=$(ls -1 ${repo_path}/*/*/${conf} | sort | tail -n 1 2>/dev/null)
 	if [ -n "${repo_conf}" ]; then
-		target_path="/etc/portage/${conf/00-sabayon.}/${conf}"
+		target_path="/etc/portage/${conf/00-rogentos.}/${conf}"
 		target_dir=$(dirname "${target_path}")
 		if [ -f "${target_dir}" ]; then # remove old file
 			rm "${target_dir}" # ignore failure
