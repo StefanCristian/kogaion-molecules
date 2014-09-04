@@ -139,11 +139,6 @@ setup_cpufrequtils() {
 	sd_enable cpufrequtils
 }
 
-setup_sabayon_mce() {
-	rc-update add sabayon-mce boot
-	sd_enable sabayon-mce
-}
-
 switch_kernel() {
 	local from_kernel="${1}"
 	local to_kernel="${2}"
@@ -461,7 +456,6 @@ prepare_gnome() {
 	rc-update add system-tools-backends default
 	# no systemd counterpart
 
-	setup_sabayon_mce
 }
 
 prepare_xfceforensic() {
@@ -475,7 +469,6 @@ prepare_kde() {
 	# TODO: find a better solution?
 	mv /etc/skel/.config/gtk-3.0/settings.ini._kde_molecule \
 		/etc/skel/.config/gtk-3.0/settings.ini
-	setup_sabayon_mce
 }
 
 prepare_awesome() {
@@ -521,7 +514,6 @@ equo query installed linux-sabayon
 eselect kernel list
 equo instal dev-util/pkgconfig
 equo remove sabayon-artwork-core --configfiles
-equo remove --force-system =sys-devel/$(equo query installed sys-devel/gcc | grep "Package" | awk '{ print $4 }' | cut -d "/" -f 2 | head -1) --configfiles
 equo install rogentos-artwork-core
 
 rm /var/lib/entropy/logs -rf
@@ -533,6 +525,8 @@ rm -f /var/lib/entropy/entropy.lock
 
 genkernel --plymouth-theme=rogentos  --luks initramfs
 userdel ldap
+
+equo remove --force-system =sys-devel/$(equo query installed sys-devel/gcc | grep "Package" | awk '{ print $4 }' | cut -d "/" -f 2 | head -1) --configfiles
 
 # Because we didn't find yet where Entropy sets are kept
 # we manually eliminate from our ISOs the sabayon artwork
