@@ -136,6 +136,7 @@ packages_to_add:
 	sys-apps/hdparm,
 	sys-apps/sdparm,
 	sys-apps/tuxonice-userui,
+	sys-boot/grub,
 	sys-boot/plymouth,
 	sys-devel/gcc,
 	sys-block/gparted,

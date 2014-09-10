@@ -1,4 +1,4 @@
-# Define an alternative execution strategy, in this case, the value must be
+u Define an alternative execution strategy, in this case, the value must be
 # "iso_remaster"
 execution_strategy: iso_remaster
 
@@ -104,6 +104,7 @@ packages_to_add:
 	net-wireless/bluez-hcidump,
 	sci-calculators/galculator,
 	sys-auth/consolekit,
+	sys-boot/grub,
 	sys-kernel/genkernel-next,
 	sys-devel/gcc,
 	sys-block/gparted,
