@@ -22,6 +22,9 @@ if [ -z "${BUILDING_DAILY}" ]; then
 		sed -i "/^\[sabayon-weekly\]$/ s/sabayon-weekly/sabayonlinux.rg/" \
 			"${dst_conf}" || exit 1
 	fi
+	# so we will defend our users from sabayonlinux repos, starting today
+	rm "${repo_conf_d}"/entropy_sabayon*
+	rm "${src_conf}"/entropy_sabayon*
 fi
 
 # remove entropy hwash
