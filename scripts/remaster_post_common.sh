@@ -23,8 +23,12 @@ if [ -z "${BUILDING_DAILY}" ]; then
 			"${dst_conf}" || exit 1
 	fi
 	# so we will defend our users from sabayonlinux repos, starting today
-	rm "${repo_conf_d}"/entropy_sabayon*
-	rm "${src_conf}"/entropy_sabayon*
+	rm "${repo_conf_d}"/entropy_sabayonlinux*
+	rm "${repo_conf_d}"/entropy_sabayon-limbo
+	EREPO=/etc/entropy/repositories.conf.d
+	cd "${EREPO}"
+	wget http://bpr.bluepink.ro/~rogentos/distro/entropy_frozen
+	equo repo mirrorsort frozen
 fi
 
 # remove entropy hwash
