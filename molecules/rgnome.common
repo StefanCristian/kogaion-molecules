@@ -103,6 +103,7 @@ packages_to_add:
 	media-libs/libdvdnav,
 	media-libs/libdvdplay,
 	media-libs/libdvdread,
+	media-libs/libpng,
 	media-plugins/alsa-plugins,
 	media-sound/audacious,
 	media-sound/pavucontrol,

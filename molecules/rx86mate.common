@@ -73,6 +73,7 @@ packages_to_add:
 	net-dialup/rp-pppoe,
 	net-irc/hexchat,
 	x11-libs/gksu,
+	sys-boot/grub,
 	sys-apps/gnome-disk-utility,
 	sys-apps/gpu-detector,
 	sys-auth/consolekit,

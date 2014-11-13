@@ -364,9 +364,13 @@ setup_misc_stuff() {
 }
 
 setup_installed_packages() {
+	equo repo mirrorsort sabayonlinux.org
+	equo repo mirrorsort rogentoslinux
+	equo update
 	equo unmask anaconda
 	equo remove sabayon-artwork-core --configfiles
-	equo install plymouth anaconda rogentos-artwork-core kogaion-artwork-gnome gdm dev-util/pkgconfig
+	equo install plymouth anaconda rogentos-artwork-core kogaion-artwork-gnome gdm dev-util/pkgconfig gcc
+	equo install anaconda anaconda-runtime --nodeps
 	# Update package list
 	equo query list installed -qv > /etc/rogentos-pkglist
 	echo -5 | equo conf update

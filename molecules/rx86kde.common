@@ -244,6 +244,7 @@ packages_to_add:
 	net-wireless/bluez,
 	net-wireless/bluez-firmware,
 	net-wireless/bluez-hcidump,
+	sys-boot/grub,
 	sys-auth/policykit,
 	sys-auth/policykit-qt,
 	sys-auth/polkit,
