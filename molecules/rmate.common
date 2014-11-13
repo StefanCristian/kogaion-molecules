@@ -80,7 +80,6 @@ packages_to_add:
 	sys-auth/consolekit,
 	sys-boot/grub,
 	sys-block/gparted,
-	sys-devel/gcc,
 	sys-fs/ntfs3g,
 	sys-fs/zfs,
 	sys-kernel/genkernel-next,

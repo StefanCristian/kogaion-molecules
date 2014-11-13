@@ -78,7 +78,6 @@ packages_to_add:
 	sys-apps/gpu-detector,
 	sys-auth/consolekit,
 	sys-block/gparted,
-	sys-devel/gcc,
 	sys-fs/ntfs3g,
 	sys-fs/zfs,
 	sys-kernel/genkernel-next,

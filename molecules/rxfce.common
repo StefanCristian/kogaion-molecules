@@ -106,7 +106,6 @@ packages_to_add:
 	sys-auth/consolekit,
 	sys-boot/grub,
 	sys-kernel/genkernel-next,
-	sys-devel/gcc,
 	sys-block/gparted,
 	sys-block/parted,
 	sys-fs/ntfs3g,

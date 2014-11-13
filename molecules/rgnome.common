@@ -139,7 +139,6 @@ packages_to_add:
 	sys-apps/tuxonice-userui,
 	sys-boot/grub,
 	sys-boot/plymouth,
-	sys-devel/gcc,
 	sys-block/gparted,
 	sys-block/parted,
 	sys-kernel/genkernel-next,
