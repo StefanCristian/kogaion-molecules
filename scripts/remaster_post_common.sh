@@ -25,11 +25,7 @@ if [ -z "${BUILDING_DAILY}" ]; then
 	# so we will defend our users from sabayonlinux repos, starting today
 	rm "${repo_conf_d}"/entropy_sabayonlinux*
 	rm "${repo_conf_d}"/entropy_sabayon-limbo
-	export local LOC=$(pwd)
 	cd "${repo_conf_d}"
-	wget http://bpr.bluepink.ro/~rogentos/distro/entropy_frozen
-	equo repo mirrorsort frozen
-	cd ${LOC}
 fi
 
 # remove entropy hwash
