@@ -128,11 +128,11 @@ packages_to_add:
 	x11-themes/gtk-engines:2,
 	x11-terms/xfce4-terminal,
 	x11-terms/xterm,
-	x11-themes/rogentos-artwork-grub,
+	x11-themes/kogaion-artwork-grub,
 	x11-themes/kogaion-elementary-icons,
 	x11-themes/kogaion-light-theme,
 	x11-themes/kogaion-dark-theme
-	x11-themes/rogentos-artwork-core,
+	x11-themes/kogaion-artwork-core,
 	x11-themes/iottinka-artwork,
 	x11-themes/tango-icon-theme,
 	x11-themes/gnome-icon-theme-symbolic,
@@ -151,7 +151,7 @@ packages_to_add:
 	x11-plugins/pidgin-otr,
         x11-plugins/pidgin-privacy-please,
 
-# x11-themes/rogentos-artwork-gnome:
+# x11-themes/kogaion-artwork-gnome:
 #   provides the gtk theme for lxdm
 # gnome-extra/polkit-gnome:
 #   required to make nm-applet work

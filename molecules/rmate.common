@@ -95,7 +95,7 @@ packages_to_add:
 	x11-themes/kogaion-dark-theme,
 	x11-themes/gnome-themes-standard
 
-# x11-themes/rogentos-artwork-gnome:
+# x11-themes/kogaion-artwork-gnome:
 # provides the gtk theme for lxdm
 
 # Custom shell call to packages add (default is: equo install)
