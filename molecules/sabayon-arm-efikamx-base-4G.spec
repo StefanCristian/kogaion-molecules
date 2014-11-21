@@ -1,5 +1,5 @@
-%env %import ${ROGENTOS_MOLECULE_HOME:-/sabayon}/molecules/arm-base.common
-%env %import ${ROGENTOS_MOLECULE_HOME:-/sabayon}/molecules/efikamx-base.common
+%env %import ${ROGENTOS_MOLECULE_HOME:-/kogaion}/molecules/arm-base.common
+%env %import ${ROGENTOS_MOLECULE_HOME:-/kogaion}/molecules/efikamx-base.common
 
 # Release desc (the actual release description)
 release_desc: armv7a Efika MX
@@ -17,8 +17,8 @@ release_desc: armv7a Efika MX
 image_mb: 3800
 
 # Path to boot partition data (MLO, u-boot.img etc)
-%env source_boot_directory: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/boot/arm/efikamx
+%env source_boot_directory: ${ROGENTOS_MOLECULE_HOME:-/kogaion}/boot/arm/efikamx
 
 # External script that will generate the image file.
 # The same can be copied onto a MMC by using dd
-%env image_generator_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/efikamx_image_generator_script.sh
+%env image_generator_script: ${ROGENTOS_MOLECULE_HOME:-/kogaion}/scripts/efikamx_image_generator_script.sh

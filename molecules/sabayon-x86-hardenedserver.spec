@@ -1,5 +1,5 @@
 # use abs path, otherwise daily iso build automagic won't work
-%env %import ${ROGENTOS_MOLECULE_HOME:-/sabayon}/molecules/hardenedserver.common
+%env %import ${ROGENTOS_MOLECULE_HOME:-/kogaion}/molecules/hardenedserver.common
 
 %env release_version: ${ROGENTOS_RELEASE:-2}
 release_desc: x86 Hardened Server
@@ -9,7 +9,7 @@ release_desc: x86 Hardened Server
 prechroot: linux32
 
 # Path to source ISO file (MANDATORY)
-%env source_iso: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/iso/Sabayon_Linux_${ISO_TAG:-DAILY}_x86_SpinBase.iso
+%env source_iso: ${ROGENTOS_MOLECULE_HOME:-/kogaion}/iso/Sabayon_Linux_${ISO_TAG:-DAILY}_x86_SpinBase.iso
 
 # Destination ISO image name, call whatever you want.iso, not mandatory
 %env destination_iso_image_name: Sabayon_Linux_${ROGENTOS_RELEASE:-2}_x86_HardenedServer.iso

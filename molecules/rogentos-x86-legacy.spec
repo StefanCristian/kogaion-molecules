@@ -1,5 +1,5 @@
 # Use abs path, otherwise daily builds automagic won't work
-%env %import ${ROGENTOS_MOLECULE_HOME:-/sabayon}/molecules/legacy-xfce.common
+%env %import ${ROGENTOS_MOLECULE_HOME:-/kogaion}/molecules/legacy-xfce.common
 
 # Release Version
 release_version: 1
@@ -11,7 +11,7 @@ release_desc: x86 Xfce
 prechroot: linux32
 
 # Path to source ISO file (MANDATORY)
-%env source_iso: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/Sabayon_Linux_SpinBase_DAILY_x86.iso
+%env source_iso: ${ROGENTOS_MOLECULE_HOME:-/kogaion}/Sabayon_Linux_SpinBase_DAILY_x86.iso
 
 # Destination ISO image name, call whatever you want.iso, not mandatory
-destination_iso_image_name: /sabayon/iso/Rogentos_x86_Legacy_xfce.iso
+destination_iso_image_name: /kogaion/iso/Rogentos_x86_Legacy_xfce.iso

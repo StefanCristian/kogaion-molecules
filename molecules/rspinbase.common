@@ -9,7 +9,7 @@ release_file: /etc/rogentos-edition
 
 # Destination chroot directory, where files are pushed to before creating the squashfs image
 # NOTE: data will be stored inside an auto-generated subdir
-%env destination_chroot: ${ROGENTOS_MOLECULE_HOME:-/sabayon}
+%env destination_chroot: ${ROGENTOS_MOLECULE_HOME:-/kogaion}
 
 # Extra mirror (r)sync parameters
 extra_rsync_parameters: --one-file-system
@@ -19,31 +19,31 @@ extra_mksquashfs_parameters: -comp xz -Xbcj x86
 
 # Inner chroot script command, to be executed inside destination chroot before packing it
 # - kmerge.sh - setup kernel bins
-# %env inner_chroot_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/inner_chroot_script.sh
-%env inner_chroot_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/inner_chroot_script.sh spinbase
+# %env inner_chroot_script: ${ROGENTOS_MOLECULE_HOME:-/kogaion}/scripts/inner_chroot_script.sh
+%env inner_chroot_script: ${ROGENTOS_MOLECULE_HOME:-/kogaion}/scripts/inner_chroot_script.sh spinbase
 
 # Destination LiveCD root directory, where files are placed before getting mkisofs'ed
 # NOTE: data will be stored inside an auto-generated subdir
-%env destination_livecd_root: ${ROGENTOS_MOLECULE_HOME:-/sabayon}
+%env destination_livecd_root: ${ROGENTOS_MOLECULE_HOME:-/kogaion}
 
 # Merge directory with destination LiveCD root
-%env merge_livecd_root: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/boot/core
+%env merge_livecd_root: ${ROGENTOS_MOLECULE_HOME:-/kogaion}/boot/core
 
 # Extra mkisofs parameters, perhaps something to include/use your bootloader
 extra_mkisofs_parameters: -b isolinux/isolinux.bin -c isolinux/boot.cat -eltorito-alt-boot -no-emul-boot -eltorito-platform efi -eltorito-boot boot/grub/efi.img
 
 # Pre-ISO building script. Hook to be able to copy kernel images in place, for example
-%env pre_iso_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/spinbase_pre_iso_script.sh
+%env pre_iso_script: ${ROGENTOS_MOLECULE_HOME:-/kogaion}/scripts/spinbase_pre_iso_script.sh
 
 # Post-ISO building script, called after ISO image generation.    
-%env post_iso_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/generic_post_iso_script.sh
+%env post_iso_script: ${ROGENTOS_MOLECULE_HOME:-/kogaion}/scripts/generic_post_iso_script.sh
 
 # Destination directory for the ISO image path
-%env destination_iso_directory: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/iso
+%env destination_iso_directory: ${ROGENTOS_MOLECULE_HOME:-/kogaion}/iso
 
 # Directories to remove completely (comma separated)
 paths_to_remove:
-    /var/lib/entropy/client/database/*/sabayonlinux.org,
+    /var/lib/entropy/client/database/*/kogaionlinux.org,
     /var/lib/entropy/client/database/*/rogentoslinux,
     /boot/grub/grub.conf,
     /root/.subversion,

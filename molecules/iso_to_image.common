@@ -11,11 +11,11 @@ outer_chroot_script: /path/to/script/to/be/executed/outside
 
 # Inner chroot script command, to be executed inside destination chroot before
 # packing it
-inner_chroot_script: /sabayon/scripts/openvz_inner_chroot_script.sh
+inner_chroot_script: /kogaion/scripts/openvz_inner_chroot_script.sh
 
 # Inner chroot script command, to be executed inside destination chroot after
 # packages installation and removal
-inner_chroot_script_after: /sabayon/scripts/image_generic_inner_chroot_script_after.sh
+inner_chroot_script_after: /kogaion/scripts/image_generic_inner_chroot_script_after.sh
 
 # Outer chroot script command, to be executed outside destination chroot before
 # before entering it (and AFTER inner_chroot_script)
@@ -25,14 +25,14 @@ outer_chroot_script_after: /path/to/script/to/be/executed/outside/after
 # Variables exported:
 # TMP_IMAGE_PATH = path pointing to the temporary destination image file
 # LOOP_DEVICE = loop device (/dev/loopN) currently in use
-pre_image_script: /sabayon/scripts/pre_image_script.sh
+pre_image_script: /kogaion/scripts/pre_image_script.sh
 
 # Post-image building script. Hook called after image file creation and move
 # into destination directory.
 # Variables exported:
 # IMAGE_PATH = path pointing to the destination image file
 # IMAGE_CHECKSUM_PATH = path pointing to the destination image file checksum (md5)
-post_image_script: /sabayon/scripts/post_image_script.sh
+post_image_script: /kogaion/scripts/post_image_script.sh
 
 # Destination directory for the image path (MANDATORY)
 destination_image_directory: /

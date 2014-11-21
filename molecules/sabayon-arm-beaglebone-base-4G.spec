@@ -1,5 +1,5 @@
-%env %import ${ROGENTOS_MOLECULE_HOME:-/sabayon}/molecules/arm-base.common
-%env %import ${ROGENTOS_MOLECULE_HOME:-/sabayon}/molecules/beaglebone.common
+%env %import ${ROGENTOS_MOLECULE_HOME:-/kogaion}/molecules/arm-base.common
+%env %import ${ROGENTOS_MOLECULE_HOME:-/kogaion}/molecules/beaglebone.common
 
 # Release desc (the actual release description)
 release_desc: armv7a BeagleBone
@@ -17,8 +17,8 @@ release_desc: armv7a BeagleBone
 image_mb: 3800
 
 # Path to boot partition data (MLO, u-boot.img etc)
-%env source_boot_directory: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/boot/arm/beaglebone
+%env source_boot_directory: ${ROGENTOS_MOLECULE_HOME:-/kogaion}/boot/arm/beaglebone
 
 # External script that will generate the image file.
 # The same can be copied onto a MMC by using dd
-%env image_generator_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/beaglebone_image_generator_script.sh
+%env image_generator_script: ${ROGENTOS_MOLECULE_HOME:-/kogaion}/scripts/beaglebone_image_generator_script.sh

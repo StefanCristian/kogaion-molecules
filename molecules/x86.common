@@ -2,4 +2,4 @@
 extra_mkisofs_parameters: -b isolinux/isolinux.bin -c isolinux/boot.cat
 
 # Post-ISO building script, called after ISO image generation.
-%env post_iso_script: ${ROGENTOS_MOLECULE_HOME:-/sabayon}/scripts/generic_post_iso_script.sh x86
+%env post_iso_script: ${ROGENTOS_MOLECULE_HOME:-/kogaion}/scripts/generic_post_iso_script.sh x86

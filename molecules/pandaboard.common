@@ -6,7 +6,7 @@ packages_to_add:
 	app-arch/xarchiver,
 	app-editors/leafpad,
 	app-misc/rogentos-live,
-	app-misc/sabayon-skel,
+	app-misc/kogaion-skel,
 	app-office/abiword,
 	app-office/gnumeric,
 	app-text/epdfview,
@@ -36,7 +36,7 @@ packages_to_add:
 	x11-terms/eterm,
 	x11-themes/equinox-themes,
 	x11-themes/gtk-engines:2,
-	x11-themes/sabayon-artwork-core,
+	x11-themes/kogaion-artwork-core,
 	x11-wm/fluxbox,
 	xfce-extra/xfce4-notifyd,
 	www-client/midori
