@@ -93,7 +93,7 @@ sd_enable cdeject
 # Activate services for systemd
 SYSTEMD_SERVICES=(
 	"NetworkManager"
-	"rogentoslive"
+	"kogaionlive"
 	"installer-text"
 	"installer-gui"
 )

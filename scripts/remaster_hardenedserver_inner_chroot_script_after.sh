@@ -15,7 +15,7 @@ basic_environment_setup() {
 	# consolekit must be run at boot level
 	rc-update add consolekit boot
 
-	rc-update add rogentoslive boot
+	rc-update add kogaionlive boot
 	rc-update add x-setup boot
 	
 	# if it exists

@@ -23,7 +23,7 @@ DROP_SERVICES="
 	mdadm
 	netmount
 	NetworkManager
-	rogentoslive
+	kogaionlive
 	swap
 	swapfiles
 	termencoding
@@ -38,7 +38,7 @@ SYSTEMD_DROP_SERVICES="
 	lvm
 	mdadm
 	NetworkManager
-	rogentoslive
+	kogaionlive
 	x-setup
 "
 

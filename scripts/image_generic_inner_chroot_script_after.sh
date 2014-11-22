@@ -24,9 +24,9 @@ sd_disable NetworkManager
 rc-update add net.eth0 default
 
 # drop other useless services
-rc-update del rogentoslive boot
+rc-update del kogaionlive boot
 rc-update del x-setup boot
-sd_disable rogentoslive
+sd_disable kogaionlive
 
 # Enable ssh
 rc-update add sshd default

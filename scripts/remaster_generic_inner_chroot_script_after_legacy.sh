@@ -81,7 +81,7 @@ basic_environment_setup() {
 	rc-update add cups-browsed default
 	sd_enable cups
 	sd_enable cups-browsed
-	sd_enable rogentoslive
+	sd_enable kogaionlive
 
 	local kern_type="$(equo match --installed -q virtual/linux-binary)"
 	local do_zfs=1
@@ -465,7 +465,7 @@ eselect kernel set 1
                 depmod -a
 fi
 
-for PKG in sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux rogentos-live sabayon-skel sabayon-artwork-lxde linux-sabayon ati-drivers nvidia-drivers ati-userspace nvidia-settings nvidia-userspace xorg-server nvidia-drivers nvidia-userspace v$
+for PKG in sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux kogaion-live sabayon-skel sabayon-artwork-lxde linux-sabayon ati-drivers nvidia-drivers ati-userspace nvidia-settings nvidia-userspace xorg-server nvidia-drivers nvidia-userspace v$
 equo mask $PKG
 done
 
