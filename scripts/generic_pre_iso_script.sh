@@ -41,14 +41,14 @@ if [ -d "/home/rogentosuser/.gvfs" ]; then
         chown -R rogentosuser:rogentosuser /home/rogentosuser/.gvfs
 fi
 
-#mv "${CDROOT_DIR}/boot/sabayon.igz" "${CDROOT_DIR}/boot/rogentos.igz"
+#mv "${CDROOT_DIR}/boot/sabayon.igz" "${CDROOT_DIR}/boot/kogaion.igz"
 #mv "${CDROOT_DIR}/boot/sabayon" "${CDROOT_DIR}/boot/rogentos"
 
 boot_kernel=$(find "${CHROOT_DIR}/boot" -name "kernel-*" | sort | head -n 1)
 boot_ramfs=$(find "${CHROOT_DIR}/boot" -name "initramfs-genkernel-*" | sort | head -n 1)
 if [ -n "${boot_kernel}" ] && [ -f "${boot_kernel}" ]; then
 	cp "${boot_kernel}" "${CDROOT_DIR}/boot/rogentos" || exit 1
-	cp "${boot_ramfs}" "${CDROOT_DIR}/boot/rogentos.igz" || exit 1
+	cp "${boot_ramfs}" "${CDROOT_DIR}/boot/kogaion.igz" || exit 1
 fi
 
 if [ "${remaster_type}" = "KDE" ] || [ "${remaster_type}" = "GNOME" ] || [ "${remaster_type}" = "MATE" ] || [ "${remaster_type}" = "XFCE" ] ; then
@@ -59,7 +59,7 @@ elif [ "${remaster_type}" = "ServerBase" ]; then
 	boot_kernel=$(find "${CHROOT_DIR}/boot" -name "kernel-*" | sort | head -n 1)
 	boot_ramfs=$(find "${CHROOT_DIR}/boot" -name "initramfs-*" | sort | head -n 1)
 	cp "${boot_kernel}" "${CDROOT_DIR}/boot/rogentos" || exit 1
-	cp "${boot_ramfs}" "${CDROOT_DIR}/boot/rogentos.igz" || exit 1
+	cp "${boot_ramfs}" "${CDROOT_DIR}/boot/kogaion.igz" || exit 1
 	isolinux_source="${ROGENTOS_MOLECULE_HOME}/remaster/serverbase_isolinux.cfg"
 	grub_source="${ROGENTOS_MOLECULE_HOME}/remaster/serverbase_grub.cfg"
 elif [ "${remaster_type}" = "HardenedServer" ]; then
@@ -67,7 +67,7 @@ elif [ "${remaster_type}" = "HardenedServer" ]; then
 	boot_kernel=$(find "${CHROOT_DIR}/boot" -name "kernel-*" | sort | head -n 1)
 	boot_ramfs=$(find "${CHROOT_DIR}/boot" -name "initramfs-*" | sort | head -n 1)
 	cp "${boot_kernel}" "${CDROOT_DIR}/boot/rogentos" || exit 1
-	cp "${boot_ramfs}" "${CDROOT_DIR}/boot/rogentos.igz" || exit 1
+	cp "${boot_ramfs}" "${CDROOT_DIR}/boot/kogaion.igz" || exit 1
 	isolinux_source="${ROGENTOS_MOLECULE_HOME}/remaster/hardenedserver_isolinux.cfg"
 	grub_source="${ROGENTOS_MOLECULE_HOME}/remaster/hardenedserver_grub.cfg"
 fi

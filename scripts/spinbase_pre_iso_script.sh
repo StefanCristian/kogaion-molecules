@@ -28,7 +28,7 @@ fi
 
 # copy kernel and initramfs
 cp "${kernel}" "${cdroot_boot_dir}"/rogentos || exit 1
-cp "${initramfs}" "${cdroot_boot_dir}"/rogentos.igz || exit 1
+cp "${initramfs}" "${cdroot_boot_dir}"/kogaion.igz || exit 1
 
 # Write build info
 build_date=$(date)

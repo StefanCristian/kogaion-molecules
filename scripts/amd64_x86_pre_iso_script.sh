@@ -58,7 +58,7 @@ if [ -z "${tmp_dir}" ]; then
 fi
 # also rename kernel and initramfs inside the CDROOT dir
 mv "${CDROOT_DIR}/boot/rogentos" "${CDROOT_DIR}/boot/rogentos${current_arch}" || exit 1
-mv "${CDROOT_DIR}/boot/rogentos.igz" "${CDROOT_DIR}/boot/rogentos${current_arch}.igz" || exit 1
+mv "${CDROOT_DIR}/boot/kogaion.igz" "${CDROOT_DIR}/boot/rogentos${current_arch}.igz" || exit 1
 
 mount -o loop "${other_iso_path}" "${tmp_dir}" || exit 1
 other_squashfs_path="${tmp_dir}/livecd.squashfs"
@@ -69,7 +69,7 @@ fi
 cp "${other_squashfs_path}" "${CDROOT_DIR}/livecd${other_arch}.squashfs" || exit 1
 # copy kernel and initramfs
 cp "${tmp_dir}/boot/rogentos" "${CDROOT_DIR}/boot/rogentos${other_arch}" || exit 1
-cp "${tmp_dir}/boot/rogentos.igz" "${CDROOT_DIR}/boot/rogentos${other_arch}.igz" || exit 1
+cp "${tmp_dir}/boot/kogaion.igz" "${CDROOT_DIR}/boot/rogentos${other_arch}.igz" || exit 1
 
 # copy back.jpg to proper location
 isolinux_img="${ROGENTOS_MOLECULE_HOME}/remaster/embedded_world/back.jpg"
