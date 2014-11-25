@@ -1,7 +1,7 @@
 0fBOOT METHODS07                                                                  09F307
 
 0f- Available boot methods:07
-0frogentos07
+0fkogaion07
   Start the RogentosLinux Live system.
 0finstall07
   Start the Graphical Installation.
