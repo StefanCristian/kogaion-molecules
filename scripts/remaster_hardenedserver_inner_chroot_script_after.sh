@@ -284,8 +284,8 @@ setup_installed_packages() {
 	echo -5 | equo conf update
 
 	echo "Vacuum cleaning client db"
-	rm /var/lib/entropy/client/database/*/sabayonlinux.org -rf
-	rm /var/lib/entropy/client/database/*/sabayon-weekly -rf
+	rm /var/lib/entropy/client/database/*/kogaionlinux.ro -rf
+	rm /var/lib/entropy/client/database/*/kogaion-weekly -rf
 	rm /var/lib/entropy/client/database/*/rogentoslinux -rf
 	equo rescue vacuum
 

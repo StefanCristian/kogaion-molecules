@@ -390,72 +390,72 @@ eselect kernel set 1
                 rogentos_splash
                 equo config rogentos-artwork-resplash
 
-                echo ">=x11-base/xorg-server-1.10@sabayon-weekly
-                      >=x11-base/xorg-server-1.10@sabayonlinux.org
+                echo ">=x11-base/xorg-server-1.10@kogaion-weekly
+                      >=x11-base/xorg-server-1.10@kogaionlinux.ro
                       >=x11-base/xorg-server-1.10@sabayon-limbo
                       >=x11-base/xorg-server-1.10@rogentoslinux
 
-                      >=x11-drivers/ati-drivers-12.2@sabayon-weekly
-                      >=x11-drivers/ati-drivers-12.2@sabayonlinux.org
+                      >=x11-drivers/ati-drivers-12.2@kogaion-weekly
+                      >=x11-drivers/ati-drivers-12.2@kogaionlinux.ro
                       >=x11-drivers/ati-drivers-12.2@sabayon-limbo
                       >=x11-drivers/ati-drivers-12.2@rogentoslinux
 
-                      >=x11-base/xorg-drivers-1.12@sabayon-weekly
-                      >=x11-base/xorg-drivers-1.12@sabayonlinux.org
+                      >=x11-base/xorg-drivers-1.12@kogaion-weekly
+                      >=x11-base/xorg-drivers-1.12@kogaionlinux.ro
                       >=x11-base/xorg-drivers-1.12@sabayon-limbo
                       >=x11-base/xorg-drivers-1.12@rogentoslinux
 
-                      >=x11-drivers/xf86-video-ati-1@sabayon-weekly
-                      >=x11-drivers/xf86-video-ati-1@sabayonlinux.org
+                      >=x11-drivers/xf86-video-ati-1@kogaion-weekly
+                      >=x11-drivers/xf86-video-ati-1@kogaionlinux.ro
                       >=x11-drivers/xf86-video-ati-1@sabayon-limbo
                       >=x11-drivers/xf86-video-ati-1@rogentoslinux
 
-                      >=x11-drivers/xf86-video-nv-1@sabayon-weekly
-                      >=x11-drivers/xf86-video-nv-1@sabayonlinux.org
+                      >=x11-drivers/xf86-video-nv-1@kogaion-weekly
+                      >=x11-drivers/xf86-video-nv-1@kogaionlinux.ro
                       >=x11-drivers/xf86-video-nv-1@sabayon-limbo
                       >=x11-drivers/xf86-video-nv-1@rogentoslinux
 
-                      >=x11-drivers/xf86-video-nouveau-1@sabayon-weekly
-                      >=x11-drivers/xf86-video-nouveau-1@sabayonlinux.org
+                      >=x11-drivers/xf86-video-nouveau-1@kogaion-weekly
+                      >=x11-drivers/xf86-video-nouveau-1@kogaionlinux.ro
                       >=x11-drivers/xf86-video-nouveau-1@sabayon-limbo
                       >=x11-drivers/xf86-video-nouveau-1@rogentoslinux
 
-                      >=x11-drivers/xf86-video-intel-1@sabayon-weekly
-                      >=x11-drivers/xf86-video-intel-1@sabayonlinux.org
+                      >=x11-drivers/xf86-video-intel-1@kogaion-weekly
+                      >=x11-drivers/xf86-video-intel-1@kogaionlinux.ro
                       >=x11-drivers/xf86-video-intel-1@sabayon-limbo
                       >=x11-drivers/xf86-video-intel-1@rogentoslinux
 
-                      >=x11-drivers/xf86-input-evdev-2.7.3@sabayon-weekly
-                      >=x11-drivers/xf86-input-evdev-2.7.3@sabayonlinux.org
+                      >=x11-drivers/xf86-input-evdev-2.7.3@kogaion-weekly
+                      >=x11-drivers/xf86-input-evdev-2.7.3@kogaionlinux.ro
                       >=x11-drivers/xf86-input-evdev-2.7.3@sabayon-limbo
                       >=x11-drivers/xf86-input-evdev-2.7.3@rogentoslinux
 
-                      >=x11-drivers/xf86-input-void-1.4.0@sabayon-weekly
-                      >=x11-drivers/xf86-input-void-1.4.0@sabayonlinux.org
+                      >=x11-drivers/xf86-input-void-1.4.0@kogaion-weekly
+                      >=x11-drivers/xf86-input-void-1.4.0@kogaionlinux.ro
                       >=x11-drivers/xf86-input-void-1.4.0@sabayon-limbo
                       >=x11-drivers/xf86-input-void-1.4.0@rogentoslinux
 
-                      >=x11-drivers/xf86-video-fbdev-0.4.3@sabayon-weekly
-                      >=x11-drivers/xf86-video-fbdev-0.4.3@sabayonlinux.org
+                      >=x11-drivers/xf86-video-fbdev-0.4.3@kogaion-weekly
+                      >=x11-drivers/xf86-video-fbdev-0.4.3@kogaionlinux.ro
                       >=x11-drivers/xf86-video-fbdev-0.4.3@sabayon-limbo
 
-                      >=x11-drivers/xf86-input-synaptics-1.6.2@sabayon-weekly
-                      >=x11-drivers/xf86-input-synaptics-1.6.2@sabayonlinux.org
+                      >=x11-drivers/xf86-input-synaptics-1.6.2@kogaion-weekly
+                      >=x11-drivers/xf86-input-synaptics-1.6.2@kogaionlinux.ro
                       >=x11-drivers/xf86-input-synaptics-1.6.2@sabayon-limbo
                       >=x11-drivers/xf86-input-synaptics-1.6.2@rogentoslinux
 
-                      >=x11-drivers/xf86-video-i740-1@sabayon-weekly
-                      >=x11-drivers/xf86-video-i740-1@sabayonlinux.org
+                      >=x11-drivers/xf86-video-i740-1@kogaion-weekly
+                      >=x11-drivers/xf86-video-i740-1@kogaionlinux.ro
                       >=x11-drivers/xf86-video-i740-1@sabayon-limbo
                       >=x11-drivers/xf86-video-i740-1@rogentoslinux
 
-                      >=x11-drivers/xf86-video-virtualbox-1@sabayon-weekly
-                      >=x11-drivers/xf86-video-virtualbox-1@sabayonlinux.org
+                      >=x11-drivers/xf86-video-virtualbox-1@kogaion-weekly
+                      >=x11-drivers/xf86-video-virtualbox-1@kogaionlinux.ro
                       >=x11-drivers/xf86-video-virtualbox-1@sabayon-limbo
                       >=x11-drivers/xf86-video-virtualbox-1@rogentoslinux
 
-                      >=x11-drivers/xf86-video-vesa-2.3.2@sabayon-weekly
-                      >=x11-drivers/xf86-video-vesa-2.3.2@sabayonlinux.org
+                      >=x11-drivers/xf86-video-vesa-2.3.2@kogaion-weekly
+                      >=x11-drivers/xf86-video-vesa-2.3.2@kogaionlinux.ro
                       >=x11-drivers/xf86-video-vesa-2.3.2@sabayon-limbo
                       >=x11-drivers/xf86-video-vesa-2.3.2@rogentoslinux" >> /etc/entropy/packages/package.mask
 
@@ -479,8 +479,8 @@ setup_installed_packages() {
 	echo -5 | equo conf update
 
 	echo "Vacuum cleaning client db"
-	rm /var/lib/entropy/client/database/*/sabayonlinux.org -rf
-	rm /var/lib/entropy/client/database/*/sabayon-weekly -rf
+	rm /var/lib/entropy/client/database/*/kogaionlinux.ro -rf
+	rm /var/lib/entropy/client/database/*/kogaion-weekly -rf
 	rm /var/lib/entropy/client/database/*/rogentoslinux -rf
 	equo rescue vacuum
 

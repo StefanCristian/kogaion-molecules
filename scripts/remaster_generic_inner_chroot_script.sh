@@ -33,18 +33,18 @@ export FORCE_EAPI=2
 
 LOC=$(pwd)
 EREPO=/etc/entropy/repositories.conf.d
-if [ -f "/etc/entropy/repositories.conf.d/entropy_sabayonlinux.org.example" ]; then
-        mv "${EREPO}/entropy_sabayonlinux.org.example" "${EREPO}/entropy_sabayonlinux.org"
+if [ -f "/etc/entropy/repositories.conf.d/entropy_kogaionlinux.ro.example" ]; then
+        mv "${EREPO}/entropy_kogaionlinux.ro.example" "${EREPO}/entropy_kogaionlinux.ro"
 fi
 
-if [ -f "${EREPO}/entropy_sabayon-weekly" ]; then
-        mv "${EREPO}/entropy_sabayon-weekly" "${EREPO}/entropy_sabayon-weekly.example"
+if [ -f "${EREPO}/entropy_kogaion-weekly" ]; then
+        mv "${EREPO}/entropy_kogaion-weekly" "${EREPO}/entropy_kogaion-weekly.example"
 fi
 
 cd "$EREPO"
 wget http://pkg.rogentos.ro/~rogentos/distro/entropy_rogentoslinux
 equo repo mirrorsort rogentoslinux
-equo repo mirrorsort sabayonlinux.org
+equo repo mirrorsort kogaionlinux.ro
 equo update
 
 updated=0

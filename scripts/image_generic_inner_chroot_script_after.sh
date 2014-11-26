@@ -74,8 +74,8 @@ equo query list installed -qv > /etc/rogentos-pkglist
 /lib/rc/bin/rc-depend -u
 
 echo "Vacuum cleaning client db"
-rm /var/lib/entropy/client/database/*/sabayonlinux.org -rf
-rm /var/lib/entropy/client/database/*/sabayon-weekly -rf
+rm /var/lib/entropy/client/database/*/kogaionlinux.ro -rf
+rm /var/lib/entropy/client/database/*/kogaion-weekly -rf
 equo rescue vacuum
 
 # restore original repositories.conf (all mirrors were filtered for speed)
