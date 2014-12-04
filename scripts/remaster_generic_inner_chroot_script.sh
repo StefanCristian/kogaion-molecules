@@ -4,7 +4,7 @@
 . /etc/profile
 
 # make sure there is no stale pid file around that prevents entropy from running
-rm -f /var/run/entropy/entropy.lock
+rm -f /run/entropy/entropy.lock
 
 # disable all mirrors but GARR
 #for repo_conf in /etc/entropy/repositories.conf.d/entropy_*; do

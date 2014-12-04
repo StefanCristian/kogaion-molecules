@@ -5,7 +5,7 @@
 
 
 # make sure there is no stale pid file around that prevents entropy from running
-rm -f /var/run/entropy/entropy.lock
+rm -f /run/entropy/entropy.lock
 
 LOC=$(pwd)
 EREPO=/etc/entropy/repositories.conf.d

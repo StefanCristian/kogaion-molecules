@@ -439,7 +439,7 @@ setup_installed_packages() {
 	rm /var/lib/entropy/logs -rf
 	rm -rf /var/lib/entropy/*cache*
 	# remove entropy pid file
-	rm -f /var/run/entropy/entropy.lock
+	rm -f /run/entropy/entropy.lock
 	rm -f /var/lib/entropy/entropy.pid
 	rm -f /var/lib/entropy/entropy.lock
 }
@@ -574,7 +574,7 @@ userdel ldap
 rm /var/lib/entropy/logs -rf
 rm -rf /var/lib/entropy/*cache*
 # remove entropy pid file
-rm -f /var/run/entropy/entropy.lock
+rm -f /run/entropy/entropy.lock
 rm -f /var/lib/entropy/entropy.pid
 rm -f /var/lib/entropy/entropy.lock
 

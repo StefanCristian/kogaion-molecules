@@ -30,14 +30,14 @@ fi
 # remove entropy hwash
 rm -f "${CHROOT_DIR}"/etc/entropy/.hw.hash
 # remove entropy pid file
-rm -f "${CHROOT_DIR}"/var/run/entropy/entropy.lock
+rm -f "${CHROOT_DIR}"/run/entropy/entropy.lock
 
 # do not exit!! this file is sourced!
 
 # remove entropy hwash
 rm -f "${CHROOT_DIR}"/etc/entropy/.hw.hash
 # remove entropy pid file
-rm -f "${CHROOT_DIR}"/var/run/entropy/entropy.lock
+rm -f "${CHROOT_DIR}"/run/entropy/entropy.lock
 
 # remove /run/* and /var/lock/*
 # systemd mounts them using tmpfs

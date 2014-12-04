@@ -300,8 +300,8 @@ setup_installed_packages() {
 	rm /var/lib/entropy/logs -rf
 	rm -rf /var/lib/entropy/*cache*
 	# remove entropy pid file
-	rm -f /var/run/entropy/entropy.lock
-	rm -f /var/run/entropy/entropy.pid
+	rm -f /run/entropy/entropy.lock
+	rm -f /run/entropy/entropy.pid
 }
 
 setup_portage() {
