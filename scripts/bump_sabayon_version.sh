@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# This script automatically bumps the version of Rogentos
+# This script automatically bumps the version of Kogaion
 # ebuilds.
 
 . /etc/profile

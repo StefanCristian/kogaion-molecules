@@ -3,7 +3,7 @@
 execution_strategy: iso_remaster
 
 # Release string
-release_string: Rogentos Linux
+release_string: Kogaion Linux
 
 # File to write release string
 release_file: /etc/kogaion-edition
@@ -12,7 +12,7 @@ release_file: /etc/kogaion-edition
 extra_mksquashfs_parameters: -comp xz -Xbcj x86
 
 # ISO Image title
-iso_title: Rogentos Awesome
+iso_title: Kogaion Awesome
 
 # Outer chroot script command, to be executed outside destination chroot before
 # before entering it (and before inner_chroot_script)

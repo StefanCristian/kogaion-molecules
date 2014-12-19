@@ -3,13 +3,13 @@
 execution_strategy: iso_remaster
 
 # Release string
-release_string: Rogentos Linux
+release_string: Kogaion Linux
 
 # File to write release string
 release_file: /etc/kogaion-edition
 
 # ISO Image title
-iso_title: Rogentos KDE
+iso_title: Kogaion KDE
 
 # Outer chroot script command, to be executed outside destination chroot before
 # before entering it (and before inner_chroot_script)

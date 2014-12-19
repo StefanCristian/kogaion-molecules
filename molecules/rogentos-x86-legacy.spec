@@ -14,4 +14,4 @@ prechroot: linux32
 %env source_iso: ${ROGENTOS_MOLECULE_HOME:-/kogaion}/Sabayon_Linux_SpinBase_DAILY_x86.iso
 
 # Destination ISO image name, call whatever you want.iso, not mandatory
-destination_iso_image_name: /kogaion/iso/Rogentos_x86_Legacy_xfce.iso
+destination_iso_image_name: /kogaion/iso/Kogaion_x86_Legacy_xfce.iso

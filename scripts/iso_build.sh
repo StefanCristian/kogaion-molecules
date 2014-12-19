@@ -49,7 +49,7 @@ REMASTER_SPECS_ISO=()
 REMASTER_TAR_SPECS=()
 REMASTER_TAR_SPECS_TAR=()
 
-# Default Rogentos release version to current date
+# Default Kogaion release version to current date
 # composed by YYYYMMDD. This is overridden by the
 # monthly if branch below.
 if [ -z "${ROGENTOS_RELEASE}" ]; then  # make possible to override it
@@ -64,7 +64,7 @@ fi
 # meaning for monthly releases.
 ISO_TAG="DAILY"
 OLD_ISO_TAG=""  # used to remove OLD ISO images the local dir
-DISTRO_NAME="Rogentos_Linux"
+DISTRO_NAME="Kogaion_Linux"
 ISO_DIR="daily"
 CHANGELOG_DATES=""
 CHANGELOG_DIR="${ROGENTOS_MOLECULE_HOME}/${ACTION}-git-logs"

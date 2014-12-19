@@ -3,10 +3,10 @@
 execution_strategy: iso_remaster
 
 # ISO Image title
-iso_title: Rogentos Hardened Server
+iso_title: Kogaion Hardened Server
 
 # Release string
-release_string: Rogentos Linux
+release_string: Kogaion Linux
 
 # File to write release string
 release_file: /etc/kogaion-edition

@@ -2,7 +2,7 @@
 execution_strategy: livecd
 
 # Release string
-release_string: Rogentos Linux
+release_string: Kogaion Linux
 
 # File to write release string
 release_file: /etc/kogaion-edition

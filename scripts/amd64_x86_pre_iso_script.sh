@@ -1,6 +1,6 @@
 #!/bin/bash
 # example call:
-# amd64_x86_pre_iso_script.sh GNOME 64 32 /path/to/Rogentos_Linux_DAILY_x86_G.iso
+# amd64_x86_pre_iso_script.sh GNOME 64 32 /path/to/Kogaion_Linux_DAILY_x86_G.iso
 
 remaster_type="${1}"
 current_arch="${2}"
@@ -82,9 +82,9 @@ arm_images_dir="${ROGENTOS_MOLECULE_HOME}/images"
 arm_dir="${CDROOT_DIR}/ARM"
 mkdir -p "${arm_dir}" || exit 1
 
-beaglebone_image="Rogentos_Linux_9_armv7a_BeagleBone_Base_2GB.img.xz"
-beagleboard_xm_image="Rogentos_Linux_9_armv7a_BeagleBoard_xM_4GB.img.xz"
-pandaboard_image="Rogentos_Linux_9_armv7a_PandaBoard_4GB.img.xz"
+beaglebone_image="Kogaion_Linux_9_armv7a_BeagleBone_Base_2GB.img.xz"
+beagleboard_xm_image="Kogaion_Linux_9_armv7a_BeagleBoard_xM_4GB.img.xz"
+pandaboard_image="Kogaion_Linux_9_armv7a_PandaBoard_4GB.img.xz"
 
 # BeagleBone
 arm_card_dir="${arm_dir}/BeagleBone"

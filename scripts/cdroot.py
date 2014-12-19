@@ -25,7 +25,7 @@ if boot_ramfs:
 build_info_file = os.path.join(cdroot_dir, "BUILD_INFO")
 build_date = str(datetime.fromtimestamp(time.time()))
 bf = open(build_info_file, "w")
-bf.write("Rogentos ISO image build information\n")
+bf.write("Kogaion ISO image build information\n")
 bf.write("Built on: %s\n" % (build_date,))
 bf.flush()
 bf.close()

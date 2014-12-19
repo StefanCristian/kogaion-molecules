@@ -304,7 +304,7 @@ setup_misc_stuff() {
 		cp -p /etc/samba/smb.conf.default /etc/samba/smb.conf
 	fi
 
-	# if Rogentos GNOME, drop qt-gui bins
+	# if Kogaion GNOME, drop qt-gui bins
 	gnome_panel=$(qlist -ICve gnome-base/gnome-panel)
 	if [ -n "${gnome_panel}" ]; then
 		find /usr/share/applications -name "*qt-gui*.desktop" | xargs rm
@@ -347,7 +347,7 @@ fi
 
 rogentos_install() {
 
-#Rogentos ISO Remaking from the Beginnings
+#Kogaion ISO Remaking from the Beginnings
 
 localz=$(pwd)
 ARCH=$(uname -m)
@@ -469,7 +469,7 @@ for PKG in sabayon-artwork-core sabayon-artwork-grub sabayon-artwork-isolinux ko
 equo mask $PKG
 done
 
-echo "Forbid any kernel upgrade from now on, kernel-switcher only because it's Rogentos Legacy"
+echo "Forbid any kernel upgrade from now on, kernel-switcher only because it's Kogaion Legacy"
 }
 
 setup_installed_packages() {

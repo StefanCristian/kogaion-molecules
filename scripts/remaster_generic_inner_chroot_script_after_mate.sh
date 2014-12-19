@@ -331,7 +331,7 @@ setup_misc_stuff() {
 		cp -p /etc/samba/smb.conf.default /etc/samba/smb.conf
 	fi
 
-	# if Rogentos GNOME, drop qt-gui bins
+	# if Kogaion GNOME, drop qt-gui bins
 	gnome_panel=$(qlist -ICve gnome-base/gnome-panel)
 	if [ -n "${gnome_panel}" ]; then
 		find /usr/share/applications -name "*qt-gui*.desktop" | xargs rm
@@ -374,7 +374,7 @@ fi
 
 rogentos_install() {
 
-#Rogentos ISO Remaking from the Beginnings
+#Kogaion ISO Remaking from the Beginnings
 
 localz=$(pwd)
 ARCH=$(uname -m)

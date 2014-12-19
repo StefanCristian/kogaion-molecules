@@ -1,8 +1,8 @@
 @echo off
 echo.
-echo Running Rogentos in the QEMU virtual machine.
+echo Running Kogaion in the QEMU virtual machine.
 echo.
-echo While running Rogentos in this mode, think of the following:
+echo While running Kogaion in this mode, think of the following:
 echo.
 echo 1) Beware that your Microsoft Windows installations might have keyloggers,
 echo viruses or other malware installed. Incognito's defenses can do nothing

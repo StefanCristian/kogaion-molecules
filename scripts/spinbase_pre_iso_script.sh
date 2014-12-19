@@ -33,7 +33,7 @@ cp "${initramfs}" "${cdroot_boot_dir}"/kogaion.igz || exit 1
 # Write build info
 build_date=$(date)
 build_file="${CDROOT_DIR}"/BUILD_INFO
-echo "Rogentos ISO image build information" > "${build_file}" || exit 1
+echo "Kogaion ISO image build information" > "${build_file}" || exit 1
 echo "Built on: ${build_date}" >> "${build_file}" || exit 1
 
 ver="${RELEASE_VERSION}"

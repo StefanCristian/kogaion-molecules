@@ -49,7 +49,7 @@ create_embedded_grub_cfg() {
 	local embedded_cfg="${1}"
 
 	echo "" >| "${embedded_cfg}" || return 1
-	echo "echo Booting Rogentos" >> "${embedded_cfg}" || return 1
+	echo "echo Booting Kogaion" >> "${embedded_cfg}" || return 1
 	echo "search --file --no-floppy --set=root /${ID_FILE}" >> "${embedded_cfg}" || return 1
 	echo "set prefix=${GRUB_BOOT_DIR_PREFIX}" >> "${embedded_cfg}" || return 1
 	echo "export root" >> "${embedded_cfg}" || return 1
@@ -161,7 +161,7 @@ if [ -f "${efi_x86_64_file}" ] || [ -f "${efi_i386_file}" ]; then
 		cp "${shim_data_dir}"/shim.efi "${efi_x86_64_file}" || exit 1
 		cp "${shim_data_dir}"/MokManager.efi "${EFI_BOOT_DIR}"/ || exit 1
 
-		# Copy the Rogentos SecureBoot certificate to a nice dir
+		# Copy the Kogaion SecureBoot certificate to a nice dir
 		mkdir -p "${CDROOT_DIR}"/SecureBoot || exit 1
 		cp "${kogaion_der}" "${CDROOT_DIR}"/SecureBoot/ || exit 1
 

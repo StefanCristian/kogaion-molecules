@@ -3,13 +3,13 @@
 execution_strategy: iso_remaster
 
 # Release string
-release_string: Rogentos Linux
+release_string: Kogaion Linux
 
 # File to write release string
 release_file: /etc/kogaion-edition
 
 # ISO Image title
-iso_title: Rogentos LXDE
+iso_title: Kogaion LXDE
 
 # Enable XZ compression in mksquashfs
 extra_mksquashfs_parameters: -comp xz -Xbcj x86
