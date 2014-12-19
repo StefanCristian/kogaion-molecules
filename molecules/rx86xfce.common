@@ -6,7 +6,7 @@ execution_strategy: iso_remaster
 release_string: Rogentos Linux
 
 # File to write release string
-release_file: /etc/rogentos-edition
+release_file: /etc/kogaion-edition
 
 # ISO Image title
 iso_title: Rogentos Xfce
@@ -61,9 +61,9 @@ packages_to_add:
 	app-admin/rigo,
 	app-arch/xarchiver,
 	app-arch/unrar,
-	app-misc/rogentos-version,
-	app-misc/rogentos-live,
-	app-misc/rogentos-skel,
+	app-misc/kogaion-version,
+	app-misc/kogaion-live,
+	app-misc/kogaion-skel,
 	app-crypt/gnupg,
 	app-crypt/pinentry-gtk2,
 	app-office/libreoffice,
@@ -120,11 +120,11 @@ packages_to_add:
 	x11-misc/xvkbd,
 	x11-terms/xfce4-terminal,
 	x11-terms/xterm,
-	x11-themes/rogentos-artwork-grub,
+	x11-themes/kogaion-artwork-grub,
 	x11-themes/kogaion-elementary-icons,
 	x11-themes/kogaion-light-theme,
 	x11-themes/kogaion-dark-theme
-	x11-themes/rogentos-artwork-core,
+	x11-themes/kogaion-artwork-core,
 	x11-themes/iottinka-artwork,
 	x11-themes/tango-icon-theme,
 	x11-themes/gnome-icon-theme-symbolic,
@@ -142,7 +142,7 @@ packages_to_add:
         xfce-extra/thunar-volman,
         x11-plugins/pidgin-privacy-please,
 
-# x11-themes/rogentos-artwork-gnome:
+# x11-themes/kogaion-artwork-gnome:
 #   provides the gtk theme for lxdm
 # gnome-extra/polkit-gnome:
 #   required to make nm-applet work

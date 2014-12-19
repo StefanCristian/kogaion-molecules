@@ -6,7 +6,7 @@ execution_strategy: iso_remaster
 release_string: Rogentos Linux
 
 # File to write release string
-release_file: /etc/rogentos-edition
+release_file: /etc/kogaion-edition
 
 # ISO Image title
 iso_title: Kogaion MATE
@@ -57,8 +57,8 @@ packages_to_add:
 	app-admin/kernel-schimbare,
 	app-emulation/virtualbox-modules,
 	app-emulation/virtualbox-guest-additions,
-	app-misc/rogentos-skel,
-	app-misc/rogentos-live,
+	app-misc/kogaion-skel,
+	app-misc/kogaion-live,
 	app-crypt/gnupg,
 	app-crypt/pinentry-gtk2,
 	app-misc/anaconda-runtime,
@@ -93,7 +93,7 @@ packages_to_add:
 	x11-themes/equinox-themes,
 	x11-themes/gnome-themes-standard
 
-# x11-themes/rogentos-artwork-gnome:
+# x11-themes/kogaion-artwork-gnome:
 # provides the gtk theme for lxdm
 
 # Custom shell call to packages add (default is: equo install)

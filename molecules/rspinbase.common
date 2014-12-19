@@ -5,7 +5,7 @@ execution_strategy: livecd
 release_string: Rogentos Linux
 
 # File to write release string
-release_file: /etc/rogentos-edition
+release_file: /etc/kogaion-edition
 
 # Destination chroot directory, where files are pushed to before creating the squashfs image
 # NOTE: data will be stored inside an auto-generated subdir

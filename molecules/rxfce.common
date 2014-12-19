@@ -6,7 +6,7 @@ execution_strategy: iso_remaster
 release_string: Rogentos Linux
 
 # File to write release string
-release_file: /etc/rogentos-edition
+release_file: /etc/kogaion-edition
 
 # ISO Image title
 iso_title: Rogentos Xfce
@@ -62,9 +62,9 @@ packages_to_add:
 	app-arch/file-roller,
 	app-arch/unrar,
 	app-cdr/xfburn,
-	app-misc/rogentos-version,
-	app-misc/rogentos-live,
-	app-misc/rogentos-skel,
+	app-misc/kogaion-version,
+	app-misc/kogaion-live,
+	app-misc/kogaion-skel,
 	app-crypt/gnupg,
 	app-crypt/pinentry-gtk2,
 	app-office/libreoffice,

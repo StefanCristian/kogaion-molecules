@@ -9,7 +9,7 @@ iso_title: Rogentos Hardened Server
 release_string: Rogentos Linux
 
 # File to write release string
-release_file: /etc/rogentos-edition
+release_file: /etc/kogaion-edition
 
 # Enable XZ compression in mksquashfs
 extra_mksquashfs_parameters: -comp xz -Xbcj x86
@@ -48,7 +48,7 @@ packages_to_add:
         @X,
         @fluxbox,
         app-admin/rigo,
-        app-misc/rogentos-skel,
+        app-misc/kogaion-skel,
         app-misc/anaconda-runtime-gui,
         app-text/pastebunz,
         dev-python/libgnomecanvas-python,
@@ -68,7 +68,7 @@ packages_to_add:
         x11-themes/equinox-themes,
         x11-themes/gtk-engines:2,
         x11-libs/libXxf86misc,
-	x11-themes/rogentos-artwork-resplash,
+	x11-themes/kogaion-artwork-resplash,
         x11-themes/gnome-themes-standard,
         x11-themes/hicolor-icon-theme,
         x11-themes/equinox-themes,

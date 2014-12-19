@@ -6,7 +6,7 @@ execution_strategy: iso_remaster
 release_string: Rogentos Linux
 
 # File to write release string
-release_file: /etc/rogentos-edition
+release_file: /etc/kogaion-edition
 
 # ISO Image title
 iso_title: Rogentos GNOME
@@ -56,8 +56,8 @@ packages_to_add:
 	@gst-plugins,
 	@gst-plugins-extra,
 	@wireless,
-	app-misc/rogentos-skel,
-	app-misc/rogentos-live,
+	app-misc/kogaion-skel,
+	app-misc/kogaion-live,
 	app-admin/gnome-system-tools,
 	app-admin/openrc-settingsd,
 	app-admin/packagekit-base,
@@ -71,7 +71,7 @@ packages_to_add:
 	app-editors/gedit,
 	app-emulation/wine,
 	app-misc/gnote,
-	app-misc/rogentos-version,
+	app-misc/kogaion-version,
 	app-office/libreoffice,
 	app-text/pastebunz,
 	dev-java/icedtea-bin,
@@ -157,8 +157,8 @@ packages_to_add:
 	x11-terms/guake,
 	x11-themes/gnome-icon-theme,
 	x11-themes/gnome-themes,
-	x11-themes/rogentos-artwork-core,
-	x11-themes/rogentos-artwork-extra,
+	x11-themes/kogaion-artwork-core,
+	x11-themes/kogaion-artwork-extra,
 	x11-themes/kogaion-artwork-gnome,
 	x11-themes/sound-theme-freedesktop,
 	x11-themes/gdm-themes-livecd,

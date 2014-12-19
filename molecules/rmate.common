@@ -6,7 +6,7 @@ execution_strategy: iso_remaster
 release_string: Rogentos Linux
 
 # File to write release string
-release_file: /etc/rogentos-edition
+release_file: /etc/kogaion-edition
 
 # ISO Image title
 iso_title: Kogaion MATE
@@ -58,8 +58,8 @@ packages_to_add:
 	app-admin/rose-installer,
 	app-emulation/virtualbox-modules,
 	app-emulation/virtualbox-guest-additions,
-	app-misc/rogentos-skel,
-	app-misc/rogentos-live,
+	app-misc/kogaion-skel,
+	app-misc/kogaion-live,
 	app-crypt/gnupg,
 	app-crypt/pinentry-gtk2,
 	app-misc/anaconda-runtime,

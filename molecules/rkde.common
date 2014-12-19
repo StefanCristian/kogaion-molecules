@@ -6,7 +6,7 @@ execution_strategy: iso_remaster
 release_string: Rogentos Linux
 
 # File to write release string
-release_file: /etc/rogentos-edition
+release_file: /etc/kogaion-edition
 
 # ISO Image title
 iso_title: Kogaion KDE
@@ -66,10 +66,10 @@ packages_to_add:
 	app-emulation/virtualbox-guest-additions,
 	app-emulation/wine,
 	app-laptop/nvidiabl,
-	app-misc/rogentos-version,
+	app-misc/kogaion-version,
 	app-misc/kogaion-mce,
-	app-misc/rogentos-skel,
-	app-misc/rogentos-live,
+	app-misc/kogaion-skel,
+	app-misc/kogaion-live,
 	app-text/pastebunz,
 	app-office/libreoffice,
 	dev-java/icedtea-bin,
@@ -281,9 +281,9 @@ packages_to_add:
 	x11-themes/iottinka-artwork,
 	x11-themes/oxygen-gtk:2,
 	x11-themes/oxygen-gtk:3,
-	x11-themes/rogentos-artwork-extra,
-	x11-themes/rogentos-artwork-kde,
-	x11-themes/rogentos-artwork-resplash,
+	x11-themes/kogaion-artwork-extra,
+	x11-themes/kogaion-artwork-kde,
+	x11-themes/kogaion-artwork-resplash,
 	x11-themes/sound-theme-freedesktop,
 	x11-themes/xcursor-themes,
 	x11-wm/twm
@@ -295,7 +295,7 @@ packages_to_add:
 # x11-themes/gnome-themes-standard
 
 # Custom shell call to packages add (default is: equo install)
-custom_packages_add_cmd: equo install oxygen-icons rogentos-version
+custom_packages_add_cmd: equo install oxygen-icons kogaion-version
 
 # Custom command for updating repositories (default is: equo update)
 #repositories_update_cmd: equo update
