@@ -11,7 +11,7 @@ LOC=$(pwd)
 EREPO=/etc/entropy/repositories.conf.d
 cd "$EREPO"
 wget http://pkg.rogentos.ro/~rogentos/distro/entropy_rogentoslinux
-wget http://pkg.rogentos.ro/~rogentos/distro/entropy_rogentos-legacy
+wget http://pkg.rogentos.ro/~rogentos/distro/entropy_kogaion-legacy
 equo repo mirrorsort rogentoslinux
 equo repo mirrorsort kogaionlinux.ro
 if [ -f "/etc/entropy/repositories.conf.d/entropy_kogaionlinux.ro.example" ]; then

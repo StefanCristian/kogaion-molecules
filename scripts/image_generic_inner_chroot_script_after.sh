@@ -69,7 +69,7 @@ kernel ${kernel_bin} root=/dev/sda1
 # initrd ${initrd_bin}
 
 # Generate list of installed packages
-equo query list installed -qv > /etc/rogentos-pkglist
+equo query list installed -qv > /etc/kogaion-pkglist
 
 /lib/rc/bin/rc-depend -u
 

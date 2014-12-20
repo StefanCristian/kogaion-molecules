@@ -53,7 +53,7 @@ done
 # generate EFI GRUB
 "${ROGENTOS_MOLECULE_HOME}"/scripts/make_grub_efi.sh || exit 1
 
-rogentos_pkgs_file="${CHROOT_DIR}/etc/rogentos-pkglist"
+rogentos_pkgs_file="${CHROOT_DIR}/etc/kogaion-pkglist"
 if [ -f "${rogentos_pkgs_file}" ]; then
 	cp "${rognetos_pkgs_file}" "${CDROOT_DIR}/pkglist"
 	if [ -n "${ISO_PATH}" ]; then # molecule 0.9.6 required

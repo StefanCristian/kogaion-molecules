@@ -16,7 +16,7 @@ if [ -f "/etc/systemd/system/multi-user.target.wants/sabayonlive.service" ] || [
         rm /sbin/sabayon-functions.sh
         rm /usb/bin/sabayon*
         rm /usr/share/grub/default-splash.png
-	sed -i 's/sabayon-functions/rogentos-functions/g' /usr/libexec/x-setup.sh
+	sed -i 's/sabayon-functions/kogaion-functions/g' /usr/libexec/x-setup.sh
         else
         echo "There are no such files"
 fi
@@ -369,10 +369,10 @@ setup_installed_packages() {
 	equo update
 	equo unmask anaconda
 	equo remove sabayon-artwork-core --configfiles
-	equo install plymouth anaconda rogentos-artwork-core kogaion-artwork-gnome gdm dev-util/pkgconfig gcc
+	equo install plymouth anaconda kogaion-artwork-core kogaion-artwork-gnome gdm dev-util/pkgconfig gcc
 	equo install anaconda anaconda-runtime --nodeps
 	# Update package list
-	equo query list installed -qv > /etc/rogentos-pkglist
+	equo query list installed -qv > /etc/kogaion-pkglist
 	echo -5 | equo conf update
 
 	echo "Vacuum cleaning client db"
@@ -519,9 +519,6 @@ equo install dev-util/pkgconfig
 
 plymouth-set-default-theme rogentos
 
-genkernel --plymouth-theme=rogentos  --luks initramfs
-equo remove --force-system =sys-devel/$(equo query installed sys-devel/gcc | grep "Package" | awk '{ print $4 }' | cut -d "/" -f 2 | head -1) --configfiles
-userdel ldap
 depmod -a
 
 eselect opengl list

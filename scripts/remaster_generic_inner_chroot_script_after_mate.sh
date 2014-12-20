@@ -15,7 +15,7 @@ if [ -f "/etc/systemd/system/multi-user.target.wants/sabayonlive.service" ] || [
         rm /sbin/sabayon-functions.sh
         rm /usb/bin/sabayon*
         rm /usr/share/grub/default-splash.png
-	sed -i 's/sabayon-functions/rogentos-functions/g' /usr/libexec/x-setup.sh
+	sed -i 's/sabayon-functions/kogaion-functions/g' /usr/libexec/x-setup.sh
         else
         echo "There are no such files"
 fi
@@ -359,26 +359,13 @@ setup_misc_stuff() {
 	fi
 }
 
-rogentos_splash() {
-if [ -d "/etc/splash/sabayon" ]; then
-        rm -r /etc/splash/sabayon
-        ln -s /etc/splash/rogentos /etc/splash/sabayon
-        echo "So etc/splash/sabayon exists"
-        ln -s /etc/splash/rogentos /etc/splash/sabayon
-
-        for i in `seq 1 6`; do
-        splash_manager -c set -t rogentos --tty=$i
-        done
-fi
-}
-
 rogentos_install() {
 
 #Kogaion ISO Remaking from the Beginnings
 
 localz=$(pwd)
 ARCH=$(uname -m)
-rog=rogentos-artwork
+rog=kogaion-artwork
 
 # We will make sure lightdm is setup as login manager
 
@@ -394,12 +381,10 @@ equo remove anaconda --nodeps
 if [ "$ARCH" = "x86_64" ]; then
                 equo unmask anaconda
                 equo install anaconda dev-util/pkgconfig --nodeps
-		equo install dev-util/pkgconfig
                 echo "installed rogentos artwork amd64"
                 echo -5 | equo conf update
                 depmod -a
                 env-update && source /etc/profile
-                rogentos_splash
         else
                 equo unmask anaconda
                 equo install anaconda --nodeps
@@ -407,10 +392,9 @@ if [ "$ARCH" = "x86_64" ]; then
                 echo -5 | equo conf update
                 depmod -a
                 env-update && source /etc/profile
-                rogentos_splash
 fi
 
-equo install rogentos-artwork-core  rogentos-skel dev-util/pkgconfig
+equo install kogaion-artwork-core  kogaion-skel dev-util/pkgconfig
 echo "Se va folosi kernel-schimbare pentru schimbarea nucleului"
 echo "Use kernel-schimbare --help to change the kernels"
 }
@@ -419,7 +403,7 @@ setup_installed_packages() {
 	rogentos_install
 	switch_kernel
 	# Update package list
-	equo query list installed -qv > /etc/rogentos-pkglist
+	equo query list installed -qv > /etc/kogaion-pkglist
 	echo -5 | equo conf update
 
 	echo "Vacuum cleaning client db"
@@ -557,19 +541,12 @@ setup_portage
 setup_startup_caches
 
 equo query installed linux-sabayon
-eselect kernel list
-eselect bzimage list
 equo remove sabayon-artwork-core --configfiles
 
 plymouth-set-default-theme rogentos
 
-zcat /proc/config.gz > /usr/src/config
-genkernel --plymouth-theme=rogentos  --luks initramfs
-
-equo remove --force-system =sys-devel/$(equo query installed sys-devel/gcc | grep "Package" | awk '{ print $4 }' | cut -d "/" -f 2 | head -1) --configfiles
 equo remove ati-drivers ati-userspace nvidia-drivers nvidia-userspace nvidiabl bbswitch virtualgl bumblebee --configfiles
 eselect opengl set 1
-userdel ldap
 
 rm /var/lib/entropy/logs -rf
 rm -rf /var/lib/entropy/*cache*

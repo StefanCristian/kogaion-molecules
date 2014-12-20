@@ -15,7 +15,7 @@ if [ -f "/etc/systemd/system/multi-user.target.wants/sabayonlive.service" ] || [
         rm /usr/libexec/sabayonlive.sh
         rm /sbin/sabayon-functions.sh
         rm /usb/bin/sabayon*
-        sed -i 's/sabayon-functions/rogentos-functions/g' /usr/libexec/x-setup.sh
+        sed -i 's/sabayon-functions/kogaion-functions/g' /usr/libexec/x-setup.sh
         else
         echo "There are no such files"
 fi
@@ -369,7 +369,7 @@ if [ "$ARCH" = "x86_64" ]; then
                 env-update && source /etc/profile
                 depmod -a
                 rogentos_splash
-                equo config rogentos-artwork-resplash
+                equo config kogaion-artwork-resplash
         else
                 equo unmask anaconda
                 equo remove nvidia-drivers nvidia-userspace ati-drivers ati-userspace --nodeps
@@ -388,7 +388,7 @@ eselect kernel set 1
                 env-update && source /etc/profile
                 depmod -a
                 rogentos_splash
-                equo config rogentos-artwork-resplash
+                equo config kogaion-artwork-resplash
 
                 echo ">=x11-base/xorg-server-1.10@kogaion-weekly
                       >=x11-base/xorg-server-1.10@kogaionlinux.ro
@@ -460,7 +460,7 @@ eselect kernel set 1
                       >=x11-drivers/xf86-video-vesa-2.3.2@rogentoslinux" >> /etc/entropy/packages/package.mask
 
                 for PKG in xf86-video-vesa xf86-video-fbdev xf86-input-evdev xf86-input-void xf86-input-synaptics ati-drivers ati-userspace xf86-input-synaptics xf86-video-ati xf86-video-intel xf86-video-nouveau xf86-video-nv xf86-video-i740 xf86-video-virtualbox$
-                        equo install $PKG@rogentos-legacy
+                        equo install $PKG@kogaion-legacy
                 done
                 depmod -a
 fi
@@ -475,7 +475,7 @@ echo "Forbid any kernel upgrade from now on, kernel-switcher only because it's K
 setup_installed_packages() {
 	rogentos_install
 	# Update package list
-	equo query list installed -qv > /etc/rogentos-pkglist
+	equo query list installed -qv > /etc/kogaion-pkglist
 	echo -5 | equo conf update
 
 	echo "Vacuum cleaning client db"

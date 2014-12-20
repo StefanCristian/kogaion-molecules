@@ -21,7 +21,7 @@ if [ -f "/etc/systemd/system/multi-user.target.wants/sabayonlive.service" ] || [
 	rm /sbin/sabayon-functions.sh
 	rm /usb/bin/sabayon*
 	rm /usr/share/grub/default-splash.png
-	sed -i 's/sabayon-functions/rogentos-functions/g' /usr/libexec/x-setup.sh
+	sed -i 's/sabayon-functions/kogaion-functions/g' /usr/libexec/x-setup.sh
 	else
 	echo "There are no such files"
 fi
@@ -385,11 +385,10 @@ rogentos_install() {
 
 localz=$(pwd)
 ARCH=$(uname -m)
-rog=rogentos-artwork
+rog=kogaion-artwork
 
 echo "Entering folder $localz"
 equo remove anaconda --nodeps
-equo install dev-util/pkgconfig
 
 if [ "$ARCH" = "x86_64" ]; then
                 equo unmask anaconda
@@ -409,7 +408,6 @@ if [ "$ARCH" = "x86_64" ]; then
                 rogentos_splash
 fi
 
-equo install rogentos-artwork-core  rogentos-skel
 equo remove --configfiles linux-server
 echo "Se va folosi kernel-schimbare pentru schimbarea nucleului"
 echo "Use kernel-schimbare --help to change the kernels"
@@ -420,7 +418,7 @@ echo "Use kernel-schimbare --help to change the kernels"
 setup_installed_packages() {
 	rogentos_install
 	# Update package list
-	equo query list installed -qv > /etc/rogentos-pkglist
+	equo query list installed -qv > /etc/kogaion-pkglist
 	echo -5 | equo conf update
 
 	echo "Vacuum cleaning client db"
@@ -582,11 +580,8 @@ rm -f /var/lib/entropy/entropy.pid
 rm -f /var/lib/entropy/entropy.lock
 emaint --fix world
 
-plymouth-set-default-theme rogentos
+plymouth-set-default-theme kogaion
 
-genkernel --plymouth-theme=rogentos --luks initramfs
-equo remove --force-system =sys-devel/$(equo query installed sys-devel/gcc | grep "Package" | awk '{ print $4 }' | cut -d "/" -f 2 | head -1) --configfiles
-userdel ldap
 depmod -a
 
 rm /var/lib/entropy/logs -rf

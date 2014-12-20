@@ -55,7 +55,7 @@ setup_sabayon_mce() {
 	rc-update add sabayon-mce boot
 	# not needed, done by app-misc/sabayon-mce pkg
 	# Kogaion Media Center user setup
-	# source /sbin/rogentos-functions.sh
+	# source /sbin/kogaion-functions.sh
 	# sabayon_setup_live_user "sabayonmce"
 }
 
@@ -257,7 +257,7 @@ rogentos_install() {
 
 localz=$(pwd)
 ARCH=$(uname -m)
-rog=rogentos-artwork
+rog=kogaion-artwork
 
 equo remove anaconda --nodeps
 
@@ -280,7 +280,7 @@ fi
 setup_installed_packages() {
 	rogentos_install
 	# Update package list
-	equo query list installed -qv > /etc/rogentos-pkglist
+	equo query list installed -qv > /etc/kogaion-pkglist
 	echo -5 | equo conf update
 
 	echo "Vacuum cleaning client db"

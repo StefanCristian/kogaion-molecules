@@ -79,7 +79,7 @@ fi
 sed -i "s/__KMS__/${kms_string}/g" "${isolinux_destination}"
 sed -i "s/__KMS__/${kms_string}/g" "${syslinux_destination}"
 
-rogentos_pkgs_file="${CHROOT_DIR}/etc/rogentos-pkglist"
+rogentos_pkgs_file="${CHROOT_DIR}/etc/kogaion-pkglist"
 if [ -f "${rogentos_pkgs_file}" ]; then
 	cp "${rogentos_pkgs_file}" "${CDROOT_DIR}/pkglist"
         if [ -n "${ISO_PATH}" ]; then # molecule 0.9.6 required

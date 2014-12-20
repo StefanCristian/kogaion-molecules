@@ -134,7 +134,7 @@ for dir in "${localedir}"/*; do
 	fi
 done
 
-# Copy splash, this is in rogentos-artwork-grub, we expect to find it
+# Copy splash, this is in kogaion-artwork-grub, we expect to find it
 cp "${CHROOT_DIR}/usr/share/grub/default-splash.png" "${GRUB_BOOT_DIR}"/ \
 	|| exit 1
 

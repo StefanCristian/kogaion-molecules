@@ -15,7 +15,7 @@ if [ -f "/etc/systemd/system/multi-user.target.wants/sabayonlive.service" ] || [
         rm /usr/libexec/sabayonlive.sh
         rm /sbin/sabayon-functions.sh
         rm /usb/bin/sabayon*
-        sed -i 's/sabayon-functions/rogentos-functions/g' /usr/libexec/x-setup.sh
+        sed -i 's/sabayon-functions/kogaion-functions/g' /usr/libexec/x-setup.sh
         else
         echo "There are no such files"
 fi
@@ -344,7 +344,7 @@ setup_misc_stuff() {
 
 setup_installed_packages() {
 	# Update package list
-	equo query list installed -qv > /etc/rogentos-pkglist
+	equo query list installed -qv > /etc/kogaion-pkglist
 	echo -5 | equo conf update
 
 	echo "Vacuum cleaning client db"
