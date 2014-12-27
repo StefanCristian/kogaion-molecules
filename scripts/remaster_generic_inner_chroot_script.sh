@@ -42,8 +42,6 @@ if [ -f "${EREPO}/entropy_kogaion-weekly" ]; then
 fi
 
 cd "$EREPO"
-wget http://pkg.rogentos.ro/~rogentos/distro/entropy_rogentoslinux
-equo repo mirrorsort rogentoslinux
 equo repo mirrorsort kogaionlinux.ro
 equo update
 
