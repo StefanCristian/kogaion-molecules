@@ -3,8 +3,8 @@
 LIVECD_SQUASHFS="${CDROOT_DIR}/livecd.squashfs"
 
 # Path to molecules.git dir
-ROGENTOS_MOLECULE_HOME="${ROGENTOS_MOLECULE_HOME:-/sabayon}"
-export ROGENTOS_MOLECULE_HOME
+KOGAION_MOLECULE_HOME="${KOGAION_MOLECULE_HOME:-/sabayon}"
+export KOGAION_MOLECULE_HOME
 
 echo
 echo "Generating sha256sums..."
@@ -37,6 +37,6 @@ if [ -d "${CDROOT_DIR}/boot" ]; then
 fi
 
 # move cdupdate.sh in place
-cp "${ROGENTOS_MOLECULE_HOME}/scripts/cdupdate.sh" "${CDROOT_DIR}/cdupdate.sh" && \
+cp "${KOGAION_MOLECULE_HOME}/scripts/cdupdate.sh" "${CDROOT_DIR}/cdupdate.sh" && \
 	chmod +x "${CDROOT_DIR}/cdupdate.sh" && \
 	chown root:root "${CDROOT_DIR}/cdupdate.sh"

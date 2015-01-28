@@ -10,9 +10,9 @@ rm -f /run/entropy/entropy.lock
 LOC=$(pwd)
 EREPO=/etc/entropy/repositories.conf.d
 cd "$EREPO"
-wget http://pkg.rogentos.ro/~rogentos/distro/entropy_rogentoslinux
-wget http://pkg.rogentos.ro/~rogentos/distro/entropy_kogaion-legacy
-equo repo mirrorsort rogentoslinux
+wget http://pkg.kogaion.ro/~kogaion/distro/entropy_kogaionlinux
+wget http://pkg.kogaion.ro/~kogaion/distro/entropy_kogaion-legacy
+equo repo mirrorsort kogaionlinux
 equo repo mirrorsort kogaionlinux.ro
 if [ -f "/etc/entropy/repositories.conf.d/entropy_kogaionlinux.ro.example" ]; then
 	mv "${EREPO}/entropy_kogaionlinux.ro.example" "${EREPO}/entropy_kogaionlinux.ro"

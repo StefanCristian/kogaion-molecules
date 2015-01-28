@@ -3,7 +3,7 @@ import os, shutil, time
 import subprocess
 from datetime import datetime
 
-rogentos_molecule_home = os.getenv("ROGENTOS_MOLECULE_HOME", "/sabayon")
+kogaion_molecule_home = os.getenv("KOGAION_MOLECULE_HOME", "/sabayon")
 source_chroot_dir = os.getenv('SOURCE_CHROOT_DIR')
 chroot_dir = os.getenv('CHROOT_DIR')
 cdroot_dir = os.getenv('CDROOT_DIR')
@@ -13,7 +13,7 @@ cdroot_boot_dir = os.path.join(cdroot_dir, "boot")
 boot_kernel = [x for x in os.listdir(boot_dir) if x.startswith("kernel-")]
 if boot_kernel:
     boot_kernel = os.path.join(boot_dir, sorted(boot_kernel)[0])
-    shutil.copy2(boot_kernel, os.path.join(cdroot_boot_dir, "rogentos"))
+    shutil.copy2(boot_kernel, os.path.join(cdroot_boot_dir, "kogaion"))
 
 boot_ramfs = [x for x in os.listdir(boot_dir) if x.startswith("initramfs-")]
 if boot_ramfs:
@@ -55,7 +55,7 @@ replace_version(syslinux_cfg)
 replace_version(syslinux_txt)
 
 # Copy pkglist over, if exists
-sabayon_pkgs_file = os.path.join(chroot_dir, "etc/rogentos-pkglist")
+sabayon_pkgs_file = os.path.join(chroot_dir, "etc/kogaion-pkglist")
 if os.path.isfile(sabayon_pkgs_file):
     shutil.copy2(sabayon_pkgs_file, os.path.join(cdroot_dir, "pkglist"))
     iso_path = os.getenv("ISO_PATH")
@@ -70,6 +70,6 @@ if os.path.isfile(isolinux_img):
 if os.path.isfile(syslinux_img):
     shutil.copy2(syslinux_img, os.path.join(cdroot_dir, "syslinux/back.jpg"))
 
-iso_md5_script = os.path.join(rogentos_molecule_home, "scripts/pre_iso_script_livecd_hash.sh")
+iso_md5_script = os.path.join(kogaion_molecule_home, "scripts/pre_iso_script_livecd_hash.sh")
 exit_st = subprocess.call([iso_md5_script])
 raise SystemExit(exit_st)

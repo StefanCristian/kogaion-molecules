@@ -14,8 +14,8 @@ elif [ ! -f "${GRUB_CFG}" ]; then
 fi
 
 # Path to molecules.git dir
-ROGENTOS_MOLECULE_HOME="${ROGENTOS_MOLECULE_HOME:-/sabayon}"
-export ROGENTOS_MOLECULE_HOME
+KOGAION_MOLECULE_HOME="${KOGAION_MOLECULE_HOME:-/sabayon}"
+export KOGAION_MOLECULE_HOME
 
 echo >> "${GRUB_CFG}" || exit 1
-"${ROGENTOS_MOLECULE_HOME}"/scripts/_generate_grub_langs.py >> "${GRUB_CFG}"
+"${KOGAION_MOLECULE_HOME}"/scripts/_generate_grub_langs.py >> "${GRUB_CFG}"

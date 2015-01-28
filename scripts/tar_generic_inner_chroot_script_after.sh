@@ -5,7 +5,7 @@
 
 # remove sabayonuser
 userdel sabayonuser
-userdel rogentosuser
+userdel kogaionuser
 
 DROP_SERVICES="
 	alsasound

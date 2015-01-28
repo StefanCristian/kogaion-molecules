@@ -13,7 +13,7 @@ fi
 LOGS_DIR="${1}"
 FROM_DATE="${2}"
 TO_DATE="${3}"
-BASE_DIR="${ROGENTOS_MOLECULE_HOME:-${HOME}}"
+BASE_DIR="${KOGAION_MOLECULE_HOME:-${HOME}}"
 
 GIT_REPOSITORIES=(
     "git://github.com/Kogaion/for-gentoo.git master upstream-overlay"

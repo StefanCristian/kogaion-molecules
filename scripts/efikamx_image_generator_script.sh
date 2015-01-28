@@ -8,7 +8,7 @@ export ROOT_PART_TYPE=ext4
 export MAKE_TARBALL=0
 
 # Path to molecules.git dir
-ROGENTOS_MOLECULE_HOME="${ROGENTOS_MOLECULE_HOME:-/sabayon}"
-export ROGENTOS_MOLECULE_HOME
+KOGAION_MOLECULE_HOME="${KOGAION_MOLECULE_HOME:-/sabayon}"
+export KOGAION_MOLECULE_HOME
 
-exec "${ROGENTOS_MOLECULE_HOME}"/scripts/mkloopcard.sh "${ROGENTOS_MOLECULE_HOME}"/scripts/mkloopcard_efikamx_chroot_hook.sh "$@"
+exec "${KOGAION_MOLECULE_HOME}"/scripts/mkloopcard.sh "${KOGAION_MOLECULE_HOME}"/scripts/mkloopcard_efikamx_chroot_hook.sh "$@"

@@ -365,7 +365,7 @@ setup_misc_stuff() {
 
 setup_installed_packages() {
 	equo repo mirrorsort kogaionlinux.ro
-	equo repo mirrorsort rogentoslinux
+	equo repo mirrorsort kogaionlinux
 	equo update
 	equo unmask anaconda
 	equo remove sabayon-artwork-core --configfiles
@@ -378,7 +378,7 @@ setup_installed_packages() {
 	echo "Vacuum cleaning client db"
 	rm /var/lib/entropy/client/database/*/kogaionlinux.ro -rf
 	rm /var/lib/entropy/client/database/*/kogaion-weekly -rf
-	rm /var/lib/entropy/client/database/*/rogentoslinux -rf
+	rm /var/lib/entropy/client/database/*/kogaionlinux -rf
 	equo rescue vacuum
 
 	# restore original repositories.conf (all mirrors were filtered for speed)
@@ -517,7 +517,7 @@ setup_startup_caches
 # Debugging Gnome a bit
 equo install dev-util/pkgconfig
 
-plymouth-set-default-theme rogentos
+plymouth-set-default-theme kogaion
 
 depmod -a
 

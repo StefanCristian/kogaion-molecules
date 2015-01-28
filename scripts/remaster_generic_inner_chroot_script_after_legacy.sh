@@ -332,20 +332,20 @@ setup_misc_stuff() {
 	fi
 }
 
-rogentos_splash() {
+kogaion_splash() {
 if [ -d "/etc/splash/sabayon" ]; then
         rm -r /etc/splash/sabayon
-        ln -s /etc/splash/rogentos /etc/splash/sabayon
+        ln -s /etc/splash/kogaion /etc/splash/sabayon
         echo "So etc/splash/sabayon exists"
-        ln -s /etc/splash/rogentos /etc/splash/sabayon
+        ln -s /etc/splash/kogaion /etc/splash/sabayon
 
         for i in `seq 1 6`; do
-        splash_manager -c set -t rogentos --tty=$i
+        splash_manager -c set -t kogaion --tty=$i
         done
 fi
 }
 
-rogentos_install() {
+kogaion_install() {
 
 #Kogaion ISO Remaking from the Beginnings
 
@@ -355,7 +355,7 @@ ARCH=$(uname -m)
 if [ "$ARCH" = "x86_64" ]; then
                 equo unmask anaconda
                 equo remove nvidia-drivers nvidia-userspace ati-drivers ati-userspace virtualbox-guest-additions nvidiabl net-wireless/broadcom-sta net-wireless/ndiswrapper xf86-video-virtualbox --nodeps
-                equo install linux-sabayon:3.3 sabayon-sources:3.3 ati-drivers-12.6:1,3.3.0-sabayon nvidia-drivers:0,3.3.0-sabayon =x11-drivers/nvidia-userspace-304.37 ati-userspace@rogentoslinux
+                equo install linux-sabayon:3.3 sabayon-sources:3.3 ati-drivers-12.6:1,3.3.0-sabayon nvidia-drivers:0,3.3.0-sabayon =x11-drivers/nvidia-userspace-304.37 ati-userspace@kogaionlinux
                 depmod -a
                 env-update && source /etc/profile
                 equo remove linux-sabayon:3.2 linux-sabayon:3.4 linux-sabayon:3.5 linux-sabayon:3.6 sabayon-sources:3.4 sabayon-sources:3.5 sabayon-sources:3.6 --nodeps
@@ -368,7 +368,7 @@ if [ "$ARCH" = "x86_64" ]; then
                 equo remove linux-sabayon:3.2 linux-sabayon:3.4 linux-sabayon:3.5 linux-sabayon:3.6 --nodeps
                 env-update && source /etc/profile
                 depmod -a
-                rogentos_splash
+                kogaion_splash
                 equo config kogaion-artwork-resplash
         else
                 equo unmask anaconda
@@ -379,7 +379,7 @@ if [ "$ARCH" = "x86_64" ]; then
 eselect kernel set 1
                 equo install linux-sabayon:3.2 sabayon-sources:3.2 =x11-drivers/ati-userspace-11.12 =x11-drivers/ati-drivers-11.12#3.2.0-sabayon --nodeps
                 equo install =x11-drivers/nvidia-drivers-290.10#3.2.0-sabayon =x11-drivers/nvidia-userspace-290.10 =media-video/nvidia-settings-290.10 --nodeps
-                equo install grub xorg-server@rogentoslinux
+                equo install grub xorg-server@kogaionlinux
                 equo remove virtualbox-guest-additions:0,3.2.0-sabayon app-emulation/virtualbox-modules:0,3.2.0-sabayon net-wireless/broadcom-sta:0,3.2.0-sabayon net-wireless/madwifi-ng:0,3.2.0-sabayon net-wireless/ndiswrapper:0,3.2.0-sabayon xf86-video-virtualbo$
                 equo install openrc --deep
                 depmod -a
@@ -387,53 +387,53 @@ eselect kernel set 1
                 equo remove linux-sabayon:3.3 linux-sabayon:3.5 --nodeps
                 env-update && source /etc/profile
                 depmod -a
-                rogentos_splash
+                kogaion_splash
                 equo config kogaion-artwork-resplash
 
                 echo ">=x11-base/xorg-server-1.10@kogaion-weekly
                       >=x11-base/xorg-server-1.10@kogaionlinux.ro
                       >=x11-base/xorg-server-1.10@sabayon-limbo
-                      >=x11-base/xorg-server-1.10@rogentoslinux
+                      >=x11-base/xorg-server-1.10@kogaionlinux
 
                       >=x11-drivers/ati-drivers-12.2@kogaion-weekly
                       >=x11-drivers/ati-drivers-12.2@kogaionlinux.ro
                       >=x11-drivers/ati-drivers-12.2@sabayon-limbo
-                      >=x11-drivers/ati-drivers-12.2@rogentoslinux
+                      >=x11-drivers/ati-drivers-12.2@kogaionlinux
 
                       >=x11-base/xorg-drivers-1.12@kogaion-weekly
                       >=x11-base/xorg-drivers-1.12@kogaionlinux.ro
                       >=x11-base/xorg-drivers-1.12@sabayon-limbo
-                      >=x11-base/xorg-drivers-1.12@rogentoslinux
+                      >=x11-base/xorg-drivers-1.12@kogaionlinux
 
                       >=x11-drivers/xf86-video-ati-1@kogaion-weekly
                       >=x11-drivers/xf86-video-ati-1@kogaionlinux.ro
                       >=x11-drivers/xf86-video-ati-1@sabayon-limbo
-                      >=x11-drivers/xf86-video-ati-1@rogentoslinux
+                      >=x11-drivers/xf86-video-ati-1@kogaionlinux
 
                       >=x11-drivers/xf86-video-nv-1@kogaion-weekly
                       >=x11-drivers/xf86-video-nv-1@kogaionlinux.ro
                       >=x11-drivers/xf86-video-nv-1@sabayon-limbo
-                      >=x11-drivers/xf86-video-nv-1@rogentoslinux
+                      >=x11-drivers/xf86-video-nv-1@kogaionlinux
 
                       >=x11-drivers/xf86-video-nouveau-1@kogaion-weekly
                       >=x11-drivers/xf86-video-nouveau-1@kogaionlinux.ro
                       >=x11-drivers/xf86-video-nouveau-1@sabayon-limbo
-                      >=x11-drivers/xf86-video-nouveau-1@rogentoslinux
+                      >=x11-drivers/xf86-video-nouveau-1@kogaionlinux
 
                       >=x11-drivers/xf86-video-intel-1@kogaion-weekly
                       >=x11-drivers/xf86-video-intel-1@kogaionlinux.ro
                       >=x11-drivers/xf86-video-intel-1@sabayon-limbo
-                      >=x11-drivers/xf86-video-intel-1@rogentoslinux
+                      >=x11-drivers/xf86-video-intel-1@kogaionlinux
 
                       >=x11-drivers/xf86-input-evdev-2.7.3@kogaion-weekly
                       >=x11-drivers/xf86-input-evdev-2.7.3@kogaionlinux.ro
                       >=x11-drivers/xf86-input-evdev-2.7.3@sabayon-limbo
-                      >=x11-drivers/xf86-input-evdev-2.7.3@rogentoslinux
+                      >=x11-drivers/xf86-input-evdev-2.7.3@kogaionlinux
 
                       >=x11-drivers/xf86-input-void-1.4.0@kogaion-weekly
                       >=x11-drivers/xf86-input-void-1.4.0@kogaionlinux.ro
                       >=x11-drivers/xf86-input-void-1.4.0@sabayon-limbo
-                      >=x11-drivers/xf86-input-void-1.4.0@rogentoslinux
+                      >=x11-drivers/xf86-input-void-1.4.0@kogaionlinux
 
                       >=x11-drivers/xf86-video-fbdev-0.4.3@kogaion-weekly
                       >=x11-drivers/xf86-video-fbdev-0.4.3@kogaionlinux.ro
@@ -442,22 +442,22 @@ eselect kernel set 1
                       >=x11-drivers/xf86-input-synaptics-1.6.2@kogaion-weekly
                       >=x11-drivers/xf86-input-synaptics-1.6.2@kogaionlinux.ro
                       >=x11-drivers/xf86-input-synaptics-1.6.2@sabayon-limbo
-                      >=x11-drivers/xf86-input-synaptics-1.6.2@rogentoslinux
+                      >=x11-drivers/xf86-input-synaptics-1.6.2@kogaionlinux
 
                       >=x11-drivers/xf86-video-i740-1@kogaion-weekly
                       >=x11-drivers/xf86-video-i740-1@kogaionlinux.ro
                       >=x11-drivers/xf86-video-i740-1@sabayon-limbo
-                      >=x11-drivers/xf86-video-i740-1@rogentoslinux
+                      >=x11-drivers/xf86-video-i740-1@kogaionlinux
 
                       >=x11-drivers/xf86-video-virtualbox-1@kogaion-weekly
                       >=x11-drivers/xf86-video-virtualbox-1@kogaionlinux.ro
                       >=x11-drivers/xf86-video-virtualbox-1@sabayon-limbo
-                      >=x11-drivers/xf86-video-virtualbox-1@rogentoslinux
+                      >=x11-drivers/xf86-video-virtualbox-1@kogaionlinux
 
                       >=x11-drivers/xf86-video-vesa-2.3.2@kogaion-weekly
                       >=x11-drivers/xf86-video-vesa-2.3.2@kogaionlinux.ro
                       >=x11-drivers/xf86-video-vesa-2.3.2@sabayon-limbo
-                      >=x11-drivers/xf86-video-vesa-2.3.2@rogentoslinux" >> /etc/entropy/packages/package.mask
+                      >=x11-drivers/xf86-video-vesa-2.3.2@kogaionlinux" >> /etc/entropy/packages/package.mask
 
                 for PKG in xf86-video-vesa xf86-video-fbdev xf86-input-evdev xf86-input-void xf86-input-synaptics ati-drivers ati-userspace xf86-input-synaptics xf86-video-ati xf86-video-intel xf86-video-nouveau xf86-video-nv xf86-video-i740 xf86-video-virtualbox$
                         equo install $PKG@kogaion-legacy
@@ -473,7 +473,7 @@ echo "Forbid any kernel upgrade from now on, kernel-switcher only because it's K
 }
 
 setup_installed_packages() {
-	rogentos_install
+	kogaion_install
 	# Update package list
 	equo query list installed -qv > /etc/kogaion-pkglist
 	echo -5 | equo conf update
@@ -481,7 +481,7 @@ setup_installed_packages() {
 	echo "Vacuum cleaning client db"
 	rm /var/lib/entropy/client/database/*/kogaionlinux.ro -rf
 	rm /var/lib/entropy/client/database/*/kogaion-weekly -rf
-	rm /var/lib/entropy/client/database/*/rogentoslinux -rf
+	rm /var/lib/entropy/client/database/*/kogaionlinux -rf
 	equo rescue vacuum
 
 	# restore original repositories.conf (all mirrors were filtered for speed)

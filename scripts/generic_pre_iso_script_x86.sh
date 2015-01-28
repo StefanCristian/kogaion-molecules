@@ -4,12 +4,12 @@
 . /etc/profile
 
 # Path to molecules.git dir
-ROGENTOS_MOLECULE_HOME="${ROGENTOS_MOLECULE_HOME:-/sabayon}"
-export ROGENTOS_MOLECULE_HOME
+KOGAION_MOLECULE_HOME="${KOGAION_MOLECULE_HOME:-/sabayon}"
+export KOGAION_MOLECULE_HOME
 
 remaster_type="${1}"
-isolinux_source="${ROGENTOS_MOLECULE_HOME}/remaster/minimal_isolinux.cfg"
-grub_source="${ROGENTOS_MOLECULE_HOME}/remaster/minimal_grub.cfg"
+isolinux_source="${KOGAION_MOLECULE_HOME}/remaster/minimal_isolinux.cfg"
+grub_source="${KOGAION_MOLECULE_HOME}/remaster/minimal_grub.cfg"
 isolinux_destination="${CDROOT_DIR}/isolinux/txt.cfg"
 grub_destination="${CDROOT_DIR}/boot/grub/grub.cfg"
 
@@ -31,55 +31,55 @@ rm "${CDROOT_DIR}/sabayon.ico"
 rm "${CDROOT_DIR}/sabayon.bat"
 echo "Moving the right files where they rightfully belong"
 cp /sabayon/boot/core/autorun.inf "${CDROOT_DIR}/"
-cp /sabayon/boot/core/rogentos.ico "${CDROOT_DIR}/"
-cp /sabayon/boot/core/rogentos.bat "${CDROOT_DIR}/"
+cp /sabayon/boot/core/kogaion.ico "${CDROOT_DIR}/"
+cp /sabayon/boot/core/kogaion.bat "${CDROOT_DIR}/"
 echo "Copying them into the ISO image"
 
-if [ -d "/home/rogentosuser/.gvfs" ]; then
+if [ -d "/home/kogaionuser/.gvfs" ]; then
         echo "All is doomed"
-        umount /home/rogentosuser/.gvfs
-        chown -R rogentosuser:rogentosuser /home/rogentosuser/.gvfs
+        umount /home/kogaionuser/.gvfs
+        chown -R kogaionuser:kogaionuser /home/kogaionuser/.gvfs
 fi
 
 #mv "${CDROOT_DIR}/boot/sabayon.igz" "${CDROOT_DIR}/boot/kogaion.igz"
-#mv "${CDROOT_DIR}/boot/sabayon" "${CDROOT_DIR}/boot/rogentos"
+#mv "${CDROOT_DIR}/boot/sabayon" "${CDROOT_DIR}/boot/kogaion"
 
 boot_kernel=$(find "${CHROOT_DIR}/boot" -name "kernel-*" | sort | head -n 1)
 boot_ramfs=$(find "${CHROOT_DIR}/boot" -name "initramfs-genkernel-*" | sort | head -n 1)
 if [ -n "${boot_kernel}" ] && [ -f "${boot_kernel}" ]; then
-	cp "${boot_kernel}" "${CDROOT_DIR}/boot/rogentos" || exit 1
+	cp "${boot_kernel}" "${CDROOT_DIR}/boot/kogaion" || exit 1
 	cp "${boot_ramfs}" "${CDROOT_DIR}/boot/kogaion.igz" || exit 1
 fi
 
 if [ "${remaster_type}" = "KDE" ] || [ "${remaster_type}" = "GNOME" ] || [ "${remaster_type}" = "MATE" ] || [ "${remaster_type}" = "XFCE" ] ; then
-	isolinux_source="${ROGENTOS_MOLECULE_HOME}/remaster/standard_isolinux.cfg"
-	grub_source="${ROGENTOS_MOLECULE_HOME}/remaster/standard_grub.cfg"
+	isolinux_source="${KOGAION_MOLECULE_HOME}/remaster/standard_isolinux.cfg"
+	grub_source="${KOGAION_MOLECULE_HOME}/remaster/standard_grub.cfg"
 elif [ "${remaster_type}" = "ServerBase" ]; then
 	echo "ServerBase trigger, copying server kernel over"
 	boot_kernel=$(find "${CHROOT_DIR}/boot" -name "kernel-*" | sort | head -n 1)
 	boot_ramfs=$(find "${CHROOT_DIR}/boot" -name "initramfs-*" | sort | head -n 1)
-	cp "${boot_kernel}" "${CDROOT_DIR}/boot/rogentos" || exit 1
+	cp "${boot_kernel}" "${CDROOT_DIR}/boot/kogaion" || exit 1
 	cp "${boot_ramfs}" "${CDROOT_DIR}/boot/kogaion.igz" || exit 1
-	isolinux_source="${ROGENTOS_MOLECULE_HOME}/remaster/serverbase_isolinux.cfg"
-	grub_source="${ROGENTOS_MOLECULE_HOME}/remaster/serverbase_grub.cfg"
+	isolinux_source="${KOGAION_MOLECULE_HOME}/remaster/serverbase_isolinux.cfg"
+	grub_source="${KOGAION_MOLECULE_HOME}/remaster/serverbase_grub.cfg"
 elif [ "${remaster_type}" = "HardenedServer" ]; then
 	echo "HardenedServer trigger, copying server kernel over"
 	boot_kernel=$(find "${CHROOT_DIR}/boot" -name "kernel-*" | sort | head -n 1)
 	boot_ramfs=$(find "${CHROOT_DIR}/boot" -name "initramfs-*" | sort | head -n 1)
-	cp "${boot_kernel}" "${CDROOT_DIR}/boot/rogentos" || exit 1
+	cp "${boot_kernel}" "${CDROOT_DIR}/boot/kogaion" || exit 1
 	cp "${boot_ramfs}" "${CDROOT_DIR}/boot/kogaion.igz" || exit 1
-	isolinux_source="${ROGENTOS_MOLECULE_HOME}/remaster/hardenedserver_isolinux.cfg"
-	grub_source="${ROGENTOS_MOLECULE_HOME}/remaster/hardenedserver_grub.cfg"
+	isolinux_source="${KOGAION_MOLECULE_HOME}/remaster/hardenedserver_isolinux.cfg"
+	grub_source="${KOGAION_MOLECULE_HOME}/remaster/hardenedserver_grub.cfg"
 fi
 cp "${isolinux_source}" "${isolinux_destination}" || exit 1
 cp "${grub_source}" "${grub_destination}" || exit 1
 
 # Generate Language and Keyboard menus for GRUB-2
-"${ROGENTOS_MOLECULE_HOME}"/scripts/make_grub_langs.sh "${grub_destination}" \
+"${KOGAION_MOLECULE_HOME}"/scripts/make_grub_langs.sh "${grub_destination}" \
 	|| exit 1
 
 # generate EFI GRUB
-#"${ROGENTOS_MOLECULE_HOME}"/scripts/make_grub_efi.sh || exit 1
+#"${KOGAION_MOLECULE_HOME}"/scripts/make_grub_efi.sh || exit 1
 
 ver="${RELEASE_VERSION}"
 [[ -z "${ver}" ]] && ver="${CUR_DATE}"
@@ -102,12 +102,12 @@ fi
 sed -i "s/__KMS__/${kms_string}/g" "${isolinux_destination}" || exit 1
 sed -i "s/__KMS__/${kms_string}/g" "${grub_destination}" || exit 1
 
-rogentos_pkgs_file="${CHROOT_DIR}/etc/kogaion-pkglist"
-if [ -f "${rogentos_pkgs_file}" ]; then
-	cp "${rogentos_pkgs_file}" "${CDROOT_DIR}/pkglist"
+kogaion_pkgs_file="${CHROOT_DIR}/etc/kogaion-pkglist"
+if [ -f "${kogaion_pkgs_file}" ]; then
+	cp "${kogaion_pkgs_file}" "${CDROOT_DIR}/pkglist"
 	if [ -n "${ISO_PATH}" ]; then # molecule 0.9.6 required
 		# copy pkglist over to ISO path + pkglist
-		cp "${rogentos_pkgs_file}" "${ISO_PATH}".pkglist
+		cp "${kogaion_pkgs_file}" "${ISO_PATH}".pkglist
 	fi
 fi
 
@@ -130,4 +130,4 @@ rm "${CDROOT_DIR}"/boot/sabayon.igz
 
 
 # Generate livecd.squashfs.md5
-"${ROGENTOS_MOLECULE_HOME}"/scripts/pre_iso_script_livecd_hash.sh
+"${KOGAION_MOLECULE_HOME}"/scripts/pre_iso_script_livecd_hash.sh

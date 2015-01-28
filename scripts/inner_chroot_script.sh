@@ -68,9 +68,9 @@ echo "inet_interfaces = localhost" >> /etc/postfix/main.cf
 # turn bashlogin shells to actual login shells
 sed -i 's:exec -l /bin/bash:exec -l /bin/bash -l:' /bin/bashlogin
 
-# setup /etc/hosts, add rogentos as default hostname (required by Xfce)
-sed -i "/^127.0.0.1/ s/localhost/localhost rogentos/" /etc/hosts
-sed -i "/^::1/ s/localhost/localhost rogentos/" /etc/hosts
+# setup /etc/hosts, add kogaion as default hostname (required by Xfce)
+sed -i "/^127.0.0.1/ s/localhost/localhost kogaion/" /etc/hosts
+sed -i "/^::1/ s/localhost/localhost kogaion/" /etc/hosts
 
 # setup postfix local mail aliases
 newaliases
@@ -81,7 +81,7 @@ newaliases
 # sed -i "/^#rc_interactive=/ s/#//" /etc/rc.conf
 
 # Set Plymouth default theme
-plymouth-set-default-theme rogentos
+plymouth-set-default-theme kogaion
 # and make sure that fbcondecor is removed
 rc-update del fbcondecor boot
 rc-update del fbcondecor default

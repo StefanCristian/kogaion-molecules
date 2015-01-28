@@ -4,8 +4,8 @@
 . /etc/profile
 
 # Path to molecules.git dir
-ROGENTOS_MOLECULE_HOME="${ROGENTOS_MOLECULE_HOME:-/sabayon}"
-export ROGENTOS_MOLECULE_HOME
+KOGAION_MOLECULE_HOME="${KOGAION_MOLECULE_HOME:-/sabayon}"
+export KOGAION_MOLECULE_HOME
 
 boot_dir="${CHROOT_DIR}/boot"
 cdroot_boot_dir="${CDROOT_DIR}/boot"
@@ -27,7 +27,7 @@ if [ ! -f "${initramfs}" ]; then
 fi
 
 # copy kernel and initramfs
-cp "${kernel}" "${cdroot_boot_dir}"/rogentos || exit 1
+cp "${kernel}" "${cdroot_boot_dir}"/kogaion || exit 1
 cp "${initramfs}" "${cdroot_boot_dir}"/kogaion.igz || exit 1
 
 # Write build info
@@ -47,18 +47,18 @@ for path in "${isolinux_dest}" "${isolinux_dest_txt}" "${grub_dest}"; do
 done
 
 # Generate Language and Keyboard menus for GRUB-2
-"${ROGENTOS_MOLECULE_HOME}"/scripts/make_grub_langs.sh "${grub_dest}" \
+"${KOGAION_MOLECULE_HOME}"/scripts/make_grub_langs.sh "${grub_dest}" \
 	|| exit 1
 
 # generate EFI GRUB
-"${ROGENTOS_MOLECULE_HOME}"/scripts/make_grub_efi.sh || exit 1
+"${KOGAION_MOLECULE_HOME}"/scripts/make_grub_efi.sh || exit 1
 
-rogentos_pkgs_file="${CHROOT_DIR}/etc/kogaion-pkglist"
-if [ -f "${rogentos_pkgs_file}" ]; then
+kogaion_pkgs_file="${CHROOT_DIR}/etc/kogaion-pkglist"
+if [ -f "${kogaion_pkgs_file}" ]; then
 	cp "${rognetos_pkgs_file}" "${CDROOT_DIR}/pkglist"
 	if [ -n "${ISO_PATH}" ]; then # molecule 0.9.6 required
 		# copy pkglist over to ISO path + pkglist
-		cp "${rogentos_pkgs_file}" "${ISO_PATH}".pkglist
+		cp "${kogaion_pkgs_file}" "${ISO_PATH}".pkglist
 	fi
 fi
 
@@ -69,4 +69,4 @@ if [ -f "${isolinux_img}" ]; then
 fi
 
 # Generate livecd.squashfs.md5
-"${ROGENTOS_MOLECULE_HOME}"/scripts/pre_iso_script_livecd_hash.sh
+"${KOGAION_MOLECULE_HOME}"/scripts/pre_iso_script_livecd_hash.sh

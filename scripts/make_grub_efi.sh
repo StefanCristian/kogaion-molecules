@@ -6,8 +6,8 @@
 # This scripts generates an EFI-enabled boot structure
 
 # Path to molecules.git dir
-ROGENTOS_MOLECULE_HOME="${ROGENTOS_MOLECULE_HOME:-/sabayon}"
-export ROGENTOS_MOLECULE_HOME
+KOGAION_MOLECULE_HOME="${KOGAION_MOLECULE_HOME:-/sabayon}"
+export KOGAION_MOLECULE_HOME
 
 MOUNT_DIRS=()
 TEMP_FILES=()
@@ -144,7 +144,7 @@ efi_x86_64_file="${EFI_BOOT_DIR}"/bootx64.efi
 efi_i386_file="${EFI_BOOT_DIR}"/boota32.efi
 grub_efi_file="${EFI_BOOT_DIR}"/grubx64.efi
 efi_img="${GRUB_BOOT_DIR}"/efi.img
-shim_dir="${ROGENTOS_MOLECULE_HOME}"/boot/shim-uefi-secure-boot
+shim_dir="${KOGAION_MOLECULE_HOME}"/boot/shim-uefi-secure-boot
 shim_data_dir="${CHROOT_DIR}/usr/share/shim-signed-0.2"
 # This is on the ISO build server, not on the repos
 sbsign_private_key="${shim_dir}"/private.key

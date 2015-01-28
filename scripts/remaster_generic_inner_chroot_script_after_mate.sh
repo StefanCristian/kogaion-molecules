@@ -359,7 +359,7 @@ setup_misc_stuff() {
 	fi
 }
 
-rogentos_install() {
+kogaion_install() {
 
 #Kogaion ISO Remaking from the Beginnings
 
@@ -381,14 +381,14 @@ equo remove anaconda --nodeps
 if [ "$ARCH" = "x86_64" ]; then
                 equo unmask anaconda
                 equo install anaconda dev-util/pkgconfig --nodeps
-                echo "installed rogentos artwork amd64"
+                echo "installed kogaion artwork amd64"
                 echo -5 | equo conf update
                 depmod -a
                 env-update && source /etc/profile
         else
                 equo unmask anaconda
                 equo install anaconda --nodeps
-                echo "Installed rogentos artwork x86"
+                echo "Installed kogaion artwork x86"
                 echo -5 | equo conf update
                 depmod -a
                 env-update && source /etc/profile
@@ -400,7 +400,7 @@ echo "Use kernel-schimbare --help to change the kernels"
 }
 
 setup_installed_packages() {
-	rogentos_install
+	kogaion_install
 	switch_kernel
 	# Update package list
 	equo query list installed -qv > /etc/kogaion-pkglist
@@ -409,7 +409,7 @@ setup_installed_packages() {
 	echo "Vacuum cleaning client db"
 	rm /var/lib/entropy/client/database/*/kogaionlinux.ro -rf
 	rm /var/lib/entropy/client/database/*/kogaion-weekly -rf
-	rm /var/lib/entropy/client/database/*/rogentoslinux -rf
+	rm /var/lib/entropy/client/database/*/kogaionlinux -rf
 	equo rescue vacuum
 
 	# restore original repositories.conf (all mirrors were filtered for speed)
@@ -543,7 +543,7 @@ setup_startup_caches
 equo query installed linux-sabayon
 equo remove sabayon-artwork-core --configfiles
 
-plymouth-set-default-theme rogentos
+plymouth-set-default-theme kogaion
 
 equo remove ati-drivers ati-userspace nvidia-drivers nvidia-userspace nvidiabl bbswitch virtualgl bumblebee --configfiles
 eselect opengl set 1

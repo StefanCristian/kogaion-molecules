@@ -2,8 +2,8 @@
 
 /usr/sbin/env-update && source /etc/profile
 
-ROGENTOS_MOLECULE_HOME="${ROGENTOS_MOLECULE_HOME:-/sabayon}"
-export ROGENTOS_MOLECULE_HOME
+KOGAION_MOLECULE_HOME="${KOGAION_MOLECULE_HOME:-/sabayon}"
+export KOGAION_MOLECULE_HOME
 
 remaster_type="${1}"
 isolinux_source="/sabayon/remaster/minimal_isolinux.cfg"
@@ -14,8 +14,8 @@ rm "${CDROOT_DIR}/sabayon.ico"
 rm "${CDROOT_DIR}/sabayon.bat"
 echo "Moving the right files where they rightfully belong"
 cp /sabayon/boot/core/autorun.inf "${CDROOT_DIR}/" 
-cp /sabayon/boot/core/rogentos.ico "${CDROOT_DIR}/"               
-cp /sabayon/boot/core/rogentos.bat "${CDROOT_DIR}/"
+cp /sabayon/boot/core/kogaion.ico "${CDROOT_DIR}/"               
+cp /sabayon/boot/core/kogaion.bat "${CDROOT_DIR}/"
 
 echo "Creating folder syslinux and copying everything that's in isolinux to it"
 if [ -f "${CDROOT_DIR}/syslinux/isolinux.cfg" ]; then
@@ -30,8 +30,8 @@ elif [ "${remaster_type}" = "ServerBase" ]; then
 	echo "ServerBase trigger, copying server kernel over"
 	boot_kernel=$(find "${CHROOT_DIR}/boot" -name "kernel-*" | sort | head -n 1)
 	boot_ramfs=$(find "${CHROOT_DIR}/boot" -name "initramfs-*" | sort | head -n 1)
-	cp "${boot_kernel}" "${CDROOT_DIR}/boot/rogentos" || exit 1
-	cp "${boot_ramfs}" "${CDROOT_DIR}/boot/rogentos.igz" || exit 1
+	cp "${boot_kernel}" "${CDROOT_DIR}/boot/kogaion" || exit 1
+	cp "${boot_ramfs}" "${CDROOT_DIR}/boot/kogaion.igz" || exit 1
 	isolinux_source="/sabayon/remaster/serverbase_isolinux.cfg"
 fi
 cp "${isolinux_source}" "${isolinux_destination}" || exit 1
@@ -54,12 +54,12 @@ else
 fi
 sed -i "s/__KMS__/${kms_string}/g" "${isolinux_destination}"
 
-rogentos_pkgs_file="${CHROOT_DIR}/etc/kogaion-pkglist"
-if [ -f "${rogentos_pkgs_file}" ]; then
-	cp "${rogentos_pkgs_file}" "${CDROOT_DIR}/pkglist"
+kogaion_pkgs_file="${CHROOT_DIR}/etc/kogaion-pkglist"
+if [ -f "${kogaion_pkgs_file}" ]; then
+	cp "${kogaion_pkgs_file}" "${CDROOT_DIR}/pkglist"
         if [ -n "${ISO_PATH}" ]; then # molecule 0.9.6 required
                 # copy pkglist over to ISO path + pkglist
-                cp "${rogentos_pkgs_file}" "${ISO_PATH}".pkglist
+                cp "${kogaion_pkgs_file}" "${ISO_PATH}".pkglist
         fi
 fi
 
@@ -70,4 +70,4 @@ if [ -f "${isolinux_img}" ]; then
 fi
 
 # Generate livecd.squashfs.md5
-"${ROGENTOS_MOLECULE_HOME}"/scripts/pre_iso_script_livecd_hash.sh
+"${KOGAION_MOLECULE_HOME}"/scripts/pre_iso_script_livecd_hash.sh

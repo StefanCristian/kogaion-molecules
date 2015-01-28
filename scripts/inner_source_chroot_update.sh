@@ -113,7 +113,7 @@ for conf in 00-sabayon.package.use 00-sabayon.package.mask \
 	repo_path=/var/lib/entropy/client/database/*/kogaionlinux.ro/standard
 	repo_conf=$(ls -1 ${repo_path}/*/*/${conf} | sort | tail -n 1 2>/dev/null)
 	if [ -n "${repo_conf}" ]; then
-		target_path="/etc/portage/${conf/00-rogentos.}/${conf}"
+		target_path="/etc/portage/${conf/00-kogaion.}/${conf}"
 		target_dir=$(dirname "${target_path}")
 		if [ -f "${target_dir}" ]; then # remove old file
 			rm "${target_dir}" # ignore failure

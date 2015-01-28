@@ -238,20 +238,20 @@ setup_misc_stuff() {
 	fi
 }
 
-rogentos_splash() {
+kogaion_splash() {
 if [ -d "/etc/splash/sabayon" ]; then
         rm -r /etc/splash/sabayon
-        ln -s /etc/splash/rogentos /etc/splash/sabayon
+        ln -s /etc/splash/kogaion /etc/splash/sabayon
         echo "So etc/splash/sabayon exists"
-        ln -s /etc/splash/rogentos /etc/splash/sabayon
+        ln -s /etc/splash/kogaion /etc/splash/sabayon
 
         for i in `seq 1 6`; do
-        splash_manager -c set -t rogentos --tty=$i
+        splash_manager -c set -t kogaion --tty=$i
         done
 fi
 }
 
-rogentos_install() {
+kogaion_install() {
 
 #Kogaion ISO Remaking from the Beginnings
 
@@ -264,21 +264,21 @@ equo remove anaconda --nodeps
 if [ "$ARCH" = "x86_64" ]; then
 		equo unmask anaconda
 		equo install anaconda kernel-schimbare --nodeps
-		echo "installed rogentos artwork amd64"
+		echo "installed kogaion artwork amd64"
 		echo -5 | equo conf update
-		rogentos_splash
+		kogaion_splash
 	else
 		equo unmask anaconda
 		equo install anaconda kernel-schimbare --nodeps
-		echo "Installed rogentos artwork x86"
+		echo "Installed kogaion artwork x86"
 		equo -5 | equo conf update
-		rogentos_splash
+		kogaion_splash
 fi
 
 }
 
 setup_installed_packages() {
-	rogentos_install
+	kogaion_install
 	# Update package list
 	equo query list installed -qv > /etc/kogaion-pkglist
 	echo -5 | equo conf update
@@ -286,7 +286,7 @@ setup_installed_packages() {
 	echo "Vacuum cleaning client db"
 	rm /var/lib/entropy/client/database/*/kogaionlinux.ro -rf
 	rm /var/lib/entropy/client/database/*/kogaion-weekly -rf
-	rm /var/lib/entropy/client/database/*/rogentoslinux -rf
+	rm /var/lib/entropy/client/database/*/kogaionlinux -rf
 	equo rescue vacuum
 
 	# restore original repositories.conf (all mirrors were filtered for speed)
