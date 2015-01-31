@@ -19,7 +19,7 @@ if [ -z "${BUILDING_DAILY}" ]; then
 	if [ -f "${src_conf}" ]; then
 		mv "${src_conf}" "${dst_conf}" || exit 1
 		#sed -i "/^\[kogaionlinux.ro\]$/ s/kogaionlinux.ro/kogaion-weekly/" \
-		sed -i "/^\[kogaion-weekly\]$/ s/kogaion-weekly/kogaionlinux.org/" \
+		sed -i "/^\[kogaion-weekly\]$/ s/kogaion-weekly/kogaionlinux/" \
 			"${dst_conf}" || exit 1
 	fi
 	# so we will defend our users from kogaion testing repos, starting today
