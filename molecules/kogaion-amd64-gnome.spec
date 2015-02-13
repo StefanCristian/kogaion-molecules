@@ -8,7 +8,7 @@
 release_desc: amd64 GNOME
 
 # Path to source ISO file (MANDATORY)
-%env source_iso: ${ROGENTOS_MOLECULE_HOME:-/kogaion}/Sabayon_Linux_${ISO_TAG:-DAILY}_amd64_SpinBase.iso
+%env source_iso: ${ROGENTOS_MOLECULE_HOME:-/kogaion}/Kogaion_Linux_${ISO_TAG:-DAILY}_amd64_SpinBase.iso
 
 # Destination ISO image name, call whatever you want.iso, not mandatory
 %env destination_iso_image_name: Kogaion_amd64_2.0_GNOME.iso

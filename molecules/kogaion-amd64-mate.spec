@@ -9,7 +9,7 @@ release_version: 2
 release_desc: amd64 MATE
 
 # Path to source ISO file (MANDATORY)
-%env source_iso: ${ROGENTOS_MOLECULE_HOME:-/kogaion}/Sabayon_Linux_DAILY_amd64_SpinBase.iso
+%env source_iso: ${ROGENTOS_MOLECULE_HOME:-/kogaion}/Kogaion_Linux_DAILY_amd64_SpinBase.iso
 
 # Destination ISO image name, call whatever you want.iso, not mandatory
 destination_iso_image_name: /kogaion/iso/Kogaion_amd64_2.0_MATE.iso
