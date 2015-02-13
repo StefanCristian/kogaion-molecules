@@ -8,24 +8,6 @@ AMDSYSERV="/usr/lib64/systemd/system"
 ESYSERV="/etc/systemd/system/display-manager.service"
 GSYSERV="/etc/systemd/system/graphical.target.wants"
 
-find /etc -iname "*sabayonlive*" -exec rm -rf '{}' \;
-find /var -iname "*sabayonlive*" -exec rm -rf '{}' \;
-find /usr -iname "*sabayonlive*" -exec rm -rf '{}' \;
-
-if [ -f "/etc/systemd/system/multi-user.target.wants/sabayonlive.service" ] || [ -f "/usr/libexec/sabayonlive.sh" ] ; then
-	echo "By hell, it's a Sabayon service"
-	rm /etc/systemd/system/multi-user.target.wants/sabayonlive.service
-	rm /usr/lib/systemd/system/sabayonlive.service
-	rm /usr/libexec/installer-*
-	rm /usr/libexec/sabayonlive.sh
-	rm /sbin/sabayon-functions.sh
-	rm /usb/bin/sabayon*
-	rm /usr/share/grub/default-splash.png
-	sed -i 's/sabayon-functions/kogaion-functions/g' /usr/libexec/x-setup.sh
-	else
-	echo "There are no such files"
-fi
-
 _get_kernel_tag() {
 	local kernel_ver="$(equo match --installed -qv virtual/linux-binary | cut -d/ -f 2)"
 	# strip -r** if exists, hopefully we don't have PN ending with -r
@@ -96,8 +78,6 @@ basic_environment_setup() {
 	rc-update add consolekit boot
 	# systemd uses logind
 
-	rc-update del sabayon-mce default
-	sd_disable sabayon-mce
 	rc-update add nfsmount default
 
 	# setup avahi
@@ -138,11 +118,6 @@ basic_environment_setup() {
 setup_cpufrequtils() {
 	rc-update add cpufrequtils default
 	sd_enable cpufrequtils
-}
-
-setup_sabayon_mce() {
-	rc-update add sabayon-mce boot
-	sd_enable sabayon-mce
 }
 
 switch_kernel() {
@@ -366,19 +341,6 @@ setup_misc_stuff() {
 	fi
 }
 
-kogaion_splash() {
-if [ -d "/etc/splash/sabayon" ]; then
-        rm -r /etc/splash/sabayon
-        ln -s /etc/splash/kogaion /etc/splash/sabayon
-        echo "So etc/splash/sabayon exists"
-        ln -s /etc/splash/kogaion /etc/splash/sabayon
-
-        for i in `seq 1 6`; do
-        splash_manager -c set -t kogaion --tty=$i
-        done
-fi
-}
-
 kogaion_install() {
 
 #Kogaion ISO Remaking from the Beginnings
@@ -500,7 +462,6 @@ prepare_gnome() {
 	rc-update add system-tools-backends default
 	# no systemd counterpart
 
-	setup_sabayon_mce
 }
 
 prepare_xfceforensic() {
@@ -514,7 +475,6 @@ prepare_kde() {
 	# TODO: find a better solution?
 	mv /etc/skel/.config/gtk-3.0/settings.ini._kde_molecule \
 		/etc/skel/.config/gtk-3.0/settings.ini
-	setup_sabayon_mce
 }
 
 prepare_awesome() {
@@ -568,9 +528,8 @@ for PKG in nvidia-drivers ati-drivers bumblebee bbswitch ; do
 done
 
 
-equo query installed linux-sabayon
 eselect kernel list
-equo remove sabayon-artwork-core --configfiles
+equo install kogaion-clean
 
 rm /var/lib/entropy/logs -rf
 rm -rf /var/lib/entropy/*cache*

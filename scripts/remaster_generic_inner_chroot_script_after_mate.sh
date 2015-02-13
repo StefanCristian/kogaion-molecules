@@ -3,23 +3,6 @@
 /usr/sbin/env-update
 . /etc/profile
 
-find . -iname "*sabayonlive*" -exec rm -rf '{}' \;
-
-if [ -f "/etc/systemd/system/multi-user.target.wants/sabayonlive.service" ] || [ -f "/usr/libexec/sabayonlive.sh" ] ; then
-        echo "By hell, it's a Sabayon service"
-        rm /etc/systemd/system/multi-user.target.wants/sabayonlive.service
-        rm /usr/lib/systemd/system/sabayonlive.service
-	rm /usr/lib64/systemd/system/sabayonlive.service
-	rm /usr/libexec/installer-*
-        rm /usr/libexec/sabayonlive.sh
-        rm /sbin/sabayon-functions.sh
-        rm /usb/bin/sabayon*
-        rm /usr/share/grub/default-splash.png
-	sed -i 's/sabayon-functions/kogaion-functions/g' /usr/libexec/x-setup.sh
-        else
-        echo "There are no such files"
-fi
-
 _get_kernel_tag() {
 	local kernel_ver="$(equo match --installed -qv virtual/linux-binary | cut -d/ -f 2)"
 	# strip -r** if exists, hopefully we don't have PN ending with -r
@@ -89,8 +72,6 @@ basic_environment_setup() {
 	rc-update add consolekit boot
 	# systemd uses logind
 
-	rc-update del sabayon-mce default
-	sd_disable sabayon-mce
 	rc-update add nfsmount default
 
 	# setup avahi
@@ -131,11 +112,6 @@ basic_environment_setup() {
 setup_cpufrequtils() {
 	rc-update add cpufrequtils default
 	sd_enable cpufrequtils
-}
-
-setup_sabayon_mce() {
-	rc-update add sabayon-mce boot
-	sd_enable sabayon-mce
 }
 
 switch_kernel() {
@@ -372,7 +348,6 @@ rog=kogaion-artwork
 sed -i 's/DISPLAYMANAGER=".*"/DISPLAYMANAGER="lightdm"/g' /etc/conf.d/xdm
 /usr/bin/systemctl --no-reload enable -f "lightdm.service"
 #/usr/bin/systemctl enable lightdm
-/usr/bin/systemctl disable sabayonlive
 #sd_graph_enable lightdm
 
 echo "Entering folder $localz"
@@ -485,7 +460,6 @@ prepare_gnome() {
 	rc-update add system-tools-backends default
 	# no systemd counterpart
 
-	setup_sabayon_mce
 }
 
 prepare_xfceforensic() {
@@ -499,7 +473,6 @@ prepare_kde() {
 	# TODO: find a better solution?
 	mv /etc/skel/.config/gtk-3.0/settings.ini._kde_molecule \
 		/etc/skel/.config/gtk-3.0/settings.ini
-	setup_sabayon_mce
 }
 
 prepare_awesome() {
@@ -540,8 +513,7 @@ setup_installed_packages
 setup_portage
 setup_startup_caches
 
-equo query installed linux-sabayon
-equo remove sabayon-artwork-core --configfiles
+equo install kogaion-clean
 
 plymouth-set-default-theme kogaion
 
