@@ -55,7 +55,7 @@ done
 
 kogaion_pkgs_file="${CHROOT_DIR}/etc/kogaion-pkglist"
 if [ -f "${kogaion_pkgs_file}" ]; then
-	cp "${kogaion_pkgs_file}" "${CDROOT_DIR}/pkglist"
+	cp "${rognetos_pkgs_file}" "${CDROOT_DIR}/pkglist"
 	if [ -n "${ISO_PATH}" ]; then # molecule 0.9.6 required
 		# copy pkglist over to ISO path + pkglist
 		cp "${kogaion_pkgs_file}" "${ISO_PATH}".pkglist
