@@ -51,7 +51,7 @@ done
 	|| exit 1
 
 # generate EFI GRUB
-"${KOGAION_MOLECULE_HOME}"/scripts/make_grub_efi.sh || exit 1
+#"${KOGAION_MOLECULE_HOME}"/scripts/make_grub_efi.sh || exit 1
 
 kogaion_pkgs_file="${CHROOT_DIR}/etc/kogaion-pkglist"
 if [ -f "${kogaion_pkgs_file}" ]; then
