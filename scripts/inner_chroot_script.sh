@@ -4,13 +4,17 @@
 . /etc/profile
 
 sd_enable() {
+	local srv="${1}"
+	local ext=".${2:-service}"
 	[[ -x /usr/bin/systemctl ]] && \
-		systemctl --no-reload enable -f "${1}.service"
+		systemctl --no-reload enable -f "${srv}${ext}"
 }
 
 sd_disable() {
+	local srv="${1}"
+	local ext=".${2:-service}"
 	[[ -x /usr/bin/systemctl ]] && \
-		systemctl --no-reload disable -f "${1}.service"
+		systemctl --no-reload disable -f "${srv}${ext}"
 }
 
 # create /proc if it doesn't exist
@@ -46,7 +50,7 @@ echo FONT=LatArCyrHeb-16 > /etc/vconsole.conf
 
 # since this comes without X, set the default target to multi-user.target
 # instead of graphical.target
-sd_enable multi-user
+sd_enable multi-user target
 
 # remove SSH keys
 rm -rf /etc/ssh/*_key*
@@ -61,9 +65,6 @@ rm -rf /etc/ssl/postfix/server.*
 
 # make sure postfix only listens on localhost
 echo "inet_interfaces = localhost" >> /etc/postfix/main.cf
-# do not add it yet to runlevel
-# rc-update add postfix default
-
 # allow root logins to the livecd by default
 # turn bashlogin shells to actual login shells
 sed -i 's:exec -l /bin/bash:exec -l /bin/bash -l:' /bin/bashlogin
@@ -80,14 +81,15 @@ newaliases
 # mode if it's not forced to NO. So, disable it completely
 # sed -i "/^#rc_interactive=/ s/#//" /etc/rc.conf
 
-# Set Plymouth default theme
-plymouth-set-default-theme kogaion
-# and make sure that fbcondecor is removed
-rc-update del fbcondecor boot
-rc-update del fbcondecor default
+# Set Plymouth default theme, newer artwork has the kogaion theme
+is_ply_kogaion=$(plymouth-set-default-theme --list | grep kogaion)
+if [ -n "${is_ply_kogaion}" ]; then
+	plymouth-set-default-theme kogaion
+else
+	plymouth-set-default-theme solar
+fi
 
 # enable cd eject on shutdown/reboot
-rc-update add cdeject shutdown
 sd_enable cdeject
 
 # Activate services for systemd
@@ -136,27 +138,24 @@ for repo_conf in /etc/entropy/repositories.conf.d/entropy_*.example; do
 	cp "${repo_conf}" "${new_repo_conf}"
 done
 
-# copy Portage config from kogaionlinux.ro entropy repo to system
+# copy Portage config from kogaionlinux entropy repo to system
 for conf in package.mask package.unmask package.keywords make.conf package.use; do
-	repo_path=/var/lib/entropy/client/database/*/kogaionlinux.ro/standard
+	repo_path=/var/lib/entropy/client/database/*/kogaionlinux/standard
 	repo_conf=$(ls -1 ${repo_path}/*/*/${conf} | sort | tail -n 1 2>/dev/null)
 	if [ -n "${repo_conf}" ]; then
 		target_path="/etc/portage/${conf}"
-		if [ "${conf}" = "make.conf" ]; then
-			target_path="/etc/make.conf"
-		fi
 		if [ ! -d "${target_path}" ]; then # do not touch dirs
 			cp "${repo_conf}" "${target_path}" # ignore
 		fi
 	fi
 done
 # split config files
-for conf in 00-sabayon.package.use 00-sabayon.package.mask \
-	00-sabayon.package.unmask 00-sabayon.package.keywords; do
-	repo_path=/var/lib/entropy/client/database/*/kogaionlinux.ro/standard
+for conf in 00-kogaion.package.use 00-kogaion.package.mask \
+	00-kogaion.package.unmask 00-kogaion.package.keywords; do
+	repo_path=/var/lib/entropy/client/database/*/kogaionlinux/standard
 	repo_conf=$(ls -1 ${repo_path}/*/*/${conf} | sort | tail -n 1 2>/dev/null)
 	if [ -n "${repo_conf}" ]; then
-		target_path="/etc/portage/${conf/00-sabayon.}/${conf}"
+		target_path="/etc/portage/${conf/00-kogaion.}/${conf}"
 		target_dir=$(dirname "${target_path}")
 		if [ -f "${target_dir}" ]; then # remove old file
 			rm "${target_dir}" # ignore failure
@@ -181,10 +180,10 @@ chmod 777 /var/tmp
 chmod 777 /tmp
 
 # Looks like screen directories are missing
-if [ ! -d "/run/screen" ]; then
-	mkdir /run/screen
-	chmod 775 /run/screen
-	chown root:utmp /run/screen
+if [ ! -d "/var/run/screen" ]; then
+	mkdir /var/run/screen
+	chmod 775 /var/run/screen
+	chown root:utmp /var/run/screen
 fi
 
 # Regenerate Fluxbox menu
@@ -204,7 +203,7 @@ rm -rf /var/lib/entropy/*cache*
 rm -f /etc/entropy/.hw.hash
 
 # remove entropy pid file
-rm -f /run/entropy/entropy.lock
+rm -f /var/run/entropy/entropy.lock
 rm -f /var/lib/entropy/entropy.pid
 rm -f /var/lib/entropy/entropy.lock # old?
 
