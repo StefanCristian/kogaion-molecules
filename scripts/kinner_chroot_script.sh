@@ -1,28 +1,7 @@
 #!/bin/bash
 
-UPGRADE_REPO="${1}"
-
 /usr/sbin/env-update
 . /etc/profile
-
-safe_run() {
-	local updated=0
-	for ((i=0; i < 42; i++)); do
-		"${@}" && {
-			updated=1;
-			break;
-		}
-		if [ ${i} -gt 6 ]; then
-			sleep 3600 || return 1
-		else
-			sleep 1200 || return 1
-		fi
-	done
-	if [ "${updated}" = "0" ]; then
-		return 1
-	fi
-	return 0
-}
 
 sd_enable() {
 	local srv="${1}"
@@ -38,9 +17,6 @@ sd_disable() {
 		systemctl --no-reload disable -f "${srv}${ext}"
 }
 
-# Make sure that external Portage env vars are not set
-unset PORTDIR PORTAGE_TMPDIR
-
 # create /proc if it doesn't exist
 # rsync doesn't copy it
 mkdir -p /proc
@@ -51,6 +27,9 @@ mkdir -p /dev/shm
 touch /dev/shm/.keep
 mkdir -p /dev/pts
 touch /dev/pts/.keep
+
+# Cleanup Perl cruft
+perl-cleaner --ph-clean
 
 # copy /root defaults from /etc/skel
 rm -rf /root
@@ -63,22 +42,6 @@ for f in /etc/env.d/02locale /etc/locale.conf; do
 	echo LANGUAGE=en_US.UTF-8 >> "${f}"
 	echo LC_ALL=en_US.UTF-8 >> "${f}"
 done
-
-
-if [ -n "${UPGRADE_REPO}" ]; then
-	echo "Upgrading system by enabling ${UPGRADE_REPO}"
-	equo repo enable "${UPGRADE_REPO}" || exit 1
-	FORCE_EAPI=2 safe_run equo update || exit 1
-
-	equo repo mirrorsort "${UPGRADE_REPO}"  # ignore errors
-	ETP_NONINTERACTIVE=1 safe_run equo upgrade --fetch || exit 1
-	ETP_NONINTERACTIVE=1 equo upgrade --purge || exit 1
-	echo "-5" | equo conf update
-fi
-
-# Cleanup Perl cruft
-perl-cleaner --ph-clean
-
 # Needed by systemd, because it doesn't properly set a good
 # encoding in ttys. Test it with (on tty1, VT1):
 # echo -e "\xE2\x98\xA0"
@@ -87,7 +50,7 @@ echo FONT=LatArCyrHeb-16 > /etc/vconsole.conf
 
 # since this comes without X, set the default target to multi-user.target
 # instead of graphical.target
-systemctl --no-reload set-default multi-user
+sd_enable multi-user target
 
 # remove SSH keys
 rm -rf /etc/ssh/*_key*
@@ -113,6 +76,11 @@ sed -i "/^::1/ s/localhost/localhost kogaion/" /etc/hosts
 # setup postfix local mail aliases
 newaliases
 
+# DO NOT ENABLE interactive startup !!!
+# At this time, plymouth will trigger openrc interactive
+# mode if it's not forced to NO. So, disable it completely
+# sed -i "/^#rc_interactive=/ s/#//" /etc/rc.conf
+
 # Set Plymouth default theme, newer artwork has the kogaion theme
 is_ply_kogaion=$(plymouth-set-default-theme --list | grep kogaion)
 if [ -n "${is_ply_kogaion}" ]; then
@@ -121,8 +89,8 @@ else
 	plymouth-set-default-theme solar
 fi
 
-# disable cd eject on shutdown/reboot, it's broken atm
-sd_disable cdeject
+# enable cd eject on shutdown/reboot
+sd_enable cdeject
 
 # Activate services for systemd
 SYSTEMD_SERVICES=(
@@ -137,9 +105,6 @@ done
 # Disable syslog in systemd, we use journald
 sd_disable syslog-ng
 
-# Make sure to have lvmetad otherwise anaconda freaks out
-sd_enable lvm2-lvmetad
-
 # setup sudoers
 [ -e /etc/sudoers ] && sed -i '/NOPASSWD: ALL/ s/^# //' /etc/sudoers
 
@@ -149,8 +114,8 @@ eselect opengl set xorg-x11 &> /dev/null
 # touch /etc/asound.state
 touch /etc/asound.state
 
-type -f update-pciids 2> /dev/null && update-pciids
-type -f update-usbids 2> /dev/null && update-usbids
+update-pciids
+update-usbids
 
 echo -5 | etc-update
 mount -t proc proc /proc
@@ -164,6 +129,14 @@ umount /proc
 
 equo deptest --pretend
 emaint --fix world
+
+# copy entropy repositories config
+# the one in chroots is optimized to use Garr mirror
+cp /etc/entropy/repositories.conf.example /etc/entropy/repositories.conf -p
+for repo_conf in /etc/entropy/repositories.conf.d/entropy_*.example; do
+	new_repo_conf="${repo_conf%.example}"
+	cp "${repo_conf}" "${new_repo_conf}"
+done
 
 # copy Portage config from kogaionlinux entropy repo to system
 for conf in package.mask package.unmask package.keywords make.conf package.use; do
@@ -207,15 +180,14 @@ chmod 777 /var/tmp
 chmod 777 /tmp
 
 # Looks like screen directories are missing
-if [ ! -d "/run/screen" ]; then
-	mkdir /run/screen
-	chmod 775 /run/screen
-	chown root:utmp /run/screen
+if [ ! -d "/var/run/screen" ]; then
+	mkdir /var/run/screen
+	chmod 775 /var/run/screen
+	chown root:utmp /var/run/screen
 fi
 
 # Regenerate Fluxbox menu
 if [ -x "/usr/bin/fluxbox-generate_menu" ]; then
-	mkdir -p /root/.fluxbox
         fluxbox-generate_menu -o /etc/skel/.fluxbox/menu
 fi
 
@@ -231,7 +203,7 @@ rm -rf /var/lib/entropy/*cache*
 rm -f /etc/entropy/.hw.hash
 
 # remove entropy pid file
-rm -f /run/entropy/entropy.lock
+rm -f /var/run/entropy/entropy.lock
 rm -f /var/lib/entropy/entropy.pid
 rm -f /var/lib/entropy/entropy.lock # old?
 
