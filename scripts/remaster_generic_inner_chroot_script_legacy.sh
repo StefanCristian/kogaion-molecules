@@ -13,9 +13,9 @@ cd "$EREPO"
 wget http://pkg.kogaion.ro/~kogaion/distro/entropy_kogaionlinux
 wget http://pkg.kogaion.ro/~kogaion/distro/entropy_kogaion-legacy
 equo repo mirrorsort kogaionlinux
-equo repo mirrorsort kogaionlinux.ro
-if [ -f "/etc/entropy/repositories.conf.d/entropy_kogaionlinux.ro.example" ]; then
-	mv "${EREPO}/entropy_kogaionlinux.ro.example" "${EREPO}/entropy_kogaionlinux.ro"
+equo repo mirrorsort kogaionlinux
+if [ -f "/etc/entropy/repositories.conf.d/entropy_kogaionlinux.example" ]; then
+	mv "${EREPO}/entropy_kogaionlinux.example" "${EREPO}/entropy_kogaionlinux"
 fi
 if [ -f "${EREPO}/entropy_kogaion-weekly" ]; then
 	mv "${EREPO}/entropy_kogaion-weekly" "${EREPO}/entropy_kogaion-weekly.example"

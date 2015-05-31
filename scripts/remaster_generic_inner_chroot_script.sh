@@ -33,8 +33,8 @@ export FORCE_EAPI=2
 
 LOC=$(pwd)
 EREPO=/etc/entropy/repositories.conf.d
-if [ -f "/etc/entropy/repositories.conf.d/entropy_kogaionlinux.ro.example" ]; then
-        mv "${EREPO}/entropy_kogaionlinux.ro.example" "${EREPO}/entropy_kogaionlinux.ro"
+if [ -f "/etc/entropy/repositories.conf.d/entropy_kogaionlinux.example" ]; then
+        mv "${EREPO}/entropy_kogaionlinux.example" "${EREPO}/entropy_kogaionlinux"
 fi
 
 if [ -f "${EREPO}/entropy_kogaion-weekly" ]; then
@@ -42,7 +42,7 @@ if [ -f "${EREPO}/entropy_kogaion-weekly" ]; then
 fi
 
 cd "$EREPO"
-equo repo mirrorsort kogaionlinux.ro
+equo repo mirrorsort kogaionlinux
 equo update
 
 updated=0

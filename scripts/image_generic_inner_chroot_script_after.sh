@@ -74,7 +74,7 @@ equo query list installed -qv > /etc/kogaion-pkglist
 /lib/rc/bin/rc-depend -u
 
 echo "Vacuum cleaning client db"
-rm /var/lib/entropy/client/database/*/kogaionlinux.ro -rf
+rm /var/lib/entropy/client/database/*/kogaionlinux -rf
 rm /var/lib/entropy/client/database/*/kogaion-weekly -rf
 equo rescue vacuum
 

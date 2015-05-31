@@ -343,7 +343,7 @@ setup_misc_stuff() {
 }
 
 setup_installed_packages() {
-	equo repo mirrorsort kogaionlinux.ro
+	equo repo mirrorsort kogaionlinux
 	equo repo mirrorsort kogaionlinux
 	equo update
 	equo unmask anaconda
@@ -355,7 +355,7 @@ setup_installed_packages() {
 	echo -5 | equo conf update
 
 	echo "Vacuum cleaning client db"
-	rm /var/lib/entropy/client/database/*/kogaionlinux.ro -rf
+	rm /var/lib/entropy/client/database/*/kogaionlinux -rf
 	rm /var/lib/entropy/client/database/*/kogaion-weekly -rf
 	rm /var/lib/entropy/client/database/*/kogaionlinux -rf
 	equo rescue vacuum

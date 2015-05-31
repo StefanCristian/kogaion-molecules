@@ -92,9 +92,9 @@ rm -rf /var/lib/entropy/client/packages
 eselect sysvinit set systemd
 eselect settingsd set systemd
 
-# copy Portage config from kogaionlinux.ro entropy repo to system
+# copy Portage config from kogaionlinux entropy repo to system
 for conf in package.mask package.unmask package.keywords make.conf package.use; do
-	repo_path=/var/lib/entropy/client/database/*/kogaionlinux.ro/standard
+	repo_path=/var/lib/entropy/client/database/*/kogaionlinux/standard
 	repo_conf=$(ls -1 ${repo_path}/*/*/${conf} | sort | tail -n 1 2>/dev/null)
 	if [ -n "${repo_conf}" ]; then
 		target_path="/etc/portage/${conf}"
@@ -110,7 +110,7 @@ done
 # split config file
 for conf in 00-sabayon.package.use 00-sabayon.package.mask \
 	00-sabayon.package.unmask 00-sabayon.package.keywords; do
-	repo_path=/var/lib/entropy/client/database/*/kogaionlinux.ro/standard
+	repo_path=/var/lib/entropy/client/database/*/kogaionlinux/standard
 	repo_conf=$(ls -1 ${repo_path}/*/*/${conf} | sort | tail -n 1 2>/dev/null)
 	if [ -n "${repo_conf}" ]; then
 		target_path="/etc/portage/${conf/00-kogaion.}/${conf}"
