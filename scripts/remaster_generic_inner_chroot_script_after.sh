@@ -46,6 +46,8 @@ basic_environment_setup() {
 	eselect opengl set xorg-x11
 	eselect mesa set --auto
 
+	#setup kogaionlive
+	sd_enable kogaionlive
 
 	# setup avahi
 	sd_enable avahi-daemon

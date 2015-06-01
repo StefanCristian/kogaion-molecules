@@ -45,9 +45,10 @@ extra_mkisofs_parameters: -b isolinux/isolinux.bin -c isolinux/boot.cat -eltorit
 %env destination_iso_directory: ${KOGAION_MOLECULE_HOME:-/kogaion}/iso
 
 # List of packages that would be removed from chrooted system (comma separated)
-# packages_to_remove:
+#packages_to_remove:
 #	www-client/lynx,
 #	app-text/poppler-qt4
+#	dev-db/mariadb
 
 # Import the Graphic Environment module.
 %env %import ${KOGAION_MOLECULE_HOME:-/kogaion}/molecules/graphic-environment.common
@@ -150,6 +151,11 @@ packages_to_add:
 	x11-plugins/pidgin-encryption,
 	x11-plugins/pidgin-otr,
         x11-plugins/pidgin-privacy-please,
+
+packages_to_remove:
+#       www-client/lynx,
+#       #       app-text/poppler-qt4
+	dev-db/mariadb
 
 # x11-themes/kogaion-artwork-gnome:
 #   provides the gtk theme for lxdm
