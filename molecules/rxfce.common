@@ -137,6 +137,7 @@ packages_to_add:
 	x11-themes/iottinka-artwork,
 	x11-themes/tango-icon-theme,
 	x11-themes/gnome-icon-theme-symbolic,
+	xfce-base/xfce4-session,
 	xfce-base/xfce4-panel,
 	xfce-extra/tumbler,
 	xfce-extra/xfce4-mixer,

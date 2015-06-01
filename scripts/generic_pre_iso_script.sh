@@ -41,7 +41,7 @@ if [ -f "${isolinux_img}" ]; then
         cp "${isolinux_img}" "${CDROOT_DIR}/isolinux/" || exit 1
         cp -R "${isolinux_dir}"/* "${CDROOT_DIR}/isolinux/" || exit 1
 	mkdir -p "${CDROOT_DIR}/syslinux/"
-        cp -R "${syslinux_dir}"/* "${CDROOT_DIR}"/syslinux || exit
+        cp -R "${syslinux_dir}"/* "${CDROOT_DIR}"/syslinux || exit 1
         cp "${syslinux_img}" "${CDROOT_DIR}/syslinux/" || exit 1
 fi
 
