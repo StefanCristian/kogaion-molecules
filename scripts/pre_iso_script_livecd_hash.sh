@@ -3,7 +3,7 @@
 LIVECD_SQUASHFS="${CDROOT_DIR}/livecd.squashfs"
 
 # Path to molecules.git dir
-KOGAION_MOLECULE_HOME="${KOGAION_MOLECULE_HOME:-/sabayon}"
+KOGAION_MOLECULE_HOME="${KOGAION_MOLECULE_HOME:-/kogaion}"
 export KOGAION_MOLECULE_HOME
 
 echo

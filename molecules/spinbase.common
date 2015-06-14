@@ -89,7 +89,7 @@ paths_to_remove:
 
 # Directories to empty (comma separated)
 paths_to_empty:
-    /home/sabayonuser/.thumbnails/,
+    /home/kogaionuser/.thumbnails/,
     /root/.ccache,
     /var/tmp/portage,
     /var/tmp/ccache,

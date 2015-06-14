@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Path to molecules.git dir
-KOGAION_MOLECULE_HOME="${KOGAION_MOLECULE_HOME:-/sabayon}"
+KOGAION_MOLECULE_HOME="${KOGAION_MOLECULE_HOME:-/kogaion}"
 export KOGAION_MOLECULE_HOME
 
 PKGS_DIR="${KOGAION_MOLECULE_HOME}/pkgcache"

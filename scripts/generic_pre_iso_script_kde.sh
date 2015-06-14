@@ -2,20 +2,20 @@
 
 /usr/sbin/env-update && source /etc/profile
 
-KOGAION_MOLECULE_HOME="${KOGAION_MOLECULE_HOME:-/sabayon}"
+KOGAION_MOLECULE_HOME="${KOGAION_MOLECULE_HOME:-/kogaion}"
 export KOGAION_MOLECULE_HOME
 
 remaster_type="${1}"
-isolinux_source="/sabayon/remaster/minimal_isolinux.cfg"
+isolinux_source="/kogaion/remaster/minimal_isolinux.cfg"
 isolinux_destination="${CDROOT_DIR}/isolinux/txt.cfg"
 
 rm "${CDROOT_DIR}/autorun.inf"
-rm "${CDROOT_DIR}/sabayon.ico"
-rm "${CDROOT_DIR}/sabayon.bat"
+rm "${CDROOT_DIR}/kogaion.ico"
+rm "${CDROOT_DIR}/kogaion.bat"
 echo "Moving the right files where they rightfully belong"
-cp /sabayon/boot/core/autorun.inf "${CDROOT_DIR}/" 
-cp /sabayon/boot/core/kogaion.ico "${CDROOT_DIR}/"               
-cp /sabayon/boot/core/kogaion.bat "${CDROOT_DIR}/"
+cp /kogaion/boot/core/autorun.inf "${CDROOT_DIR}/" 
+cp /kogaion/boot/core/kogaion.ico "${CDROOT_DIR}/"               
+cp /kogaion/boot/core/kogaion.bat "${CDROOT_DIR}/"
 
 echo "Creating folder syslinux and copying everything that's in isolinux to it"
 if [ -f "${CDROOT_DIR}/syslinux/isolinux.cfg" ]; then
@@ -25,14 +25,14 @@ fi
 echo "If we copied correctly, then do what we must"
 
 if [ "${remaster_type}" = "KDE" ] || [ "${remaster_type}" = "GNOME" ]; then
-	isolinux_source="/sabayon/remaster/standard_isolinux.cfg"
+	isolinux_source="/kogaion/remaster/standard_isolinux.cfg"
 elif [ "${remaster_type}" = "ServerBase" ]; then
 	echo "ServerBase trigger, copying server kernel over"
 	boot_kernel=$(find "${CHROOT_DIR}/boot" -name "kernel-*" | sort | head -n 1)
 	boot_ramfs=$(find "${CHROOT_DIR}/boot" -name "initramfs-*" | sort | head -n 1)
 	cp "${boot_kernel}" "${CDROOT_DIR}/boot/kogaion" || exit 1
 	cp "${boot_ramfs}" "${CDROOT_DIR}/boot/kogaion.igz" || exit 1
-	isolinux_source="/sabayon/remaster/serverbase_isolinux.cfg"
+	isolinux_source="/kogaion/remaster/serverbase_isolinux.cfg"
 fi
 cp "${isolinux_source}" "${isolinux_destination}" || exit 1
 
@@ -64,7 +64,7 @@ if [ -f "${kogaion_pkgs_file}" ]; then
 fi
 
 # copy back.jpg to proper location
-isolinux_img="/sabayon/boot/core/isolinux/back.jpg"
+isolinux_img="/kogaion/boot/core/isolinux/back.jpg"
 if [ -f "${isolinux_img}" ]; then
 	cp "${isolinux_img}" "${CDROOT_DIR}/isolinux/" || exit 1
 fi

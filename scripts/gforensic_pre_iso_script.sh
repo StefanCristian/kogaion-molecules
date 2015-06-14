@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Path to molecules.git dir
-KOGAION_MOLECULE_HOME="${KOGAION_MOLECULE_HOME:-/sabayon}"
+KOGAION_MOLECULE_HOME="${KOGAION_MOLECULE_HOME:-/kogaion}"
 export KOGAION_MOLECULE_HOME
 
 # Call parent script, generates ISOLINUX and other stuff

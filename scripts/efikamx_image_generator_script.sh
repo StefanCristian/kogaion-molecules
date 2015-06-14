@@ -8,7 +8,7 @@ export ROOT_PART_TYPE=ext4
 export MAKE_TARBALL=0
 
 # Path to molecules.git dir
-KOGAION_MOLECULE_HOME="${KOGAION_MOLECULE_HOME:-/sabayon}"
+KOGAION_MOLECULE_HOME="${KOGAION_MOLECULE_HOME:-/kogaion}"
 export KOGAION_MOLECULE_HOME
 
 exec "${KOGAION_MOLECULE_HOME}"/scripts/mkloopcard.sh "${KOGAION_MOLECULE_HOME}"/scripts/mkloopcard_efikamx_chroot_hook.sh "$@"

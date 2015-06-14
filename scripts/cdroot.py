@@ -3,7 +3,7 @@ import os, shutil, time
 import subprocess
 from datetime import datetime
 
-kogaion_molecule_home = os.getenv("KOGAION_MOLECULE_HOME", "/sabayon")
+kogaion_molecule_home = os.getenv("KOGAION_MOLECULE_HOME", "/kogaion")
 source_chroot_dir = os.getenv('SOURCE_CHROOT_DIR')
 chroot_dir = os.getenv('CHROOT_DIR')
 cdroot_dir = os.getenv('CDROOT_DIR')
@@ -55,16 +55,16 @@ replace_version(syslinux_cfg)
 replace_version(syslinux_txt)
 
 # Copy pkglist over, if exists
-sabayon_pkgs_file = os.path.join(chroot_dir, "etc/kogaion-pkglist")
-if os.path.isfile(sabayon_pkgs_file):
-    shutil.copy2(sabayon_pkgs_file, os.path.join(cdroot_dir, "pkglist"))
+kogaion_pkgs_file = os.path.join(chroot_dir, "etc/kogaion-pkglist")
+if os.path.isfile(kogaion_pkgs_file):
+    shutil.copy2(kogaion_pkgs_file, os.path.join(cdroot_dir, "pkglist"))
     iso_path = os.getenv("ISO_PATH")
     if iso_path:
-        shutil.copy2(sabayon_pkgs_file, iso_path+".pkglist")
+        shutil.copy2(kogaion_pkgs_file, iso_path+".pkglist")
 
 # copy back.jpg to proper location
-isolinux_img = os.path.join(chroot_dir, "/sabayon/boot/core/isolinux/back.jpg")
-syslinux_img = os.path.join(cdroot_dir, "/sabayon/boot/core/syslinux/back.jpg")
+isolinux_img = os.path.join(chroot_dir, "/kogaion/boot/core/isolinux/back.jpg")
+syslinux_img = os.path.join(cdroot_dir, "/kogaion/boot/core/syslinux/back.jpg")
 if os.path.isfile(isolinux_img):
     shutil.copy2(isolinux_img, os.path.join(cdroot_dir, "isolinux/back.jpg"))
 if os.path.isfile(syslinux_img):

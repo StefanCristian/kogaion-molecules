@@ -4,7 +4,7 @@
 . /etc/profile
 
 # Path to molecules.git dir
-KOGAION_MOLECULE_HOME="${KOGAION_MOLECULE_HOME:-/sabayon}"
+KOGAION_MOLECULE_HOME="${KOGAION_MOLECULE_HOME:-/kogaion}"
 export KOGAION_MOLECULE_HOME
 
 remaster_type="${1}"
@@ -13,10 +13,10 @@ grub_source="${KOGAION_MOLECULE_HOME}/remaster/minimal_grub.cfg"
 isolinux_destination="${CDROOT_DIR}/isolinux/txt.cfg"
 grub_destination="${CDROOT_DIR}/boot/grub/grub.cfg"
 
-isolinux_img="/sabayon/boot/core/isolinux/back.jpg"
-isolinux_dir="/sabayon/boot/core/isolinux/"
-syslinux_img="/sabayon/boot/core/syslinux/back.jpg"
-syslinux_dir="/sabayon/boot/core/syslinux/"
+isolinux_img="/kogaion/boot/core/isolinux/back.jpg"
+isolinux_dir="/kogaion/boot/core/isolinux/"
+syslinux_img="/kogaion/boot/core/syslinux/back.jpg"
+syslinux_dir="/kogaion/boot/core/syslinux/"
 if [ -f "${isolinux_img}" ]; then
         mkdir -p "${CDROOT_DIR}/isolinux/"
         cp "${isolinux_img}" "${CDROOT_DIR}/isolinux/" || exit 1
@@ -27,12 +27,12 @@ if [ -f "${isolinux_img}" ]; then
 fi
 
 rm "${CDROOT_DIR}/autorun.inf"
-rm "${CDROOT_DIR}/sabayon.ico"
-rm "${CDROOT_DIR}/sabayon.bat"
+rm "${CDROOT_DIR}/kogaion.ico"
+rm "${CDROOT_DIR}/kogaion.bat"
 echo "Moving the right files where they rightfully belong"
-cp /sabayon/boot/core/autorun.inf "${CDROOT_DIR}/"
-cp /sabayon/boot/core/kogaion.ico "${CDROOT_DIR}/"
-cp /sabayon/boot/core/kogaion.bat "${CDROOT_DIR}/"
+cp /kogaion/boot/core/autorun.inf "${CDROOT_DIR}/"
+cp /kogaion/boot/core/kogaion.ico "${CDROOT_DIR}/"
+cp /kogaion/boot/core/kogaion.bat "${CDROOT_DIR}/"
 echo "Copying them into the ISO image"
 
 if [ -d "/home/kogaionuser/.gvfs" ]; then
@@ -41,8 +41,8 @@ if [ -d "/home/kogaionuser/.gvfs" ]; then
         chown -R kogaionuser:kogaionuser /home/kogaionuser/.gvfs
 fi
 
-#mv "${CDROOT_DIR}/boot/sabayon.igz" "${CDROOT_DIR}/boot/kogaion.igz"
-#mv "${CDROOT_DIR}/boot/sabayon" "${CDROOT_DIR}/boot/kogaion"
+#mv "${CDROOT_DIR}/boot/kogaion.igz" "${CDROOT_DIR}/boot/kogaion.igz"
+#mv "${CDROOT_DIR}/boot/kogaion" "${CDROOT_DIR}/boot/kogaion"
 
 boot_kernel=$(find "${CHROOT_DIR}/boot" -name "kernel-*" | sort | head -n 1)
 boot_ramfs=$(find "${CHROOT_DIR}/boot" -name "initramfs-genkernel-*" | sort | head -n 1)
@@ -112,9 +112,9 @@ if [ -f "${kogaion_pkgs_file}" ]; then
 fi
 
 # copy back.jpg to proper location
-#isolinux_img="/sabayon/boot/core/isolinux/back.jpg"
-#syslinux_img="/sabayon/boot/core/syslinux/back.jpg"
-#syslinux_dir="/sabayon/boot/core/syslinux/"
+#isolinux_img="/kogaion/boot/core/isolinux/back.jpg"
+#syslinux_img="/kogaion/boot/core/syslinux/back.jpg"
+#syslinux_dir="/kogaion/boot/core/syslinux/"
 #if [ -f "${isolinux_img}" ]; then
 	#mkdir -p "${CDROOT_DIR}/isolinux/"
         #cp "${isolinux_img}" "${CDROOT_DIR}/isolinux/" || exit 1
@@ -123,10 +123,10 @@ fi
         #cp "${syslinux_img}" "${CDROOT_DIR}/syslinux/" || exit 1
 #fi
 
-rm "${CDROOT_DIR}"/sabayon
-rm "${CDROOT_DIR}"/sabayon.igz
-rm "${CDROOT_DIR}"/boot/sabayon
-rm "${CDROOT_DIR}"/boot/sabayon.igz
+rm "${CDROOT_DIR}"/kogaion
+rm "${CDROOT_DIR}"/kogaion.igz
+rm "${CDROOT_DIR}"/boot/kogaion
+rm "${CDROOT_DIR}"/boot/kogaion.igz
 
 
 # Generate livecd.squashfs.md5

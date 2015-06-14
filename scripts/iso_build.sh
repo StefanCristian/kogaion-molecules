@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Path to molecules.git dir
-KOGAION_MOLECULE_HOME="${KOGAION_MOLECULE_HOME:-/sabayon}"
+KOGAION_MOLECULE_HOME="${KOGAION_MOLECULE_HOME:-/kogaion}"
 export KOGAION_MOLECULE_HOME
 
 # setup default language, cron might not do that
@@ -292,7 +292,7 @@ safe_run() {
 move_to_mirrors() {
 	local do_push="${KOGAION_MOLECULE_HOME}"/DO_PUSH
 	local server="entropy@pkg.sabayon.org"
-	local ssh_dir="/sabayon/rsync"
+	local ssh_dir="/kogaion/rsync"
 	local ssh_path="${server}:${ssh_dir}"
 
 	if [ -n "${DO_PUSH}" ] || [ -f "${do_push}" ]; then
