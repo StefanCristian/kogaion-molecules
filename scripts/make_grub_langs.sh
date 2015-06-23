@@ -14,7 +14,7 @@ elif [ ! -f "${GRUB_CFG}" ]; then
 fi
 
 # Path to molecules.git dir
-KOGAION_MOLECULE_HOME="${KOGAION_MOLECULE_HOME:-/sabayon}"
+KOGAION_MOLECULE_HOME="${KOGAION_MOLECULE_HOME:-/kogaion}"
 export KOGAION_MOLECULE_HOME
 
 echo >> "${GRUB_CFG}" || exit 1

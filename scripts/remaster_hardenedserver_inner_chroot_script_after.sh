@@ -53,7 +53,7 @@ setup_cpufrequtils() {
 
 setup_sabayon_mce() {
 	rc-update add sabayon-mce boot
-	# not needed, done by app-misc/sabayon-mce pkg
+	# not needed, done by app-misc/kogaion-mce pkg
 	# Kogaion Media Center user setup
 	# source /sbin/kogaion-functions.sh
 	# sabayon_setup_live_user "sabayonmce"
@@ -239,11 +239,11 @@ setup_misc_stuff() {
 }
 
 kogaion_splash() {
-if [ -d "/etc/splash/sabayon" ]; then
-        rm -r /etc/splash/sabayon
-        ln -s /etc/splash/kogaion /etc/splash/sabayon
-        echo "So etc/splash/sabayon exists"
-        ln -s /etc/splash/kogaion /etc/splash/sabayon
+if [ -d "/etc/splash/kogaion" ]; then
+        rm -r /etc/splash/kogaion
+        ln -s /etc/splash/kogaion /etc/splash/kogaion
+        echo "So etc/splash/kogaion exists"
+        ln -s /etc/splash/kogaion /etc/splash/kogaion
 
         for i in `seq 1 6`; do
         splash_manager -c set -t kogaion --tty=$i
@@ -306,9 +306,9 @@ setup_installed_packages() {
 
 setup_portage() {
         layman -d sabayon
-        rm -rf /var/lib/layman/sabayon
+        rm -rf /var/lib/layman/kogaion
         layman -d sabayon-distro
-        rm -rf /var/lib/layman/sabayon-distro
+        rm -rf /var/lib/layman/kogaion-distro
         layman -d rogento
         rm -rf /var/lib/layman/rogento
         emaint --fix world

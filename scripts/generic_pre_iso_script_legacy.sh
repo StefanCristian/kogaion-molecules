@@ -2,24 +2,24 @@
 
 /usr/sbin/env-update && source /etc/profile
 
-KOGAION_MOLECULE_HOME="${KOGAION_MOLECULE_HOME:-/sabayon}"
+KOGAION_MOLECULE_HOME="${KOGAION_MOLECULE_HOME:-/kogaion}"
 export KOGAION_MOLECULE_HOME
 
 remaster_type="${1}"
-isolinux_source="/sabayon/remaster/legacy_minimal_isolinux.cfg"
+isolinux_source="/kogaion/remaster/legacy_minimal_isolinux.cfg"
 isolinux_destination="${CDROOT_DIR}/isolinux/txt.cfg"
-syslinux_source="/sabayon/remaster/legacy_minimal_isolinux.cfg"
+syslinux_source="/kogaion/remaster/legacy_minimal_isolinux.cfg"
 syslinux_destination="${CDROOT_DIR}/syslinux/txt.cfg"
 
-cp -R /sabayon/boot/core/syslinux/ "${CDROOT_DIR}/"
+cp -R /kogaion/boot/core/syslinux/ "${CDROOT_DIR}/"
 
 rm "${CDROOT_DIR}/autorun.inf"
-rm "${CDROOT_DIR}/sabayon.ico"
-rm "${CDROOT_DIR}/sabayon.bat"
+rm "${CDROOT_DIR}/kogaion.ico"
+rm "${CDROOT_DIR}/kogaion.bat"
 echo "Moving the right files where they rightfully belong"
-cp /sabayon/boot/core/autorun.inf "${CDROOT_DIR}/"
-cp /sabayon/boot/core/kogaion.ico "${CDROOT_DIR}/"
-cp /sabayon/boot/core/kogaion.bat "${CDROOT_DIR}/"
+cp /kogaion/boot/core/autorun.inf "${CDROOT_DIR}/"
+cp /kogaion/boot/core/kogaion.ico "${CDROOT_DIR}/"
+cp /kogaion/boot/core/kogaion.bat "${CDROOT_DIR}/"
 echo "Copying them into the ISO image"
 
 if [ -d "/home/kogaionuser/.gvfs" ]; then
@@ -38,7 +38,7 @@ mv "${CHROOT_DIR}/boot/kogaion.igz" "${CHROOT_DIR}/boot/kogaion.igz"
 mv "${CHROOT_DIR}/boot/kogaion" "${CHROOT_DIR}/boot/kogaion"
 
 if [ "${remaster_type}" = "KDE" ] || [ "${remaster_type}" = "GNOME" ]; then
-	isolinux_source="/sabayon/remaster/standard_isolinux.cfg"
+	isolinux_source="/kogaion/remaster/standard_isolinux.cfg"
 elif [ "${remaster_type}" = "HardenedServer" ]; then
         echo "HardenedServer trigger, copying server kernel over"
         boot_kernel=$(find "${CHROOT_DIR}/boot" -name "kernel-*" | sort | head -n 1)
@@ -89,15 +89,15 @@ if [ -f "${kogaion_pkgs_file}" ]; then
 fi
 
 # copy back.jpg to proper location
-isolinux_img="/sabayon/boot/core/isolinux/back.jpg"
-syslinux_img="/sabayon/boot/core/syslinux/back.jpg"
+isolinux_img="/kogaion/boot/core/isolinux/back.jpg"
+syslinux_img="/kogaion/boot/core/syslinux/back.jpg"
 if [ -f "${isolinux_img}" ]; then
 	cp "${isolinux_img}" "${CDROOT_DIR}/isolinux/" || exit 1
 	cp "${syslinux_img}" "${CDROOT_DIR}/syslinux/" || exit 1
 fi
 
-rm "${CDROOT_DIR}"/sabayon
-rm "${CDROOT_DIR}"/sabayon.igz
+rm "${CDROOT_DIR}"/kogaion
+rm "${CDROOT_DIR}"/kogaion.igz
 rm "${CDROOT_DIR}"/boot/kogaion 
 rm "${CDROOT_DIR}"/boot/kogaion.igz
 

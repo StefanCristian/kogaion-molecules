@@ -166,7 +166,7 @@ equo deptest --pretend
 emaint --fix world
 
 # copy Portage config from kogaionlinux entropy repo to system
-for conf in package.mask package.unmask package.keywords make.conf package.use; do
+for conf in package.mask package.unmask package.keywords package.use; do
 	repo_path=/var/lib/entropy/client/database/*/kogaionlinux/standard
 	repo_conf=$(ls -1 ${repo_path}/*/*/${conf} | sort | tail -n 1 2>/dev/null)
 	if [ -n "${repo_conf}" ]; then

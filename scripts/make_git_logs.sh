@@ -17,7 +17,7 @@ BASE_DIR="${KOGAION_MOLECULE_HOME:-${HOME}}"
 
 GIT_REPOSITORIES=(
     "git://github.com/Kogaion/for-gentoo.git master upstream-overlay"
-    "git://github.com/Kogaion/sabayon-distro.git master sabayon-overlay"
+    "git://github.com/Kogaion/kogaion-distro.git master sabayon-overlay"
     "git://github.com/Kogaion/molecules.git master sabayon-images"
     "git://github.com/Kogaion/entropy.git master entropy"
     "git://github.com/Kogaion/build.git master source-package-builds"

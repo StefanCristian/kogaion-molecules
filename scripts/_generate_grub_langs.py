@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # taken from our isolinux gfxboot configuration
-# gfxboot-theme-sabayon.git/langnames.inc
+# gfxboot-theme-kogaion.git/langnames.inc
 langs = [
     [ "am", "am_ET", "Amharic" ],
     [ "ar", "ar_EG", "Arabic" ],
