@@ -63,45 +63,45 @@ echo ">=sys-apps/openrc-0.9@sabayon-limbo
 >=sys-boot/grub-2.00@sabayonlinux.rg
 >=sys-boot/grub-2.00@kogaion-weekly
 
->=app-misc/sabayon-version-1@sabayonlinux.ro
->=app-misc/sabayon-version-1@kogaion-weekly
->=app-misc/sabayon-version-1@sabayon-limbo
+>=app-misc/kogaion-version-1@sabayonlinux.ro
+>=app-misc/kogaion-version-1@kogaion-weekly
+>=app-misc/kogaion-version-1@sabayon-limbo
 
->=app-misc/sabayon-skel-1@sabayonlinux.ro
->=app-misc/sabayon-skel-1@kogaion-weekly
->=app-misc/sabayon-skel-1@sabayon-limbo
+>=app-misc/kogaion-skel-1@sabayonlinux.ro
+>=app-misc/kogaion-skel-1@kogaion-weekly
+>=app-misc/kogaion-skel-1@sabayon-limbo
 
 >=app-misc/kogaion-live-1@sabayonlinux.ro
 >=app-misc/kogaion-live-1@kogaion-weekly
 >=app-misc/kogaion-live-1@sabayon-limbo
 
->=x11-themes/sabayon-artwork-core-1@sabayonlinux.ro
->=x11-themes/sabayon-artwork-core-1@kogaion-weekly
->=x11-themes/sabayon-artwork-core-1@sabayon-limbo
+>=x11-themes/kogaion-artwork-core-1@sabayonlinux.ro
+>=x11-themes/kogaion-artwork-core-1@kogaion-weekly
+>=x11-themes/kogaion-artwork-core-1@sabayon-limbo
 
->=x11-themes/sabayon-artwork-lxde-1@sabayonlinux.ro
->=x11-themes/sabayon-artwork-lxde-1@kogaion-weekly
->=x11-themes/sabayon-artwork-lxde-1@sabayon-limbo
+>=x11-themes/kogaion-artwork-lxde-1@sabayonlinux.ro
+>=x11-themes/kogaion-artwork-lxde-1@kogaion-weekly
+>=x11-themes/kogaion-artwork-lxde-1@sabayon-limbo
 
->=x11-themes/sabayon-artwork-kde-1@sabayonlinux.ro
->=x11-themes/sabayon-artwork-kde-1@kogaion-weekly
->=x11-themes/sabayon-artwork-kde-1@sabayon-limbo
+>=x11-themes/kogaion-artwork-kde-1@sabayonlinux.ro
+>=x11-themes/kogaion-artwork-kde-1@kogaion-weekly
+>=x11-themes/kogaion-artwork-kde-1@sabayon-limbo
 
->=x11-themes/sabayon-artwork-isolinux-1@sabayonlinux.ro
->=x11-themes/sabayon-artwork-isolinux-1@kogaion-weekly
->=x11-themes/sabayon-artwork-isolinux-1@sabayon-limbo
+>=x11-themes/kogaion-artwork-isolinux-1@sabayonlinux.ro
+>=x11-themes/kogaion-artwork-isolinux-1@kogaion-weekly
+>=x11-themes/kogaion-artwork-isolinux-1@sabayon-limbo
 
->=x11-themes/sabayon-artwork-grub-1@sabayonlinux.ro
->=x11-themes/sabayon-artwork-grub-1@kogaion-weekly
->=x11-themes/sabayon-artwork-grub-1@sabayon-limbo
+>=x11-themes/kogaion-artwork-grub-1@sabayonlinux.ro
+>=x11-themes/kogaion-artwork-grub-1@kogaion-weekly
+>=x11-themes/kogaion-artwork-grub-1@sabayon-limbo
 
->=x11-themes/sabayon-artwork-gnome-1@sabayonlinux.ro
->=x11-themes/sabayon-artwork-gnome-1@kogaion-weekly
->=x11-themes/sabayon-artwork-gnome-1@sabayon-limbo
+>=x11-themes/kogaion-artwork-gnome-1@sabayonlinux.ro
+>=x11-themes/kogaion-artwork-gnome-1@kogaion-weekly
+>=x11-themes/kogaion-artwork-gnome-1@sabayon-limbo
 
->=x11-themes/sabayon-artwork-extra-1@sabayonlinux.ro
->=x11-themes/sabayon-artwork-extra-1@kogaion-weekly
->=x11-themes/sabayon-artwork-extra-1@sabayon-limbo
+>=x11-themes/kogaion-artwork-extra-1@sabayonlinux.ro
+>=x11-themes/kogaion-artwork-extra-1@kogaion-weekly
+>=x11-themes/kogaion-artwork-extra-1@sabayon-limbo
 
 >=kde-base/oxygen-icons-4.9.0@kogaion-weekly
 >=kde-base/oxygen-icons-4.9.1@sabayonlinux.ro
