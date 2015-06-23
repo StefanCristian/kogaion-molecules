@@ -97,7 +97,7 @@ packages_to_add:
 	net-p2p/deluge,
 	net-print/cups,
 	net-misc/wicd,
-	net-wireless/madwifi-ng-tools
+	net-wireless/madwifi-ng-tools,
 	net-news/liferea,
 	net-wireless/blueman,
 	net-wireless/bluez,
