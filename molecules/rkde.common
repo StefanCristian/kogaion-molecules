@@ -261,7 +261,7 @@ packages_to_add:
 	sys-fs/ntfs3g,
 	sys-fs/zfs,
 	sys-power/acpid,
-	sys-power/cpufrequtils,
+	sys-power/ncpufreqd,
 	www-client/chromium,
 	www-plugins/adobe-flash,
 	x11-apps/xdm,

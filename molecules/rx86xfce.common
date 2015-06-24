@@ -105,7 +105,7 @@ packages_to_add:
 	sys-block/gparted,
 	sys-block/parted,
 	sys-fs/ntfs3g,
-	sys-power/cpufrequtils,
+	sys-power/ncpufreqd,
 	www-client/chromium,
 	www-client/uget,
 	www-plugins/adobe-flash,

@@ -81,7 +81,7 @@ packages_to_add:
 	sys-auth/consolekit,
 	sys-block/parted,
 	sys-fs/ntfs3g,
-	sys-power/cpufrequtils,
+	sys-power/ncpufreqd,
 	www-client/midori,
 	x11-libs/gksu,
 	x11-misc/bumblebee,

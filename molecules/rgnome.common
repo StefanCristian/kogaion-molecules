@@ -145,7 +145,7 @@ packages_to_add:
 	sys-fs/dmraid,
 	sys-fs/ntfs3g,
 	sys-power/acpid,
-	sys-power/cpufrequtils,
+	sys-power/ncpufreqd,
 	www-client/chromium,
 	www-plugins/adobe-flash,
 	x11-apps/xdm,
