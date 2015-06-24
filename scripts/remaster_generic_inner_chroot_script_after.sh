@@ -48,6 +48,7 @@ basic_environment_setup() {
 
 	#setup kogaionlive
 	sd_enable kogaionlive
+	sd_enable x-setup
 
 	# setup avahi
 	sd_enable avahi-daemon
