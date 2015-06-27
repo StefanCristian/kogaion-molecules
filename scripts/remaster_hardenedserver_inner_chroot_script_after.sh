@@ -47,8 +47,8 @@ remove_desktop_files() {
 	rm /etc/skel/Desktop/WorldOfGooDemo-world-of-goo-demo.desktop
 }
 
-setup_cpufrequtils() {
-	rc-update add cpufrequtils default
+setup_ncpufreqd() {
+	rc-update add ncpufreqd default
 }
 
 setup_sabayon_mce() {
@@ -333,7 +333,7 @@ prepare_mate() {
         remove_desktop_files
         setup_displaymanager
         remove_mozilla_skel_cruft
-        setup_cpufrequtils
+        setup_ncpufreqd
         has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
 }
 
@@ -347,7 +347,7 @@ prepare_lxde() {
 	# properly tweak lxde autostart tweak, adding --desktop option
 	sed -i 's/pcmanfm -d/pcmanfm -d --desktop/g' /etc/xdg/lxsession/LXDE/autostart
 	remove_mozilla_skel_cruft
-	setup_cpufrequtils
+	setup_ncpufreqd
 	has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
 }
 
@@ -358,7 +358,7 @@ prepare_xfce() {
 	echo "Session=xfce" >> /etc/skel/.dmrc
 	remove_desktop_files
 	remove_mozilla_skel_cruft
-	setup_cpufrequtils
+	setup_ncpufreqd
 	setup_displaymanager
 	has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
 }
@@ -371,7 +371,7 @@ prepare_fluxbox() {
 	remove_desktop_files
 	setup_displaymanager
 	remove_mozilla_skel_cruft
-	setup_cpufrequtils
+	setup_ncpufreqd
 	has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
 }
 
@@ -398,7 +398,7 @@ prepare_xfceforensic() {
 	echo "[Desktop]" > /etc/skel/.dmrc
 	echo "Session=xfce" >> /etc/skel/.dmrc
 	remove_desktop_files
-	setup_cpufrequtils
+	setup_ncpufreqd
 	setup_displaymanager
 	remove_mozilla_skel_cruft
 	xfceforensic_remove_skel_stuff
@@ -412,7 +412,7 @@ prepare_kde() {
 	echo "Session=KDE-4" >> /etc/skel/.dmrc
 	setup_displaymanager
 	setup_sabayon_mce
-	setup_cpufrequtils
+	setup_ncpufreqd
 	has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
 }
 
@@ -424,7 +424,7 @@ prepare_awesome() {
 	remove_desktop_files
 	setup_displaymanager
 	remove_mozilla_skel_cruft
-	setup_cpufrequtils
+	setup_ncpufreqd
 	has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
 }
 

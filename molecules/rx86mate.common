@@ -81,7 +81,7 @@ packages_to_add:
 	sys-fs/ntfs3g,
 	sys-fs/zfs,
 	sys-kernel/genkernel-next,
-	sys-power/cpufrequtils,
+	sys-power/ncpufreqd,
 	www-client/midori,
 	x11-drivers/xf86-video-virtualbox,
 	x11-misc/magneto-gtk,

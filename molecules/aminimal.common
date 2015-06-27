@@ -56,7 +56,7 @@ packages_to_add:
 	net-dialup/rp-pppoe,
 	net-misc/tightvnc,
 	sys-block/parted,
-	sys-power/cpufrequtils,
+	sys-power/ncpufreqd,
 	www-client/midori,
 	x11-themes/gnome-icon-theme,
 

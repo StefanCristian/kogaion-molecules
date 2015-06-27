@@ -115,9 +115,9 @@ basic_environment_setup() {
 	sd_enable graphical
 }
 
-setup_cpufrequtils() {
-	rc-update add cpufrequtils default
-	sd_enable cpufrequtils
+setup_ncpufreqd() {
+	rc-update add ncpufreqd default
+	sd_enable ncpufreqd
 }
 
 switch_kernel() {
@@ -419,7 +419,7 @@ prepare_generic() {
 	setup_virtualbox
 	setup_networkmanager
 	setup_displaymanager
-	setup_cpufrequtils
+	setup_ncpufreqd
 	has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
 }
 

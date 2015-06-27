@@ -66,7 +66,7 @@ packages_to_add:
 	sys-auth/consolekit,
 	sys-block/parted,
 	sys-fs/ntfs3g,
-	sys-power/cpufrequtils,
+	sys-power/ncpufreqd,
 	www-client/chromium,
 	www-plugins/adobe-flash,
 	x11-misc/magneto-gtk,

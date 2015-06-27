@@ -60,7 +60,7 @@ packages_to_add:
 	net-dialup/ppp,
 	net-dialup/rp-pppoe,
 	net-irc/hexchat,
-	sys-power/cpufrequtils,
+	sys-power/ncpufreqd,
 	sys-block/parted,
 	www-client/chromium,
 	x11-wm/awesome

@@ -62,7 +62,7 @@ packages_to_add:
         net-misc/tightvnc,
         sys-apps/gpu-detector,
         sys-block/parted,
-        sys-power/cpufrequtils,
+        sys-power/ncpufreqd,
         x11-apps/xhost,
         x11-apps/setxkbmap,
         x11-themes/equinox-themes,

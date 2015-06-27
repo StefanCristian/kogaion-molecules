@@ -58,7 +58,7 @@ packages_to_add:
 	net-dialup/rp-pppoe,
 	net-misc/tightvnc,
 	sys-block/parted,
-	sys-power/cpufrequtils,
+	sys-power/ncpufreqd,
 	x11-drivers/ati-drivers,
 	x11-drivers/nvidia-drivers,
 	x11-drivers/xf86-video-virtualbox

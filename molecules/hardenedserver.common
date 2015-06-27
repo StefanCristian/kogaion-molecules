@@ -58,7 +58,7 @@ packages_to_add:
 	net-dialup/rp-pppoe,
 	net-misc/tightvnc,
 	sys-block/parted,
-	sys-power/cpufrequtils,
+	sys-power/ncpufreqd,
 	x11-themes/gnome-themes-standard,
 	x11-terms/xfce4-terminal,
 	sys-kernel/linux-hardened,

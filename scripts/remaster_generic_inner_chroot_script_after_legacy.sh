@@ -92,9 +92,9 @@ basic_environment_setup() {
 	sd_enable graphical
 }
 
-setup_cpufrequtils() {
-	rc-update add cpufrequtils default
-	sd_enable cpufrequtils
+setup_ncpufreqd() {
+	rc-update add ncpufreqd default
+	sd_enable ncpufreqd
 }
 
 switch_kernel() {
@@ -494,7 +494,7 @@ prepare_lxde() {
 	# properly tweak lxde autostart tweak, adding --desktop option
 	sed -i 's/pcmanfm -d/pcmanfm -d --desktop/g' /etc/xdg/lxsession/LXDE/autostart
 	remove_mozilla_skel_cruft
-	setup_cpufrequtils
+	setup_ncpufreqd
 	has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
 }
 
@@ -508,7 +508,7 @@ prepare_mate() {
 	setup_default_xsession "mate"
 	setup_displaymanager
 	remove_mozilla_skel_cruft
-	setup_cpufrequtils
+	setup_ncpufreqd
 	has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
 }
 
@@ -529,7 +529,7 @@ prepare_e17() {
 	# Fix ~/.gtkrc-2.0 for some nice icons in gtk
 	echo 'gtk-icon-theme-name="Tango" gtk-theme-name="Xfce"' | tr " " "\n" > /etc/skel/.gtkrc-2.0
 	remove_mozilla_skel_cruft
-	setup_cpufrequtils
+	setup_ncpufreqd
 	has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
 }
 
@@ -542,7 +542,7 @@ prepare_xfce() {
 	echo "Session=xfce" >> /etc/skel/.dmrc
 	setup_default_xsession "xfce"
 	remove_mozilla_skel_cruft
-	setup_cpufrequtils
+	setup_ncpufreqd
 	setup_displaymanager
 	has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
 }
@@ -557,7 +557,7 @@ prepare_fluxbox() {
 	setup_default_xsession "fluxbox"
 	setup_displaymanager
 	remove_mozilla_skel_cruft
-	setup_cpufrequtils
+	setup_ncpufreqd
 	has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
 }
 
@@ -580,7 +580,7 @@ prepare_gnome() {
 	# no systemd counterpart
 
 	setup_displaymanager
-	setup_cpufrequtils
+	setup_ncpufreqd
 	has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
 }
 
@@ -591,7 +591,7 @@ prepare_xfceforensic() {
 	echo "[Desktop]" > /etc/skel/.dmrc
 	echo "Session=xfce" >> /etc/skel/.dmrc
 	setup_default_xsession "xfce"
-	setup_cpufrequtils
+	setup_ncpufreqd
 	setup_displaymanager
 	remove_mozilla_skel_cruft
 	xfceforensic_remove_skel_stuff
@@ -611,7 +611,7 @@ prepare_kde() {
 	mv /etc/skel/.config/gtk-3.0/settings.ini._kde_molecule \
 		/etc/skel/.config/gtk-3.0/settings.ini
 	setup_displaymanager
-	setup_cpufrequtils
+	setup_ncpufreqd
 	has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
 }
 
@@ -625,7 +625,7 @@ prepare_awesome() {
 	setup_default_xsession "awesome"
 	setup_displaymanager
 	remove_mozilla_skel_cruft
-	setup_cpufrequtils
+	setup_ncpufreqd
 	has_proprietary_drivers && setup_proprietary_gfx_drivers || setup_oss_gfx_drivers
 }
 
