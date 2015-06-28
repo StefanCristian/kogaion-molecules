@@ -166,16 +166,17 @@ equo deptest --pretend
 emaint --fix world
 
 # copy Portage config from kogaionlinux entropy repo to system
-for conf in package.mask package.unmask package.keywords package.use; do
-	repo_path=/var/lib/entropy/client/database/*/kogaionlinux/standard
-	repo_conf=$(ls -1 ${repo_path}/*/*/${conf} | sort | tail -n 1 2>/dev/null)
-	if [ -n "${repo_conf}" ]; then
-		target_path="/etc/portage/${conf}"
-		if [ ! -d "${target_path}" ]; then # do not touch dirs
-			cp "${repo_conf}" "${target_path}" # ignore
-		fi
-	fi
-done
+#for conf in package.mask package.unmask package.keywords package.use; do
+#	repo_path=/var/lib/entropy/client/database/*/kogaionlinux/standard
+#	repo_conf=$(ls -1 ${repo_path}/*/*/${conf} | sort | tail -n 1 2>/dev/null)
+#	if [ -n "${repo_conf}" ]; then
+#		target_path="/etc/portage/${conf}"
+#		if [ ! -d "${target_path}" ]; then # do not touch dirs
+#			cp "${repo_conf}" "${target_path}" # ignore
+#		fi
+#	fi
+#done
+cp /etc/portage/make.conf-backup /etc/portage/make.conf
 # split config files
 for conf in 00-kogaion.package.use 00-kogaion.package.mask \
 	00-kogaion.package.unmask 00-kogaion.package.keywords; do

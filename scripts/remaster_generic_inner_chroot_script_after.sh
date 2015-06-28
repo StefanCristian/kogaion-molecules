@@ -49,6 +49,7 @@ basic_environment_setup() {
 	#setup kogaionlive
 	sd_enable kogaionlive
 	sd_enable x-setup
+	sd_enable graphical_start
 
 	# setup avahi
 	sd_enable avahi-daemon
@@ -96,6 +97,8 @@ setup_displaymanager() {
 		sd_enable lightdm
 	elif [ -n "$(equo match --installed kde-base/kdm -qv)" ]; then
 		sd_enable kdm
+	elif [ -n "$(equo match --installed slim -qv)" ]; then
+		sd_enable slim
 	else
 		sd_enable xdm
 	fi
@@ -106,6 +109,8 @@ setup_default_xsession() {
 	echo "[Desktop]" > /etc/skel/.dmrc
 	echo "Session=${sess}" >> /etc/skel/.dmrc
 	ln -sf "${sess}.desktop" /usr/share/xsessions/default.desktop
+	#because we still keep the upstream binary package manager
+	rm /etc/entropy/repositories.conf.d/*sabayon*
 }
 
 setup_networkmanager() {

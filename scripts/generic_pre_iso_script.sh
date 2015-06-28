@@ -13,18 +13,18 @@ cdroot_boot_dir="${CDROOT_DIR}/boot"
 kernels=( "${boot_dir}"/kernel-* )
 # get the first one and see if it exists
 kernel="${kernels[0]}"
-if [ ! -f "${kernel}" ]; then
-        echo "No kernels in ${boot_dir}" >&2
-        exit 1
-fi
+#if [ ! -f "${kernel}" ]; then
+#        echo "No kernels in ${boot_dir}" >&2
+#        exit 1
+#fi
 
 initramfss=( "${boot_dir}"/initramfs-genkernel-* )
 # get the first one and see if it exists
 initramfs="${initramfss[0]}"
-if [ ! -f "${initramfs}" ]; then
-        echo "No initramfs in ${boot_dir}" >&2
-        exit 1
-fi
+#if [ ! -f "${initramfs}" ]; then
+#        echo "No initramfs in ${boot_dir}" >&2
+#        exit 1
+#fi
 
 remaster_type="${1}"
 isolinux_source="${KOGAION_MOLECULE_HOME}/remaster/minimal_isolinux.cfg"
