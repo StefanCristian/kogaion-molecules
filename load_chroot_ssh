@@ -51,7 +51,7 @@ if __name__ == "__main__":
     chroot_map_file = "/kogaion/CHROOTS"
 
     ch_f = open(chroot_map_file, "w")
-    ch_f.write("Sabayon Chroots available via SSH:\n")
+    ch_f.write("Kogaion Chroots available via SSH:\n")
     for chroot in chroots:
         if not os.path.isdir(os.path.join(chroot_dir, chroot)):
             continue

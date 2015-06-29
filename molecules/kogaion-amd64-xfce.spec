@@ -1,5 +1,5 @@
 # Use abs path, otherwise daily builds automagic won't work
-%env %import ${KOGAION_MOLECULE_HOME:-/kogaion}/molecules/rxfce.common
+%env %import ${KOGAION_MOLECULE_HOME:-/kogaion}/molecules/xfce.common
 %env %import ${KOGAION_MOLECULE_HOME:-/kogaion}/molecules/amd64.common
 
 # Release Version

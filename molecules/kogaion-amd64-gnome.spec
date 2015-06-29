@@ -1,8 +1,8 @@
 # Use abs path, otherwise daily builds automagic won't work
-%env %import ${KOGAION_MOLECULE_HOME:-/kogaion}/molecules/rgnome.common
+%env %import ${KOGAION_MOLECULE_HOME:-/kogaion}/molecules/gnome.common
 
 # Release Version
-%env release_version: ${ROGENTOS_RELEASE:-2.0}
+%env release_version: ${KOGAION_RELEASE:-2.0}
 
 # Release Version string description
 release_desc: amd64 GNOME

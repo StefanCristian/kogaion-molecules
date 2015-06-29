@@ -1,5 +1,5 @@
 # Use abs path, otherwise daily builds automagic won't work
-%env %import ${KOGAION_MOLECULE_HOME:-/kogaion}/molecules/rmate.common
+%env %import ${KOGAION_MOLECULE_HOME:-/kogaion}/molecules/mate.common
 %env %import ${KOGAION_MOLECULE_HOME:-/kogaion}/molecules/amd64.common
 
 # Release Version

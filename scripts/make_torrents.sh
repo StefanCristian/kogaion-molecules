@@ -7,7 +7,7 @@
 KOGAION_MOLECULE_HOME="${KOGAION_MOLECULE_HOME:-/kogaion}"
 export KOGAION_MOLECULE_HOME
 
-announce_url="http://torrents.sabayon.org:8082/announce"
+announce_url="http://torrents.rogentos.ro:8082/announce"
 iso_dir="${KOGAION_MOLECULE_HOME}/iso"
 cd "${iso_dir}"
 

@@ -13,12 +13,12 @@ rm -f /run/entropy/entropy.lock
 		#echo "skipping ${repo_conf}"
 		#continue
 	#fi
-	#sed -n -e "/^pkg = .*pkg.sabayon.org/p" -e "/^repo = .*pkg.sabayon.org/p" \
+	#sed -n -e "/^pkg = .*pkg.rogentos.ro/p" -e "/^repo = .*pkg.rogentos.ro/p" \
 		#-e "/garr.it/p" -e "/^\[.*\]$/p" -i "${repo_conf}"
 
-	# replace pkg.sabayon.org with pkg.repo.sabayon.org to improve
+	# replace pkg.rogentos.ro with pkg.repo.rogentos.ro to improve
 	# build server locality
-	#sed -i "s;http://pkg.sabayon.org;http://pkg.repo.sabayon.org;g" "${repo_conf}"
+	#sed -i "s;http://pkg.rogentos.ro;http://pkg.repo.rogentos.ro;g" "${repo_conf}"
 #done
 
 if [ -f "/etc/entropy/repositories.conf.d/entropy_kogaionlinux.example" ]; then

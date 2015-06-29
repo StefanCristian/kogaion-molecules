@@ -16,12 +16,12 @@ TO_DATE="${3}"
 BASE_DIR="${KOGAION_MOLECULE_HOME:-${HOME}}"
 
 GIT_REPOSITORIES=(
-    "git://github.com/Kogaion/for-gentoo.git master upstream-overlay"
-    "git://github.com/Kogaion/kogaion-distro.git master sabayon-overlay"
-    "git://github.com/Kogaion/molecules.git master sabayon-images"
-    "git://github.com/Kogaion/entropy.git master entropy"
-    "git://github.com/Kogaion/build.git master source-package-builds"
-    "git://github.com/Kogaion/anaconda.git master installer"
+    "git://github.com/Rogentos/for-gentoo.git master upstream-overlay"
+    "git://github.com/Rogentos/kogaion-distro.git master kogaion-overlay"
+    "git://github.com/Rogentos/molecules.git master kogaion-images"
+    "git://github.com/Rogentos/entropy.git master entropy"
+    "git://github.com/Rogentos/build.git master source-package-builds"
+    "git://github.com/Rogentos/anaconda.git master installer"
 )
 
 safe_run() {

@@ -11,11 +11,11 @@ if [ ${#} -lt 1 ]; then
 fi
 
 VERSION="${1}"
-OVERLAY_BASE_URL="git+ssh://git@git.sabayon.org/~git/projects/overlays"
+OVERLAY_BASE_URL="git+ssh://git@git.rogentos.ro/~git/projects/overlays"
 OVERLAY_BASE_DIR="${KOGAION_MOLECULE_HOME:-${HOME}}"
 
 PACKAGES=(
-    "app-misc/kogaion-version sabayon"
+    "app-misc/kogaion-version kogaion"
 )
 
 
