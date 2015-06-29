@@ -47,7 +47,7 @@ extra_mkisofs_parameters: -b isolinux/isolinux.bin -c isolinux/boot.cat -eltorit
 # Import the Graphic Environment module.
 %env %import ${KOGAION_MOLECULE_HOME:-/kogaion}/molecules/graphic-environment.common
 
-# x11-drivers/xf86-video-virtualbox#2.6.33-sabayon,
+# x11-drivers/xf86-video-virtualbox#2.6.33-kogaion,
 packages_to_add:
 	@wireless,
 	app-emulation/virtualbox-guest-additions,

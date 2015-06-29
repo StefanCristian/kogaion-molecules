@@ -72,7 +72,7 @@ packages_to_remove:
 	sys-fs/jfsutils,
 	sys-fs/mdadm,
 	sys-libs/slang,
-	sys-kernel/linux-sabayon
+	sys-kernel/linux-kogaion
 
 # Custom shell call to packages removal (default is: equo remove)
 # custom_packages_remove_cmd:

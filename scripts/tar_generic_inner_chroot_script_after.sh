@@ -3,8 +3,8 @@
 /usr/sbin/env-update
 . /etc/profile
 
-# remove sabayonuser
-userdel sabayonuser
+# remove kogaionuser
+userdel kogaionuser
 userdel kogaionuser
 
 DROP_SERVICES="
