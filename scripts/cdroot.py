@@ -13,12 +13,12 @@ cdroot_boot_dir = os.path.join(cdroot_dir, "boot")
 boot_kernel = [x for x in os.listdir(boot_dir) if x.startswith("kernel-")]
 if boot_kernel:
     boot_kernel = os.path.join(boot_dir, sorted(boot_kernel)[0])
-    shutil.copy2(boot_kernel, os.path.join(cdroot_boot_dir, "kogaion"))
+    shutil.copy2(boot_kernel, os.path.join(cdroot_boot_dir, "live-brrc"))
 
 boot_ramfs = [x for x in os.listdir(boot_dir) if x.startswith("initramfs-")]
 if boot_ramfs:
     boot_ramfs = os.path.join(boot_dir, sorted(boot_ramfs)[0])
-    shutil.copy2(boot_ramfs, os.path.join(cdroot_boot_dir, "kogaion.igz"))
+    shutil.copy2(boot_ramfs, os.path.join(cdroot_boot_dir, "live-brrc.igz"))
 
 
 # Write build info
