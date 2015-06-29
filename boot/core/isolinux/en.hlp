@@ -39,7 +39,7 @@ Press F2 through F8 for details, or Escape to exit help.F2Prerequisites for r
 
 Press F1 for the help index, or Escape to exit help.F4Boot methods- Available Boot methods (only from ISOLINUX command line):
 
-live-brrc
+kogaion
   Start the Kogaion Live system.
 install
   Start the Graphical Installation.
@@ -131,7 +131,7 @@ Press F1 for the help index, or Escape to exit help.F7Special featuresKogaio
     - If the System does not detect an XsistenCe image, it will be created.
       - You can specify the size (MB) of it, by adding: "xsistence_mb=xxx"
 
- - boot example: > live-brrc xsistence xsistence_mb=100
+ - boot example: > kogaion xsistence xsistence_mb=100
 
 Press F1 for the help index, or Escape to exit help.F8Gaming and multimedia capabilitiesKogaion is the most advanced and complete Linux distribution when it comes to multimedia completeness and capabilities. Use the parameters above only in ISOLINUX command line mode.
 
@@ -161,21 +161,21 @@ Press F1 for the help index, or Escape to exit help.F9OpenGL and Accelerated 
 
 opengl=
   Force the System to use a specific OpenGL subsystem, when autodetection fails.
-  - example for NVIDIA (with NVIDIA Proprietary drivers) > live-brrc opengl=nvidia
-  - example for ATI (with ATI Proprietary drivers) > live-brrc opengl=ati
-  - example for X.Org Mesa implementation > live-brrc opengl=xorg-x11
+  - example for NVIDIA (with NVIDIA Proprietary drivers) > kogaion opengl=nvidia
+  - example for ATI (with ATI Proprietary drivers) > kogaion opengl=ati
+  - example for X.Org Mesa implementation > kogaion opengl=xorg-x11
 
 agpgart
   Force the System to load the AGP driver, when the autodetection fails.
-  - example: > live-brrc opengl=xorg-x11
+  - example: > kogaion opengl=xorg-x11
 
 noaccelmanager
   Disable the loading of the Acceleration Manager application.
-  - example: > live-brrc noaccelmanager
+  - example: > kogaion noaccelmanager
 
 aiglx
   Enable AIGLX Desktop Acceleration and disable Acceleration Manager.
-  - example: > live-brrc aiglx
+  - example: > kogaion aiglx
 
 
 

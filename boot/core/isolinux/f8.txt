@@ -2,20 +2,20 @@
 
 0fopengl=07
   Force the System to use a specific OpenGL subsystem, when autodetection fails.
-  - example for NVIDIA (with NVIDIA Proprietary drivers) > live-brrc opengl=nvidia
-  - example for ATI (with ATI Proprietary drivers) > live-brrc opengl=ati
-  - example for X.Org Mesa implementation > live-brrc opengl=xorg-x11
+  - example for NVIDIA (with NVIDIA Proprietary drivers) > kogaion opengl=nvidia
+  - example for ATI (with ATI Proprietary drivers) > kogaion opengl=ati
+  - example for X.Org Mesa implementation > kogaion opengl=xorg-x11
 
 0fagpgart07
   Force the System to load the AGP driver, when the autodetection fails.
-  - example: > live-brrc opengl=xorg-x11
+  - example: > kogaion opengl=xorg-x11
 
 0fnoaccelmanager07
   Disable the loading of the Acceleration Manager application.
-  - example: > live-brrc noaccelmanager
+  - example: > kogaion noaccelmanager
 0faiglx07
   Enable AIGLX Desktop Acceleration and disable Acceleration Manager.
-  - example: > live-brrc aiglx
+  - example: > kogaion aiglx
 
 
 
