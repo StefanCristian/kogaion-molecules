@@ -29,8 +29,10 @@ initramfs="${initramfss[0]}"
 # copy kernel and initramfs
 #cp "${kernel}" "${cdroot_boot_dir}"/kogaion || exit 1
 #cp "${initramfs}" "${cdroot_boot_dir}"/kogaion.igz || exit 1
-cp "${KOGAION_MOLECULE_HOME}"/boot/kogaion_kernel/kogaion "${cdroot_boot_dir}"/kogaion || exit 1
-cp "${KOGAION_MOLECULE_HOME}"/boot/kogaion_kernel/kogaion.igz "${cdroot_boot_dir}"/kogaion.igz || exit 1
+set -ex
+cp "${KOGAION_MOLECULE_HOME}"/boot/kogaion_kernel/live-brrc "${cdroot_boot_dir}"/live-brrc || exit 1
+cp "${KOGAION_MOLECULE_HOME}"/boot/kogaion_kernel/live-brrc.igz "${cdroot_boot_dir}"/live-brrc.igz || exit 1
+set +ex
 
 # Write build info
 build_date=$(date)
