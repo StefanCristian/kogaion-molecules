@@ -99,7 +99,7 @@ packages_to_add:
 	net-wireless/bluez-firmware,
 	net-wireless/bluez-hcidump,
 	sci-calculator/galculator,
-	sys-auth/consolekit,
+	sys-auth/polkit,
 	sys-boot/grub,
 	sys-kernel/genkernel-next,
 	sys-block/gparted,

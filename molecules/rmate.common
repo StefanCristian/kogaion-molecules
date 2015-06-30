@@ -77,7 +77,7 @@ packages_to_add:
 	x11-libs/gksu,
 	sys-apps/gnome-disk-utility,
 	sys-apps/gpu-detector,
-	sys-auth/consolekit,
+	sys-auth/polkit,
 	sys-boot/grub,
 	sys-block/gparted,
 	sys-fs/ntfs3g,

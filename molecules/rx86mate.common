@@ -76,7 +76,7 @@ packages_to_add:
 	sys-boot/grub,
 	sys-apps/gnome-disk-utility,
 	sys-apps/gpu-detector,
-	sys-auth/consolekit,
+	sys-auth/polkit,
 	sys-block/gparted,
 	sys-fs/ntfs3g,
 	sys-fs/zfs,
