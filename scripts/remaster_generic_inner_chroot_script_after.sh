@@ -118,14 +118,6 @@ setup_networkmanager() {
 	sd_enable ModemManager
 }
 
-xfceforensic_remove_skel_stuff() {
-	# remove no longer needed folders/files
-	rm -rf /etc/skel/.config/xfce4/desktop
-	rm -rf /etc/skel/.config/xfce4/panel
-	rm -rf /etc/skel/Desktop/*
-	rm -rf /usr/share/backgrounds/iottinka
-	rm -rf /usr/share/wallpapers/*
-}
 
 setup_oss_gfx_drivers() {
 	# This file is polled by the txt.cfg
@@ -357,10 +349,6 @@ prepare_gnome() {
 
 }
 
-prepare_xfceforensic() {
-	setup_default_xsession "xfce"
-	xfceforensic_remove_skel_stuff
-}
 
 prepare_kde() {
 	setup_default_xsession "KDE-4"
@@ -389,8 +377,6 @@ prepare_system() {
 		prepare_fluxbox
 	elif [ "${de}" = "gnome" ]; then
 		prepare_gnome
-	elif [ "${de}" = "xfceforensic" ]; then
-		prepare_xfceforensic
 	elif [ "${de}" = "kde" ]; then
 		prepare_kde
 	elif [ "${de}" = "awesome" ]; then
