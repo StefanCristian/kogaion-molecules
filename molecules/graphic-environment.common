@@ -8,7 +8,6 @@ packages_to_add:
 	app-laptop/nvidiabl,
 	app-misc/kogaion-skel,
 	app-misc/kogaion-live,
-	app-misc/anaconda-runtime-gui,
 	dev-python/libgnomecanvas-python,
 	media-fonts/ttf-bitstream-vera,
 	media-fonts/dejavu,
