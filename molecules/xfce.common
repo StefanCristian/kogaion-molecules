@@ -109,6 +109,11 @@ packages_to_add:
 	x11-themes/gnome-themes-standard,
 	x11-themes/iottinka-artwork,
 	x11-themes/tango-icon-theme,
+	x11-themes/kogaion-artwork-grub,
+	x11-themes/kogaion-elementary-icons,
+	x11-themes/kogaion-light-theme,
+	x11-themes/kogaion-dark-theme
+	x11-themes/kogaion-artwork-core,
 	xfce-base/xfce4-panel,
 	xfce-base/xfce4-meta,
 	xfce-extra/tumbler,
