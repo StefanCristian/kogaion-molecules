@@ -54,7 +54,7 @@ packages_to_add:
 	app-text/pastebunz,
 	app-office/abiword,
 	app-office/gnumeric,
-	gnome-extra/nm-applet-gtk2,
+	gnome-extra/nm-applet,
 	mate-base/mate,
 	media-plugins/alsa-plugins,
 	media-sound/audacious,
