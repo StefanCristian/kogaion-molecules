@@ -32,17 +32,17 @@ grub_source="${KOGAION_MOLECULE_HOME}/remaster/minimal_grub.cfg"
 isolinux_destination="${CDROOT_DIR}/isolinux/txt.cfg"
 grub_destination="${CDROOT_DIR}/boot/grub/grub.cfg"
 
-isolinux_img="/kogaion/boot/core/isolinux/back.jpg"
+isolinux_img="${CHROOT_DIR}/usr/share/backgrounds/isolinux/back.jpg"
 isolinux_dir="/kogaion/boot/core/isolinux/"
-syslinux_img="/kogaion/boot/core/syslinux/back.jpg"
+syslinux_img="${CHROOT_DIR}/usr/share/backgrounds/isolinux/back.jpg"
 syslinux_dir="/kogaion/boot/core/syslinux/"
 if [ -f "${isolinux_img}" ]; then
         mkdir -p "${CDROOT_DIR}/isolinux/"
-        cp "${isolinux_img}" "${CDROOT_DIR}/isolinux/" || exit 1
         cp -R "${isolinux_dir}"/* "${CDROOT_DIR}/isolinux/" || exit 1
+	cp "${isolinux_img}" "${CDROOT_DIR}/isolinux/" || exit 1
 	mkdir -p "${CDROOT_DIR}/syslinux/"
-        cp -R "${syslinux_dir}"/* "${CDROOT_DIR}"/syslinux || exit 1
-        cp "${syslinux_img}" "${CDROOT_DIR}/syslinux/" || exit 1
+	cp -R "${syslinux_dir}"/* "${CDROOT_DIR}"/syslinux || exit 1
+	cp "${syslinux_img}" "${CDROOT_DIR}/syslinux/" || exit 1
 fi
 
 if [ -d "/home/kogaionuser/.gvfs" ]; then

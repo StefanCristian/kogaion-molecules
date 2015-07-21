@@ -39,8 +39,8 @@ extra_mksquashfs_parameters: -comp xz -Xbcj x86
 %env destination_iso_directory: ${KOGAION_MOLECULE_HOME:-/kogaion}/iso
 
 # List of packages that would be removed from chrooted system (comma separated)
-packages_to_remove:
-	www-client/lynx
+#packages_to_remove:
+#	www-client/lynx
 
 # Import the Graphic Environment module.
 %env %import ${KOGAION_MOLECULE_HOME:-/kogaion}/molecules/graphic-environment.common
@@ -49,6 +49,7 @@ packages_to_remove:
 packages_to_add:
 	@wireless,
 	app-admin/rigo,
+	app-admin/calamares,
 	app-crypt/gnupg,
 	app-crypt/pinentry-gtk2,
 	app-text/pastebunz,
@@ -75,6 +76,12 @@ packages_to_add:
 	x11-terms/guake,
 	x11-themes/gnome-themes-standard,
 	x11-themes/kogaion-artwork-mate
+
+# List of packages that would be removed from chrooted system (comma separated)
+packages_to_remove:
+	www-client/lynx,
+	dev-db/mysql,
+	dev-db/mariadb
 
 # Custom shell call to packages add (default is: equo install)
 # custom_packages_add_cmd: 
