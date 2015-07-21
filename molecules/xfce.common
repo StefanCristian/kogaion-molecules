@@ -58,6 +58,7 @@ packages_to_add:
 	@wireless,
 	@xfce,
 	app-admin/rigo,
+	app-admin/calamares,
 	app-arch/file-roller,
 	app-arch/unrar,
 	app-crypt/gnupg,
