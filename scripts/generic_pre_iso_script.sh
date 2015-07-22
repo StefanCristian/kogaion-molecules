@@ -100,6 +100,8 @@ ver="${RELEASE_VERSION}"
 
 sed -i "s/__VERSION__/${ver}/g" "${isolinux_destination}" || exit 1
 sed -i "s/__FLAVOUR__/${remaster_type}/g" "${isolinux_destination}" || exit 1
+sed -i "s/__VERSION__/${ver}/g" "${syslinux_destination}" || exit 1
+sed -i "s/__FLAVOUR__/${remaster_type}/g" "${syslinux_destination}" || exit 1
 sed -i "s/__VERSION__/${ver}/g" "${grub_destination}" || exit 1
 sed -i "s/__FLAVOUR__/${remaster_type}/g" "${grub_destination}" || exit 1
 
