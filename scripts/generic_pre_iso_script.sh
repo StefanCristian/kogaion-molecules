@@ -29,6 +29,7 @@ initramfs="${initramfss[0]}"
 remaster_type="${1}"
 isolinux_source="${KOGAION_MOLECULE_HOME}/remaster/minimal_isolinux.cfg"
 grub_source="${KOGAION_MOLECULE_HOME}/remaster/minimal_grub.cfg"
+#Declaratie: in acest fisier ajunge defapt configuratia din remaster/standard_isolinux.cfg
 isolinux_destination="${CDROOT_DIR}/isolinux/txt.cfg"
 grub_destination="${CDROOT_DIR}/boot/grub/grub.cfg"
 
