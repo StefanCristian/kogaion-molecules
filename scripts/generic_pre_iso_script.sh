@@ -31,6 +31,7 @@ isolinux_source="${KOGAION_MOLECULE_HOME}/remaster/minimal_isolinux.cfg"
 grub_source="${KOGAION_MOLECULE_HOME}/remaster/minimal_grub.cfg"
 #Declaratie: in acest fisier ajunge defapt configuratia din remaster/standard_isolinux.cfg
 isolinux_destination="${CDROOT_DIR}/isolinux/txt.cfg"
+syslinux_destination="${CDROOT_DIR}/syslinux/txt.cfg"
 grub_destination="${CDROOT_DIR}/boot/grub/grub.cfg"
 
 isolinux_img="${CHROOT_DIR}/usr/share/backgrounds/isolinux/back.jpg"
@@ -83,6 +84,7 @@ elif [ "${remaster_type}" = "HardenedServer" ]; then
 	grub_source="${KOGAION_MOLECULE_HOME}/remaster/hardenedserver_grub.cfg"
 fi
 cp "${isolinux_source}" "${isolinux_destination}" || exit 1
+cp "${isolinux_source}" "${syslinux_destination}" || exit 1
 cp "${grub_source}" "${grub_destination}" || exit 1
 
 # Generate Language and Keyboard menus for GRUB-2
