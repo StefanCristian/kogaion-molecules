@@ -61,6 +61,7 @@ if [ -n "${boot_kernel}" ] && [ -f "${boot_kernel}" ]; then
 fi
 
 if [ "${remaster_type}" = "KDE" ] || [ "${remaster_type}" = "GNOME" ] || [ "${remaster_type}" = "MATE" ] || [ "${remaster_type}" = "XFCE" ] ; then
+	# Patched standard_isolinux.cfg with boot/core/isolinux/txt.cfg
 	isolinux_source="${KOGAION_MOLECULE_HOME}/remaster/standard_isolinux.cfg"
 	grub_source="${KOGAION_MOLECULE_HOME}/remaster/standard_grub.cfg"
 elif [ "${remaster_type}" = "ServerBase" ]; then
