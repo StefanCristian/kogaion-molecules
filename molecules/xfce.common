@@ -64,6 +64,7 @@ packages_to_add:
 	app-crypt/gnupg,
 	app-crypt/pinentry-gtk2,
 	app-dicts/aspell-en,
+	app-editor/leafpad,
 	app-misc/gnote,
 	app-text/pastebunz,
 	games-misc/cowsay,
