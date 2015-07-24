@@ -7,6 +7,8 @@
 KOGAION_MOLECULE_HOME="${KOGAION_MOLECULE_HOME:-/kogaion}"
 export KOGAION_MOLECULE_HOME
 
+remaster_type="${1}"
+
 boot_dir="${CHROOT_DIR}/boot"
 cdroot_boot_dir="${CDROOT_DIR}/boot"
 
@@ -30,8 +32,9 @@ initramfs="${initramfss[0]}"
 #cp "${kernel}" "${cdroot_boot_dir}"/kogaion || exit 1
 #cp "${initramfs}" "${cdroot_boot_dir}"/kogaion.igz || exit 1
 
-local arch=$(uname -m)
-local my_arch="x86"
+
+export local arch=$(uname -m)
+export local my_arch="x86"
 if [ "${arch}" == "x86_64" ]; then
 	my_arch="amd64"
 fi
@@ -52,9 +55,12 @@ echo "Built on: ${build_date}" >> "${build_file}" || exit 1
 ver="${RELEASE_VERSION}"
 isolinux_dest="${CDROOT_DIR}/isolinux/txt.cfg"
 isolinux_dest_txt="${CDROOT_DIR}/isolinux/isolinux.txt"
+syslinux_dest="${CDROOT_DIR}/syslinux/txt.cfg"
+syslinux_dest_txt="${CDROOT_DIR}/syslinux/syslinux.txt"
+
 grub_dest="${CDROOT_DIR}/boot/grub/grub.cfg"
 
-for path in "${isolinux_dest}" "${isolinux_dest_txt}" "${grub_dest}"; do
+for path in "${isolinux_dest}" "${isolinux_dest_txt}" "${syslinux_dest}" "${syslinux_dest_txt}" "${grub_dest}" ; do
 	sed -i "s/__VERSION__/${ver}/g" "${path}" || exit 1
 	sed -i "s/__FLAVOUR__/${remaster_type}/g" "${path}" || exit 1
 done
