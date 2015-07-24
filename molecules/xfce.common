@@ -33,7 +33,7 @@ extra_mksquashfs_parameters: -comp xz -Xbcj x86
 %env error_script: ${KOGAION_MOLECULE_HOME:-/kogaion}/scripts/remaster_error_script.sh
 
 # Pre-ISO building script. Hook to be able to copy kernel images in place, for example
-%env pre_iso_script: ${KOGAION_MOLECULE_HOME:-/kogaion}/scripts/generic_pre_iso_script.sh Xfce
+%env pre_iso_script: ${KOGAION_MOLECULE_HOME:-/kogaion}/scripts/generic_pre_iso_script.sh XFCE
 
 # Destination directory for the ISO image path (MANDATORY)
 %env destination_iso_directory: ${KOGAION_MOLECULE_HOME:-/kogaion}/iso

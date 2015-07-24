@@ -17,7 +17,7 @@ extra_mksquashfs_parameters: -comp xz -Xbcj x86
 %env merge_livecd_root: ${KOGAION_MOLECULE_HOME:-/kogaion}/boot/core
 
 # Pre-ISO building script. Hook to be able to copy kernel images in place, for example
-%env pre_iso_script: ${KOGAION_MOLECULE_HOME:-/kogaion}/scripts/spinbase_pre_iso_script.sh
+%env pre_iso_script: ${KOGAION_MOLECULE_HOME:-/kogaion}/scripts/spinbase_pre_iso_script.sh Spinbase
 
 # Destination directory for the ISO image path
 %env destination_iso_directory: ${KOGAION_MOLECULE_HOME:-/kogaion}/iso
