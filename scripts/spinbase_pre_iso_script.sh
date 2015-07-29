@@ -32,7 +32,6 @@ initramfs="${initramfss[0]}"
 #cp "${kernel}" "${cdroot_boot_dir}"/kogaion || exit 1
 #cp "${initramfs}" "${cdroot_boot_dir}"/kogaion.igz || exit 1
 
-set -x
 export arch=$(uname -m)
 export my_arch="x86"
 if [ "${arch}" == "x86_64" ]; then
@@ -41,11 +40,10 @@ fi
 if [ "${ISO_ARCH}" = "amd64" ]; then
 	cp "${KOGAION_MOLECULE_HOME}"/boot/kogaion_kernel/live-brrc "${cdroot_boot_dir}"/kogaion || exit 1
 	cp "${KOGAION_MOLECULE_HOME}"/boot/kogaion_kernel/live-brrc.igz "${cdroot_boot_dir}"/kogaion.igz || exit 1
-else
+elif	my_arch="x86" ; then
         cp "${KOGAION_MOLECULE_HOME}"/boot/kogaion_kernel/live-brrc_x86 "${cdroot_boot_dir}"/kogaion || exit 1
         cp "${KOGAION_MOLECULE_HOME}"/boot/kogaion_kernel/live-brrc_x86.igz "${cdroot_boot_dir}"/kogaion.igz || exit 1
 fi
-set +x
 
 # Write build info
 build_date=$(date)
@@ -61,12 +59,10 @@ syslinux_dest_txt="${CDROOT_DIR}/syslinux/syslinux.txt"
 
 grub_dest="${CDROOT_DIR}/boot/grub/grub.cfg"
 
-set -x
 for path in "${isolinux_dest}" "${isolinux_dest_txt}" "${syslinux_dest}" "${syslinux_dest_txt}" "${grub_dest}" ; do
 	sed -i "s/__VERSION__/${ver}/g" "${path}" || exit 1
 	sed -i "s/__FLAVOUR__/${remaster_type}/g" "${path}" || exit 1
 done
-set +x
 
 # Generate Language and Keyboard menus for GRUB-2
 "${KOGAION_MOLECULE_HOME}"/scripts/make_grub_langs.sh "${grub_dest}" \
