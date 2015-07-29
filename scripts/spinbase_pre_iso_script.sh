@@ -32,15 +32,10 @@ initramfs="${initramfss[0]}"
 #cp "${kernel}" "${cdroot_boot_dir}"/kogaion || exit 1
 #cp "${initramfs}" "${cdroot_boot_dir}"/kogaion.igz || exit 1
 
-export arch=$(uname -m)
-export my_arch="x86"
-if [ "${arch}" == "x86_64" ]; then
-	my_arch="amd64"
-fi
-if [ "${my_arch}" = "amd64" ]; then
+if [ $(uname -m) = "x86_64" ]; then
 	cp "${KOGAION_MOLECULE_HOME}"/boot/kogaion_kernel/live-brrc "${cdroot_boot_dir}"/kogaion || exit 1
 	cp "${KOGAION_MOLECULE_HOME}"/boot/kogaion_kernel/live-brrc.igz "${cdroot_boot_dir}"/kogaion.igz || exit 1
-elif [ "${my_arch}" = "x86" ]; then
+elif [ $(uname -m) = "i686" ]; then
         cp "${KOGAION_MOLECULE_HOME}"/boot/kogaion_kernel/live-brrc_x86 "${cdroot_boot_dir}"/kogaion || exit 1
         cp "${KOGAION_MOLECULE_HOME}"/boot/kogaion_kernel/live-brrc_x86.igz "${cdroot_boot_dir}"/kogaion.igz || exit 1
 fi
