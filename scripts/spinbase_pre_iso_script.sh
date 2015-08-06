@@ -29,9 +29,6 @@ initramfs="${initramfss[0]}"
 #fi
 
 # copy kernel and initramfs
-#cp "${kernel}" "${cdroot_boot_dir}"/kogaion || exit 1
-#cp "${initramfs}" "${cdroot_boot_dir}"/kogaion.igz || exit 1
-
 if [ $(uname -m) = "x86_64" ]; then
 	cp "${KOGAION_MOLECULE_HOME}"/boot/kogaion_kernel/live-brrc "${cdroot_boot_dir}"/kogaion || exit 1
 	cp "${KOGAION_MOLECULE_HOME}"/boot/kogaion_kernel/live-brrc.igz "${cdroot_boot_dir}"/kogaion.igz || exit 1

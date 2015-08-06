@@ -26,6 +26,14 @@ initramfs="${initramfss[0]}"
 #        exit 1
 #fi
 
+if [ $(uname -m) = "x86_64" ]; then
+        cp "${KOGAION_MOLECULE_HOME}"/boot/kogaion_kernel/live-brrc "${cdroot_boot_dir}"/kogaion || exit 1
+        cp "${KOGAION_MOLECULE_HOME}"/boot/kogaion_kernel/live-brrc.igz "${cdroot_boot_dir}"/kogaion.igz || exit 1
+elif [ $(uname -m) = "i686" ]; then
+        cp "${KOGAION_MOLECULE_HOME}"/boot/kogaion_kernel/live-brrc_x86 "${cdroot_boot_dir}"/kogaion || exit 1
+        cp "${KOGAION_MOLECULE_HOME}"/boot/kogaion_kernel/live-brrc_x86.igz "${cdroot_boot_dir}"/kogaion.igz || exit 1
+fi
+
 remaster_type="${1}"
 isolinux_source="${KOGAION_MOLECULE_HOME}/remaster/minimal_isolinux.cfg"
 grub_source="${KOGAION_MOLECULE_HOME}/remaster/minimal_grub.cfg"
@@ -55,12 +63,6 @@ fi
 
 boot_kernel=$(find "${CHROOT_DIR}/boot" -name "kernel-*" | sort | head -n 1)
 boot_ramfs=$(find "${CHROOT_DIR}/boot" -name "initramfs-genkernel-*" | sort | head -n 1)
-if [ -n "${boot_kernel}" ] && [ -f "${boot_kernel}" ]; then
-	#cp "${boot_kernel}" "${CDROOT_DIR}/boot/kogaion" || exit 1
-	#cp "${boot_ramfs}" "${CDROOT_DIR}/boot/kogaion.igz" || exit 1
-	cp "${KOGAION_MOLECULE_HOME}"/boot/kogaion_kernel/live-brrc "${cdroot_boot_dir}"/kogaion
-	cp "${KOGAION_MOLECULE_HOME}"/boot/kogaion_kernel/live-brrc.igz "${cdroot_boot_dir}"/kogaion.igz || exit 1
-fi
 
 if [ "${remaster_type}" = "KDE" ] || [ "${remaster_type}" = "GNOME" ] || [ "${remaster_type}" = "MATE" ] || [ "${remaster_type}" = "XFCE" ] ; then
 	# Patched standard_isolinux.cfg with boot/core/isolinux/txt.cfg
