@@ -95,7 +95,7 @@ packages_to_add:
 	sys-block/parted,
 	sys-fs/ntfs3g,
 	sys-power/ncpufreqd,
-	www-client/chromium,
+	www-client/firefox,
 	www-plugins/adobe-flash,
 	x11-libs/gksu,
 	x11-libs/libva-intel-driver,

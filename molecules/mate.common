@@ -68,7 +68,7 @@ packages_to_add:
 	sys-block/parted,
 	sys-fs/ntfs3g,
 	sys-power/ncpufreqd,
-	www-client/chromium,
+	www-client/firefox,
 	www-plugins/adobe-flash,
 	x11-misc/magneto-gtk,
 	x11-misc/lightdm-base,
