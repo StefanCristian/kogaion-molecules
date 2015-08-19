@@ -299,7 +299,6 @@ setup_startup_caches() {
 }
 
 prepare_generic() {
-	install_proprietary_gfx_drivers
 	install_external_kernel_modules
 	setup_virtualbox
 	setup_networkmanager
