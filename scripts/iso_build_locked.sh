@@ -8,8 +8,8 @@ fi
 BUILD_SCRIPT_NAME="${1}"
 shift
 
-ROGENTOS_MOLECULE_HOME="${ROGENTOS_MOLECULE_HOME:-/sabayon}"
-. "${ROGENTOS_MOLECULE_HOME}/scripts/iso_build.include"
+KOGAION_MOLECULE_HOME="${KOGAION_MOLECULE_HOME:-/kogaion}"
+. "${KOGAION_MOLECULE_HOME}/scripts/iso_build.include"
 
 # Pull new data from Git
 (
@@ -18,7 +18,7 @@ ROGENTOS_MOLECULE_HOME="${ROGENTOS_MOLECULE_HOME:-/sabayon}"
         echo "[git pull] cannot acquire lock, stale process holding it?" >&2
         kill_stale_process || exit 1
     fi
-    cd /sabayon && git pull --quiet
+    cd /kogaion && git pull --quiet
 ) 9> "${ISO_BUILD_LOCK}"
 
 # Execute build
@@ -29,7 +29,7 @@ ROGENTOS_MOLECULE_HOME="${ROGENTOS_MOLECULE_HOME:-/sabayon}"
         kill_stale_process || exit 1
     fi
 
-    "${ROGENTOS_MOLECULE_HOME}/scripts/${BUILD_SCRIPT_NAME}" "${@}"
+    "${KOGAION_MOLECULE_HOME}/scripts/${BUILD_SCRIPT_NAME}" "${@}"
 
 ) 9> "${ISO_BUILD_LOCK}"
 

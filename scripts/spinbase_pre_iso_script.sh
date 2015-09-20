@@ -4,8 +4,10 @@
 . /etc/profile
 
 # Path to molecules.git dir
-ROGENTOS_MOLECULE_HOME="${ROGENTOS_MOLECULE_HOME:-/sabayon}"
-export ROGENTOS_MOLECULE_HOME
+KOGAION_MOLECULE_HOME="${KOGAION_MOLECULE_HOME:-/kogaion}"
+export KOGAION_MOLECULE_HOME
+
+remaster_type="${1}"
 
 boot_dir="${CHROOT_DIR}/boot"
 cdroot_boot_dir="${CDROOT_DIR}/boot"
@@ -13,52 +15,60 @@ cdroot_boot_dir="${CDROOT_DIR}/boot"
 kernels=( "${boot_dir}"/kernel-* )
 # get the first one and see if it exists
 kernel="${kernels[0]}"
-if [ ! -f "${kernel}" ]; then
-	echo "No kernels in ${boot_dir}" >&2
-	exit 1
-fi
+#if [ ! -f "${kernel}" ]; then
+#	echo "No kernels in ${boot_dir}" >&2
+#	exit 1
+#fi
 
 initramfss=( "${boot_dir}"/initramfs-genkernel-* )
 # get the first one and see if it exists
 initramfs="${initramfss[0]}"
-if [ ! -f "${initramfs}" ]; then
-	echo "No initramfs in ${boot_dir}" >&2
-	exit 1
-fi
+#if [ ! -f "${initramfs}" ]; then
+#	echo "No initramfs in ${boot_dir}" >&2
+#	exit 1
+#fi
 
 # copy kernel and initramfs
-cp "${kernel}" "${cdroot_boot_dir}"/rogentos || exit 1
-cp "${initramfs}" "${cdroot_boot_dir}"/rogentos.igz || exit 1
+if [ $(uname -m) = "x86_64" ]; then
+	cp "${KOGAION_MOLECULE_HOME}"/boot/kogaion_kernel/live-brrc "${cdroot_boot_dir}"/kogaion || exit 1
+	cp "${KOGAION_MOLECULE_HOME}"/boot/kogaion_kernel/live-brrc.igz "${cdroot_boot_dir}"/kogaion.igz || exit 1
+elif [ $(uname -m) = "i686" ]; then
+        cp "${KOGAION_MOLECULE_HOME}"/boot/kogaion_kernel/live-brrc_x86 "${cdroot_boot_dir}"/kogaion || exit 1
+        cp "${KOGAION_MOLECULE_HOME}"/boot/kogaion_kernel/live-brrc_x86.igz "${cdroot_boot_dir}"/kogaion.igz || exit 1
+fi
 
 # Write build info
 build_date=$(date)
 build_file="${CDROOT_DIR}"/BUILD_INFO
-echo "Rogentos ISO image build information" > "${build_file}" || exit 1
+echo "Kogaion ISO image build information" > "${build_file}" || exit 1
 echo "Built on: ${build_date}" >> "${build_file}" || exit 1
 
 ver="${RELEASE_VERSION}"
 isolinux_dest="${CDROOT_DIR}/isolinux/txt.cfg"
 isolinux_dest_txt="${CDROOT_DIR}/isolinux/isolinux.txt"
+syslinux_dest="${CDROOT_DIR}/syslinux/txt.cfg"
+syslinux_dest_txt="${CDROOT_DIR}/syslinux/syslinux.txt"
+
 grub_dest="${CDROOT_DIR}/boot/grub/grub.cfg"
 
-for path in "${isolinux_dest}" "${isolinux_dest_txt}" "${grub_dest}"; do
+for path in "${isolinux_dest}" "${isolinux_dest_txt}" "${syslinux_dest}" "${syslinux_dest_txt}" "${grub_dest}" ; do
 	sed -i "s/__VERSION__/${ver}/g" "${path}" || exit 1
 	sed -i "s/__FLAVOUR__/${remaster_type}/g" "${path}" || exit 1
 done
 
 # Generate Language and Keyboard menus for GRUB-2
-"${ROGENTOS_MOLECULE_HOME}"/scripts/make_grub_langs.sh "${grub_dest}" \
+"${KOGAION_MOLECULE_HOME}"/scripts/make_grub_langs.sh "${grub_dest}" \
 	|| exit 1
 
 # generate EFI GRUB
-"${ROGENTOS_MOLECULE_HOME}"/scripts/make_grub_efi.sh || exit 1
+"${KOGAION_MOLECULE_HOME}"/scripts/make_grub_efi.sh || exit 1
 
-rogentos_pkgs_file="${CHROOT_DIR}/etc/rogentos-pkglist"
-if [ -f "${rogentos_pkgs_file}" ]; then
-	cp "${rognetos_pkgs_file}" "${CDROOT_DIR}/pkglist"
+kogaion_pkgs_file="${CHROOT_DIR}/etc/kogaion-pkglist"
+if [ -f "${kogaion_pkgs_file}" ]; then
+	cp "${kogaion_pkgs_file}" "${CDROOT_DIR}/pkglist"
 	if [ -n "${ISO_PATH}" ]; then # molecule 0.9.6 required
 		# copy pkglist over to ISO path + pkglist
-		cp "${rogentos_pkgs_file}" "${ISO_PATH}".pkglist
+		cp "${kogaion_pkgs_file}" "${ISO_PATH}".pkglist
 	fi
 fi
 
@@ -69,4 +79,4 @@ if [ -f "${isolinux_img}" ]; then
 fi
 
 # Generate livecd.squashfs.md5
-"${ROGENTOS_MOLECULE_HOME}"/scripts/pre_iso_script_livecd_hash.sh
+"${KOGAION_MOLECULE_HOME}"/scripts/pre_iso_script_livecd_hash.sh

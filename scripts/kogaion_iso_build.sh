@@ -10,9 +10,9 @@ REMASTER_SPECS_ISO+=(
 
 
 # Path to molecules.git dir
-ROGENTOS_MOLECULE_HOME="${ROGENTOS_MOLECULE_HOME:-/sabayon}"
+KOGAION_MOLECULE_HOME="${KOGAION_MOLECULE_HOME:-/kogaion}"
 
-export ROGENTOS_MOLECULE_HOME
+export KOGAION_MOLECULE_HOME
 
 CUR_DATE=$(date -u +%Y%m%d%H%M)
 
@@ -20,7 +20,7 @@ CUR_DATE=$(date -u +%Y%m%d%H%M)
 		do
 			REMASTER_SPECS_ISO_BUILD_DATE=`basename -s .iso ${REMASTER_SPECS_ISO[i]}`'_'$CUR_DATE'.iso'
 			echo $REMASTER_SPECS_ISO_BUILD_DATE
-			dst="${ROGENTOS_MOLECULE_HOME}/molecules/${REMASTER_SPECS[i]}"
+			dst="${KOGAION_MOLECULE_HOME}/molecules/${REMASTER_SPECS[i]}"
 			# tweak iso image name
 			sed -i "s/^#.*destination_iso_image_name/destination_iso_image_name:/" "${dst}" || return 1
 			sed -i "s/destination_iso_image_name.*/destination_iso_image_name: ${REMASTER_SPECS_ISO_BUILD_DATE}/" "${dst}" || return 1

@@ -6,8 +6,8 @@
 # This scripts generates an EFI-enabled boot structure
 
 # Path to molecules.git dir
-ROGENTOS_MOLECULE_HOME="${ROGENTOS_MOLECULE_HOME:-/sabayon}"
-export ROGENTOS_MOLECULE_HOME
+KOGAION_MOLECULE_HOME="${KOGAION_MOLECULE_HOME:-/kogaion}"
+export KOGAION_MOLECULE_HOME
 
 MOUNT_DIRS=()
 TEMP_FILES=()
@@ -49,7 +49,7 @@ create_embedded_grub_cfg() {
 	local embedded_cfg="${1}"
 
 	echo "" >| "${embedded_cfg}" || return 1
-	echo "echo Booting Rogentos" >> "${embedded_cfg}" || return 1
+	echo "echo Booting Kogaion" >> "${embedded_cfg}" || return 1
 	echo "search --file --no-floppy --set=root /${ID_FILE}" >> "${embedded_cfg}" || return 1
 	echo "set prefix=${GRUB_BOOT_DIR_PREFIX}" >> "${embedded_cfg}" || return 1
 	echo "export root" >> "${embedded_cfg}" || return 1
@@ -134,7 +134,7 @@ for dir in "${localedir}"/*; do
 	fi
 done
 
-# Copy splash, this is in rogentos-artwork-grub, we expect to find it
+# Copy splash, this is in kogaion-artwork-grub, we expect to find it
 cp "${CHROOT_DIR}/usr/share/grub/default-splash.png" "${GRUB_BOOT_DIR}"/ \
 	|| exit 1
 
@@ -144,7 +144,7 @@ efi_x86_64_file="${EFI_BOOT_DIR}"/bootx64.efi
 efi_i386_file="${EFI_BOOT_DIR}"/boota32.efi
 grub_efi_file="${EFI_BOOT_DIR}"/grubx64.efi
 efi_img="${GRUB_BOOT_DIR}"/efi.img
-shim_dir="${ROGENTOS_MOLECULE_HOME}"/boot/shim-uefi-secure-boot
+shim_dir="${KOGAION_MOLECULE_HOME}"/boot/shim-uefi-secure-boot
 shim_data_dir="${CHROOT_DIR}/usr/share/shim-signed-0.2"
 # This is on the ISO build server, not on the repos
 sbsign_private_key="${shim_dir}"/private.key
@@ -161,7 +161,7 @@ if [ -f "${efi_x86_64_file}" ] || [ -f "${efi_i386_file}" ]; then
 		cp "${shim_data_dir}"/shim.efi "${efi_x86_64_file}" || exit 1
 		cp "${shim_data_dir}"/MokManager.efi "${EFI_BOOT_DIR}"/ || exit 1
 
-		# Copy the Rogentos SecureBoot certificate to a nice dir
+		# Copy the Kogaion SecureBoot certificate to a nice dir
 		mkdir -p "${CDROOT_DIR}"/SecureBoot || exit 1
 		cp "${kogaion_der}" "${CDROOT_DIR}"/SecureBoot/ || exit 1
 

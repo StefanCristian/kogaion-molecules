@@ -3,77 +3,85 @@
 execution_strategy: iso_remaster
 
 # Release string
-release_string: Sabayon Linux
+release_string: Kogaion Linux
 
 # File to write release string
-release_file: /etc/sabayon-edition
+release_file: /etc/kogaion-edition
 
 # ISO Image title
-iso_title: Sabayon MATE
+iso_title: Kogaion MATE
 
 # Enable XZ compression in mksquashfs
 extra_mksquashfs_parameters: -comp xz -Xbcj x86
 
 # Outer chroot script command, to be executed outside destination chroot before
 # before entering it (and before inner_chroot_script)
-%env outer_chroot_script: ${SABAYON_MOLECULE_HOME:-/sabayon}/scripts/remaster_pre.sh
+%env outer_chroot_script: ${KOGAION_MOLECULE_HOME:-/kogaion}/scripts/remaster_pre.sh
 
 # Execute repositories update here, in a more fault-tolerant flavor
-%env inner_chroot_script: ${SABAYON_MOLECULE_HOME:-/sabayon}/scripts/remaster_generic_inner_chroot_script.sh
+%env inner_chroot_script: ${KOGAION_MOLECULE_HOME:-/kogaion}/scripts/remaster_generic_inner_chroot_script.sh
 
 # Inner chroot script command, to be executed inside destination chroot after
 # packages installation and removal
-%env inner_chroot_script_after: ${SABAYON_MOLECULE_HOME:-/sabayon}/scripts/remaster_generic_inner_chroot_script_after.sh mate
+%env inner_chroot_script_after: ${KOGAION_MOLECULE_HOME:-/kogaion}/scripts/remaster_generic_inner_chroot_script_after.sh mate
 
 # Outer chroot script command, to be executed outside destination chroot before
 # before entering it (and AFTER inner_chroot_script)
-%env outer_chroot_script_after: ${SABAYON_MOLECULE_HOME:-/sabayon}/scripts/remaster_post.sh
+%env outer_chroot_script_after: ${KOGAION_MOLECULE_HOME:-/kogaion}/scripts/remaster_post.sh
 
 # Used to umount /proc and unbind packages dir
-%env error_script: ${SABAYON_MOLECULE_HOME:-/sabayon}/scripts/remaster_error_script.sh
+%env error_script: ${KOGAION_MOLECULE_HOME:-/kogaion}/scripts/remaster_error_script.sh
 
 # Pre-ISO building script. Hook to be able to copy kernel images in place, for example
-%env pre_iso_script: ${SABAYON_MOLECULE_HOME:-/sabayon}/scripts/generic_pre_iso_script.sh MATE
+%env pre_iso_script: ${KOGAION_MOLECULE_HOME:-/kogaion}/scripts/generic_pre_iso_script.sh MATE
 
 # Destination directory for the ISO image path (MANDATORY)
-%env destination_iso_directory: ${SABAYON_MOLECULE_HOME:-/sabayon}/iso
+%env destination_iso_directory: ${KOGAION_MOLECULE_HOME:-/kogaion}/iso
 
 # List of packages that would be removed from chrooted system (comma separated)
-packages_to_remove:
-	www-client/lynx
+#packages_to_remove:
+#	www-client/lynx
 
 # Import the Graphic Environment module.
-%env %import ${SABAYON_MOLECULE_HOME:-/sabayon}/molecules/graphic-environment.common
+%env %import ${KOGAION_MOLECULE_HOME:-/kogaion}/molecules/graphic-environment.common
 
 # List of packages that would be added from chrooted system (comma separated)
 packages_to_add:
 	@wireless,
 	app-admin/rigo,
+	app-admin/calamares,
 	app-crypt/gnupg,
 	app-crypt/pinentry-gtk2,
 	app-text/pastebunz,
 	app-office/abiword,
 	app-office/gnumeric,
-	gnome-extra/nm-applet-gtk2,
+	gnome-extra/nm-applet,
 	mate-base/mate,
 	media-plugins/alsa-plugins,
 	media-sound/audacious,
 	net-dialup/rp-pppoe,
 	net-irc/hexchat,
-	net-p2p/transmission-gtk,
+	net-p2p/deluge,
 	x11-libs/gksu,
 	sys-apps/gnome-disk-utility,
-	sys-auth/consolekit,
+	sys-auth/polkit,
 	sys-block/parted,
 	sys-fs/ntfs3g,
-	sys-power/cpufrequtils,
-	www-client/chromium,
+	sys-power/ncpufreqd,
+	www-client/firefox,
 	www-plugins/adobe-flash,
 	x11-misc/magneto-gtk,
 	x11-misc/lightdm-base,
 	x11-misc/lightdm-gtk-greeter,
 	x11-terms/guake,
-	x11-themes/gnome-themes-standard
+	x11-themes/gnome-themes-standard,
+	x11-themes/kogaion-artwork-mate
+
+# List of packages that would be removed from chrooted system (comma separated)
+packages_to_remove:
+	www-client/lynx,
+	dev-db/mysql,
+	dev-db/mariadb
 
 # Custom shell call to packages add (default is: equo install)
 # custom_packages_add_cmd: 

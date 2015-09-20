@@ -21,10 +21,10 @@ echo "ISO_CHECKSUM_PATH = ${ISO_CHECKSUM_PATH}"
 echo "ISO_ARCH = ${ISO_ARCH}"
 echo
 
-ih_args=""
-if [ "${ISO_ARCH}" = "amd64" ]; then
-	ih_args+=" --uefi"
-fi
+#ih_args=""
+#if [ "${ISO_ARCH}" = "amd64" ]; then
+#	ih_args+=" --uefi"
+#fi
 isohybrid ${ih_args} "${ISO_PATH}" || exit 1
 
 cd "$(dirname "${ISO_PATH}")" || exit 1

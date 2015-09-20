@@ -1,14 +1,13 @@
 # This module contains packages that images shipping with X.Org should have
 
-# rogentos-skel required to make anaconda autostart
+# kogaion-skel required to make anaconda autostart
 # libgnomecanvas-python required by anaconda
 # x11-libs/libXxf86misc required by xset
 packages_to_add:
 	@X,
 	app-laptop/nvidiabl,
-	app-misc/rogentos-skel,
-	app-misc/rogentos-live,
-	app-misc/anaconda-runtime-gui,
+	app-misc/kogaion-skel,
+	app-misc/kogaion-live,
 	dev-python/libgnomecanvas-python,
 	media-fonts/ttf-bitstream-vera,
 	media-fonts/dejavu,

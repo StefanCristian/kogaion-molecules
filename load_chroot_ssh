@@ -45,13 +45,13 @@ def spawn_ssh(args, chroot):
 if __name__ == "__main__":
 
     start_port = 2000
-    chroot_dir = "/sabayon/sources"
+    chroot_dir = "/kogaion/sources"
     chroots = os.listdir(chroot_dir)
     default_args = ["/usr/sbin/sshd"]
-    chroot_map_file = "/sabayon/CHROOTS"
+    chroot_map_file = "/kogaion/CHROOTS"
 
     ch_f = open(chroot_map_file, "w")
-    ch_f.write("Sabayon Chroots available via SSH:\n")
+    ch_f.write("Kogaion Chroots available via SSH:\n")
     for chroot in chroots:
         if not os.path.isdir(os.path.join(chroot_dir, chroot)):
             continue

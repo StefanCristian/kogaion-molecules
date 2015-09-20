@@ -81,15 +81,20 @@ else
 	echo
 fi
 
+for moddir in $(find /lib/modules -maxdepth 1 -type d -empty); do
+	echo "Cleaning ${moddir} because it's empty"
+	rmdir "${moddir}"
+done
+
 rm -rf /var/lib/entropy/client/packages
 
 # Make sure that systemd is still the default init system
 eselect sysvinit set systemd
 eselect settingsd set systemd
 
-# copy Portage config from sabayonlinux.org entropy repo to system
+# copy Portage config from kogaionlinux entropy repo to system
 for conf in package.mask package.unmask package.keywords make.conf package.use; do
-	repo_path=/var/lib/entropy/client/database/*/sabayonlinux.org/standard
+	repo_path=/var/lib/entropy/client/database/*/kogaionlinux/standard
 	repo_conf=$(ls -1 ${repo_path}/*/*/${conf} | sort | tail -n 1 2>/dev/null)
 	if [ -n "${repo_conf}" ]; then
 		target_path="/etc/portage/${conf}"
@@ -103,12 +108,12 @@ for conf in package.mask package.unmask package.keywords make.conf package.use; 
 done
 
 # split config file
-for conf in 00-sabayon.package.use 00-sabayon.package.mask \
-	00-sabayon.package.unmask 00-sabayon.package.keywords; do
-	repo_path=/var/lib/entropy/client/database/*/sabayonlinux.org/standard
+for conf in 00-kogaion.package.use 00-kogaion.package.mask \
+	00-kogaion.package.unmask 00-kogaion.package.keywords; do
+	repo_path=/var/lib/entropy/client/database/*/kogaionlinux/standard
 	repo_conf=$(ls -1 ${repo_path}/*/*/${conf} | sort | tail -n 1 2>/dev/null)
 	if [ -n "${repo_conf}" ]; then
-		target_path="/etc/portage/${conf/00-sabayon.}/${conf}"
+		target_path="/etc/portage/${conf/00-kogaion.}/${conf}"
 		target_dir=$(dirname "${target_path}")
 		if [ -f "${target_dir}" ]; then # remove old file
 			rm "${target_dir}" # ignore failure
@@ -129,4 +134,4 @@ RSYNC_URI="rsync://rsync.at.gentoo.org/gentoo-portage/profiles"
 PROFILES_DIR="/usr/portage/profiles"
 safe_run rsync -av -H -A -X --delete-during "${RSYNC_URI}/" "${PROFILES_DIR}/"
 
-equo query list installed -qv > /etc/rogentos-pkglist
+equo query list installed -qv > /etc/kogaion-pkglist

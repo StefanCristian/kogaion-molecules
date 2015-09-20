@@ -1,1 +1,0 @@
-optargs=run_hardware_tests quiet

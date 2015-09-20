@@ -1,11 +1,11 @@
-F1Welcome to Rogentos Linux
+F1Welcome to Kogaion Linux
 
 HELP INDEX
 
 KEY    TOPIC
 
 <F1F1>   This page, the help index.
-<F2F2>   Prerequisites for running Rogentos.
+<F2F2>   Prerequisites for running Kogaion.
 <F3F3>   Boot methods for special ways of using this media.
 <F4F4>   Boot parameters (part I).
 <F5F5>   Boot parameters (part II).
@@ -15,7 +15,7 @@
 
 
 
-Press F2 through F8 for details, or Escape to exit help.F2Prerequisites for running RogentosLive Environment - No 3D Desktop:
+Press F2 through F8 for details, or Escape to exit help.F2Prerequisites for running KogaionLive Environment - No 3D Desktop:
 - i586 Processor (starting from AMD K5 and Intel Pentium)
 - At least 128Mb of RAM (256 suggested)
 - a 2D graphics card
@@ -39,18 +39,18 @@ Press F2 through F8 for details, or Escape to exit help.F2Prerequisites for r
 
 Press F1 for the help index, or Escape to exit help.F4Boot methods- Available Boot methods (only from ISOLINUX command line):
 
-rogentos
-  Start the Rogentos Live system.
+kogaion
+  Start the Kogaion Live system.
 install
   Start the Graphical Installation.
 text-install
   Start the Text mode Installation.
 genuine
-  Start the Rogentos Live system without proprietary drivers.
+  Start the Kogaion Live system without proprietary drivers.
 console
-  Start the Rogentos Live system without loading X.Org.
+  Start the Kogaion Live system without loading X.Org.
 debug
-  Start the Rogentos Live system in Debug mode (expert).
+  Start the Kogaion Live system in Debug mode (expert).
 memtest
   Perform a memory test.
 
@@ -58,7 +58,7 @@ Press F1 for the help index, or Escape to exit help.F4Boot methods- Availab
 
 
 
-Press F1 for the help index, or Escape to exit help.F5Boot parameters (part I)Rogentos supports some extra features that can be enabled by adding the boot parameters below. Moreover, you can tune the system to behave in different ways.
+Press F1 for the help index, or Escape to exit help.F5Boot parameters (part I)Kogaion supports some extra features that can be enabled by adding the boot parameters below. Moreover, you can tune the system to behave in different ways.
 
 lang=
   example: lang=fr_FR || lang=en_GB || lang=it_IT || lang=es_ES
@@ -82,14 +82,14 @@ Press F1 for the help index, or Escape to exit help.F5Boot parameters (part I
 noddc
   Disable DDC Monitor autoconfiguration.
 
-Press F1 for the help index, or Escape to exit help.F6Boot parameters (part II)Rogentos supports some extra features that can be enabled by adding the boot parameters below. Moreover, you can tune the system to behave in different ways.
+Press F1 for the help index, or Escape to exit help.F6Boot parameters (part II)Kogaion supports some extra features that can be enabled by adding the boot parameters below. Moreover, you can tune the system to behave in different ways.
 
 session=
   example: session=kde ( supported: kde,gnome,metisse-kde,metisse-gnome,fluxbox )
 music
   Enable music during boot (experimental).
 autoscramble
-  Randomization of root and rogentosuser passwords.
+  Randomization of root and kogaionuser passwords.
 nox
   Start the System without X.Org.
 legacy
@@ -108,7 +108,7 @@ Press F1 for the help index, or Escape to exit help.F6Boot parameters (part I
 vga=771
 
 
-Press F1 for the help index, or Escape to exit help.F7Special featuresRogentos supports some enhanced features, like the ability to surf anonymously and persistent home directory.
+Press F1 for the help index, or Escape to exit help.F7Special featuresKogaion supports some enhanced features, like the ability to surf anonymously and persistent home directory.
 
 tor
   Enable the system to use Tor/Privoxy system to surf the web anonymously.
@@ -119,7 +119,7 @@ Press F1 for the help index, or Escape to exit help.F7Special featuresRogent
 
 XsistenCe:
  - What is XsistenCe?
- - One Removable Device (USB storage) + Rogentos = your data everywhere.
+ - One Removable Device (USB storage) + Kogaion = your data everywhere.
    In other words, you can use your Home directory in read/write mode and
    your data will be stored on your external non-volatile removable device.
 
@@ -131,9 +131,9 @@ Press F1 for the help index, or Escape to exit help.F7Special featuresRogent
     - If the System does not detect an XsistenCe image, it will be created.
       - You can specify the size (MB) of it, by adding: "xsistence_mb=xxx"
 
- - boot example: > rogentos xsistence xsistence_mb=100
+ - boot example: > kogaion xsistence xsistence_mb=100
 
-Press F1 for the help index, or Escape to exit help.F8Gaming and multimedia capabilitiesRogentos is the most advanced and complete Linux distribution when it comes to multimedia completeness and capabilities. Use the parameters above only in ISOLINUX command line mode.
+Press F1 for the help index, or Escape to exit help.F8Gaming and multimedia capabilitiesKogaion is the most advanced and complete Linux distribution when it comes to multimedia completeness and capabilities. Use the parameters above only in ISOLINUX command line mode.
 
 secondlife
   Start Second Life Game.
@@ -155,27 +155,27 @@ Press F1 for the help index, or Escape to exit help.F8Gaming and multimedia c
 geexbox
   Start GeeXboX 1.0 Media Center.
 mediacenter
-  Start Rogentos with Freevo Media Center.
+  Start Kogaion with Freevo Media Center.
 
 Press F1 for the help index, or Escape to exit help.F9OpenGL and Accelerated DesktopIf you want to try to get your OpenGL Acceleration or your Accelerated Desktop to work, just poke with the commands above.
 
 opengl=
   Force the System to use a specific OpenGL subsystem, when autodetection fails.
-  - example for NVIDIA (with NVIDIA Proprietary drivers) > rogentos opengl=nvidia
-  - example for ATI (with ATI Proprietary drivers) > rogentos opengl=ati
-  - example for X.Org Mesa implementation > rogentos opengl=xorg-x11
+  - example for NVIDIA (with NVIDIA Proprietary drivers) > kogaion opengl=nvidia
+  - example for ATI (with ATI Proprietary drivers) > kogaion opengl=ati
+  - example for X.Org Mesa implementation > kogaion opengl=xorg-x11
 
 agpgart
   Force the System to load the AGP driver, when the autodetection fails.
-  - example: > rogentos opengl=xorg-x11
+  - example: > kogaion opengl=xorg-x11
 
 noaccelmanager
   Disable the loading of the Acceleration Manager application.
-  - example: > rogentos noaccelmanager
+  - example: > kogaion noaccelmanager
 
 aiglx
   Enable AIGLX Desktop Acceleration and disable Acceleration Manager.
-  - example: > rogentos aiglx
+  - example: > kogaion aiglx
 
 
 

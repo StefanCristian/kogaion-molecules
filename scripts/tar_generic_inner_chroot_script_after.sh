@@ -3,8 +3,9 @@
 /usr/sbin/env-update
 . /etc/profile
 
-# remove sabayonuser
-userdel sabayonuser
+# remove kogaionuser
+userdel kogaionuser
+userdel kogaionuser
 
 DROP_SERVICES="
 	alsasound
@@ -22,7 +23,7 @@ DROP_SERVICES="
 	mdadm
 	netmount
 	NetworkManager
-	rogentoslive
+	kogaionlive
 	swap
 	swapfiles
 	termencoding
@@ -37,7 +38,7 @@ SYSTEMD_DROP_SERVICES="
 	lvm
 	mdadm
 	NetworkManager
-	rogentoslive
+	kogaionlive
 	x-setup
 "
 
@@ -55,11 +56,16 @@ done
 systemctl --no-reloab enable vixie-cron.service
 
 # Generate list of installed packages
-equo query list installed -qv > /etc/rogentos-pkglist
+equo query list installed -qv > /etc/kogaion-pkglist
 
 # remove hw hash
 rm -f /etc/entropy/.hw.hash
 # remove entropy pid file
-rm -f /var/run/entropy/entropy.lock
+rm -f /run/entropy/entropy.lock
+
+# remove /run/* and /var/lock/*
+# systemd mounts them using tmpfs
+rm -rf /run/*
+rm -rf /var/lock/*
 
 exit 0

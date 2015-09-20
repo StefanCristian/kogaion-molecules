@@ -4,11 +4,11 @@
 . /etc/profile
 
 # Path to molecules.git dir
-ROGENTOS_MOLECULE_HOME="${ROGENTOS_MOLECULE_HOME:-/sabayon}"
-export ROGENTOS_MOLECULE_HOME
+KOGAION_MOLECULE_HOME="${KOGAION_MOLECULE_HOME:-/kogaion}"
+export KOGAION_MOLECULE_HOME
 
-announce_url="http://torrents.sabayon.org:8082/announce"
-iso_dir="${ROGENTOS_MOLECULE_HOME}/iso"
+announce_url="http://torrents.rogentos.ro:8082/announce"
+iso_dir="${KOGAION_MOLECULE_HOME}/iso"
 cd "${iso_dir}"
 
 for iso_file in "${iso_dir}"/*.{iso,tar.gz,tar.xz}; do
