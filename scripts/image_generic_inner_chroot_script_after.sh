@@ -24,9 +24,9 @@ sd_disable NetworkManager
 rc-update add net.eth0 default
 
 # drop other useless services
-rc-update del rogentoslive boot
+rc-update del kogaionlive boot
 rc-update del x-setup boot
-sd_disable rogentoslive
+sd_disable kogaionlive
 
 # Enable ssh
 rc-update add sshd default
@@ -69,13 +69,13 @@ kernel ${kernel_bin} root=/dev/sda1
 # initrd ${initrd_bin}
 
 # Generate list of installed packages
-equo query list installed -qv > /etc/rogentos-pkglist
+equo query list installed -qv > /etc/kogaion-pkglist
 
 /lib/rc/bin/rc-depend -u
 
 echo "Vacuum cleaning client db"
-rm /var/lib/entropy/client/database/*/sabayonlinux.org -rf
-rm /var/lib/entropy/client/database/*/sabayon-weekly -rf
+rm /var/lib/entropy/client/database/*/kogaionlinux -rf
+rm /var/lib/entropy/client/database/*/kogaion-weekly -rf
 equo rescue vacuum
 
 # restore original repositories.conf (all mirrors were filtered for speed)
@@ -102,6 +102,6 @@ umount /proc
 # remove hw hash
 rm -f /etc/entropy/.hw.hash
 # remove entropy pid file
-rm -f /var/run/entropy/entropy.lock
+rm -f /run/entropy/entropy.lock
 
 exit 0

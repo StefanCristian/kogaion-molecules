@@ -1,10 +1,10 @@
 #!/bin/sh
 
 # Path to molecules.git dir
-ROGENTOS_MOLECULE_HOME="${ROGENTOS_MOLECULE_HOME:-/sabayon}"
-export ROGENTOS_MOLECULE_HOME
+KOGAION_MOLECULE_HOME="${KOGAION_MOLECULE_HOME:-/kogaion}"
+export KOGAION_MOLECULE_HOME
 
-PKGS_DIR="${ROGENTOS_MOLECULE_HOME}/pkgcache"
+PKGS_DIR="${KOGAION_MOLECULE_HOME}/pkgcache"
 CHROOT_PKGS_DIR="${CHROOT_DIR}/var/lib/entropy/client/packages"
 
 [[ ! -d "${PKGS_DIR}" ]] && mkdir -p "${PKGS_DIR}"
